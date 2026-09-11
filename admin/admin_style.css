@@ -210,9 +210,36 @@ img {
     min-height: 100px;
 }
 
-.form-group select option {
-    background: var(--dark);
-    color: #fff;
+/* ── UNIVERSAL SELECT & OPTION STYLING ─────────────── */
+select {
+    background-color: #12122a !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    padding: 10px 18px !important;
+    border-radius: 8px !important;
+    font-size: 0.95rem !important;
+    cursor: pointer !important;
+    outline: none !important;
+    font-family: inherit !important;
+}
+
+select:focus {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 3px rgba(200, 169, 126, 0.25) !important;
+}
+
+select option {
+    background-color: #12122a !important;
+    color: #ffffff !important;
+    padding: 12px 16px !important;
+    font-size: 0.95rem !important;
+}
+
+select option:hover,
+select option:focus,
+select option:checked {
+    background-color: var(--gold) !important;
+    color: #0a0a1a !important;
 }
 
 .btn-login {

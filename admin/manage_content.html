@@ -84,19 +84,96 @@
             margin-bottom: 10px;
             border: 1px solid rgba(255,255,255,0.05);
         }
-        .custom-select {
-            background: #12122a !important;
-            color: #ffffff !important;
-            border: 1px solid rgba(255,255,255,0.2) !important;
-            padding: 10px 18px !important;
-            border-radius: 8px !important;
-            font-size: 0.95rem !important;
-            cursor: pointer;
+        /* ── LUXURY CUSTOM DROPDOWN STYLES ────────────────── */
+        .custom-dropdown-wrap {
+            position: relative;
+            display: inline-block;
+            min-width: 260px;
+            user-select: none;
         }
-        .custom-select option {
-            background: #0a0a1a !important;
-            color: #ffffff !important;
-            padding: 10px;
+        .custom-dropdown-btn {
+            background: #12122a;
+            color: #ffffff;
+            border: 1.5px solid var(--gold);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .custom-dropdown-btn:hover {
+            background: #191938;
+            border-color: var(--gold-light);
+            box-shadow: 0 0 16px rgba(200, 169, 126, 0.35);
+        }
+        .custom-dropdown-btn .chevron {
+            color: var(--gold);
+            transition: transform 0.25s ease;
+            font-size: 0.85rem;
+        }
+        .custom-dropdown-wrap.active .custom-dropdown-btn .chevron {
+            transform: rotate(180deg);
+        }
+        .custom-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: #0d0d22;
+            border: 1.5px solid rgba(200, 169, 126, 0.45);
+            border-radius: 10px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            max-height: 360px;
+            overflow-y: auto;
+            display: none;
+            padding: 6px;
+        }
+        .custom-dropdown-wrap.active .custom-dropdown-menu {
+            display: block;
+            animation: dropFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes dropFade {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .custom-dropdown-item {
+            padding: 10px 14px;
+            color: #d1cfe0;
+            font-size: 0.92rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            margin-bottom: 2px;
+        }
+        .custom-dropdown-item i {
+            width: 20px;
+            color: var(--gold);
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .custom-dropdown-item:hover {
+            background: rgba(200, 169, 126, 0.15);
+            color: #ffffff;
+            padding-left: 18px;
+        }
+        .custom-dropdown-item.selected {
+            background: var(--gold);
+            color: #0a0a1a !important;
+            font-weight: 700;
+        }
+        .custom-dropdown-item.selected i {
+            color: #0a0a1a !important;
         }
         .btn-gold {
             background: var(--gold);
@@ -222,18 +299,25 @@
                 <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <h3 style="font-size: 1.15rem; color: var(--gold); margin: 0;"><i class="fas fa-tags"></i> Page-by-Page SEO Metadata</h3>
-                        <select id="seoPageSelect" class="custom-select" onchange="loadPageSEO(this.value)">
-                            <option value="home">Home Page</option>
-                            <option value="about">About Us</option>
-                            <option value="listings">Listings Directory</option>
-                            <option value="contact">Contact Us</option>
-                            <option value="faqs">FAQs</option>
-                            <option value="get-listed">Get Listed</option>
-                            <option value="restaurant">Restaurant Details</option>
-                            <option value="privacy">Privacy Policy</option>
-                            <option value="terms">Terms of Service</option>
-                            <option value="disclaimer">Disclaimer</option>
-                        </select>
+                        <div class="custom-dropdown-wrap" id="seoDropdownWrap">
+                            <button type="button" class="custom-dropdown-btn" onclick="toggleDropdown('seoDropdownWrap')">
+                                <span id="seoDropdownLabel"><i class="fas fa-home" style="color:var(--gold);margin-right:8px;"></i> Home Page</span>
+                                <i class="fas fa-chevron-down chevron"></i>
+                            </button>
+                            <div class="custom-dropdown-menu">
+                                <div class="custom-dropdown-item selected" onclick="selectSeoPage('home', 'Home Page', 'fas fa-home')"><i class="fas fa-home"></i> Home Page</div>
+                                <div class="custom-dropdown-item" onclick="selectSeoPage('about', 'About Us', 'fas fa-info-circle')"><i class="fas fa-info-circle"></i> About Us</div>
+                                <div class="custom-dropdown-item" onclick="selectSeoPage('listings', 'Listings Directory', 'fas fa-utensils')"><i class="fas fa-utensils"></i> Listings Directory</div>
+                                <div class="custom-dropdown-item" onclick="selectSeoPage('contact', 'Contact Us', 'fas fa-envelope')"><i class="fas fa-envelope"></i> Contact Us</div>
+                                <div class="custom-dropdown-item" onclick="selectSeoPage('faqs', 'FAQs', 'fas fa-question-circle')"><i class="fas fa-question-circle"></i> FAQs</div>
+                                <div class="custom-dropdown-item" onclick="selectSeoPage('get-listed', 'Get Listed', 'fas fa-plus-circle')"><i class="fas fa-plus-circle"></i> Get Listed</div>
+                                <div class="custom-dropdown-item" onclick="selectSeoPage('restaurant', 'Restaurant Details', 'fas fa-store')"><i class="fas fa-store"></i> Restaurant Details</div>
+                                <div class="custom-dropdown-item" onclick="selectSeoPage('privacy', 'Privacy Policy', 'fas fa-shield-alt')"><i class="fas fa-shield-alt"></i> Privacy Policy</div>
+                                <div class="custom-dropdown-item" onclick="selectSeoPage('terms', 'Terms of Service', 'fas fa-file-contract')"><i class="fas fa-file-contract"></i> Terms of Service</div>
+                                <div class="custom-dropdown-item" onclick="selectSeoPage('disclaimer', 'Disclaimer', 'fas fa-exclamation-circle')"><i class="fas fa-exclamation-circle"></i> Disclaimer</div>
+                            </div>
+                            <input type="hidden" id="seoPageSelect" value="home">
+                        </div>
                     </div>
                     <button class="btn-gold" onclick="savePageSEO()">
                         <i class="fas fa-save"></i> Save SEO Settings
@@ -435,18 +519,25 @@
                 <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 14px;">
                         <h3 style="color: var(--gold); font-size: 1.15rem; margin: 0;"><i class="fas fa-file-alt"></i> Select Page to Edit:</h3>
-                        <select id="contentPageSelect" class="custom-select" onchange="loadIndividualPageContent(this.value)">
-                            <option value="home">Home Page</option>
-                            <option value="about">About Us</option>
-                            <option value="listings">Listings Directory</option>
-                            <option value="contact">Contact Us</option>
-                            <option value="faqs">FAQs</option>
-                            <option value="get-listed">Get Listed</option>
-                            <option value="restaurant">Restaurant Details</option>
-                            <option value="privacy">Privacy Policy</option>
-                            <option value="terms">Terms of Service</option>
-                            <option value="disclaimer">Disclaimer</option>
-                        </select>
+                        <div class="custom-dropdown-wrap" id="contentDropdownWrap">
+                            <button type="button" class="custom-dropdown-btn" onclick="toggleDropdown('contentDropdownWrap')">
+                                <span id="contentDropdownLabel"><i class="fas fa-home" style="color:var(--gold);margin-right:8px;"></i> Home Page</span>
+                                <i class="fas fa-chevron-down chevron"></i>
+                            </button>
+                            <div class="custom-dropdown-menu">
+                                <div class="custom-dropdown-item selected" onclick="selectContentPage('home', 'Home Page', 'fas fa-home')"><i class="fas fa-home"></i> Home Page</div>
+                                <div class="custom-dropdown-item" onclick="selectContentPage('about', 'About Us', 'fas fa-info-circle')"><i class="fas fa-info-circle"></i> About Us</div>
+                                <div class="custom-dropdown-item" onclick="selectContentPage('listings', 'Listings Directory', 'fas fa-utensils')"><i class="fas fa-utensils"></i> Listings Directory</div>
+                                <div class="custom-dropdown-item" onclick="selectContentPage('contact', 'Contact Us', 'fas fa-envelope')"><i class="fas fa-envelope"></i> Contact Us</div>
+                                <div class="custom-dropdown-item" onclick="selectContentPage('faqs', 'FAQs', 'fas fa-question-circle')"><i class="fas fa-question-circle"></i> FAQs</div>
+                                <div class="custom-dropdown-item" onclick="selectContentPage('get-listed', 'Get Listed', 'fas fa-plus-circle')"><i class="fas fa-plus-circle"></i> Get Listed</div>
+                                <div class="custom-dropdown-item" onclick="selectContentPage('restaurant', 'Restaurant Details', 'fas fa-store')"><i class="fas fa-store"></i> Restaurant Details</div>
+                                <div class="custom-dropdown-item" onclick="selectContentPage('privacy', 'Privacy Policy', 'fas fa-shield-alt')"><i class="fas fa-shield-alt"></i> Privacy Policy</div>
+                                <div class="custom-dropdown-item" onclick="selectContentPage('terms', 'Terms of Service', 'fas fa-file-contract')"><i class="fas fa-file-contract"></i> Terms of Service</div>
+                                <div class="custom-dropdown-item" onclick="selectContentPage('disclaimer', 'Disclaimer', 'fas fa-exclamation-circle')"><i class="fas fa-exclamation-circle"></i> Disclaimer</div>
+                            </div>
+                            <input type="hidden" id="contentPageSelect" value="home">
+                        </div>
                     </div>
                     <div style="display: flex; gap: 10px;">
                         <button id="toggleRawJsonBtn" class="btn-sm" style="background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 6px; cursor: pointer;" onclick="toggleRawJsonMode()">
@@ -609,9 +700,53 @@
         }
     }
 
+    // ═══════════════════════════════════════════════════════
+    // CUSTOM LUXURY DROPDOWN HANDLERS
+    // ═══════════════════════════════════════════════════════
+    function toggleDropdown(wrapId) {
+        const wrap = document.getElementById(wrapId);
+        const isOpen = wrap.classList.contains('active');
+        document.querySelectorAll('.custom-dropdown-wrap').forEach(w => w.classList.remove('active'));
+        if (!isOpen) {
+            wrap.classList.add('active');
+        }
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.custom-dropdown-wrap')) {
+            document.querySelectorAll('.custom-dropdown-wrap').forEach(w => w.classList.remove('active'));
+        }
+    });
+
+    function selectSeoPage(val, label, icon) {
+        document.getElementById('seoPageSelect').value = val;
+        document.getElementById('seoDropdownLabel').innerHTML = `<i class="${icon}" style="color:var(--gold);margin-right:8px;"></i> ${label}`;
+        
+        const menu = document.querySelector('#seoDropdownWrap .custom-dropdown-menu');
+        menu.querySelectorAll('.custom-dropdown-item').forEach(item => {
+            item.classList.toggle('selected', item.textContent.trim() === label);
+        });
+        
+        document.getElementById('seoDropdownWrap').classList.remove('active');
+        loadPageSEO(val);
+    }
+
+    function selectContentPage(val, label, icon) {
+        document.getElementById('contentPageSelect').value = val;
+        document.getElementById('contentDropdownLabel').innerHTML = `<i class="${icon}" style="color:var(--gold);margin-right:8px;"></i> ${label}`;
+        
+        const menu = document.querySelector('#contentDropdownWrap .custom-dropdown-menu');
+        menu.querySelectorAll('.custom-dropdown-item').forEach(item => {
+            item.classList.toggle('selected', item.textContent.trim() === label);
+        });
+        
+        document.getElementById('contentDropdownWrap').classList.remove('active');
+        loadIndividualPageContent(val);
+    }
+
     function updateGoogleSnippet() {
         const pageName = document.getElementById('seoPageSelect').value;
-        const pageOptionText = document.getElementById('seoPageSelect').options[document.getElementById('seoPageSelect').selectedIndex].text;
+        const pageOptionText = document.getElementById('seoDropdownLabel') ? document.getElementById('seoDropdownLabel').textContent.trim() : pageName;
         const titleInput = document.getElementById('seoTitleInput');
         const descInput = document.getElementById('seoDescInput');
 

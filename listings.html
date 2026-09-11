@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Explore Restaurants - DineVault</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <!-- Rendered by js/app.js -->
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <div class="container">
+            <h1 id="pageTitle">All Restaurants</h1>
+        </div>
+    </section>
+
+    <!-- LISTINGS -->
+    <section class="section">
+        <div class="container">
+            <!-- SEARCH BAR -->
+            <div class="listings-search glass">
+                <div class="search-input-wrap">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search restaurants, cuisines, or locations..." autocomplete="off">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+            </div>
+
+            <div class="listings-layout">
+                <!-- FILTERS SIDEBAR -->
+                <aside class="listings-filters glass" id="filtersSidebar">
+                    <div class="filter-header">
+                        <h3><i class="fas fa-sliders-h"></i> Filters</h3>
+                        <div class="filter-header-actions">
+                            <button class="filter-clear" id="clearFilters">Clear All</button>
+                            <button class="filter-close" id="closeFilters"><i class="fas fa-times"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4>Cuisine</h4>
+                        <div id="cuisineFilterContainer">
+                            <!-- Dynamic Cuisines -->
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4>Price Range</h4>
+                        <label class="filter-check">
+                            <input type="checkbox" name="price" value="$">
+                            <span class="checkmark"></span>
+                            $
+                        </label>
+                        <label class="filter-check">
+                            <input type="checkbox" name="price" value="$$">
+                            <span class="checkmark"></span>
+                            $$
+                        </label>
+                        <label class="filter-check">
+                            <input type="checkbox" name="price" value="$$$">
+                            <span class="checkmark"></span>
+                            $$$
+                        </label>
+                        <label class="filter-check">
+                            <input type="checkbox" name="price" value="$$$$">
+                            <span class="checkmark"></span>
+                            $$$$
+                        </label>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4>Rating</h4>
+                        <label class="filter-check">
+                            <input type="checkbox" name="rating" value="5">
+                            <span class="checkmark"></span>
+                            5+ <i class="fas fa-star" style="color:var(--gold);font-size:0.7rem;"></i>
+                        </label>
+                        <label class="filter-check">
+                            <input type="checkbox" name="rating" value="4">
+                            <span class="checkmark"></span>
+                            4+ <i class="fas fa-star" style="color:var(--gold);font-size:0.7rem;"></i>
+                        </label>
+                        <label class="filter-check">
+                            <input type="checkbox" name="rating" value="3">
+                            <span class="checkmark"></span>
+                            3+ <i class="fas fa-star" style="color:var(--gold);font-size:0.7rem;"></i>
+                        </label>
+                    </div>
+                </aside>
+
+                <!-- RESULTS -->
+                <div class="listings-main">
+                    <div class="listings-header">
+                        <div>
+                            <span id="resultCount">0</span> <span id="resultsText">restaurants found</span>
+                        </div>
+                        <button class="filter-toggle-btn" id="filterToggle"><i class="fas fa-filter"></i> Filters</button>
+                    </div>
+                    <div class="restaurants-grid" id="listingsGrid">
+                        <!-- Dynamic restaurant cards -->
+                    </div>
+                    <div class="listings-empty" id="listingsEmpty" style="display:none;">
+                        <i class="fas fa-search"></i>
+                        <h3>No restaurants found</h3>
+                        <p>Try adjusting your filters or search term.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <!-- Rendered by js/app.js -->
+    </footer>
+
+    <button id="moveToTop" class="move-to-top" aria-label="Move to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const searchInput = document.getElementById('searchInput');
+            const suggestions = document.getElementById('searchSuggestions');
+            const grid = document.getElementById('listingsGrid');
+            const emptyState = document.getElementById('listingsEmpty');
+            const resultCount = document.getElementById('resultCount');
+            const clearBtn = document.getElementById('clearFilters');
+            const filterToggle = document.getElementById('filterToggle');
+            const sidebar = document.getElementById('filtersSidebar');
+            const closeFilters = document.getElementById('closeFilters');
+
+            let allRestaurants = [];
+            let cards = [];
+
+            // 1. Fetch CMS Content
+            const cms = await fetchCMSContent('listings');
+            if (cms) {
+                if (cms.nav) renderHeader(cms.nav);
+                if (cms.footer) renderFooter(cms.footer);
+                if (cms.hero && cms.hero.title) document.getElementById('pageTitle').textContent = cms.hero.title;
+                if (cms.search_placeholder) searchInput.placeholder = cms.search_placeholder;
+                if (cms.results_text) document.getElementById('resultsText').textContent = cms.results_text;
+            } else {
+                renderHeader();
+                renderFooter();
+            }
+
+            // 2. Fetch Restaurants
+            try {
+                const res = await fetch('/api/restaurants?status=approved');
+                if (res.ok) {
+                    allRestaurants = await res.json();
+                }
+            } catch (e) {
+                console.warn('Could not load restaurants', e);
+            }
+
+            // 3. Extract unique cuisines
+            const cuisines = [];
+            allRestaurants.forEach(r => {
+                if (r.cuisine && !cuisines.includes(r.cuisine)) {
+                    cuisines.push(r.cuisine);
+                }
+            });
+            cuisines.sort();
+
+            const cuisineContainer = document.getElementById('cuisineFilterContainer');
+            cuisineContainer.innerHTML = cuisines.map(c => `
+                <label class="filter-check">
+                    <input type="checkbox" name="cuisine" value="${escapeHtml(c)}">
+                    <span class="checkmark"></span>
+                    ${escapeHtml(c)}
+                </label>
+            `).join('');
+
+            // 4. Render Restaurant Cards
+            grid.innerHTML = allRestaurants.map(r => {
+                const reviews = Array.isArray(r.reviews) ? r.reviews : [];
+                let avg = 0;
+                if (reviews.length > 0) {
+                    const total = reviews.reduce((sum, rev) => sum + (Number(rev.rating) || 0), 0);
+                    avg = (total / reviews.length).toFixed(1);
+                }
+                const firstLoc = (r.locations || '').split('|')[0].trim();
+
+                return `
+                    <a href="/restaurant.html?id=${r.id}" class="rest-card glass"
+                       data-cuisine="${escapeHtml(r.cuisine || '')}"
+                       data-price="${escapeHtml(r.price_range || '')}"
+                       data-rating="${avg}"
+                       data-name="${escapeHtml((r.name || '').toLowerCase())}"
+                       data-location="${escapeHtml(firstLoc.toLowerCase())}"
+                       data-cuisine-lower="${escapeHtml((r.cuisine || '').toLowerCase())}">
+                        <div class="rest-card-img">
+                            <img src="${escapeHtml(r.banner_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400')}" alt="${escapeHtml(r.name)}">
+                            <div class="rest-card-badge">
+                                <i class="fas fa-star"></i> ${avg}
+                            </div>
+                        </div>
+                        <div class="rest-card-body">
+                            <h3>${escapeHtml(r.name)}</h3>
+                            <div class="rest-card-meta">
+                                <span class="rest-card-cuisine"><i class="fas fa-utensils"></i> ${escapeHtml(r.cuisine || 'Various')}</span>
+                                <span class="rest-card-price">${escapeHtml(r.price_range || '$$')}</span>
+                            </div>
+                            <p class="rest-card-loc"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(firstLoc)}</p>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+
+            cards = Array.from(grid.querySelectorAll('.rest-card'));
+            resultCount.textContent = cards.length;
+
+            // 5. Check URL parameters (e.g. ?q=french)
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryParam = urlParams.get('q');
+            if (queryParam) {
+                searchInput.value = queryParam;
+            }
+
+            function applyFilters() {
+                const q = searchInput.value.toLowerCase().trim();
+                const checkedCuisines = Array.from(document.querySelectorAll('input[name="cuisine"]:checked')).map(i => i.value);
+                const checkedPrices = Array.from(document.querySelectorAll('input[name="price"]:checked')).map(i => i.value);
+                const checkedRatings = Array.from(document.querySelectorAll('input[name="rating"]:checked')).map(i => parseInt(i.value));
+
+                let visible = 0;
+                cards.forEach(card => {
+                    const name = card.dataset.name;
+                    const cuisine = card.dataset.cuisineLower;
+                    const location = card.dataset.location;
+                    const price = card.dataset.price;
+                    const rating = parseFloat(card.dataset.rating) || 0;
+
+                    let show = true;
+                    if (q && !name.includes(q) && !cuisine.includes(q) && !location.includes(q)) show = false;
+                    if (checkedCuisines.length && !checkedCuisines.includes(card.dataset.cuisine)) show = false;
+                    if (checkedPrices.length && !checkedPrices.includes(price)) show = false;
+                    if (checkedRatings.length && !checkedRatings.some(r => rating >= r)) show = false;
+
+                    card.style.display = show ? '' : 'none';
+                    if (show) visible++;
+                });
+
+                resultCount.textContent = visible;
+                emptyState.style.display = visible === 0 ? '' : 'none';
+            }
+
+            function showSuggestions() {
+                const q = searchInput.value.toLowerCase().trim();
+                if (!q) { suggestions.style.display = 'none'; return; }
+
+                const matches = cards.filter(c => {
+                    return c.dataset.name.includes(q) || c.dataset.cuisineLower.includes(q) || c.dataset.location.includes(q);
+                }).slice(0, 6);
+
+                if (!matches.length) { suggestions.style.display = 'none'; return; }
+
+                suggestions.innerHTML = matches.map(c => {
+                    const name = c.querySelector('h3').textContent;
+                    const cuisine = c.dataset.cuisine;
+                    return '<div class="suggestion-item" data-name="' + escapeHtml(name.toLowerCase()) + '">' +
+                        '<i class="fas fa-utensils"></i> <strong>' + escapeHtml(name) + '</strong> <span>' + escapeHtml(cuisine) + '</span></div>';
+                }).join('');
+                suggestions.style.display = 'block';
+            }
+
+            searchInput.addEventListener('input', () => { applyFilters(); showSuggestions(); });
+            suggestions.addEventListener('click', e => {
+                const item = e.target.closest('.suggestion-item');
+                if (item) {
+                    searchInput.value = item.dataset.name;
+                    suggestions.style.display = 'none';
+                    applyFilters();
+                }
+            });
+            document.addEventListener('click', e => {
+                if (!e.target.closest('.search-input-wrap')) suggestions.style.display = 'none';
+            });
+
+            document.querySelectorAll('.listings-filters').forEach(f => {
+                f.addEventListener('change', applyFilters);
+            });
+
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                document.querySelectorAll('.listings-filters input[type="checkbox"]').forEach(i => i.checked = false);
+                applyFilters();
+            });
+
+            if (filterToggle && sidebar) {
+                filterToggle.addEventListener('click', () => sidebar.classList.add('open'));
+            }
+            if (closeFilters && sidebar) {
+                closeFilters.addEventListener('click', () => sidebar.classList.remove('open'));
+            }
+
+            // Run initial filter in case ?q= was set
+            if (queryParam) applyFilters();
+        });
+    </script>
+</body>
+</html>

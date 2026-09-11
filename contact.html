@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Contact Us - DineVault</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <!-- Rendered by js/app.js -->
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1 id="contactHeroTitle">Get In Touch</h1>
+            <p id="contactHeroSubtitle">Have a question, suggestion, or partnership inquiry? We would love to hear from you.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div id="contactSuccessMsg" class="success-message" style="display:none;max-width:720px;margin:0 auto 32px;">
+                <i class="fas fa-check-circle"></i> Thank you! Your message has been received.
+            </div>
+            <div class="contact-grid">
+                <div class="contact-form glass">
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label id="nameLabel">Your Full Name</label>
+                                <input type="text" id="contact_name" required placeholder="Your Full Name">
+                            </div>
+                            <div class="form-group">
+                                <label id="emailLabel">Your Email Address</label>
+                                <input type="email" id="contact_email" required placeholder="Your Email Address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="subjectLabel">Subject</label>
+                            <input type="text" id="contact_subject" required placeholder="Subject">
+                        </div>
+                        <div class="form-group">
+                            <label id="messageLabel">Your Message</label>
+                            <textarea id="contact_message" required placeholder="Your Message"></textarea>
+                        </div>
+                        <button type="submit" id="contactSubmitBtn" class="btn-primary">
+                            Send Message <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="contact-info-card glass">
+                    <h3 style="color:#fff;font-size:1.2rem;font-weight:700;margin-bottom:24px;" id="infoTitle">Contact Information</h3>
+                    <div id="infoItemsContainer">
+                        <div class="contact-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Address</h4>
+                                <p>123 Gourmet Avenue, Culinary District, NY 10001</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+1 (555) 987-6543</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>hello@dinevault.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>Hours</h4>
+                                <p>Mon – Fri: 9:00 AM – 6:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <!-- Rendered by js/app.js -->
+    </footer>
+
+    <button id="moveToTop" class="move-to-top" aria-label="Move to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const cms = await fetchCMSContent('contact');
+            if (cms) {
+                if (cms.nav) renderHeader(cms.nav);
+                if (cms.footer) renderFooter(cms.footer);
+                if (cms.hero) {
+                    if (cms.hero.title) document.getElementById('contactHeroTitle').textContent = cms.hero.title;
+                    if (cms.hero.subtitle) document.getElementById('contactHeroSubtitle').textContent = cms.hero.subtitle;
+                }
+                if (cms.form) {
+                    if (cms.form.name_placeholder) document.getElementById('nameLabel').textContent = cms.form.name_placeholder;
+                    if (cms.form.email_placeholder) document.getElementById('emailLabel').textContent = cms.form.email_placeholder;
+                    if (cms.form.subject_placeholder) document.getElementById('subjectLabel').textContent = cms.form.subject_placeholder;
+                    if (cms.form.message_placeholder) document.getElementById('messageLabel').textContent = cms.form.message_placeholder;
+                    if (cms.form.submit_btn) document.getElementById('contactSubmitBtn').innerHTML = `${escapeHtml(cms.form.submit_btn.label)} <i class="fas fa-paper-plane"></i>`;
+                }
+                if (cms.info && Array.isArray(cms.info.items)) {
+                    document.getElementById('infoTitle').textContent = cms.info.title || 'Contact Information';
+                    document.getElementById('infoItemsContainer').innerHTML = cms.info.items.map(item => `
+                        <div class="contact-info-item">
+                            <i class="${escapeHtml(item.icon)}"></i>
+                            <div>
+                                <h4>${escapeHtml(item.label)}</h4>
+                                <p>${escapeHtml(item.value)}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } else {
+                renderHeader();
+                renderFooter();
+            }
+
+            const form = document.getElementById('contactForm');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('contactSubmitBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+                const name = document.getElementById('contact_name').value.trim();
+                const email = document.getElementById('contact_email').value.trim();
+                const subject = document.getElementById('contact_subject').value.trim();
+                const message = document.getElementById('contact_message').value.trim();
+
+                try {
+                    const res = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, subject, message })
+                    });
+                    const resData = await res.json();
+                    if (resData.success) {
+                        document.getElementById('contactSuccessMsg').style.display = 'block';
+                        form.reset();
+                    } else {
+                        alert(resData.error || 'Failed to submit message.');
+                    }
+                } catch (err) {
+                    alert('Network error submitting contact inquiry.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Send Message <i class="fas fa-paper-plane"></i>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

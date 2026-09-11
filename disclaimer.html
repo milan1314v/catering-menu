@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Disclaimer - DineVault</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <!-- Rendered by js/app.js -->
+    </nav>
+
+    <section class="page-hero" style="min-height:280px;">
+        <div class="container"><h1 id="legalTitle">Disclaimer</h1></div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="legal-content" id="legalContent">
+                <!-- Dynamically loaded -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <!-- Rendered by js/app.js -->
+    </footer>
+
+    <button id="moveToTop" class="move-to-top" aria-label="Move to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const cms = await fetchCMSContent('disclaimer');
+            if (cms) {
+                if (cms.nav) renderHeader(cms.nav);
+                if (cms.footer) renderFooter(cms.footer);
+                if (cms.hero && cms.hero.title) document.getElementById('legalTitle').textContent = cms.hero.title;
+                if (cms.content) {
+                    const paragraphs = cms.content.split('\n').filter(p => p.trim() !== '');
+                    document.getElementById('legalContent').innerHTML = paragraphs.map(p => `<p>${escapeHtml(p.trim())}</p>`).join('');
+                }
+            } else {
+                renderHeader();
+                renderFooter();
+            }
+        });
+    </script>
+</body>
+</html>

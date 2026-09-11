@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Get Listed - DineVault</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <!-- Rendered by js/app.js -->
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+        <div class="container">
+            <h1 id="heroTitle">List Your Restaurant</h1>
+            <p id="heroSubtitle">Join thousands of restaurants already on DineVault. Showcase your menu, gather reviews, and attract new customers.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div id="submitSuccessMsg" class="success-message" style="display:none;max-width:720px;margin:0 auto 32px;">
+                <i class="fas fa-check-circle"></i> Thank you! Your restaurant has been submitted for review. Our team will approve it shortly.
+            </div>
+
+            <div class="get-listed-form glass">
+                <h2 id="formTitle">Submit Your Restaurant</h2>
+                <form id="getListedForm">
+                    <div class="form-group">
+                        <label id="nameLabel">Restaurant Name</label>
+                        <input type="text" id="rest_name" required placeholder="Enter restaurant name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cuisine</label>
+                            <input type="text" id="rest_cuisine" placeholder="e.g. Italian, French, Japanese">
+                        </div>
+                        <div class="form-group">
+                            <label>Price Range</label>
+                            <select id="rest_price">
+                                <option value="$">$ (Inexpensive)</option>
+                                <option value="$$" selected>$$ (Moderate)</option>
+                                <option value="$$$">$$$ (Upscale)</option>
+                                <option value="$$$$">$$$$ (Fine Dining)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="bannerLabel">Banner Image URL</label>
+                        <input type="url" id="rest_banner" placeholder="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400">
+                    </div>
+                    <div class="form-group">
+                        <label id="aboutLabel">About Your Restaurant</label>
+                        <textarea id="rest_about" required placeholder="Tell diners about your culinary story, specialties, and ambiance..."></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 24px;">
+                        <label style="display:flex; justify-content:space-between; align-items:center;">
+                            Direct Menu Text
+                            <div>
+                                <button type="button" onclick="toggleMenuMode('get_listed_menu_text')" style="font-size:0.8rem; padding:4px 12px; background:var(--gold); border:none; color:var(--dark); border-radius:4px; cursor:pointer; font-weight:600; margin-right:8px; transition:0.2s;">
+                                    <i class="fas fa-exchange-alt"></i> Switch Mode
+                                </button>
+                                <button type="button" class="insert-template-btn" onclick="insertMenuTemplate('get_listed_menu_text')" style="font-size:0.8rem; padding:4px 12px; background:transparent; border:1px solid var(--gold); color:var(--gold); border-radius:4px; cursor:pointer; transition:0.2s; display:none;">
+                                    <i class="fas fa-file-alt"></i> Insert Template
+                                </button>
+                            </div>
+                        </label>
+                        <textarea id="get_listed_menu_text" style="min-height:200px;" placeholder="Paste your menu text here..."></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 24px;">
+                        <label style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+                            <span>Opening Hours <small style="color:var(--text-dim); font-weight:normal; margin-left:8px;">(Leave blank for Closed)</small></span>
+                            <button type="button" onclick="applyMondayToAll()" style="font-size:0.8rem; padding:6px 16px; background:var(--gold); border:none; color:var(--dark); border-radius:4px; cursor:pointer; font-weight:600; transition:0.2s;">
+                                <i class="fas fa-copy"></i> Apply Monday to All
+                            </button>
+                        </label>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
+                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Monday</label>
+                                <input type="time" id="oh_monday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
+                                <input type="time" id="oh_monday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                            </div>
+                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
+                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Tuesday</label>
+                                <input type="time" id="oh_tuesday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
+                                <input type="time" id="oh_tuesday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                            </div>
+                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
+                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Wednesday</label>
+                                <input type="time" id="oh_wednesday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
+                                <input type="time" id="oh_wednesday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                            </div>
+                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
+                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Thursday</label>
+                                <input type="time" id="oh_thursday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
+                                <input type="time" id="oh_thursday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                            </div>
+                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
+                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Friday</label>
+                                <input type="time" id="oh_friday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
+                                <input type="time" id="oh_friday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                            </div>
+                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
+                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Saturday</label>
+                                <input type="time" id="oh_saturday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
+                                <input type="time" id="oh_saturday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                            </div>
+                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
+                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Sunday</label>
+                                <input type="time" id="oh_sunday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
+                                <input type="time" id="oh_sunday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="locationsLabel">Location(s)</label>
+                        <input type="text" id="rest_locations" placeholder="742 Evergreen Ave, Downtown | 158 Oak Street, Midtown">
+                    </div>
+                    <button type="submit" id="submitListingBtn" class="btn-primary" style="width:100%;justify-content:center;">
+                        Submit for Review <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <!-- Rendered by js/app.js -->
+    </footer>
+
+    <button id="moveToTop" class="move-to-top" aria-label="Move to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/app.js"></script>
+    <script>
+        function applyMondayToAll() {
+            const openVal = document.getElementById('oh_monday_open').value;
+            const closeVal = document.getElementById('oh_monday_close').value;
+            const days = ['tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            days.forEach(d => {
+                document.getElementById('oh_' + d + '_open').value = openVal;
+                document.getElementById('oh_' + d + '_close').value = closeVal;
+            });
+        }
+
+        function insertMenuTemplate(elementId) {
+            const template = `================================\n      YOUR RESTAURANT NAME\n================================\n\n--- STARTERS ---\n\nGarlic Bread ............... $5\nCheese Sticks ............. $7\nStuffed Mushrooms ....... $9\n\n--- MAIN COURSE ---\n\nGrilled Salmon ............ $22\nSteak Frites ............... $25\nVegetable Pasta .......... $16\n\n--- DESSERTS ---\n\nCheesecake ................ $8\nChocolate Lava Cake .... $10`;
+            const textarea = document.getElementById(elementId);
+            if (textarea.value.trim() === '' || confirm('This will overwrite your current menu text. Are you sure?')) {
+                textarea.value = template;
+            }
+        }
+
+        function toggleMenuMode(tid) {
+            const textarea = document.getElementById(tid);
+            let container = textarea.parentNode.querySelector('.menu-builder-container');
+            const btn = textarea.parentNode.querySelector('.insert-template-btn');
+
+            if (textarea.style.display === 'none') {
+                textarea.style.display = 'block';
+                if (container) container.style.display = 'none';
+                if (btn) btn.style.display = 'inline-block';
+            } else {
+                textarea.style.display = 'none';
+                if (btn) btn.style.display = 'none';
+                if (container) container.remove();
+                initMenuBuilder(tid);
+            }
+        }
+
+        function initMenuBuilder(textareaId) {
+            const textarea = document.getElementById(textareaId);
+            if (!textarea) return;
+            textarea.style.display = 'none';
+            const btn = textarea.parentNode.querySelector('.insert-template-btn');
+            if (btn) btn.style.display = 'none';
+
+            let container = textarea.parentNode.querySelector('.menu-builder-container');
+            if (container) container.remove();
+
+            container = document.createElement('div');
+            container.className = 'menu-builder-container';
+            textarea.parentNode.insertBefore(container, textarea);
+
+            let data = [];
+            const text = textarea.value.trim();
+            if (text) {
+                const lines = text.split('\n');
+                let currentCategory = null;
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (!line || line.startsWith('===')) return;
+                    if (line.startsWith('---') && line.endsWith('---')) {
+                        currentCategory = { title: line.replace(/---/g, '').trim(), items: [] };
+                        data.push(currentCategory);
+                    } else if (currentCategory && line.includes('.')) {
+                        const parts = line.split(/\.{2,}/);
+                        if (parts.length >= 2) {
+                            currentCategory.items.push({ name: parts[0].trim(), price: parts[parts.length - 1].trim() });
+                        }
+                    }
+                });
+            }
+
+            if (data.length === 0) {
+                data.push({ title: 'Starters', items: [{ name: '', price: '' }] });
+            }
+
+            if (!window.menuBuilderData) window.menuBuilderData = {};
+            window.menuBuilderData[textareaId] = data;
+
+            window.updateCategory = function(tid, cIndex, val) { window.menuBuilderData[tid][cIndex].title = val; syncToTextarea(tid); };
+            window.updateItem = function(tid, cIndex, iIndex, field, val) { window.menuBuilderData[tid][cIndex].items[iIndex][field] = val; syncToTextarea(tid); };
+            window.addItem = function(tid, cIndex) { window.menuBuilderData[tid][cIndex].items.push({ name: '', price: '' }); render(tid); };
+            window.removeItem = function(tid, cIndex, iIndex) { window.menuBuilderData[tid][cIndex].items.splice(iIndex, 1); render(tid); };
+            window.addCategory = function(tid) { window.menuBuilderData[tid].push({ title: 'New Category', items: [{ name: '', price: '' }] }); render(tid); };
+            window.removeCategory = function(tid, cIndex) { window.menuBuilderData[tid].splice(cIndex, 1); render(tid); };
+
+            function render(tid) {
+                const d = window.menuBuilderData[tid];
+                container.innerHTML = '';
+                d.forEach((cat, cIndex) => {
+                    const card = document.createElement('div');
+                    card.className = 'menu-category-card';
+                    let itemsHtml = '';
+                    cat.items.forEach((item, iIndex) => {
+                        itemsHtml += `
+                            <div class="menu-item-row">
+                                <input type="text" class="menu-item-name" placeholder="Item Name (e.g. Garlic Bread)" value="${item.name.replace(/"/g, '&quot;')}" oninput="updateItem('${tid}', ${cIndex}, ${iIndex}, 'name', this.value)">
+                                <input type="text" class="menu-item-price" placeholder="Price (e.g. $5)" value="${item.price.replace(/"/g, '&quot;')}" oninput="updateItem('${tid}', ${cIndex}, ${iIndex}, 'price', this.value)">
+                                <button type="button" class="btn-remove" onclick="removeItem('${tid}', ${cIndex}, ${iIndex})"><i class="fas fa-times"></i></button>
+                            </div>
+                        `;
+                    });
+
+                    card.innerHTML = `
+                        <div class="menu-category-header">
+                            <input type="text" placeholder="Category Title" value="${cat.title.replace(/"/g, '&quot;')}" oninput="updateCategory('${tid}', ${cIndex}, this.value)">
+                            <button type="button" class="btn-remove" onclick="removeCategory('${tid}', ${cIndex})" style="background:transparent; border:none; color:var(--text-muted);"><i class="fas fa-trash"></i></button>
+                        </div>
+                        <div class="menu-items-list">${itemsHtml}</div>
+                        <button type="button" class="btn-add-item" onclick="addItem('${tid}', ${cIndex})"><i class="fas fa-plus"></i> Add Item</button>
+                    `;
+                    container.appendChild(card);
+                });
+
+                const addCatBtn = document.createElement('button');
+                addCatBtn.type = 'button';
+                addCatBtn.className = 'btn-add-category';
+                addCatBtn.innerHTML = '<i class="fas fa-plus"></i> Add Category';
+                addCatBtn.onclick = () => window.addCategory(tid);
+                container.appendChild(addCatBtn);
+
+                syncToTextarea(tid);
+            }
+
+            function syncToTextarea(tid) {
+                const d = window.menuBuilderData[tid];
+                let out = `================================\n      YOUR MENU\n================================\n\n`;
+                d.forEach(cat => {
+                    if (cat.title.trim() === '' && cat.items.length === 0) return;
+                    out += `--- ${cat.title.toUpperCase()} ---\n\n`;
+                    cat.items.forEach(item => {
+                        if (item.name.trim() !== '' || item.price.trim() !== '') {
+                            const name = item.name.trim();
+                            const price = item.price.trim();
+                            const dots = '.'.repeat(Math.max(3, 40 - name.length - price.length));
+                            out += `${name} ${dots} ${price}\n`;
+                        }
+                    });
+                    out += '\n';
+                });
+                document.getElementById(tid).value = out;
+            }
+
+            render(textareaId);
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            initMenuBuilder('get_listed_menu_text');
+
+            const cms = await fetchCMSContent('get-listed');
+            if (cms) {
+                if (cms.nav) renderHeader(cms.nav);
+                if (cms.footer) renderFooter(cms.footer);
+                if (cms.hero) {
+                    if (cms.hero.title) document.getElementById('heroTitle').textContent = cms.hero.title;
+                    if (cms.hero.subtitle) document.getElementById('heroSubtitle').textContent = cms.hero.subtitle;
+                }
+                if (cms.form) {
+                    if (cms.form.title) document.getElementById('formTitle').textContent = cms.form.title;
+                    if (cms.form.name_label) document.getElementById('nameLabel').textContent = cms.form.name_label;
+                    if (cms.form.banner_label) document.getElementById('bannerLabel').textContent = cms.form.banner_label;
+                    if (cms.form.about_label) document.getElementById('aboutLabel').textContent = cms.form.about_label;
+                    if (cms.form.locations_label) document.getElementById('locationsLabel').textContent = cms.form.locations_label;
+                    if (cms.form.submit_btn) document.getElementById('submitListingBtn').innerHTML = `${escapeHtml(cms.form.submit_btn.label)} <i class="fas fa-arrow-right"></i>`;
+                }
+            } else {
+                renderHeader();
+                renderFooter();
+            }
+
+            const form = document.getElementById('getListedForm');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const btn = document.getElementById('submitListingBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+                const name = document.getElementById('rest_name').value.trim();
+                const cuisine = document.getElementById('rest_cuisine').value.trim();
+                const price_range = document.getElementById('rest_price').value;
+                const banner_url = document.getElementById('rest_banner').value.trim();
+                const about_text = document.getElementById('rest_about').value.trim();
+                const direct_menu_text = document.getElementById('get_listed_menu_text').value.trim();
+                const locations = document.getElementById('rest_locations').value.trim();
+
+                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                const opening_hours = {};
+                days.forEach(d => {
+                    const open = document.getElementById(`oh_${d}_open`).value;
+                    const close = document.getElementById(`oh_${d}_close`).value;
+                    if (open && close) {
+                        opening_hours[d] = `${open} - ${close}`;
+                    } else {
+                        opening_hours[d] = 'Closed';
+                    }
+                });
+
+                try {
+                    const res = await fetch('/api/get-listed', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name,
+                            cuisine,
+                            price_range,
+                            banner_url,
+                            about_text,
+                            direct_menu_text,
+                            opening_days: 'See hours schedule',
+                            locations,
+                            lat: 40.7128,
+                            lng: -74.0060
+                        })
+                    });
+                    const resData = await res.json();
+                    if (resData.success) {
+                        document.getElementById('submitSuccessMsg').style.display = 'block';
+                        form.reset();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        alert(resData.error || 'Submission failed');
+                    }
+                } catch (err) {
+                    alert('Network error submitting restaurant.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Submit for Review <i class="fas fa-arrow-right"></i>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

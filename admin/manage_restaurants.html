@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Manage Restaurants - DineVault Admin</title>
+    <link rel="stylesheet" href="admin_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="admin-layout">
+        <aside class="sidebar glass-sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-utensils"></i>
+                <span>DineVault</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="manage_content.html"><i class="fas fa-edit"></i> Manage Content</a>
+                <a href="manage_restaurants.html" class="active"><i class="fas fa-store"></i> Manage Restaurants</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a>
+                <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="topbar glass-topbar">
+                <h2>Manage Restaurants</h2>
+                <div style="display:flex;gap:12px;">
+                    <input type="text" id="filterInput" placeholder="Filter by name or cuisine..."
+                        style="background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.15);padding:8px 16px;border-radius:6px;">
+                </div>
+            </div>
+
+            <div id="restAlert" class="alert alert-success" style="display:none;margin-bottom:20px;">
+                <i class="fas fa-check-circle"></i> <span id="restAlertText">Updated successfully</span>
+            </div>
+
+            <!-- Restaurants Table Card -->
+            <div class="card glass-card" id="listCard">
+                <div class="card-header">
+                    <h3><i class="fas fa-list"></i> All Listings</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Cuisine</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Reviews</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="restaurantsTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align:center;color:var(--text-dim);">Loading...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Edit Restaurant Card (Shown when Edit is clicked) -->
+            <div class="card glass-card" id="editCard" style="display:none;margin-top:24px;">
+                <div class="card-header">
+                    <h3 id="editHeading"><i class="fas fa-edit"></i> Edit Restaurant</h3>
+                    <button class="btn-sm" onclick="closeEditCard()"
+                        style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;cursor:pointer;">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
+                <form id="editRestaurantForm" style="padding:20px 0;">
+                    <input type="hidden" id="editId">
+                    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                        <div class="form-group">
+                            <label>Restaurant Name</label>
+                            <input type="text" id="editName" required class="input-text">
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="editStatus" class="input-text" style="background:#0a0a1a;color:#fff;">
+                                <option value="approved">Approved</option>
+                                <option value="pending">Pending</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+                        <div class="form-group">
+                            <label>Cuisine</label>
+                            <input type="text" id="editCuisine" class="input-text">
+                        </div>
+                        <div class="form-group">
+                            <label>Price Range</label>
+                            <select id="editPrice" class="input-text" style="background:#0a0a1a;color:#fff;">
+                                <option value="$">$</option>
+                                <option value="$$">$$</option>
+                                <option value="$$$">$$$</option>
+                                <option value="$$$$">$$$$</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+                        <div class="form-group">
+                            <label>Latitude</label>
+                            <input type="number" step="any" id="editLat" class="input-text">
+                        </div>
+                        <div class="form-group">
+                            <label>Longitude</label>
+                            <input type="number" step="any" id="editLng" class="input-text">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>Banner Image URL</label>
+                        <input type="url" id="editBanner" class="input-text" style="width:100%;">
+                    </div>
+
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>About Text</label>
+                        <textarea id="editAbout" rows="4" class="input-textarea" style="width:100%;"></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>Direct Menu Text</label>
+                        <textarea id="editMenu" rows="6" class="input-textarea"
+                            style="width:100%;font-family:monospace;"></textarea>
+                    </div>
+
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>Opening Days &amp; Hours</label>
+                        <input type="text" id="editOpeningDays" class="input-text" style="width:100%;">
+                    </div>
+
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>Location(s) (Separate multiple with |)</label>
+                        <input type="text" id="editLocations" class="input-text" style="width:100%;">
+                    </div>
+
+                    <div style="margin-top:24px;display:flex;gap:12px;">
+                        <button type="submit" id="saveRestBtn" class="btn-primary"
+                            style="padding:10px 24px;border:none;cursor:pointer;">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <button type="button" onclick="closeEditCard()" class="btn-sm"
+                            style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;cursor:pointer;">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Reviews Management Section -->
+                <div style="margin-top:40px;border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;">
+                    <h4><i class="fas fa-star" style="color:var(--gold);"></i> Reviews for this Restaurant</h4>
+                    <div id="editReviewsList" style="margin-top:16px;"></div>
+
+                    <div style="margin-top:24px;background:rgba(255,255,255,0.03);padding:16px;border-radius:8px;">
+                        <h5>Add a Review</h5>
+                        <div style="display:grid;grid-template-columns:1fr 120px;gap:12px;margin-top:12px;">
+                            <input type="text" id="newRevName" placeholder="Reviewer Name" class="input-text">
+                            <select id="newRevRating" class="input-text" style="background:#0a0a1a;color:#fff;">
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="2">2 Stars</option>
+                                <option value="1">1 Star</option>
+                            </select>
+                        </div>
+                        <textarea id="newRevText" placeholder="Review comments..." rows="2" class="input-textarea"
+                            style="width:100%;margin-top:8px;"></textarea>
+                        <button type="button" onclick="addReviewFromAdmin()" class="btn-sm btn-primary"
+                            style="margin-top:8px;border:none;cursor:pointer;">
+                            <i class="fas fa-plus"></i> Add Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        if (!requireAuth()) { }
+
+        let allRestaurants = [];
+        let currentEditRestaurant = null;
+
+        const tbody = document.getElementById('restaurantsTableBody');
+        const alertBox = document.getElementById('restAlert');
+        const alertText = document.getElementById('restAlertText');
+        const filterInput = document.getElementById('filterInput');
+
+        async function loadRestaurants() {
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    headers: authHeaders()
+                });
+                if (res.status === 401) {
+                    adminLogout();
+                    return;
+                }
+                allRestaurants = await res.json();
+                renderTable(allRestaurants);
+
+                // Check if ?edit=id was passed
+                const urlParams = new URLSearchParams(window.location.search);
+                const editId = urlParams.get('edit');
+                if (editId) {
+                    openEdit(editId);
+                }
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="7" style="color:red;text-align:center;">Failed to load listings</td></tr>';
+            }
+        }
+
+        function renderTable(list) {
+            if (!list || list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);">No restaurants found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = list.map(r => `
+            <tr>
+                <td>#${r.id}</td>
+                <td><strong>${escapeHtml(r.name || 'Untitled')}</strong></td>
+                <td>${escapeHtml(r.cuisine || '-')}</td>
+                <td>${escapeHtml(r.price_range || '$$')}</td>
+                <td><span class="badge badge-${r.status}">${(r.status || 'pending').toUpperCase()}</span></td>
+                <td>${(r.reviews || []).length} reviews</td>
+                <td>
+                    <div style="display:flex;gap:6px;">
+                        ${r.status === 'pending' ? `
+                            <button class="btn-sm btn-success" onclick="setStatus(${r.id}, 'approved')" title="Approve"><i class="fas fa-check"></i></button>
+                            <button class="btn-sm btn-danger" onclick="setStatus(${r.id}, 'rejected')" title="Reject"><i class="fas fa-ban"></i></button>
+                        ` : ''}
+                        <button class="btn-sm btn-info" onclick="openEdit(${r.id})"><i class="fas fa-edit"></i></button>
+                        <button class="btn-sm btn-danger" onclick="deleteRestaurant(${r.id})"><i class="fas fa-trash"></i></button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+        }
+
+        filterInput.addEventListener('input', () => {
+            const q = filterInput.value.toLowerCase().trim();
+            const filtered = allRestaurants.filter(r =>
+                (r.name || '').toLowerCase().includes(q) ||
+                (r.cuisine || '').toLowerCase().includes(q)
+            );
+            renderTable(filtered);
+        });
+
+        async function setStatus(id, status) {
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: JSON.stringify({ action: 'set_status', id, status })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showAlert(`Status updated to ${status}`);
+                    loadRestaurants();
+                }
+            } catch (e) {
+                alert('Failed to update status');
+            }
+        }
+
+        async function deleteRestaurant(id) {
+            if (!confirm(`Are you sure you want to delete restaurant #${id}?`)) return;
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: JSON.stringify({ action: 'delete', id })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showAlert('Restaurant deleted');
+                    loadRestaurants();
+                    if (currentEditRestaurant && currentEditRestaurant.id == id) {
+                        closeEditCard();
+                    }
+                }
+            } catch (e) {
+                alert('Failed to delete restaurant');
+            }
+        }
+
+        function openEdit(id) {
+            const rest = allRestaurants.find(r => r.id == id);
+            if (!rest) return;
+            currentEditRestaurant = rest;
+
+            document.getElementById('editId').value = rest.id;
+            document.getElementById('editHeading').innerHTML = `<i class="fas fa-edit"></i> Edit: ${escapeHtml(rest.name)}`;
+            document.getElementById('editName').value = rest.name || '';
+            document.getElementById('editStatus').value = rest.status || 'approved';
+            document.getElementById('editCuisine').value = rest.cuisine || '';
+            document.getElementById('editPrice').value = rest.price_range || '$$';
+            document.getElementById('editLat').value = rest.lat || '';
+            document.getElementById('editLng').value = rest.lng || '';
+            document.getElementById('editBanner').value = rest.banner_url || '';
+            document.getElementById('editAbout').value = rest.about_text || '';
+            document.getElementById('editMenu').value = rest.direct_menu_text || '';
+            document.getElementById('editOpeningDays').value = rest.opening_days || '';
+            document.getElementById('editLocations').value = rest.locations || '';
+
+            renderEditReviews(rest.reviews || []);
+
+            const editCard = document.getElementById('editCard');
+            editCard.style.display = 'block';
+            editCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeEditCard() {
+            document.getElementById('editCard').style.display = 'none';
+            currentEditRestaurant = null;
+        }
+
+        function renderEditReviews(reviews) {
+            const container = document.getElementById('editReviewsList');
+            if (!reviews || reviews.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-dim);font-size:0.9rem;">No reviews yet.</p>';
+                return;
+            }
+            container.innerHTML = reviews.map((rev, idx) => `
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                    <strong>${escapeHtml(rev.name)}</strong> (${rev.rating}★) - <small style="color:var(--text-dim);">${escapeHtml(rev.date || '')}</small>
+                    <p style="margin:4px 0 0;font-size:0.9rem;color:var(--text-muted);">${escapeHtml(rev.text)}</p>
+                </div>
+                <button type="button" class="btn-sm btn-danger" onclick="deleteReviewFromAdmin(${idx})" title="Delete Review">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+        }
+
+        async function deleteReviewFromAdmin(index) {
+            if (!confirm('Delete this review?')) return;
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: JSON.stringify({
+                        action: 'delete_review',
+                        id: currentEditRestaurant.id,
+                        review_index: index
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    currentEditRestaurant.reviews.splice(index, 1);
+                    renderEditReviews(currentEditRestaurant.reviews);
+                    showAlert('Review deleted');
+                }
+            } catch (e) {
+                alert('Failed to delete review');
+            }
+        }
+
+        async function addReviewFromAdmin() {
+            const name = document.getElementById('newRevName').value.trim();
+            const rating = document.getElementById('newRevRating').value;
+            const text = document.getElementById('newRevText').value.trim();
+            if (!name || !text) {
+                alert('Please enter reviewer name and text');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: JSON.stringify({
+                        action: 'add_review',
+                        id: currentEditRestaurant.id,
+                        name,
+                        rating,
+                        text
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    if (!Array.isArray(currentEditRestaurant.reviews)) currentEditRestaurant.reviews = [];
+                    currentEditRestaurant.reviews.unshift({
+                        name, rating: Number(rating), text, date: new Date().toISOString().split('T')[0]
+                    });
+                    renderEditReviews(currentEditRestaurant.reviews);
+                    document.getElementById('newRevName').value = '';
+                    document.getElementById('newRevText').value = '';
+                    showAlert('Review added');
+                }
+            } catch (e) {
+                alert('Failed to add review');
+            }
+        }
+
+        document.getElementById('editRestaurantForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editId').value;
+            const status = document.getElementById('editStatus').value;
+
+            const updatedData = {
+                ...currentEditRestaurant,
+                name: document.getElementById('editName').value.trim(),
+                cuisine: document.getElementById('editCuisine').value.trim(),
+                price_range: document.getElementById('editPrice').value,
+                lat: parseFloat(document.getElementById('editLat').value) || 40.7128,
+                lng: parseFloat(document.getElementById('editLng').value) || -74.0060,
+                banner_url: document.getElementById('editBanner').value.trim(),
+                about_text: document.getElementById('editAbout').value.trim(),
+                direct_menu_text: document.getElementById('editMenu').value.trim(),
+                opening_days: document.getElementById('editOpeningDays').value.trim(),
+                locations: document.getElementById('editLocations').value.trim()
+            };
+
+            const saveBtn = document.getElementById('saveRestBtn');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: JSON.stringify({
+                        action: 'update_restaurant',
+                        id,
+                        status,
+                        restaurant_data: updatedData
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    showAlert('Restaurant updated successfully!');
+                    loadRestaurants();
+                } else {
+                    alert(data.error || 'Failed to update');
+                }
+            } catch (err) {
+                alert('Error updating restaurant');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            }
+        });
+
+        function showAlert(msg) {
+            alertText.textContent = msg;
+            alertBox.style.display = 'flex';
+            setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRestaurants();
+        });
+    </script>
+</body>
+
+</html>

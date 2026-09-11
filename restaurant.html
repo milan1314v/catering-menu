@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Restaurant Details - DineVault</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <!-- Rendered by js/app.js -->
+    </nav>
+
+    <!-- RESTAURANT HERO -->
+    <section class="rest-hero">
+        <img id="restBanner" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400"
+            alt="Restaurant Banner">
+        <div class="rest-hero-overlay">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="/index.html">Home</a>
+                    <span>/</span>
+                    <a href="/listings.html">Restaurants</a>
+                    <span>/</span>
+                    <strong id="breadcrumbName">Loading...</strong>
+                </div>
+                <h1 id="restName">Loading...</h1>
+                <div class="rest-badge" id="restBadge">
+                    <i class="fas fa-star"></i> 5.0 / 5 - 0 reviews
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAIL -->
+    <div class="container">
+        <div class="rest-detail-grid">
+            <div class="rest-main">
+                <!-- ABOUT -->
+                <section style="padding:60px 0 0;">
+                    <h2 style="font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:8px;" id="welcomeTitle">
+                        Welcome to Restaurant
+                    </h2>
+                    <p style="font-size:1.02rem;color:var(--text-muted);line-height:1.9;margin-top:16px;white-space:pre-line;"
+                        id="restAbout">
+                        Loading restaurant description...
+                    </p>
+                </section>
+
+                <!-- MENU -->
+                <section class="menu-section">
+                    <div class="menu-header">
+                        <div class="menu-header-icon"><i class="fas fa-utensils"></i></div>
+                        <h2>Our Menu</h2>
+                    </div>
+                    <div id="menuToggleBar" class="menu-toggle" style="display:none;">
+                        <button class="menu-toggle-btn active" id="menuTextBtn" onclick="showMenu('text')">
+                            View Text Menu
+                        </button>
+                        <button class="menu-toggle-btn" id="menuFileBtn" onclick="showMenu('file')">
+                            View Uploaded Menu
+                        </button>
+                    </div>
+                    <div id="menuTextView" class="menu-content">
+                        <div class="menu-parsed" id="menuParsedContainer">
+                            <p style="text-align:center;color:var(--text-dim);padding:40px;">Loading menu...</p>
+                        </div>
+                    </div>
+                    <div id="menuFileView" class="menu-file-view" style="display:none;">
+                        <i class="fas fa-file-pdf"></i>
+                        <p style="font-size:1.05rem;font-weight:600;color:#fff;margin-bottom:12px;">Menu Document
+                            Available</p>
+                        <a href="#" id="menuFileDownloadLink" target="_blank" class="btn-primary"
+                            style="margin-top:8px;">
+                            <i class="fas fa-download"></i> Download Menu
+                        </a>
+                    </div>
+                </section>
+
+                <!-- LOCATION -->
+                <section class="location-section">
+                    <div class="menu-header">
+                        <div class="menu-header-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <h2>Location</h2>
+                    </div>
+                    <div class="location-grid">
+                        <div class="location-map" id="locationMap"></div>
+                        <div class="location-info glass" id="locationInfoCard">
+                            <h3 id="locCardName">Restaurant</h3>
+                            <div id="locationsList"></div>
+                            <div class="location-item" id="locHoursItem">
+                                <div class="location-item-icon"><i class="fas fa-clock"></i></div>
+                                <div>
+                                    <p class="location-label">Hours</p>
+                                    <p class="location-hours" id="locHoursText">Mon-Sun</p>
+                                </div>
+                            </div>
+                            <div class="location-item">
+                                <div class="location-item-icon"><i class="fas fa-phone"></i></div>
+                                <div>
+                                    <p class="location-label">Contact</p>
+                                    <p class="location-hours">Inquire at restaurant</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- REVIEWS -->
+                <section style="padding:0 0 60px;">
+                    <h2 style="font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:24px;">Customer Reviews</h2>
+                    <div id="reviewSuccessMsg" class="success-message" style="display:none;">
+                        Your review has been submitted successfully!
+                    </div>
+                    <div class="reviews-list" id="reviewsList">
+                        <!-- Reviews list -->
+                    </div>
+
+                    <!-- REVIEW FORM -->
+                    <div style="margin-top:40px;">
+                        <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:20px;">Leave a Review</h3>
+                        <form id="reviewForm" class="get-listed-form glass" style="max-width:100%;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Your Name</label>
+                                    <input type="text" id="reviewName" required placeholder="Your Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Your Rating</label>
+                                    <select id="reviewRating" required>
+                                        <option value="5">5 Stars</option>
+                                        <option value="4">4 Stars</option>
+                                        <option value="3">3 Stars</option>
+                                        <option value="2">2 Stars</option>
+                                        <option value="1">1 Star</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Your Review</label>
+                                <textarea id="reviewText" required
+                                    placeholder="Write your honest review here..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary" id="submitReviewBtn">
+                                Submit Review <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+
+            <!-- SIDEBAR -->
+            <div class="rest-sidebar">
+                <div class="sidebar-card glass">
+                    <h3><i class="fas fa-info-circle"></i> Restaurant Info</h3>
+                    <div style="margin-top:12px;">
+                        <h4
+                            style="font-size:0.82rem;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+                            Opening Days &amp; Hours
+                        </h4>
+                        <div id="sidebarHoursList">
+                            <!-- Dynamic days -->
+                        </div>
+                    </div>
+                    <div style="margin-top:20px;">
+                        <h4
+                            style="font-size:0.82rem;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+                            Location(s)
+                        </h4>
+                        <p id="sidebarLocationsText"></p>
+                    </div>
+                </div>
+                <div class="sidebar-card glass">
+                    <h3><i class="fas fa-star" style="color:#f4c150;"></i> Overall Rating</h3>
+                    <div style="text-align:center;padding:16px 0;">
+                        <div style="font-size:3rem;font-weight:800;color:var(--gold);" id="sidebarRatingScore">0.0</div>
+                        <div style="color:#f4c150;font-size:1.1rem;margin:8px 0;" id="sidebarRatingStars">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                                class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <div style="color:var(--text-dim);font-size:0.88rem;" id="sidebarReviewCount">Based on 0 reviews
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <!-- Rendered by js/app.js -->
+    </footer>
+
+    <button id="moveToTop" class="move-to-top" aria-label="Move to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/app.js"></script>
+    <script>
+        let currentRestaurant = null;
+        let map = null;
+
+        function showMenu(type) {
+            document.getElementById('menuTextView').style.display = type === 'text' ? 'block' : 'none';
+            const fv = document.getElementById('menuFileView');
+            if (fv) fv.style.display = type === 'file' ? 'block' : 'none';
+            document.getElementById('menuTextBtn').classList.toggle('active', type === 'text');
+            const fb = document.getElementById('menuFileBtn');
+            if (fb) fb.classList.toggle('active', type === 'file');
+        }
+
+        function parseMenuText(rawText) {
+            if (!rawText) return '<p style="text-align:center;color:var(--text-dim);padding:40px;">Menu coming soon.</p>';
+            const lines = rawText.split('\n');
+            let html = '';
+            lines.forEach(l => {
+                const line = l.trim();
+                if (!line) {
+                    html += '<div class="menu-spacer"></div>';
+                } else if (/^(.*?)\s*\.{2,}\s*(\$?.*)$/.test(line)) {
+                    const match = line.match(/^(.*?)\s*\.{2,}\s*(\$?.*)$/);
+                    html += `
+                        <div class="menu-item-row">
+                            <span class="menu-item-name">${escapeHtml(match[1].trim())}</span>
+                            <span class="menu-item-dots"></span>
+                            <span class="menu-item-price">${escapeHtml(match[2].trim())}</span>
+                        </div>
+                    `;
+                } else if (/^──\s*(.*?)\s*─*$/.test(line)) {
+                    const heading = line.replace(/─/g, '').trim();
+                    if (heading) html += `<h3 class="menu-section-header">${escapeHtml(heading)}</h3>`;
+                } else if (line.includes('═')) {
+                    // skip border line
+                } else {
+                    html += `<h2 class="menu-main-title">${escapeHtml(line)}</h2>`;
+                }
+            });
+            return html;
+        }
+
+        function renderReviews(reviews) {
+            const list = document.getElementById('reviewsList');
+            if (!reviews || reviews.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-dim);padding:24px;text-align:center;">No reviews yet. Be the first to share your experience!</p>';
+                return;
+            }
+            list.innerHTML = reviews.map(rev => {
+                const stars = Number(rev.rating) || 5;
+                let starsHtml = '';
+                for (let i = 0; i < stars; i++) starsHtml += '<i class="fas fa-star"></i>';
+                for (let i = stars; i < 5; i++) starsHtml += '<i class="far fa-star"></i>';
+
+                const avatarLetter = (rev.name || 'A').charAt(0).toUpperCase();
+
+                return `
+                    <div class="review-card glass">
+                        <div class="review-header">
+                            <div class="review-author">
+                                <div class="review-avatar">${escapeHtml(avatarLetter)}</div>
+                                <div>
+                                    <div class="review-name">${escapeHtml(rev.name)}</div>
+                                    <div class="review-date">${escapeHtml(rev.date || '')}</div>
+                                </div>
+                            </div>
+                            <div class="review-stars">${starsHtml}</div>
+                        </div>
+                        <div class="review-text">${escapeHtml(rev.text)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id') || '1';
+
+            // 1. Fetch CMS global labels
+            const cms = await fetchCMSContent('restaurant');
+            if (cms) {
+                if (cms.nav) renderHeader(cms.nav);
+                if (cms.footer) renderFooter(cms.footer);
+            } else {
+                renderHeader();
+                renderFooter();
+            }
+
+            // 2. Fetch Restaurant Data
+            try {
+                const res = await fetch(`/api/restaurant/${encodeURIComponent(id)}`);
+                if (!res.ok) {
+                    window.location.href = '/listings.html';
+                    return;
+                }
+                currentRestaurant = await res.json();
+            } catch (e) {
+                console.error('Error fetching restaurant', e);
+                return;
+            }
+
+            const rest = currentRestaurant;
+            document.title = `${rest.name} - DineVault`;
+            document.getElementById('breadcrumbName').textContent = rest.name;
+            document.getElementById('restName').textContent = rest.name;
+            document.getElementById('welcomeTitle').textContent = `Welcome to ${rest.name}`;
+            document.getElementById('locCardName').textContent = rest.name;
+            document.getElementById('restAbout').textContent = rest.about_text || '';
+            if (rest.banner_url) document.getElementById('restBanner').src = rest.banner_url;
+
+            // Rating calculations
+            const reviews = Array.isArray(rest.reviews) ? rest.reviews : [];
+            let avg = 0;
+            if (reviews.length > 0) {
+                const total = reviews.reduce((sum, rev) => sum + (Number(rev.rating) || 0), 0);
+                avg = (total / reviews.length).toFixed(1);
+            }
+
+            document.getElementById('restBadge').innerHTML = `<i class="fas fa-star"></i> ${avg} / 5 - ${reviews.length} reviews`;
+            document.getElementById('sidebarRatingScore').textContent = avg;
+            document.getElementById('sidebarReviewCount').textContent = `Based on ${reviews.length} reviews`;
+
+            let starIcons = '';
+            for (let i = 0; i < Math.round(avg); i++) starIcons += '<i class="fas fa-star"></i>';
+            for (let i = Math.round(avg); i < 5; i++) starIcons += '<i class="far fa-star"></i>';
+            document.getElementById('sidebarRatingStars').innerHTML = starIcons;
+
+            // Menu Rendering
+            const parsedHtml = parseMenuText(rest.direct_menu_text);
+            document.getElementById('menuParsedContainer').innerHTML = parsedHtml;
+
+            if (rest.menu_file_path) {
+                document.getElementById('menuToggleBar').style.display = 'flex';
+                document.getElementById('menuFileDownloadLink').href = rest.menu_file_path;
+            }
+
+            // Locations List
+            const locArray = (rest.locations || '').split('|').map(s => s.trim()).filter(Boolean);
+            document.getElementById('sidebarLocationsText').textContent = rest.locations || 'Inquire at restaurant';
+            document.getElementById('locationsList').innerHTML = locArray.map(loc => `
+                <div class="location-item">
+                    <div class="location-item-icon"><i class="fas fa-map-pin"></i></div>
+                    <div>
+                        <p class="location-address">${escapeHtml(loc)}</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}" target="_blank" class="location-directions">
+                            <i class="fas fa-directions"></i> Get Directions
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+
+            // Hours
+            document.getElementById('locHoursText').textContent = rest.opening_days || 'Inquire at restaurant';
+            let oh = rest.opening_hours || {};
+            if (Object.keys(oh).length === 0 && rest.opening_days) {
+                const cleaned = rest.opening_days.replace(/^[a-zA-Z]{3}-[a-zA-Z]{3}:\s*/i, '');
+                ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].forEach(d => {
+                    oh[d] = cleaned;
+                });
+            }
+            if (Object.keys(oh).length > 0) {
+                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+                document.getElementById('sidebarHoursList').innerHTML = `
+                    <ul style="list-style:none; padding:0; margin:0; font-size: 0.95rem;">
+                        ${days.map(d => `
+                            <li style="display:flex; justify-content:space-between; margin-bottom: 8px; border-bottom: 1px dotted rgba(255,255,255,0.15); padding-bottom:6px;">
+                                <span style="text-transform:capitalize; color:var(--text-muted);">${d}</span>
+                                <span style="color:var(--text); font-weight:500; text-align:right;">${escapeHtml(oh[d] || 'Closed')}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+            }
+
+            // Reviews List
+            renderReviews(reviews);
+
+            // Leaflet Map Init
+            const lat = Number(rest.lat) || 40.7128;
+            const lng = Number(rest.lng) || -74.0060;
+
+            map = L.map('locationMap').setView([lat, lng], 14);
+
+            const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            });
+            const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri'
+            });
+
+            streetLayer.addTo(map);
+            L.control.layers({ "Street": streetLayer, "Satellite": satelliteLayer }).addTo(map);
+
+            const goldIcon = L.divIcon({
+                className: 'custom-marker',
+                html: '<div style="background:var(--gold);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(200,169,126,0.5);border:3px solid #fff;"><i class="fas fa-utensils" style="color:#1a1a2e;font-size:13px;"></i></div>',
+                iconSize: [32, 32],
+                iconAnchor: [16, 16]
+            });
+
+            const marker = L.marker([lat, lng], { icon: goldIcon }).addTo(map);
+            marker.bindPopup(`<strong>${escapeHtml(rest.name)}</strong><br>${escapeHtml(locArray[0] || '')}`).openPopup();
+            map.setView([lat, lng], 15);
+
+            // Review Form Submit Handler
+            const reviewForm = document.getElementById('reviewForm');
+            reviewForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('reviewName').value.trim();
+                const rating = document.getElementById('reviewRating').value;
+                const text = document.getElementById('reviewText').value.trim();
+
+                const btn = document.getElementById('submitReviewBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+                try {
+                    const postRes = await fetch('/api/review', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            restaurant_id: id,
+                            name,
+                            rating,
+                            text
+                        })
+                    });
+                    const resData = await postRes.json();
+                    if (resData.success) {
+                        document.getElementById('reviewSuccessMsg').style.display = 'block';
+                        reviewForm.reset();
+                        // Append locally
+                        if (!Array.isArray(rest.reviews)) rest.reviews = [];
+                        rest.reviews.unshift(resData.review);
+                        renderReviews(rest.reviews);
+                    } else {
+                        alert(resData.error || 'Failed to submit review');
+                    }
+                } catch (err) {
+                    alert('Network error submitting review.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Submit Review <i class="fas fa-paper-plane"></i>';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

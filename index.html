@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>DineVault - Discover Extraordinary Dining Experiences</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="/index.html" class="nav-logo">
+                <i class="fas fa-utensils"></i> DineVault
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="/index.html" class="active">Home</a>
+                <a href="/listings.html">Restaurants</a>
+                <a href="/about.html">About Us</a>
+                <a href="/faqs.html">FAQs</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/get-listed.html" class="nav-cta">Get Listed</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="heroSection">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge" id="heroBadge">
+                    <i class="fas fa-star"></i> Premium Dining Directory
+                </div>
+                <h1 id="heroTitle">Discover Extraordinary Dining Experiences</h1>
+                <p id="heroSubtitle">Explore handpicked restaurants, read authentic reviews, and find your next favorite
+                    meal - all in one place.</p>
+                <div class="hero-search">
+                    <input type="text" placeholder="Search restaurants by name or cuisine..." id="searchInput">
+                    <button id="searchBtn" class="btn-primary" style="border:none;cursor:pointer;">Explore Now</button>
+                </div>
+                <div class="hero-stats" id="heroStats">
+                    <div>
+                        <div class="hero-stat-number">2,500+</div>
+                        <div class="hero-stat-label">Restaurants</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-number">15,000+</div>
+                        <div class="hero-stat-label">Reviews</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-number">50,000+</div>
+                        <div class="hero-stat-label">Happy Diners</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED RESTAURANTS -->
+    <section class="section" id="restaurants">
+        <div class="container">
+            <div class="section-header">
+                <div class="overline" id="featuredOverline">Our Selection</div>
+                <h2 id="featuredTitle">Featured Restaurants</h2>
+                <p id="featuredSubtitle">Handpicked dining destinations that our community loves the most.</p>
+            </div>
+            <div class="restaurants-grid" id="restaurantsGrid">
+                <!-- Dynamically loaded -->
+            </div>
+            <div style="text-align:center;margin-top:48px;">
+                <a href="/listings.html" class="btn-glass" id="featuredViewAll">
+                    View All Restaurants <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SPLIT SECTION 1 - Content Left, Image Right -->
+    <section class="split-section" id="split1Section">
+        <div class="container split-inner">
+            <div class="split-content split-content-visual">
+                <div class="overline" id="split1Overline">Why Choose Us</div>
+                <h2 id="split1Title">Curated by Experts, Loved by Diners</h2>
+                <p id="split1Text">Every restaurant on DineVault is handpicked by our culinary experts. We visit, taste,
+                    and verify each establishment before it appears on our platform. Our rigorous selection process
+                    ensures that when you choose a restaurant from DineVault, you are choosing excellence.</p>
+                <div class="split-bullets" id="split1Bullets">
+                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Expert-curated restaurant selections
+                    </div>
+                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Authentic verified customer reviews
+                    </div>
+                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Real-time menu and pricing updates
+                    </div>
+                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Exclusive partnership perks and offers
+                    </div>
+                </div>
+                <a href="/about.html" class="btn-primary" id="split1Btn">
+                    Learn More <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="split-image">
+                <img id="split1Img" src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800"
+                    alt="Premium steak dining experience">
+            </div>
+        </div>
+    </section>
+
+    <!-- SPLIT SECTION 2 - Image Left, Content Right -->
+    <section class="split-section reverse" id="split2Section">
+        <div class="container split-inner">
+            <div class="split-content split-content-visual">
+                <div class="overline" id="split2Overline">Community Driven</div>
+                <h2 id="split2Title">Real Reviews from Real Food Lovers</h2>
+                <p id="split2Text">Our community of over 50,000 passionate diners shares their honest experiences every
+                    day. From hidden neighborhood gems to celebrated fine dining destinations, our reviews help you make
+                    confident choices. Every review is verified, every rating is genuine, and every recommendation comes
+                    from someone who has truly dined there.</p>
+                <div class="split-bullets" id="split2Bullets">
+                    <div class="split-bullet"><i class="fas fa-shield-alt"></i> 100% verified diner reviews</div>
+                    <div class="split-bullet"><i class="fas fa-users"></i> 50,000+ active community members</div>
+                    <div class="split-bullet"><i class="fas fa-camera"></i> Photo reviews and food stories</div>
+                    <div class="split-bullet"><i class="fas fa-trophy"></i> Top reviewer recognition program</div>
+                </div>
+                <a href="/listings.html" class="btn-primary" id="split2Btn">
+                    Read Reviews <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            <div class="split-image">
+                <img id="split2Img" src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800"
+                    alt="Friends enjoying dinner together">
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section" id="hiwSection">
+        <div class="container">
+            <div class="section-header">
+                <div class="overline" id="hiwOverline">Simple Process</div>
+                <h2 id="hiwTitle">How DineVault Works</h2>
+                <p id="hiwSubtitle">Finding the perfect restaurant is just three simple steps away.</p>
+            </div>
+            <div class="hiw-grid" id="hiwGrid">
+                <div class="hiw-card glass">
+                    <div class="hiw-icon"><i class="fas fa-search"></i></div>
+                    <h3>Browse &amp; Discover</h3>
+                    <p>Explore our curated collection of top-rated restaurants. Filter by cuisine, location, or rating
+                        to find exactly what you crave.</p>
+                </div>
+                <div class="hiw-card glass">
+                    <div class="hiw-icon"><i class="fas fa-star"></i></div>
+                    <h3>Read Real Reviews</h3>
+                    <p>Dive into authentic reviews from verified diners. See ratings, photos, and detailed experiences
+                        before making your choice.</p>
+                </div>
+                <div class="hiw-card glass">
+                    <div class="hiw-icon"><i class="fas fa-book-open"></i></div>
+                    <h3>Reserve &amp; Enjoy</h3>
+                    <p>Connect directly with your chosen restaurant. Get directions, view menus, and plan your perfect
+                        dining experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-banner">
+        <div class="container">
+            <div class="cta-inner glass-medium">
+                <h2 id="ctaTitle">Own a Restaurant?</h2>
+                <p id="ctaText">Join DineVault and reach thousands of food enthusiasts. List your restaurant for free
+                    and let diners discover your culinary excellence.</p>
+                <a href="/get-listed.html" class="btn-primary" id="ctaBtn">Get Listed Today <i
+                        class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <!-- Rendered by js/app.js -->
+    </footer>
+
+    <button id="moveToTop" class="move-to-top" aria-label="Move to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Search button trigger
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            function doSearch() {
+                const q = searchInput.value.trim();
+                window.location.href = q ? `/listings.html?q=${encodeURIComponent(q)}` : '/listings.html';
+            }
+            if (searchBtn) searchBtn.addEventListener('click', doSearch);
+            if (searchInput) {
+                searchInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') doSearch();
+                });
+            }
+
+            // 2. Load CMS Content
+            const cms = await fetchCMSContent('home');
+            if (cms) {
+                if (cms.nav) renderHeader(cms.nav);
+                if (cms.footer) renderFooter(cms.footer);
+
+                if (cms.hero) {
+                    if (cms.hero.badge) document.getElementById('heroBadge').innerHTML = `<i class="fas fa-star"></i> ${escapeHtml(cms.hero.badge)}`;
+                    if (cms.hero.title) document.getElementById('heroTitle').textContent = cms.hero.title;
+                    if (cms.hero.subtitle) document.getElementById('heroSubtitle').textContent = cms.hero.subtitle;
+                    if (cms.hero.search_placeholder && searchInput) searchInput.placeholder = cms.hero.search_placeholder;
+                    if (cms.hero.search_btn && searchBtn) searchBtn.textContent = cms.hero.search_btn.label || 'Explore Now';
+                    if (Array.isArray(cms.hero.stats)) {
+                        document.getElementById('heroStats').innerHTML = cms.hero.stats.map(s => `
+                            <div>
+                                <div class="hero-stat-number">${escapeHtml(s.number)}</div>
+                                <div class="hero-stat-label">${escapeHtml(s.label)}</div>
+                            </div>
+                        `).join('');
+                    }
+                }
+
+                if (cms.featured) {
+                    if (cms.featured.overline) document.getElementById('featuredOverline').textContent = cms.featured.overline;
+                    if (cms.featured.title) document.getElementById('featuredTitle').textContent = cms.featured.title;
+                    if (cms.featured.subtitle) document.getElementById('featuredSubtitle').textContent = cms.featured.subtitle;
+                    if (cms.featured.view_all_btn) {
+                        const btn = document.getElementById('featuredViewAll');
+                        btn.href = '/listings.html';
+                        btn.innerHTML = `${escapeHtml(cms.featured.view_all_btn.label || 'View All')} <i class="fas fa-arrow-right"></i>`;
+                    }
+                }
+
+                if (cms.split_1) {
+                    if (cms.split_1.overline) document.getElementById('split1Overline').textContent = cms.split_1.overline;
+                    if (cms.split_1.title) document.getElementById('split1Title').textContent = cms.split_1.title;
+                    if (cms.split_1.text) document.getElementById('split1Text').textContent = cms.split_1.text;
+                    if (cms.split_1.image_url) document.getElementById('split1Img').src = cms.split_1.image_url;
+                    if (Array.isArray(cms.split_1.bullets)) {
+                        document.getElementById('split1Bullets').innerHTML = cms.split_1.bullets.map(b => `
+                            <div class="split-bullet"><i class="${escapeHtml(b.icon || 'fas fa-check-circle')}"></i> ${escapeHtml(b.text)}</div>
+                        `).join('');
+                    }
+                }
+
+                if (cms.split_2) {
+                    if (cms.split_2.overline) document.getElementById('split2Overline').textContent = cms.split_2.overline;
+                    if (cms.split_2.title) document.getElementById('split2Title').textContent = cms.split_2.title;
+                    if (cms.split_2.text) document.getElementById('split2Text').textContent = cms.split_2.text;
+                    if (cms.split_2.image_url) document.getElementById('split2Img').src = cms.split_2.image_url;
+                    if (Array.isArray(cms.split_2.bullets)) {
+                        document.getElementById('split2Bullets').innerHTML = cms.split_2.bullets.map(b => `
+                            <div class="split-bullet"><i class="${escapeHtml(b.icon || 'fas fa-check-circle')}"></i> ${escapeHtml(b.text)}</div>
+                        `).join('');
+                    }
+                }
+
+                if (cms.how_it_works && Array.isArray(cms.how_it_works.steps)) {
+                    document.getElementById('hiwGrid').innerHTML = cms.how_it_works.steps.map(s => `
+                        <div class="hiw-card glass">
+                            <div class="hiw-icon"><i class="${escapeHtml(s.icon)}"></i></div>
+                            <h3>${escapeHtml(s.title)}</h3>
+                            <p>${escapeHtml(s.text)}</p>
+                        </div>
+                    `).join('');
+                }
+
+                if (cms.cta) {
+                    if (cms.cta.title) document.getElementById('ctaTitle').textContent = cms.cta.title;
+                    if (cms.cta.text) document.getElementById('ctaText').textContent = cms.cta.text;
+                }
+            } else {
+                renderHeader();
+                renderFooter();
+            }
+
+            // 3. Load Featured Restaurants (Limit 3)
+            try {
+                const restRes = await fetch('/api/restaurants?status=approved&limit=3');
+                if (restRes.ok) {
+                    const rests = await restRes.json();
+                    renderFeaturedRestaurants(rests);
+                }
+            } catch (e) {
+                console.warn('Could not load restaurants', e);
+            }
+        });
+
+        function renderFeaturedRestaurants(rests) {
+            const grid = document.getElementById('restaurantsGrid');
+            if (!grid || !Array.isArray(rests) || rests.length === 0) return;
+
+            grid.innerHTML = rests.map(r => {
+                const reviews = Array.isArray(r.reviews) ? r.reviews : [];
+                let avg = 0;
+                if (reviews.length > 0) {
+                    const total = reviews.reduce((sum, rev) => sum + (Number(rev.rating) || 0), 0);
+                    avg = (total / reviews.length).toFixed(1);
+                }
+                const snippet = (r.about_text || '').substring(0, 120);
+
+                return `
+                    <a href="/restaurant.html?id=${r.id}" class="rest-card glass">
+                        <div class="rest-card-img">
+                            <img src="${escapeHtml(r.banner_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400')}" alt="${escapeHtml(r.name)}">
+                            <div class="rest-card-badge">
+                                <i class="fas fa-star"></i> ${avg}
+                            </div>
+                        </div>
+                        <div class="rest-card-body">
+                            <h3>${escapeHtml(r.name)}</h3>
+                            <p>${escapeHtml(snippet)}...</p>
+                            <div class="rest-card-meta">
+                                <div class="rest-card-rating">
+                                    <i class="fas fa-star"></i> ${avg} / 5
+                                    <span style="color:var(--text-dim);font-weight:400;">(${reviews.length})</span>
+                                </div>
+                                <div class="rest-card-link">
+                                    View Details <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>FAQs - DineVault</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <!-- Rendered by js/app.js -->
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1 id="faqsHeroTitle">Frequently Asked Questions</h1>
+            <p id="faqsHeroSubtitle">Everything you need to know about using DineVault.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="faqs-list" id="faqsContainer">
+                <!-- Dynamically loaded -->
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-banner">
+        <div class="container">
+            <div class="glass-medium" style="padding:60px 40px;border-radius:var(--radius-lg);">
+                <h2 id="ctaTitle">Own a Restaurant?</h2>
+                <p id="ctaText">Join DineVault and reach thousands of food enthusiasts.</p>
+                <a href="/get-listed.html" class="btn-primary" id="ctaBtn">Get Listed Today <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <!-- Rendered by js/app.js -->
+    </footer>
+
+    <button id="moveToTop" class="move-to-top" aria-label="Move to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="js/app.js"></script>
+    <script>
+        function toggleFaq(btn) {
+            const answer = btn.nextElementSibling;
+            const isOpen = answer.classList.contains('open');
+            document.querySelectorAll('.faq-answer').forEach(el => el.classList.remove('open'));
+            document.querySelectorAll('.faq-question').forEach(el => el.classList.remove('active'));
+            if (!isOpen) {
+                answer.classList.add('open');
+                btn.classList.add('active');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const cms = await fetchCMSContent('faqs');
+            if (cms) {
+                if (cms.nav) renderHeader(cms.nav);
+                if (cms.footer) renderFooter(cms.footer);
+                if (cms.hero) {
+                    if (cms.hero.title) document.getElementById('faqsHeroTitle').textContent = cms.hero.title;
+                    if (cms.hero.subtitle) document.getElementById('faqsHeroSubtitle').textContent = cms.hero.subtitle;
+                }
+                if (Array.isArray(cms.items)) {
+                    document.getElementById('faqsContainer').innerHTML = cms.items.map(faq => `
+                        <div class="faq-item">
+                            <button class="faq-question" onclick="toggleFaq(this)">
+                                ${escapeHtml(faq.question)}
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="faq-answer">
+                                <p>${escapeHtml(faq.answer)}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                if (cms.cta) {
+                    if (cms.cta.title) document.getElementById('ctaTitle').textContent = cms.cta.title;
+                    if (cms.cta.text) document.getElementById('ctaText').textContent = cms.cta.text;
+                }
+            } else {
+                renderHeader();
+                renderFooter();
+            }
+        });
+    </script>
+</body>
+</html>

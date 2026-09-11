@@ -4,9 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Manage Content - DineVault Admin</title>
+    <title>Manage Content & SEO - DineVault Admin</title>
     <link rel="stylesheet" href="admin_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Custom UI Enhancements for Manage Content */
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 12px;
+        }
+        .tab-btn {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+        }
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border-color: rgba(255,255,255,0.2);
+        }
+        .tab-btn.active {
+            background: var(--gold);
+            color: #0a0a1a;
+            border-color: var(--gold);
+            box-shadow: 0 4px 15px rgba(200, 169, 126, 0.35);
+        }
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .section-box h4 {
+            color: var(--gold);
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+        .item-list-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: rgba(0,0,0,0.25);
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .custom-select {
+            background: #12122a !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
+            padding: 10px 18px !important;
+            border-radius: 8px !important;
+            font-size: 0.95rem !important;
+            cursor: pointer;
+        }
+        .custom-select option {
+            background: #0a0a1a !important;
+            color: #ffffff !important;
+            padding: 10px;
+        }
+        .btn-gold {
+            background: var(--gold);
+            color: #0a0a1a;
+            font-weight: 700;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            transform: translateY(-1px);
+        }
+        .btn-danger-sm {
+            background: rgba(244, 67, 54, 0.15);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-danger-sm:hover {
+            background: #f44336;
+            color: #fff;
+        }
+        .btn-outline-gold {
+            background: transparent;
+            color: var(--gold);
+            border: 1px dashed var(--gold);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-outline-gold:hover {
+            background: rgba(200, 169, 126, 0.1);
+        }
+    </style>
 </head>
 <body>
 
@@ -18,7 +155,7 @@
         </div>
         <nav class="sidebar-nav">
             <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="manage_content.html" class="active"><i class="fas fa-edit"></i> Manage Content</a>
+            <a href="manage_content.html" class="active"><i class="fas fa-edit"></i> Manage Content & SEO</a>
             <a href="manage_restaurants.html"><i class="fas fa-store"></i> Manage Restaurants</a>
         </nav>
         <div class="sidebar-footer">
@@ -28,124 +165,308 @@
     </aside>
 
     <main class="main-content">
-        <div class="topbar glass-topbar">
-            <h2>Manage Content & SEO</h2>
-            <div style="display:flex;align-items:center;gap:12px;">
-                <select id="pageSelect" style="background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.15);padding:8px 16px;border-radius:6px;font-size:0.9rem;">
-                    <option value="global">Global (Header & Footer)</option>
-                    <option value="home">Home Page</option>
-                    <option value="about">About Us</option>
-                    <option value="contact">Contact Us</option>
-                    <option value="faqs">FAQs</option>
-                    <option value="get-listed">Get Listed</option>
-                    <option value="listings">Listings Directory</option>
-                    <option value="restaurant">Restaurant Details</option>
-                    <option value="privacy">Privacy Policy</option>
-                    <option value="terms">Terms of Service</option>
-                    <option value="disclaimer">Disclaimer</option>
-                </select>
-                <button id="toggleRawJsonBtn" class="btn-sm" style="background:var(--gold);color:var(--dark);border:none;cursor:pointer;padding:8px 16px;font-weight:600;border-radius:6px;">
-                    <i class="fas fa-code"></i> Raw JSON
-                </button>
+        <div class="topbar glass-topbar" style="margin-bottom: 20px;">
+            <div>
+                <h2 style="font-size: 1.5rem; margin-bottom: 4px;">Content & SEO Control Center</h2>
+                <p style="color: var(--text-muted); font-size: 0.88rem;">Manage your site header, footer, page contents, and search indexing easily.</p>
+            </div>
+            <div id="topNotification" class="alert alert-success" style="display:none; padding: 8px 16px; font-size: 0.9rem;">
+                <i class="fas fa-check-circle"></i> <span id="topNotificationText">Saved successfully</span>
             </div>
         </div>
 
-        <div id="contentAlert" class="alert alert-success" style="display:none;margin-bottom:20px;">
-            <i class="fas fa-check-circle"></i> <span id="contentAlertText">Saved successfully</span>
+        <!-- Navigation Tabs -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('tab-seo')">
+                <i class="fas fa-search"></i> 1. SEO & Indexing
+            </button>
+            <button class="tab-btn" onclick="switchTab('tab-header')">
+                <i class="fas fa-bars"></i> 2. Header & Logo
+            </button>
+            <button class="tab-btn" onclick="switchTab('tab-footer')">
+                <i class="fas fa-shoe-prints"></i> 3. Footer & Socials
+            </button>
+            <button class="tab-btn" onclick="switchTab('tab-pages')">
+                <i class="fas fa-file-alt"></i> 4. Page Contents
+            </button>
         </div>
 
-        <!-- 1. Master SEO / Indexing Switch Card -->
-        <div class="card glass-card" style="margin-bottom: 24px; border-left: 4px solid var(--gold); padding: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                <div>
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
-                        <span id="indexingStatusBadge" style="padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); color: var(--text-muted);">
-                            <i class="fas fa-circle-notch fa-spin"></i> Checking status...
-                        </span>
-                        <h3 style="margin: 0; font-size: 1.15rem; color: #fff;">Search Engine Master Indexing</h3>
+        <!-- ═══════════════════════════════════════════════════════
+             TAB 1: SEO & MASTER SWITCH
+             ═══════════════════════════════════════════════════════ -->
+        <div id="tab-seo" class="tab-pane active">
+            <!-- Master Indexing Card -->
+            <div class="card glass-card" style="margin-bottom: 24px; border-left: 4px solid var(--gold); padding: 22px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+                            <span id="indexingStatusBadge" style="padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px; background: rgba(244,67,54,0.2); color: #f44336; border: 1px solid #f44336;">
+                                <i class="fas fa-lock"></i> BLOCKED (noindex, nofollow)
+                            </span>
+                            <h3 style="margin: 0; font-size: 1.2rem; color: #fff;">Search Engine Master Switch</h3>
+                        </div>
+                        <p id="indexingStatusDesc" style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">
+                            Pura website Google aur search engines ke liye block hai (noindex, nofollow).
+                        </p>
                     </div>
-                    <p id="indexingStatusDesc" style="color: var(--text-muted); font-size: 0.88rem; margin: 0;">
-                        Control whether Google and other search engines are allowed to crawl & index this website.
-                    </p>
+                    <div>
+                        <button id="toggleIndexingBtn" class="btn-gold" style="background: #4caf50; color: #fff;" onclick="toggleMasterIndexing()">
+                            <i class="fas fa-globe"></i> Allow Search Engines (index, follow)
+                        </button>
+                    </div>
                 </div>
-                <div>
-                    <button id="toggleIndexingBtn" style="padding: 10px 22px; font-weight: 700; border-radius: 8px; cursor: pointer; border: none; font-size: 0.9rem; transition: 0.2s ease;">
-                        <i class="fas fa-power-off"></i> Toggle Switch
+            </div>
+
+            <!-- Page SEO Editor -->
+            <div class="card glass-card">
+                <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <h3 style="font-size: 1.15rem; color: var(--gold); margin: 0;"><i class="fas fa-tags"></i> Page-by-Page SEO Metadata</h3>
+                        <select id="seoPageSelect" class="custom-select" onchange="loadPageSEO(this.value)">
+                            <option value="home">Home Page</option>
+                            <option value="about">About Us</option>
+                            <option value="listings">Listings Directory</option>
+                            <option value="contact">Contact Us</option>
+                            <option value="faqs">FAQs</option>
+                            <option value="get-listed">Get Listed</option>
+                            <option value="restaurant">Restaurant Details</option>
+                            <option value="privacy">Privacy Policy</option>
+                            <option value="terms">Terms of Service</option>
+                            <option value="disclaimer">Disclaimer</option>
+                        </select>
+                    </div>
+                    <button class="btn-gold" onclick="savePageSEO()">
+                        <i class="fas fa-save"></i> Save SEO Settings
                     </button>
                 </div>
-            </div>
-        </div>
 
-        <!-- 2. Page SEO Metadata Card -->
-        <div class="card glass-card" id="seoCard" style="margin-bottom: 24px;">
-            <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; margin-bottom: 16px;">
-                <h3 style="font-size: 1.05rem; display: flex; align-items: center; gap: 8px; color: var(--gold);">
-                    <i class="fas fa-search"></i> SEO Settings for <span id="seoPageLabel" style="color: #fff;">Home Page</span>
-                </h3>
-                <span style="font-size: 0.8rem; color: var(--text-muted);">Changes apply automatically upon saving</span>
-            </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
-                <!-- Left Column: Inputs -->
-                <div>
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">PAGE META TITLE</label>
-                            <span id="metaTitleCount" style="color: var(--text-dim); font-size: 0.75rem;">0 / 60 chars</span>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+                    <div>
+                        <div class="form-group" style="margin-bottom: 18px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">PAGE META TITLE</label>
+                                <span id="metaTitleCount" style="color: var(--text-dim); font-size: 0.75rem;">0 / 60 chars</span>
+                            </div>
+                            <input type="text" id="seoTitleInput" class="input-text" placeholder="e.g. Best Catering Menus & Dining | DineVault" style="width: 100%;" oninput="updateGoogleSnippet()">
+                            <small style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 4px;">Browser tab aur Google search results ka main headline.</small>
                         </div>
-                        <input type="text" id="seoTitleInput" class="input-text" placeholder="e.g., Best Catering Menus & Dining | DineVault" style="width: 100%;">
-                        <small style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 4px;">Displayed in browser tabs and as the main clickable headline in Google search results.</small>
+
+                        <div class="form-group" style="margin-bottom: 18px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">PAGE META DESCRIPTION</label>
+                                <span id="metaDescCount" style="color: var(--text-dim); font-size: 0.75rem;">0 / 160 chars</span>
+                            </div>
+                            <textarea id="seoDescInput" class="input-textarea" rows="4" placeholder="e.g. Explore handpicked restaurants, top catering menus, and authentic reviews across the city." style="width: 100%;" oninput="updateGoogleSnippet()"></textarea>
+                            <small style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 4px;">Google snippet me link ke neeche aane wala description.</small>
+                        </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                            <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">PAGE META DESCRIPTION</label>
-                            <span id="metaDescCount" style="color: var(--text-dim); font-size: 0.75rem;">0 / 160 chars</span>
+                    <div>
+                        <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 8px;">
+                            <i class="fab fa-google" style="color: #4285F4; margin-right: 4px;"></i> Live Google Search Result Preview
                         </div>
-                        <textarea id="seoDescInput" class="input-textarea" rows="3" placeholder="e.g., Explore handpicked restaurant menus, catering options, and dining experiences across the city." style="width: 100%;"></textarea>
-                        <small style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 4px;">Summary snippet displayed under your title in Google search results.</small>
-                    </div>
-                </div>
-
-                <!-- Right Column: Live Google Snippet Preview -->
-                <div>
-                    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 8px;">
-                        <i class="fab fa-google" style="color: #4285F4; margin-right: 4px;"></i> Live Google Search Result Preview
-                    </div>
-                    <div style="background: #ffffff; color: #4d5156; padding: 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-family: Arial, sans-serif;">
-                        <div style="font-size: 12px; color: #202124; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                            <span style="background: #e8eaed; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 10px; color: #3c4043;">catering-menu.com</span>
-                            <span style="color: #5f6368;" id="previewUrl">https://www.catering-menu.com</span>
-                        </div>
-                        <div id="previewTitle" style="color: #1a0dab; font-size: 18px; font-weight: 400; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                            DineVault - Premium Dining & Catering Directory
-                        </div>
-                        <div id="previewDesc" style="color: #4d5156; font-size: 13px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                            Discover handpicked restaurants, catering menus, reviews, and culinary experiences.
+                        <div style="background: #ffffff; color: #4d5156; padding: 18px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); font-family: Arial, sans-serif;">
+                            <div style="font-size: 12px; color: #202124; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                                <span style="background: #e8eaed; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 10px; color: #3c4043;">catering-menu.com</span>
+                                <span style="color: #5f6368;" id="previewUrl">https://www.catering-menu.com</span>
+                            </div>
+                            <div id="previewTitle" style="color: #1a0dab; font-size: 18px; font-weight: 400; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                Page Title Preview
+                            </div>
+                            <div id="previewDesc" style="color: #4d5156; font-size: 13px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                This is how your page description will appear in Google search results.
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 3. General Content Editor Card -->
-        <div class="card glass-card">
-            <div class="card-header">
-                <h3 id="editingPageTitle">Editing Page Content: global</h3>
-                <button id="saveContentBtn" class="btn-sm btn-primary" style="background:var(--gold);color:#0a0a1a;border:none;padding:10px 24px;cursor:pointer;font-weight:700;border-radius:6px;">
-                    <i class="fas fa-save"></i> Save Changes
-                </button>
-            </div>
+        <!-- ═══════════════════════════════════════════════════════
+             TAB 2: HEADER & NAVBAR
+             ═══════════════════════════════════════════════════════ -->
+        <div id="tab-header" class="tab-pane">
+            <div class="card glass-card">
+                <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; margin-bottom: 20px;">
+                    <div>
+                        <h3 style="color: var(--gold); font-size: 1.15rem; margin: 0;"><i class="fas fa-heading"></i> Header & Navigation Bar</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 4px 0 0;">Website ke top navbar ka logo, menu links aur button yaha se edit karein.</p>
+                    </div>
+                    <button class="btn-gold" onclick="saveHeaderSettings()">
+                        <i class="fas fa-save"></i> Save Header Changes
+                    </button>
+                </div>
 
-            <!-- Visual Form Container -->
-            <div id="visualEditorContainer" style="padding:20px 0;">
-                <!-- Dynamically generated fields -->
-            </div>
+                <!-- Logo Section -->
+                <div class="section-box">
+                    <h4><i class="fas fa-signature"></i> Website Logo</h4>
+                    <div class="form-row">
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">LOGO TEXT</label>
+                            <input type="text" id="headerLogoText" class="input-text" placeholder="DineVault" style="width: 100%;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">FONT AWESOME ICON CLASS</label>
+                            <input type="text" id="headerLogoIcon" class="input-text" placeholder="fas fa-utensils" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
 
-            <!-- Raw JSON Editor Container -->
-            <div id="rawEditorContainer" style="display:none;padding:20px 0;">
-                <label style="color:var(--text-muted);display:block;margin-bottom:8px;">Edit raw JSON directly:</label>
-                <textarea id="rawJsonTextarea" style="width:100%;min-height:500px;background:#05050f;color:#e8e6e3;border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:16px;font-family:monospace;font-size:14px;line-height:1.6;"></textarea>
+                <!-- Nav Links Section -->
+                <div class="section-box">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                        <h4 style="margin: 0;"><i class="fas fa-link"></i> Navigation Menu Links</h4>
+                        <button class="btn-outline-gold" onclick="addHeaderLink()">
+                            <i class="fas fa-plus"></i> Add New Link
+                        </button>
+                    </div>
+                    <div id="headerLinksContainer">
+                        <!-- Rendered dynamically -->
+                    </div>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="section-box">
+                    <h4><i class="fas fa-mouse-pointer"></i> Top Right Button (CTA)</h4>
+                    <div class="form-row">
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">BUTTON TEXT</label>
+                            <input type="text" id="headerCtaText" class="input-text" placeholder="Get Listed" style="width: 100%;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">BUTTON LINK (URL)</label>
+                            <input type="text" id="headerCtaUrl" class="input-text" placeholder="/get-listed.html" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════
+             TAB 3: FOOTER & SOCIALS
+             ═══════════════════════════════════════════════════════ -->
+        <div id="tab-footer" class="tab-pane">
+            <div class="card glass-card">
+                <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; margin-bottom: 20px;">
+                    <div>
+                        <h3 style="color: var(--gold); font-size: 1.15rem; margin: 0;"><i class="fas fa-shoe-prints"></i> Footer & Social Links</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 4px 0 0;">Website ke bottom footer ki saari details, links aur copyright yaha se manage karein.</p>
+                    </div>
+                    <button class="btn-gold" onclick="saveFooterSettings()">
+                        <i class="fas fa-save"></i> Save Footer Changes
+                    </button>
+                </div>
+
+                <!-- About Footer -->
+                <div class="section-box">
+                    <h4><i class="fas fa-info-circle"></i> Column 1: About DineVault</h4>
+                    <div class="form-group" style="margin-bottom: 12px;">
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">HEADING</label>
+                        <input type="text" id="footerAboutHeading" class="input-text" placeholder="About DineVault" style="width: 100%;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">DESCRIPTION</label>
+                        <textarea id="footerAboutText" class="input-textarea" rows="3" style="width: 100%;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Quick Links & Legal Links Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+                    <div class="section-box">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <h4 style="margin: 0;"><i class="fas fa-list"></i> Quick Links</h4>
+                            <button class="btn-outline-gold" onclick="addFooterLink('quick')">
+                                <i class="fas fa-plus"></i> Add Link
+                            </button>
+                        </div>
+                        <div id="footerQuickLinksContainer"></div>
+                    </div>
+
+                    <div class="section-box">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                            <h4 style="margin: 0;"><i class="fas fa-balance-scale"></i> Legal Links</h4>
+                            <button class="btn-outline-gold" onclick="addFooterLink('legal')">
+                                <i class="fas fa-plus"></i> Add Link
+                            </button>
+                        </div>
+                        <div id="footerLegalLinksContainer"></div>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="section-box">
+                    <h4><i class="fas fa-share-alt"></i> Social Media Links</h4>
+                    <div class="form-row">
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;"><i class="fab fa-facebook-f" style="color:#1877F2;"></i> Facebook URL</label>
+                            <input type="text" id="socialFb" class="input-text" placeholder="https://facebook.com/yourpage" style="width: 100%;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;"><i class="fab fa-twitter" style="color:#1DA1F2;"></i> Twitter / X URL</label>
+                            <input type="text" id="socialTw" class="input-text" placeholder="https://twitter.com/yourpage" style="width: 100%;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;"><i class="fab fa-instagram" style="color:#E1306C;"></i> Instagram URL</label>
+                            <input type="text" id="socialInsta" class="input-text" placeholder="https://instagram.com/yourpage" style="width: 100%;">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;"><i class="fab fa-youtube" style="color:#FF0000;"></i> YouTube URL</label>
+                            <input type="text" id="socialYt" class="input-text" placeholder="https://youtube.com/yourpage" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="section-box">
+                    <h4><i class="fas fa-copyright"></i> Copyright Bar</h4>
+                    <div>
+                        <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">COPYRIGHT TEXT</label>
+                        <input type="text" id="footerCopyright" class="input-text" placeholder="© 2026 DineVault. All rights reserved." style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════
+             TAB 4: PAGE CONTENTS
+             ═══════════════════════════════════════════════════════ -->
+        <div id="tab-pages" class="tab-pane">
+            <div class="card glass-card">
+                <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <h3 style="color: var(--gold); font-size: 1.15rem; margin: 0;"><i class="fas fa-file-alt"></i> Select Page to Edit:</h3>
+                        <select id="contentPageSelect" class="custom-select" onchange="loadIndividualPageContent(this.value)">
+                            <option value="home">Home Page</option>
+                            <option value="about">About Us</option>
+                            <option value="listings">Listings Directory</option>
+                            <option value="contact">Contact Us</option>
+                            <option value="faqs">FAQs</option>
+                            <option value="get-listed">Get Listed</option>
+                            <option value="restaurant">Restaurant Details</option>
+                            <option value="privacy">Privacy Policy</option>
+                            <option value="terms">Terms of Service</option>
+                            <option value="disclaimer">Disclaimer</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="toggleRawJsonBtn" class="btn-sm" style="background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 6px; cursor: pointer;" onclick="toggleRawJsonMode()">
+                            <i class="fas fa-code"></i> Raw JSON
+                        </button>
+                        <button class="btn-gold" onclick="saveIndividualPageContent()">
+                            <i class="fas fa-save"></i> Save Page Content
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Structured Visual Editor -->
+                <div id="pageVisualEditorContainer" style="padding: 10px 0;">
+                    <!-- Dynamically rendered fields -->
+                </div>
+
+                <!-- Raw JSON View -->
+                <div id="pageRawJsonContainer" style="display: none; padding: 10px 0;">
+                    <textarea id="pageRawJsonTextarea" style="width:100%; min-height:500px; background:#05050f; color:#e8e6e3; border:1px solid rgba(255,255,255,0.15); border-radius:8px; padding:16px; font-family:monospace; font-size:14px; line-height:1.6;"></textarea>
+                </div>
             </div>
         </div>
     </main>
@@ -155,336 +476,582 @@
 <script>
     if (!requireAuth()) {}
 
-    let currentPageData = {};
-    let globalContentData = {};
+    // Global State
+    let globalData = {};
+    let activePageData = {};
+    let isMasterIndexing = false;
     let isRawMode = false;
-    let isMasterIndexingEnabled = false;
 
-    const pageSelect = document.getElementById('pageSelect');
-    const editingTitle = document.getElementById('editingPageTitle');
-    const visualContainer = document.getElementById('visualEditorContainer');
-    const rawContainer = document.getElementById('rawEditorContainer');
-    const rawTextarea = document.getElementById('rawJsonTextarea');
-    const toggleBtn = document.getElementById('toggleRawJsonBtn');
-    const saveBtn = document.getElementById('saveContentBtn');
-    const alertBox = document.getElementById('contentAlert');
-    const alertText = document.getElementById('contentAlertText');
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
 
-    // SEO Elements
-    const indexingBadge = document.getElementById('indexingStatusBadge');
-    const indexingDesc = document.getElementById('indexingStatusDesc');
-    const toggleIndexingBtn = document.getElementById('toggleIndexingBtn');
-    const seoPageLabel = document.getElementById('seoPageLabel');
-    const seoTitleInput = document.getElementById('seoTitleInput');
-    const seoDescInput = document.getElementById('seoDescInput');
-    const metaTitleCount = document.getElementById('metaTitleCount');
-    const metaDescCount = document.getElementById('metaDescCount');
-    const previewUrl = document.getElementById('previewUrl');
-    const previewTitle = document.getElementById('previewTitle');
-    const previewDesc = document.getElementById('previewDesc');
+        const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+        if (targetBtn) targetBtn.classList.add('active');
 
-    // ── MASTER INDEXING LOGIC ─────────────────────────────
-    async function fetchMasterIndexingStatus() {
+        const targetPane = document.getElementById(tabId);
+        if (targetPane) targetPane.classList.add('active');
+    }
+
+    function showNotification(msg) {
+        const box = document.getElementById('topNotification');
+        const text = document.getElementById('topNotificationText');
+        text.textContent = msg;
+        box.style.display = 'inline-flex';
+        setTimeout(() => { box.style.display = 'none'; }, 4000);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // 1. GLOBAL & MASTER INDEXING LOGIC
+    // ═══════════════════════════════════════════════════════
+    async function initGlobalSettings() {
         try {
             const res = await fetch('/api/content?page=global&raw=true');
             if (res.ok) {
-                globalContentData = await res.json();
-                isMasterIndexingEnabled = globalContentData.seo_global && globalContentData.seo_global.indexing_enabled === true;
+                globalData = await res.json();
+                isMasterIndexing = globalData.seo_global && globalData.seo_global.indexing_enabled === true;
                 updateMasterIndexingUI();
+                renderHeaderEditor();
+                renderFooterEditor();
             }
         } catch (e) {
-            console.error('Failed to load global indexing status', e);
+            console.error('Failed to load global content', e);
         }
     }
 
     function updateMasterIndexingUI() {
-        if (isMasterIndexingEnabled) {
-            indexingBadge.style.background = 'rgba(76, 175, 80, 0.2)';
-            indexingBadge.style.color = '#4caf50';
-            indexingBadge.style.border = '1px solid #4caf50';
-            indexingBadge.innerHTML = '<i class="fas fa-check-circle"></i> ALLOWED (index, follow)';
+        const badge = document.getElementById('indexingStatusBadge');
+        const desc = document.getElementById('indexingStatusDesc');
+        const btn = document.getElementById('toggleIndexingBtn');
 
-            indexingDesc.innerHTML = '<strong>Live in Search Engines:</strong> Google and other bots are allowed to crawl and index your site.';
-            
-            toggleIndexingBtn.style.background = '#f44336';
-            toggleIndexingBtn.style.color = '#fff';
-            toggleIndexingBtn.innerHTML = '<i class="fas fa-ban"></i> Block Search Engines (noindex)';
+        if (isMasterIndexing) {
+            badge.style.background = 'rgba(76, 175, 80, 0.2)';
+            badge.style.color = '#4caf50';
+            badge.style.border = '1px solid #4caf50';
+            badge.innerHTML = '<i class="fas fa-check-circle"></i> ALLOWED (index, follow)';
+
+            desc.innerHTML = '<strong>Live on Search Engines:</strong> Google aur sabhi search bots site crawl aur index kar rahe hain.';
+
+            btn.style.background = '#f44336';
+            btn.style.color = '#fff';
+            btn.innerHTML = '<i class="fas fa-ban"></i> Block Search Engines (noindex)';
         } else {
-            indexingBadge.style.background = 'rgba(244, 67, 54, 0.2)';
-            indexingBadge.style.color = '#f44336';
-            indexingBadge.style.border = '1px solid #f44336';
-            indexingBadge.innerHTML = '<i class="fas fa-lock"></i> BLOCKED (noindex, nofollow)';
+            badge.style.background = 'rgba(244, 67, 54, 0.2)';
+            badge.style.color = '#f44336';
+            badge.style.border = '1px solid #f44336';
+            badge.innerHTML = '<i class="fas fa-lock"></i> BLOCKED (noindex, nofollow)';
 
-            indexingDesc.innerHTML = '<strong>Search Engines Blocked:</strong> Robots.txt and meta tags prevent Google from indexing or listing any page.';
+            desc.innerHTML = '<strong>Search Engines Blocked:</strong> Robots.txt aur meta tags Google ko index karne se rok rahe hain.';
 
-            toggleIndexingBtn.style.background = '#4caf50';
-            toggleIndexingBtn.style.color = '#fff';
-            toggleIndexingBtn.innerHTML = '<i class="fas fa-globe"></i> Allow Search Engines (index, follow)';
+            btn.style.background = '#4caf50';
+            btn.style.color = '#fff';
+            btn.innerHTML = '<i class="fas fa-globe"></i> Allow Search Engines (index, follow)';
         }
     }
 
-    toggleIndexingBtn.addEventListener('click', async () => {
-        const nextState = !isMasterIndexingEnabled;
-        const confirmMsg = nextState
-            ? 'Are you sure you want to ALLOW Google and search engines to index the website (index, follow)?'
-            : 'Are you sure you want to BLOCK search engines from indexing the website (noindex, nofollow)?';
+    async function toggleMasterIndexing() {
+        const nextState = !isMasterIndexing;
+        const msg = nextState
+            ? 'Kya aap sach me Google aur search engines ko allow karna chahte hain (index, follow)?'
+            : 'Kya aap search engines ko block karna chahte hain (noindex, nofollow)?';
 
-        if (!confirm(confirmMsg)) return;
+        if (!confirm(msg)) return;
 
-        toggleIndexingBtn.disabled = true;
-        toggleIndexingBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        const btn = document.getElementById('toggleIndexingBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
 
         try {
-            // Ensure seo_global structure exists
-            globalContentData.seo_global = globalContentData.seo_global || {};
-            globalContentData.seo_global.indexing_enabled = nextState;
-            globalContentData.seo_global.default_robots = nextState ? 'index, follow' : 'noindex, nofollow';
+            globalData.seo_global = globalData.seo_global || {};
+            globalData.seo_global.indexing_enabled = nextState;
+            globalData.seo_global.default_robots = nextState ? 'index, follow' : 'noindex, nofollow';
 
             const res = await fetch('/api/admin/content', {
                 method: 'POST',
                 headers: authHeaders(),
                 body: JSON.stringify({
                     page_name: 'global',
-                    content_json: globalContentData
+                    content_json: globalData
                 })
             });
 
-            const data = await res.json();
-            if (res.ok && data.success) {
-                isMasterIndexingEnabled = nextState;
+            if (res.ok) {
+                isMasterIndexing = nextState;
                 updateMasterIndexingUI();
-                showAlert(`Website search indexing is now ${nextState ? 'ENABLED (index, follow)' : 'BLOCKED (noindex, nofollow)'}`);
+                showNotification(`Master Switch ab ${nextState ? 'ALLOWED (index, follow)' : 'BLOCKED (noindex, nofollow)'} hai!`);
             } else {
-                alert(data.error || 'Failed to update indexing setting');
+                alert('Failed to update indexing switch');
             }
-        } catch (err) {
-            alert('Network error while updating indexing setting');
+        } catch (e) {
+            alert('Error updating indexing switch');
         } finally {
-            toggleIndexingBtn.disabled = false;
+            btn.disabled = false;
         }
-    });
-
-    // ── PAGE SEO CARD LOGIC ──────────────────────────────
-    function updateSEOCardUI(pageName) {
-        const pageText = pageSelect.options[pageSelect.selectedIndex].text;
-        seoPageLabel.textContent = pageText;
-
-        const pageUrl = pageName === 'home' ? '' : `/${pageName}.html`;
-        previewUrl.textContent = `https://www.catering-menu.com${pageUrl}`;
-
-        const seo = currentPageData.seo || {};
-        seoTitleInput.value = seo.title || '';
-        seoDescInput.value = seo.description || '';
-
-        updateSnippetPreview();
     }
 
-    function updateSnippetPreview() {
-        const titleVal = seoTitleInput.value.trim() || `${pageSelect.options[pageSelect.selectedIndex].text} - DineVault`;
-        const descVal = seoDescInput.value.trim() || 'Discover exceptional dining experiences, catering menus, authentic reviews, and chef specials across the city.';
+    // ═══════════════════════════════════════════════════════
+    // 2. PAGE SEO METADATA LOGIC
+    // ═══════════════════════════════════════════════════════
+    let currentSeoPageData = {};
 
-        previewTitle.textContent = titleVal;
-        previewDesc.textContent = descVal;
-
-        metaTitleCount.textContent = `${seoTitleInput.value.length} / 60 chars`;
-        metaTitleCount.style.color = seoTitleInput.value.length > 60 ? '#f44336' : 'var(--text-dim)';
-
-        metaDescCount.textContent = `${seoDescInput.value.length} / 160 chars`;
-        metaDescCount.style.color = seoDescInput.value.length > 160 ? '#f44336' : 'var(--text-dim)';
-
-        // Sync with currentPageData
-        currentPageData.seo = currentPageData.seo || {};
-        currentPageData.seo.title = seoTitleInput.value;
-        currentPageData.seo.description = seoDescInput.value;
-    }
-
-    seoTitleInput.addEventListener('input', updateSnippetPreview);
-    seoDescInput.addEventListener('input', updateSnippetPreview);
-
-    // ── RAW JSON TOGGLE ──────────────────────────────────
-    toggleBtn.addEventListener('click', () => {
-        isRawMode = !isRawMode;
-        if (isRawMode) {
-            visualContainer.style.display = 'none';
-            rawContainer.style.display = 'block';
-            rawTextarea.value = JSON.stringify(currentPageData, null, 2);
-            toggleBtn.innerHTML = '<i class="fas fa-list"></i> Visual Form';
-        } else {
-            try {
-                currentPageData = JSON.parse(rawTextarea.value);
-                updateSEOCardUI(pageSelect.value);
-                renderVisualEditor(currentPageData);
-                rawContainer.style.display = 'none';
-                visualContainer.style.display = 'block';
-                toggleBtn.innerHTML = '<i class="fas fa-code"></i> Raw JSON';
-            } catch (e) {
-                alert('Invalid JSON! Please fix syntax errors before switching back to Visual Form.');
-            }
-        }
-    });
-
-    // ── LOAD CONTENT ─────────────────────────────────────
-    async function loadPageContent(pageName) {
-        visualContainer.innerHTML = '<p style="color:var(--text-dim);text-align:center;"><i class="fas fa-circle-notch fa-spin"></i> Loading content...</p>';
-        editingTitle.textContent = `Editing Page Content: ${pageName}`;
-
+    async function loadPageSEO(pageName) {
         try {
             const res = await fetch(`/api/content?page=${encodeURIComponent(pageName)}&raw=true`);
             if (res.ok) {
-                currentPageData = await res.json();
-                updateSEOCardUI(pageName);
-
-                if (isRawMode) {
-                    rawTextarea.value = JSON.stringify(currentPageData, null, 2);
-                } else {
-                    renderVisualEditor(currentPageData);
-                }
+                currentSeoPageData = await res.json();
+                const seo = currentSeoPageData.seo || {};
+                document.getElementById('seoTitleInput').value = seo.title || '';
+                document.getElementById('seoDescInput').value = seo.description || '';
+                updateGoogleSnippet();
             }
         } catch (e) {
-            visualContainer.innerHTML = '<p style="color:#f44336;">Failed to load content.</p>';
+            console.error('Failed to load SEO for ' + pageName, e);
         }
     }
 
-    // ── RENDER VISUAL FORM ───────────────────────────────
-    function renderVisualEditor(data) {
-        visualContainer.innerHTML = '';
-        const form = document.createElement('div');
-        form.className = 'visual-form-fields';
+    function updateGoogleSnippet() {
+        const pageName = document.getElementById('seoPageSelect').value;
+        const pageOptionText = document.getElementById('seoPageSelect').options[document.getElementById('seoPageSelect').selectedIndex].text;
+        const titleInput = document.getElementById('seoTitleInput');
+        const descInput = document.getElementById('seoDescInput');
 
-        function buildField(key, val, path) {
-            const fullPath = path ? `${path}.${key}` : key;
-            const label = key.replace(/_/g, ' ').toUpperCase();
+        const titleVal = titleInput.value.trim() || `${pageOptionText} - DineVault`;
+        const descVal = descInput.value.trim() || 'Discover exceptional dining experiences, catering menus, authentic reviews, and chef specials across the city.';
 
-            // Skip seo & seo_global from the general form since handled by dedicated top SEO card
-            if (fullPath === 'seo' || fullPath === 'seo_global') {
-                return null;
-            }
+        document.getElementById('previewTitle').textContent = titleVal;
+        document.getElementById('previewDesc').textContent = descVal;
+        document.getElementById('previewUrl').textContent = `https://www.catering-menu.com${pageName === 'home' ? '' : '/' + pageName + '.html'}`;
 
-            if (typeof val === 'object' && val !== null) {
-                const group = document.createElement('div');
-                group.className = 'field-group';
-                group.style.border = '1px solid rgba(255,255,255,0.08)';
-                group.style.padding = '16px';
-                group.style.marginBottom = '16px';
-                group.style.borderRadius = '8px';
+        document.getElementById('metaTitleCount').textContent = `${titleInput.value.length} / 60 chars`;
+        document.getElementById('metaTitleCount').style.color = titleInput.value.length > 60 ? '#f44336' : 'var(--text-dim)';
 
-                group.innerHTML = `<h4 style="color:var(--gold);margin-bottom:12px;font-size:0.9rem;">${escapeHtml(label)}</h4>`;
-
-                let hasChildren = false;
-                for (const subKey in val) {
-                    const child = buildField(subKey, val[subKey], fullPath);
-                    if (child) {
-                        group.appendChild(child);
-                        hasChildren = true;
-                    }
-                }
-                return hasChildren ? group : null;
-            } else {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'form-group';
-                wrapper.style.marginBottom = '12px';
-
-                wrapper.innerHTML = `<label style="font-size:0.85rem;color:var(--text-muted);">${escapeHtml(label)}</label>`;
-
-                let input;
-                if (String(val).length > 80 || String(val).includes('\n')) {
-                    input = document.createElement('textarea');
-                    input.rows = 3;
-                    input.style.width = '100%';
-                    input.className = 'input-textarea';
-                    input.value = val || '';
-                } else {
-                    input = document.createElement('input');
-                    input.type = 'text';
-                    input.style.width = '100%';
-                    input.className = 'input-text';
-                    input.value = val || '';
-                }
-
-                input.addEventListener('input', (e) => {
-                    setDeepValue(currentPageData, fullPath.split('.'), e.target.value);
-                });
-
-                wrapper.appendChild(input);
-                return wrapper;
-            }
-        }
-
-        for (const rootKey in data) {
-            const el = buildField(rootKey, data[rootKey], '');
-            if (el) form.appendChild(el);
-        }
-
-        visualContainer.appendChild(form);
+        document.getElementById('metaDescCount').textContent = `${descInput.value.length} / 160 chars`;
+        document.getElementById('metaDescCount').style.color = descInput.value.length > 160 ? '#f44336' : 'var(--text-dim)';
     }
 
-    function setDeepValue(obj, pathArr, value) {
-        let current = obj;
-        for (let i = 0; i < pathArr.length - 1; i++) {
-            if (!current[pathArr[i]]) current[pathArr[i]] = {};
-            current = current[pathArr[i]];
-        }
-        current[pathArr[pathArr.length - 1]] = value;
-    }
-
-    pageSelect.addEventListener('change', () => {
-        loadPageContent(pageSelect.value);
-    });
-
-    // ── SAVE CONTENT ─────────────────────────────────────
-    saveBtn.addEventListener('click', async () => {
-        let payload = currentPageData;
-        if (isRawMode) {
-            try {
-                payload = JSON.parse(rawTextarea.value);
-                currentPageData = payload;
-            } catch (e) {
-                alert('Invalid JSON! Please check syntax.');
-                return;
-            }
-        } else {
-            // Ensure current SEO inputs are included
-            payload.seo = payload.seo || {};
-            payload.seo.title = seoTitleInput.value;
-            payload.seo.description = seoDescInput.value;
-        }
-
-        saveBtn.disabled = true;
-        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    async function savePageSEO() {
+        const pageName = document.getElementById('seoPageSelect').value;
+        currentSeoPageData.seo = currentSeoPageData.seo || {};
+        currentSeoPageData.seo.title = document.getElementById('seoTitleInput').value;
+        currentSeoPageData.seo.description = document.getElementById('seoDescInput').value;
 
         try {
             const res = await fetch('/api/admin/content', {
                 method: 'POST',
                 headers: authHeaders(),
                 body: JSON.stringify({
-                    page_name: pageSelect.value,
-                    content_json: payload
+                    page_name: pageName,
+                    content_json: currentSeoPageData
                 })
             });
-            const data = await res.json();
 
-            if (res.ok && data.success) {
-                showAlert(data.message || 'Page content & SEO saved successfully!');
+            if (res.ok) {
+                showNotification(`SEO settings for '${pageName}' saved successfully!`);
             } else {
-                alert(data.error || 'Failed to save');
+                alert('Failed to save SEO settings');
             }
-        } catch (err) {
-            alert('Error saving content');
-        } finally {
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        } catch (e) {
+            alert('Error saving SEO settings');
         }
-    });
-
-    function showAlert(msg) {
-        alertText.textContent = msg;
-        alertBox.style.display = 'flex';
-        setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
     }
 
+    // ═══════════════════════════════════════════════════════
+    // 3. HEADER EDITOR LOGIC
+    // ═══════════════════════════════════════════════════════
+    function renderHeaderEditor() {
+        const nav = (globalData && globalData.nav) || {};
+        document.getElementById('headerLogoText').value = nav.logo_text || 'DineVault';
+        document.getElementById('headerLogoIcon').value = nav.logo_icon || 'fas fa-utensils';
+
+        const cta = nav.cta_btn || {};
+        document.getElementById('headerCtaText').value = cta.label || 'Get Listed';
+        document.getElementById('headerCtaUrl').value = cta.url || '/get-listed.html';
+
+        renderHeaderLinksList(nav.links || []);
+    }
+
+    function renderHeaderLinksList(links) {
+        const container = document.getElementById('headerLinksContainer');
+        container.innerHTML = '';
+
+        links.forEach((link, index) => {
+            const row = document.createElement('div');
+            row.className = 'item-list-row';
+            row.innerHTML = `
+                <div style="flex:1;">
+                    <input type="text" class="input-text link-label" value="${escapeHtml(link.label)}" placeholder="Link Label" style="width:100%;">
+                </div>
+                <div style="flex:2;">
+                    <input type="text" class="input-text link-url" value="${escapeHtml(link.url)}" placeholder="/page.html" style="width:100%;">
+                </div>
+                <button class="btn-danger-sm" onclick="removeHeaderLink(${index})" title="Delete Link">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(row);
+        });
+    }
+
+    function addHeaderLink() {
+        globalData.nav = globalData.nav || {};
+        globalData.nav.links = globalData.nav.links || [];
+        globalData.nav.links.push({ label: 'New Link', url: '/index.html' });
+        renderHeaderLinksList(globalData.nav.links);
+    }
+
+    function removeHeaderLink(index) {
+        if (confirm('Are you sure you want to remove this link?')) {
+            globalData.nav.links.splice(index, 1);
+            renderHeaderLinksList(globalData.nav.links);
+        }
+    }
+
+    async function saveHeaderSettings() {
+        globalData.nav = globalData.nav || {};
+        globalData.nav.logo_text = document.getElementById('headerLogoText').value;
+        globalData.nav.logo_icon = document.getElementById('headerLogoIcon').value;
+        globalData.nav.cta_btn = {
+            label: document.getElementById('headerCtaText').value,
+            url: document.getElementById('headerCtaUrl').value
+        };
+
+        // Gather links
+        const rows = document.querySelectorAll('#headerLinksContainer .item-list-row');
+        const updatedLinks = [];
+        rows.forEach(r => {
+            const label = r.querySelector('.link-label').value.trim();
+            const url = r.querySelector('.link-url').value.trim();
+            if (label) updatedLinks.push({ label, url });
+        });
+        globalData.nav.links = updatedLinks;
+
+        try {
+            const res = await fetch('/api/admin/content', {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({ page_name: 'global', content_json: globalData })
+            });
+            if (res.ok) {
+                showNotification('Header & Navbar saved successfully!');
+            } else {
+                alert('Failed to save Header');
+            }
+        } catch (e) {
+            alert('Error saving Header');
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // 4. FOOTER EDITOR LOGIC
+    // ═══════════════════════════════════════════════════════
+    function renderFooterEditor() {
+        const footer = (globalData && globalData.footer) || {};
+        document.getElementById('footerAboutHeading').value = footer.about_heading || 'About DineVault';
+        document.getElementById('footerAboutText').value = footer.about_text || '';
+        document.getElementById('footerCopyright').value = footer.copyright || '© 2026 DineVault. All rights reserved.';
+
+        // Socials
+        const socials = footer.socials || [];
+        const fb = socials.find(s => s.label === 'Facebook' || (s.icon && s.icon.includes('facebook')));
+        const tw = socials.find(s => s.label === 'Twitter' || (s.icon && s.icon.includes('twitter')));
+        const ig = socials.find(s => s.label === 'Instagram' || (s.icon && s.icon.includes('instagram')));
+        const yt = socials.find(s => s.label === 'YouTube' || (s.icon && s.icon.includes('youtube')));
+
+        if (fb) document.getElementById('socialFb').value = fb.url || '';
+        if (tw) document.getElementById('socialTw').value = tw.url || '';
+        if (ig) document.getElementById('socialInsta').value = ig.url || '';
+        if (yt) document.getElementById('socialYt').value = yt.url || '';
+
+        renderFooterLinksList('quick', footer.quick_links || []);
+        renderFooterLinksList('legal', footer.legal_links || []);
+    }
+
+    function renderFooterLinksList(type, links) {
+        const container = document.getElementById(type === 'quick' ? 'footerQuickLinksContainer' : 'footerLegalLinksContainer');
+        container.innerHTML = '';
+
+        links.forEach((link, index) => {
+            const row = document.createElement('div');
+            row.className = 'item-list-row';
+            row.innerHTML = `
+                <div style="flex:1;">
+                    <input type="text" class="input-text link-label" value="${escapeHtml(link.label)}" placeholder="Label" style="width:100%;">
+                </div>
+                <div style="flex:1.5;">
+                    <input type="text" class="input-text link-url" value="${escapeHtml(link.url)}" placeholder="/page.html" style="width:100%;">
+                </div>
+                <button class="btn-danger-sm" onclick="removeFooterLink('${type}', ${index})" title="Delete Link">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            container.appendChild(row);
+        });
+    }
+
+    function addFooterLink(type) {
+        globalData.footer = globalData.footer || {};
+        const key = type === 'quick' ? 'quick_links' : 'legal_links';
+        globalData.footer[key] = globalData.footer[key] || [];
+        globalData.footer[key].push({ label: 'New Link', url: '/index.html' });
+        renderFooterLinksList(type, globalData.footer[key]);
+    }
+
+    function removeFooterLink(type, index) {
+        const key = type === 'quick' ? 'quick_links' : 'legal_links';
+        globalData.footer[key].splice(index, 1);
+        renderFooterLinksList(type, globalData.footer[key]);
+    }
+
+    async function saveFooterSettings() {
+        globalData.footer = globalData.footer || {};
+        globalData.footer.about_heading = document.getElementById('footerAboutHeading').value;
+        globalData.footer.about_text = document.getElementById('footerAboutText').value;
+        globalData.footer.copyright = document.getElementById('footerCopyright').value;
+
+        // Quick Links
+        const quickRows = document.querySelectorAll('#footerQuickLinksContainer .item-list-row');
+        const updatedQuick = [];
+        quickRows.forEach(r => {
+            const label = r.querySelector('.link-label').value.trim();
+            const url = r.querySelector('.link-url').value.trim();
+            if (label) updatedQuick.push({ label, url });
+        });
+        globalData.footer.quick_links = updatedQuick;
+
+        // Legal Links
+        const legalRows = document.querySelectorAll('#footerLegalLinksContainer .item-list-row');
+        const updatedLegal = [];
+        legalRows.forEach(r => {
+            const label = r.querySelector('.link-label').value.trim();
+            const url = r.querySelector('.link-url').value.trim();
+            if (label) updatedLegal.push({ label, url });
+        });
+        globalData.footer.legal_links = updatedLegal;
+
+        // Socials
+        globalData.footer.socials = [
+            { icon: "fab fa-facebook-f", url: document.getElementById('socialFb').value.trim() || "#", label: "Facebook" },
+            { icon: "fab fa-twitter", url: document.getElementById('socialTw').value.trim() || "#", label: "Twitter" },
+            { icon: "fab fa-instagram", url: document.getElementById('socialInsta').value.trim() || "#", label: "Instagram" },
+            { icon: "fab fa-youtube", url: document.getElementById('socialYt').value.trim() || "#", label: "YouTube" }
+        ];
+
+        try {
+            const res = await fetch('/api/admin/content', {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({ page_name: 'global', content_json: globalData })
+            });
+            if (res.ok) {
+                showNotification('Footer & Socials saved successfully!');
+            } else {
+                alert('Failed to save Footer');
+            }
+        } catch (e) {
+            alert('Error saving Footer');
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // 5. INDIVIDUAL PAGE CONTENT LOGIC
+    // ═══════════════════════════════════════════════════════
+    async function loadIndividualPageContent(pageName) {
+        const visual = document.getElementById('pageVisualEditorContainer');
+        visual.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:20px;"><i class="fas fa-circle-notch fa-spin"></i> Loading page content...</p>';
+
+        try {
+            const res = await fetch(`/api/content?page=${encodeURIComponent(pageName)}&raw=true`);
+            if (res.ok) {
+                activePageData = await res.json();
+                renderPageVisualEditor(activePageData);
+                document.getElementById('pageRawJsonTextarea').value = JSON.stringify(activePageData, null, 2);
+            }
+        } catch (e) {
+            visual.innerHTML = '<p style="color:#f44336;text-align:center;">Failed to load page content.</p>';
+        }
+    }
+
+    function renderPageVisualEditor(data) {
+        const container = document.getElementById('pageVisualEditorContainer');
+        container.innerHTML = '';
+
+        for (const sectionKey in data) {
+            // Skip SEO metadata here since handled on Tab 1
+            if (sectionKey === 'seo' || sectionKey === 'seo_global') continue;
+
+            const val = data[sectionKey];
+            const sectionCard = document.createElement('div');
+            sectionCard.className = 'section-box';
+
+            const sectionTitle = sectionKey.replace(/_/g, ' ').toUpperCase();
+            sectionCard.innerHTML = `<h4><i class="fas fa-layer-group"></i> ${escapeHtml(sectionTitle)}</h4>`;
+
+            if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+                // Object (e.g. Hero, Mission, Vision, Form)
+                for (const subKey in val) {
+                    const subVal = val[subKey];
+                    const fieldWrapper = document.createElement('div');
+                    fieldWrapper.style.marginBottom = '14px';
+
+                    const fieldLabel = subKey.replace(/_/g, ' ').toUpperCase();
+                    fieldWrapper.innerHTML = `<label style="font-size:0.83rem;color:var(--text-muted);display:block;margin-bottom:6px;">${escapeHtml(fieldLabel)}</label>`;
+
+                    if (typeof subVal === 'object' && subVal !== null) {
+                        // Sub-object like button {label, url}
+                        const subRow = document.createElement('div');
+                        subRow.className = 'form-row';
+                        for (const bKey in subVal) {
+                            const bDiv = document.createElement('div');
+                            bDiv.innerHTML = `<span style="font-size:0.75rem;color:var(--text-dim);">${bKey.toUpperCase()}</span>`;
+                            const bInput = document.createElement('input');
+                            bInput.type = 'text';
+                            bInput.className = 'input-text';
+                            bInput.style.width = '100%';
+                            bInput.value = subVal[bKey] || '';
+                            bInput.addEventListener('input', (e) => {
+                                subVal[bKey] = e.target.value;
+                            });
+                            bDiv.appendChild(bInput);
+                            subRow.appendChild(bDiv);
+                        }
+                        fieldWrapper.appendChild(subRow);
+                    } else if (String(subVal).length > 80 || String(subVal).includes('\n')) {
+                        const textarea = document.createElement('textarea');
+                        textarea.className = 'input-textarea';
+                        textarea.rows = 3;
+                        textarea.style.width = '100%';
+                        textarea.value = subVal || '';
+                        textarea.addEventListener('input', (e) => {
+                            val[subKey] = e.target.value;
+                        });
+                        fieldWrapper.appendChild(textarea);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.className = 'input-text';
+                        input.style.width = '100%';
+                        input.value = subVal || '';
+                        input.addEventListener('input', (e) => {
+                            val[subKey] = e.target.value;
+                        });
+                        fieldWrapper.appendChild(input);
+                    }
+                    sectionCard.appendChild(fieldWrapper);
+                }
+            } else if (Array.isArray(val)) {
+                // Array of items (e.g. FAQs, stats, features)
+                val.forEach((item, itemIdx) => {
+                    const itemBox = document.createElement('div');
+                    itemBox.style.background = 'rgba(0,0,0,0.2)';
+                    itemBox.style.padding = '12px';
+                    itemBox.style.borderRadius = '8px';
+                    itemBox.style.marginBottom = '10px';
+
+                    if (typeof item === 'object') {
+                        for (const iKey in item) {
+                            const iDiv = document.createElement('div');
+                            iDiv.style.marginBottom = '8px';
+                            iDiv.innerHTML = `<span style="font-size:0.78rem;color:var(--text-dim);">${iKey.toUpperCase()}:</span>`;
+                            const iInput = (String(item[iKey]).length > 80) ? document.createElement('textarea') : document.createElement('input');
+                            iInput.className = (String(item[iKey]).length > 80) ? 'input-textarea' : 'input-text';
+                            iInput.style.width = '100%';
+                            if (String(item[iKey]).length > 80) iInput.rows = 2;
+                            iInput.value = item[iKey] || '';
+                            iInput.addEventListener('input', (e) => {
+                                item[iKey] = e.target.value;
+                            });
+                            iDiv.appendChild(iInput);
+                            itemBox.appendChild(iDiv);
+                        }
+                    } else {
+                        const strInput = document.createElement('input');
+                        strInput.type = 'text';
+                        strInput.className = 'input-text';
+                        strInput.style.width = '100%';
+                        strInput.value = item;
+                        strInput.addEventListener('input', (e) => {
+                            val[itemIdx] = e.target.value;
+                        });
+                        itemBox.appendChild(strInput);
+                    }
+                    sectionCard.appendChild(itemBox);
+                });
+            } else {
+                // Simple string / boolean
+                const simpleInput = (String(val).length > 80) ? document.createElement('textarea') : document.createElement('input');
+                simpleInput.className = (String(val).length > 80) ? 'input-textarea' : 'input-text';
+                simpleInput.style.width = '100%';
+                if (String(val).length > 80) simpleInput.rows = 4;
+                simpleInput.value = val || '';
+                simpleInput.addEventListener('input', (e) => {
+                    data[sectionKey] = e.target.value;
+                });
+                sectionCard.appendChild(simpleInput);
+            }
+
+            container.appendChild(sectionCard);
+        }
+    }
+
+    function toggleRawJsonMode() {
+        isRawMode = !isRawMode;
+        const visual = document.getElementById('pageVisualEditorContainer');
+        const raw = document.getElementById('pageRawJsonContainer');
+        const btn = document.getElementById('toggleRawJsonBtn');
+
+        if (isRawMode) {
+            visual.style.display = 'none';
+            raw.style.display = 'block';
+            document.getElementById('pageRawJsonTextarea').value = JSON.stringify(activePageData, null, 2);
+            btn.innerHTML = '<i class="fas fa-list"></i> Visual Form';
+        } else {
+            try {
+                activePageData = JSON.parse(document.getElementById('pageRawJsonTextarea').value);
+                renderPageVisualEditor(activePageData);
+                raw.style.display = 'none';
+                visual.style.display = 'block';
+                btn.innerHTML = '<i class="fas fa-code"></i> Raw JSON';
+            } catch (e) {
+                alert('Invalid JSON! Please check syntax.');
+            }
+        }
+    }
+
+    async function saveIndividualPageContent() {
+        const pageName = document.getElementById('contentPageSelect').value;
+        let payload = activePageData;
+
+        if (isRawMode) {
+            try {
+                payload = JSON.parse(document.getElementById('pageRawJsonTextarea').value);
+                activePageData = payload;
+            } catch (e) {
+                alert('Invalid JSON! Please check syntax.');
+                return;
+            }
+        }
+
+        try {
+            const res = await fetch('/api/admin/content', {
+                method: 'POST',
+                headers: authHeaders(),
+                body: JSON.stringify({ page_name: pageName, content_json: payload })
+            });
+            if (res.ok) {
+                showNotification(`Page content for '${pageName}' saved successfully!`);
+            } else {
+                alert('Failed to save page content');
+            }
+        } catch (e) {
+            alert('Error saving page content');
+        }
+    }
+
+    // Initialization
     document.addEventListener('DOMContentLoaded', () => {
-        fetchMasterIndexingStatus();
-        loadPageContent(pageSelect.value);
+        initGlobalSettings();
+        loadPageSEO('home');
+        loadIndividualPageContent('home');
     });
 </script>
 </body>

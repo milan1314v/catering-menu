@@ -123,6 +123,15 @@ img {
     box-shadow: 0 4px 20px rgba(200, 169, 126, 0.3);
 }
 
+.login-header img {
+    max-height: 60px;
+    max-width: 220px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 14px;
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 6px rgba(200, 169, 126, 0.4));
+}
+
 .login-header h1 {
     font-size: 1.8rem;
     font-weight: 800;
@@ -351,10 +360,11 @@ select option:checked {
 }
 
 .sidebar-header img {
-    max-height: 38px;
-    max-width: 140px;
+    max-height: 42px;
+    max-width: 150px;
     object-fit: contain;
     display: inline-block;
+    filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.95)) drop-shadow(0 0 4px rgba(200, 169, 126, 0.4));
 }
 
 .sidebar-nav {

@@ -22,7 +22,7 @@
     <nav class="navbar" id="navbar">
         <div class="container">
             <a href="/index.html" class="nav-logo">
-                <img src="/assets/img/catering-menu-logo.png" alt="Catering Menu" class="nav-logo-img">
+                <img src="/assets/img/catering-menu-logo.png" alt="Catering Menu" class="nav-logo-img" id="mainNavLogo">
             </a>
             <div class="nav-links" id="navLinks">
                 <a href="/index.html" class="active">Home</a>
@@ -108,17 +108,20 @@
                     <div class="split-bullet"><i class="fas fa-check-circle"></i> Exclusive partnership perks and offers
                     </div>
                 </div>
+                <a href="/about.html" class="btn-primary" id="split1Btn">
+                    Learn More <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
-            <div class="split-visual">
+            <div class="split-image">
                 <img id="split1Img" src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
-                    alt="Premium steak dining experience" class="split-img">
+                    alt="Premium steak dining experience">
             </div>
         </div>
     </section>
 
-    <!-- SPLIT SECTION 2 -->
-    <section class="section">
-        <div class="container split-grid split-reverse">
+    <!-- SPLIT SECTION 2 - Image Left, Content Right -->
+    <section class="split-section reverse" id="split2Section">
+        <div class="container split-inner">
             <div class="split-content split-content-visual">
                 <div class="overline" id="split2Overline">Community Driven</div>
                 <h2 id="split2Title">Real Reviews from Real Food Lovers</h2>
@@ -132,10 +135,13 @@
                     <div class="split-bullet"><i class="fas fa-camera"></i> Photo reviews and food stories</div>
                     <div class="split-bullet"><i class="fas fa-trophy"></i> Top reviewer recognition program</div>
                 </div>
+                <a href="/listings.html" class="btn-primary" id="split2Btn">
+                    Read Reviews <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
-            <div class="split-visual">
+            <div class="split-image">
                 <img id="split2Img" src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800"
-                    alt="Friends enjoying dinner together" class="split-img">
+                    alt="Friends enjoying dinner together">
             </div>
         </div>
     </section>
@@ -248,6 +254,13 @@
                     if (cms.split_1.title) document.getElementById('split1Title').textContent = cms.split_1.title;
                     if (cms.split_1.text) document.getElementById('split1Text').textContent = cms.split_1.text;
                     if (cms.split_1.image_url) document.getElementById('split1Img').src = cms.split_1.image_url;
+                    if (cms.split_1.btn) {
+                        const btn = document.getElementById('split1Btn');
+                        if (btn) {
+                            btn.innerHTML = `${escapeHtml(cms.split_1.btn.label || 'Learn More')} <i class="fas fa-arrow-right"></i>`;
+                            if (cms.split_1.btn.url) btn.href = cms.split_1.btn.url;
+                        }
+                    }
                     if (Array.isArray(cms.split_1.bullets)) {
                         document.getElementById('split1Bullets').innerHTML = cms.split_1.bullets.map(b => `
                             <div class="split-bullet"><i class="${escapeHtml(b.icon || 'fas fa-check-circle')}"></i> ${escapeHtml(b.text)}</div>
@@ -260,6 +273,13 @@
                     if (cms.split_2.title) document.getElementById('split2Title').textContent = cms.split_2.title;
                     if (cms.split_2.text) document.getElementById('split2Text').textContent = cms.split_2.text;
                     if (cms.split_2.image_url) document.getElementById('split2Img').src = cms.split_2.image_url;
+                    if (cms.split_2.btn) {
+                        const btn = document.getElementById('split2Btn');
+                        if (btn) {
+                            btn.innerHTML = `${escapeHtml(cms.split_2.btn.label || 'Read Reviews')} <i class="fas fa-arrow-right"></i>`;
+                            if (cms.split_2.btn.url) btn.href = cms.split_2.btn.url;
+                        }
+                    }
                     if (Array.isArray(cms.split_2.bullets)) {
                         document.getElementById('split2Bullets').innerHTML = cms.split_2.bullets.map(b => `
                             <div class="split-bullet"><i class="${escapeHtml(b.icon || 'fas fa-check-circle')}"></i> ${escapeHtml(b.text)}</div>

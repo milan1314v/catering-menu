@@ -5,7 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Restaurant Details - DineVault</title>
+    <title>Restaurant Details - Catering Menu</title>
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/img/site.webmanifest">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -306,7 +312,7 @@
             }
 
             const rest = currentRestaurant;
-            document.title = `${rest.name} - DineVault`;
+            document.title = `${rest.name} - Catering Menu`;
             document.getElementById('breadcrumbName').textContent = rest.name;
             document.getElementById('restName').textContent = rest.name;
             document.getElementById('welcomeTitle').textContent = `Welcome to ${rest.name}`;

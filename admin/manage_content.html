@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Manage Content & SEO - DineVault Admin</title>
+    <title>Manage Content & SEO - Catering Menu Admin</title>
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/img/site.webmanifest">
     <link rel="stylesheet" href="admin_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -241,6 +247,161 @@
         .btn-outline-gold:hover {
             background: rgba(200, 169, 126, 0.1);
         }
+
+        /* ── LUXURY CMS ENHANCEMENTS & LIVE IMAGE MANAGER ── */
+        .cms-section-card {
+            background: rgba(18, 18, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+            transition: border-color 0.25s ease;
+        }
+        .cms-section-card:hover {
+            border-color: rgba(200, 169, 126, 0.35);
+        }
+        .cms-sec-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+        }
+        .cms-sec-title {
+            color: var(--gold);
+            font-size: 1.12rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cms-sec-badge {
+            background: rgba(200, 169, 126, 0.15);
+            color: var(--gold);
+            border: 1px solid rgba(200, 169, 126, 0.3);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+        .cms-field-block {
+            margin-bottom: 16px;
+        }
+        .cms-field-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #d1cfe0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+        .cms-field-hint {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-left: auto;
+            font-weight: normal;
+        }
+
+        /* Live Image Manager */
+        .cms-image-card {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            background: rgba(10, 10, 26, 0.75);
+            border: 1px solid rgba(200, 169, 126, 0.25);
+            border-radius: 10px;
+            padding: 18px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .cms-image-preview-wrap {
+            width: 220px;
+            height: 140px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #080816;
+            border: 1.5px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .cms-image-preview-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .cms-image-controls {
+            flex: 1;
+            min-width: 260px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .cms-preset-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            margin-top: 4px;
+        }
+        .cms-preset-chip {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #d1cfe0;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cms-preset-chip:hover {
+            background: rgba(200, 169, 126, 0.2);
+            border-color: var(--gold);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+        .cms-upload-btn {
+            background: rgba(200, 169, 126, 0.15);
+            color: var(--gold);
+            border: 1px solid rgba(200, 169, 126, 0.35);
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        .cms-upload-btn:hover {
+            background: var(--gold);
+            color: #0a0a1a;
+        }
+
+        /* Mini-Card Item Lists */
+        .cms-sub-box {
+            background: rgba(10, 10, 26, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        .cms-sub-box:hover {
+            border-color: rgba(200, 169, 126, 0.25);
+        }
     </style>
 </head>
 <body>
@@ -248,8 +409,8 @@
 <div class="admin-layout">
     <aside class="sidebar glass-sidebar">
         <div class="sidebar-header">
-            <i class="fas fa-utensils"></i>
-            <span>DineVault</span>
+            <img src="/assets/img/catering-menu-logo.png" alt="Catering Menu" style="max-height: 38px; border-radius: 6px;">
+            <span style="font-size: 1.05rem;">Catering Menu</span>
         </div>
         <nav class="sidebar-nav">
             <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
@@ -402,17 +563,62 @@
                     </button>
                 </div>
 
-                <!-- Logo Section -->
+                <!-- Logo & Brand Section -->
                 <div class="section-box">
-                    <h4><i class="fas fa-signature"></i> Website Logo</h4>
-                    <div class="form-row">
+                    <h4><i class="fas fa-signature"></i> Website Logo & Brand Identity</h4>
+                    
+                    <!-- Live Logo Card -->
+                    <div style="background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <label style="font-size: 0.85rem; color: var(--gold); display: block; margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="fas fa-image"></i> Brand Image Logo (Primary Navbar Logo)
+                        </label>
+                        <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                            <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 16px; display: inline-flex; align-items: center; justify-content: center; min-width: 140px; min-height: 70px;">
+                                <img id="headerLogoImgPreview" src="/assets/img/catering-menu-logo.png" alt="Logo Preview" style="max-height: 52px; max-width: 200px; object-fit: contain;">
+                            </div>
+                            <div style="flex: 1; min-width: 260px;">
+                                <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                                    <input type="text" id="headerLogoImage" class="input-text" value="/assets/img/catering-menu-logo.png" placeholder="/assets/img/catering-menu-logo.png" style="flex: 1;" oninput="updateLogoImgPreview(this.value)">
+                                    <button type="button" class="cms-upload-btn" onclick="document.getElementById('headerLogoFileInput').click()">
+                                        <i class="fas fa-cloud-upload-alt"></i> Upload & Replace
+                                    </button>
+                                    <input type="file" id="headerLogoFileInput" accept="image/*" style="display:none;" onchange="handleHeaderLogoUpload(this)">
+                                </div>
+                                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                    <button type="button" class="cms-preset-chip" onclick="resetHeaderLogoToDefault()">
+                                        <i class="fas fa-undo"></i> Set Default (/assets/img/catering-menu-logo.png)
+                                    </button>
+                                    <a id="headerLogoViewFull" href="/assets/img/catering-menu-logo.png" target="_blank" style="color: var(--gold); font-size: 0.8rem; text-decoration: underline; margin-left: 6px;">
+                                        <i class="fas fa-external-link-alt"></i> View Full Logo
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Text & Icon Fallback -->
+                    <div class="form-row" style="margin-bottom: 20px;">
                         <div>
-                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">LOGO TEXT</label>
-                            <input type="text" id="headerLogoText" class="input-text" placeholder="DineVault" style="width: 100%;">
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">LOGO TEXT / ALT TEXT</label>
+                            <input type="text" id="headerLogoText" class="input-text" placeholder="Catering Menu" style="width: 100%;">
                         </div>
                         <div>
-                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">FONT AWESOME ICON CLASS</label>
+                            <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">FONT AWESOME ICON (FALLBACK IF NO IMAGE)</label>
                             <input type="text" id="headerLogoIcon" class="input-text" placeholder="fas fa-utensils" style="width: 100%;">
+                        </div>
+                    </div>
+
+                    <!-- Favicon Settings -->
+                    <div style="background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 16px;">
+                        <label style="font-size: 0.82rem; color: var(--text-muted); display: block; margin-bottom: 8px; font-weight: 600;">
+                            <i class="fas fa-star" style="color: var(--gold);"></i> BROWSER TAB FAVICON
+                        </label>
+                        <div style="display: flex; gap: 14px; align-items: center; flex-wrap: wrap;">
+                            <img src="/assets/img/favicon-32x32.png" alt="Favicon" style="width: 32px; height: 32px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); padding: 2px; background: rgba(0,0,0,0.4);">
+                            <div style="flex: 1; min-width: 220px;">
+                                <input type="text" id="headerFaviconPath" class="input-text" value="/assets/img/favicon.ico" readonly style="width: 100%; opacity: 0.85; font-size: 0.85rem;">
+                            </div>
+                            <span style="font-size: 0.8rem; color: #4caf50;"><i class="fas fa-check-circle"></i> Active across all 10 pages</span>
                         </div>
                     </div>
                 </div>
@@ -464,10 +670,10 @@
 
                 <!-- About Footer -->
                 <div class="section-box">
-                    <h4><i class="fas fa-info-circle"></i> Column 1: About DineVault</h4>
+                    <h4><i class="fas fa-info-circle"></i> Column 1: About Catering Menu</h4>
                     <div class="form-group" style="margin-bottom: 12px;">
                         <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">HEADING</label>
-                        <input type="text" id="footerAboutHeading" class="input-text" placeholder="About DineVault" style="width: 100%;">
+                        <input type="text" id="footerAboutHeading" class="input-text" placeholder="About Catering Menu" style="width: 100%;">
                     </div>
                     <div class="form-group">
                         <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">DESCRIPTION</label>
@@ -526,7 +732,7 @@
                     <h4><i class="fas fa-copyright"></i> Copyright Bar</h4>
                     <div>
                         <label style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-bottom: 6px;">COPYRIGHT TEXT</label>
-                        <input type="text" id="footerCopyright" class="input-text" placeholder="© 2026 DineVault. All rights reserved." style="width: 100%;">
+                        <input type="text" id="footerCopyright" class="input-text" placeholder="© 2026 Catering Menu. All rights reserved." style="width: 100%;">
                     </div>
                 </div>
             </div>
@@ -814,9 +1020,48 @@
     // ═══════════════════════════════════════════════════════
     // 3. HEADER EDITOR LOGIC
     // ═══════════════════════════════════════════════════════
+    function updateLogoImgPreview(url) {
+        const preview = document.getElementById('headerLogoImgPreview');
+        const viewFull = document.getElementById('headerLogoViewFull');
+        const safeUrl = url && url.trim() ? url.trim() : '/assets/img/catering-menu-logo.png';
+        if (preview) preview.src = safeUrl;
+        if (viewFull) viewFull.href = safeUrl;
+    }
+
+    function resetHeaderLogoToDefault() {
+        const input = document.getElementById('headerLogoImage');
+        if (input) {
+            input.value = '/assets/img/catering-menu-logo.png';
+            updateLogoImgPreview(input.value);
+            showNotification('Logo reset to /assets/img/catering-menu-logo.png');
+        }
+    }
+
+    function handleHeaderLogoUpload(fileInput) {
+        const file = fileInput.files && fileInput.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const dataUrl = e.target.result;
+            const input = document.getElementById('headerLogoImage');
+            if (input) {
+                input.value = dataUrl;
+                updateLogoImgPreview(dataUrl);
+                showNotification('Logo loaded! Click "Save Header Changes" to commit.');
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+
     function renderHeaderEditor() {
         const nav = (globalData && globalData.nav) || {};
-        document.getElementById('headerLogoText').value = nav.logo_text || 'DineVault';
+        const logoImg = (nav.logo_image !== undefined && nav.logo_image !== '') ? nav.logo_image : '/assets/img/catering-menu-logo.png';
+        const logoImgInput = document.getElementById('headerLogoImage');
+        if (logoImgInput) {
+            logoImgInput.value = logoImg;
+            updateLogoImgPreview(logoImg);
+        }
+        document.getElementById('headerLogoText').value = nav.logo_text || 'Catering Menu';
         document.getElementById('headerLogoIcon').value = nav.logo_icon || 'fas fa-utensils';
 
         const cta = nav.cta_btn || {};
@@ -864,6 +1109,10 @@
 
     async function saveHeaderSettings() {
         globalData.nav = globalData.nav || {};
+        const logoImgInput = document.getElementById('headerLogoImage');
+        if (logoImgInput) {
+            globalData.nav.logo_image = logoImgInput.value.trim();
+        }
         globalData.nav.logo_text = document.getElementById('headerLogoText').value;
         globalData.nav.logo_icon = document.getElementById('headerLogoIcon').value;
         globalData.nav.cta_btn = {
@@ -902,9 +1151,9 @@
     // ═══════════════════════════════════════════════════════
     function renderFooterEditor() {
         const footer = (globalData && globalData.footer) || {};
-        document.getElementById('footerAboutHeading').value = footer.about_heading || 'About DineVault';
+        document.getElementById('footerAboutHeading').value = footer.about_heading || 'About Catering Menu';
         document.getElementById('footerAboutText').value = footer.about_text || '';
-        document.getElementById('footerCopyright').value = footer.copyright || '© 2026 DineVault. All rights reserved.';
+        document.getElementById('footerCopyright').value = footer.copyright || '© 2026 Catering Menu. All rights reserved.';
 
         // Socials
         const socials = footer.socials || [];
@@ -1009,143 +1258,1180 @@
     }
 
     // ═══════════════════════════════════════════════════════
-    // 5. INDIVIDUAL PAGE CONTENT LOGIC
+    // 5. INDIVIDUAL PAGE CONTENT LOGIC & LUXURY CMS
     // ═══════════════════════════════════════════════════════
+
+    // Curated high-res food & dining preset images for instant 1-click swapping
+    const IMAGE_PRESETS = [
+        { label: "🥩 Prime Steak & Fries (Split 1)", url: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800" },
+        { label: "👨‍🍳 Chef Prepping (Split 2)", url: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800" },
+        { label: "🍷 Luxury Dining Room", url: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400" },
+        { label: "🍝 Italian Pasta & Wine", url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400" },
+        { label: "🍣 Fresh Sushi & Sashimi", url: "https://images.unsplash.com/photo-1579027989536-b7b1f875659b?w=1400" },
+        { label: "🍔 Wood-Fired Grill & BBQ", url: "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=1400" },
+        { label: "☕ Cozy Modern Bistro", url: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800" }
+    ];
+
+    // Authoritative default page contents matching live website exactly
+    const DEFAULT_PAGE_CONTENTS = {
+        home: {
+            hero: {
+                badge: "Premium Dining Directory",
+                title: "Discover Extraordinary Dining Experiences",
+                subtitle: "Explore handpicked restaurants, read authentic reviews, and find your next favorite meal — all in one place.",
+                search_placeholder: "Search restaurants by name or cuisine...",
+                search_btn: { label: "Explore Now", url: "#restaurants" },
+                stats: [
+                    { number: "2,500+", label: "Restaurants" },
+                    { number: "15,000+", label: "Reviews" },
+                    { number: "50,000+", label: "Happy Diners" }
+                ]
+            },
+            featured: {
+                overline: "Our Selection",
+                title: "Featured Restaurants",
+                subtitle: "Handpicked dining destinations that our community loves the most.",
+                view_all_btn: { label: "View All Restaurants", url: "/listings.html" }
+            },
+            split_1: {
+                overline: "Why Choose Us",
+                title: "Curated by Experts, Loved by Diners",
+                text: "Every restaurant on Catering Menu is handpicked by our culinary experts. We visit, taste, and verify each establishment before it appears on our platform. Our rigorous selection process ensures that when you choose a restaurant from Catering Menu, you are choosing excellence.",
+                bullets: [
+                    { icon: "fas fa-check-circle", text: "Expert-curated restaurant selections" },
+                    { icon: "fas fa-check-circle", text: "Authentic verified customer reviews" },
+                    { icon: "fas fa-check-circle", text: "Real-time menu and pricing updates" },
+                    { icon: "fas fa-check-circle", text: "Exclusive partnership perks and offers" }
+                ],
+                image_url: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800",
+                image_alt: "Premium steak dining experience",
+                btn: { label: "Learn More", url: "/about.html" }
+            },
+            split_2: {
+                overline: "Community Driven",
+                title: "Real Reviews from Real Food Lovers",
+                text: "Our community of over 50,000 passionate diners shares their honest experiences every day. From hidden neighborhood gems to celebrated fine dining destinations, our reviews help you make confident choices. Every review is verified, every rating is genuine, and every recommendation comes from someone who has truly dined there.",
+                bullets: [
+                    { icon: "fas fa-shield-alt", text: "100% verified diner reviews" },
+                    { icon: "fas fa-users", text: "50,000+ active community members" },
+                    { icon: "fas fa-camera", text: "Photo reviews and food stories" },
+                    { icon: "fas fa-trophy", text: "Top reviewer recognition program" }
+                ],
+                image_url: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800",
+                image_alt: "Friends enjoying dinner together",
+                btn: { label: "Read Reviews", url: "/listings.html" }
+            },
+            how_it_works: {
+                overline: "Simple Process",
+                title: "How Catering Menu Works",
+                subtitle: "Finding the perfect restaurant is just three simple steps away.",
+                steps: [
+                    { icon: "fas fa-search", title: "Browse & Discover", text: "Explore our curated collection of top-rated restaurants. Filter by cuisine, location, or rating to find exactly what you crave." },
+                    { icon: "fas fa-star", title: "Read Real Reviews", text: "Dive into authentic reviews from verified diners. See ratings, photos, and detailed experiences before making your choice." },
+                    { icon: "fas fa-book-open", title: "Reserve & Enjoy", text: "Connect directly with your chosen restaurant. Get directions, view menus, and plan your perfect dining experience." }
+                ]
+            },
+            cta: {
+                title: "Own a Restaurant?",
+                text: "Join Catering Menu and reach thousands of food enthusiasts. List your restaurant for free and let diners discover your culinary excellence.",
+                btn: { label: "Get Listed Today", url: "/get-listed.html" }
+            }
+        },
+        about: {
+            hero: {
+                title: "About Catering Menu",
+                subtitle: "We are passionate about connecting people with unforgettable dining experiences."
+            },
+            mission: {
+                title: "Our Mission",
+                text: "To empower every food lover with the tools, insights, and community they need to discover restaurants that truly delight. We believe every meal should be an experience worth remembering, and our platform is designed to make finding that perfect spot effortless and enjoyable."
+            },
+            vision: {
+                title: "Our Vision",
+                text: "To become the world's most trusted and comprehensive restaurant discovery platform, where authenticity, quality, and community come together to redefine how people explore food. We envision a future where no great restaurant goes unnoticed and no diner settles for less."
+            },
+            stats: [
+                { number: "2,500+", label: "Restaurants Listed" },
+                { number: "15,000+", label: "Reviews Submitted" },
+                { number: "50,000+", label: "Happy Diners" },
+                { number: "120+", label: "Cities Covered" }
+            ],
+            cta: {
+                title: "Own a Restaurant?",
+                text: "Join Catering Menu and reach thousands of food enthusiasts.",
+                btn: { label: "Get Listed Today", url: "/get-listed.html" }
+            }
+        },
+        contact: {
+            hero: {
+                title: "Get In Touch",
+                subtitle: "Have a question, suggestion, or partnership inquiry? We would love to hear from you."
+            },
+            form: {
+                name_placeholder: "Your Full Name",
+                email_placeholder: "Your Email Address",
+                subject_placeholder: "Subject",
+                message_placeholder: "Your Message",
+                submit_btn: { label: "Send Message", url: "#" }
+            },
+            info: {
+                title: "Contact Information",
+                items: [
+                    { icon: "fas fa-map-marker-alt", label: "Address", value: "123 Gourmet Avenue, Culinary District, NY 10001" },
+                    { icon: "fas fa-phone-alt", label: "Phone", value: "+1 (555) 987-6543" },
+                    { icon: "fas fa-envelope", label: "Email", value: "hello@catering-menu.com" },
+                    { icon: "fas fa-clock", label: "Hours", value: "Mon – Fri: 9:00 AM – 6:00 PM" }
+                ]
+            }
+        },
+        faqs: {
+            hero: {
+                title: "Frequently Asked Questions",
+                subtitle: "Everything you need to know about using Catering Menu."
+            },
+            items: [
+                { question: "How do I list my restaurant on Catering Menu?", answer: "Simply navigate to the Get Listed page and fill out the submission form with your restaurant details. Our team will review your submission and approve it within 24-48 hours." },
+                { question: "Is it free to list my restaurant?", answer: "Yes! Listing your restaurant on Catering Menu is completely free. We believe in making restaurant discovery accessible to everyone." },
+                { question: "How do reviews work on Catering Menu?", answer: "Anyone can leave a review for a restaurant they have visited. Reviews include a star rating and a written experience." },
+                { question: "Can I edit my restaurant listing after submission?", answer: "Yes. After your listing is approved, you can contact our support team to request edits to your restaurant information, menu, photos, or other details." },
+                { question: "How do I report an incorrect listing?", answer: "If you notice incorrect information about a restaurant, please use the Contact page to send us the details. Our team will investigate and update the listing promptly." }
+            ],
+            cta: {
+                title: "Own a Restaurant?",
+                text: "Join Catering Menu and reach thousands of food enthusiasts.",
+                btn: { label: "Get Listed Today", url: "/get-listed.html" }
+            }
+        },
+        "get-listed": {
+            hero: {
+                title: "List Your Restaurant",
+                subtitle: "Join thousands of restaurants already on Catering Menu. Showcase your menu, gather reviews, and attract new customers."
+            },
+            form: {
+                title: "Submit Your Restaurant",
+                name_label: "Restaurant Name",
+                banner_label: "Banner Image URL",
+                about_label: "About Your Restaurant",
+                menu_label: "Direct Menu Text",
+                days_label: "Opening Days & Hours",
+                locations_label: "Location(s)",
+                submit_btn: { label: "Submit for Review", url: "#" },
+                success_msg: "Thank you! Your restaurant has been submitted for review. Our team will approve it shortly."
+            }
+        },
+        listings: {
+            hero: { title: "All Restaurants" },
+            search_placeholder: "Search restaurants, cuisines, or locations...",
+            filters: { cuisine_label: "Cuisine", price_label: "Price Range", rating_label: "Rating", clear_btn: "Clear All" },
+            empty_state: { icon: "fas fa-search", title: "No restaurants found", text: "Try adjusting your filters or search term." },
+            results_text: "restaurants found"
+        },
+        privacy: {
+            hero: { title: "Privacy Policy" },
+            content: "At Catering Menu, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.\n\nWe collect personal information such as your name, email address, and dining preferences only when you voluntarily provide it. This information is used to personalize your experience, improve our platform, and communicate with you about restaurant recommendations, updates, and promotions.\n\nWe do not sell, trade, or rent your personal information to third parties. We implement appropriate security measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction.\n\nOur website uses cookies to enhance your browsing experience. You can choose to disable cookies through your browser settings. By using Catering Menu, you consent to our Privacy Policy."
+        },
+        terms: {
+            hero: { title: "Terms of Service" },
+            content: "Welcome to Catering Menu. By accessing or using our website and services, you agree to be bound by these Terms of Service.\n\nCatering Menu provides a platform for discovering restaurants, reading reviews, and sharing dining experiences. You may use our services only for lawful purposes and in accordance with these Terms.\n\nYou are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. Reviews submitted to Catering Menu must be based on genuine personal experiences. Fake, misleading, or defamatory reviews are strictly prohibited.\n\nRestaurant owners are responsible for the accuracy of their listed information. Catering Menu reserves the right to modify, suspend, or discontinue any part of the service at any time without prior notice."
+        },
+        disclaimer: {
+            hero: { title: "Disclaimer" },
+            content: "The information provided on Catering Menu is for general informational purposes only. While we strive to keep restaurant information accurate and up-to-date, we make no representations or warranties of any kind about the completeness, accuracy, reliability, or availability of the information contained on this platform.\n\nRestaurant listings, menus, pricing, and hours of operation are provided by the restaurants themselves and may change without notice. Catering Menu does not guarantee the quality of food, service, or dining experience at any listed restaurant.\n\nUser reviews reflect individual opinions and do not represent the views of Catering Menu. We encourage diners to verify all information directly with the restaurant before visiting. Catering Menu is not responsible for any loss or damage incurred as a result of relying on information presented on this website."
+        },
+        restaurant: {
+            welcome_title: "Welcome to",
+            menu_title: "Our Menu",
+            menu_toggle_file: "View Uploaded Menu",
+            menu_toggle_text: "View Text Menu",
+            info_title: "Restaurant Info",
+            hours_label: "Opening Days & Hours",
+            location_label: "Location(s)",
+            reviews_title: "Customer Reviews",
+            review_form_title: "Leave a Review",
+            review_form_name: "Your Name",
+            review_form_rating: "Your Rating",
+            review_form_text: "Your Review",
+            review_form_btn: { label: "Submit Review", url: "#" },
+            review_success: "Your review has been submitted successfully!",
+            no_reviews: "No reviews yet. Be the first to share your experience!"
+        }
+    };
+
+    // Deep merge helper with automatic sanitization of corrupt '[object Object]' strings
+    function sanitizeAndMerge(defaults, incoming) {
+        if (!incoming || typeof incoming !== 'object') return JSON.parse(JSON.stringify(defaults || {}));
+        const out = JSON.parse(JSON.stringify(defaults || {}));
+
+        for (const key in incoming) {
+            const inVal = incoming[key];
+            if (inVal === undefined || inVal === null) continue;
+
+            if (Array.isArray(inVal)) {
+                // If the array is corrupt with '[object Object]' strings, restore clean default array
+                const isCorrupt = inVal.some(item => 
+                    item === '[object Object]' || 
+                    (typeof item === 'object' && Object.values(item).some(v => v === '[object Object]'))
+                );
+                if (isCorrupt || inVal.length === 0) {
+                    out[key] = defaults && defaults[key] ? JSON.parse(JSON.stringify(defaults[key])) : inVal;
+                } else {
+                    out[key] = inVal;
+                }
+            } else if (typeof inVal === 'object') {
+                out[key] = sanitizeAndMerge(out[key] || {}, inVal);
+            } else {
+                out[key] = inVal;
+            }
+        }
+        return out;
+    }
+
     async function loadIndividualPageContent(pageName) {
         const visual = document.getElementById('pageVisualEditorContainer');
-        visual.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:20px;"><i class="fas fa-circle-notch fa-spin"></i> Loading page content...</p>';
+        visual.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:30px;"><i class="fas fa-circle-notch fa-spin"></i> Loading page content...</p>';
 
+        let fetchedData = {};
         try {
             const res = await fetch(`/api/content?page=${encodeURIComponent(pageName)}&raw=true`);
             if (res.ok) {
-                activePageData = await res.json();
-                renderPageVisualEditor(activePageData);
-                document.getElementById('pageRawJsonTextarea').value = JSON.stringify(activePageData, null, 2);
+                fetchedData = await res.json();
             }
         } catch (e) {
-            visual.innerHTML = '<p style="color:#f44336;text-align:center;">Failed to load page content.</p>';
+            console.warn('Using local defaults for ' + pageName, e);
+        }
+
+        const defaults = DEFAULT_PAGE_CONTENTS[pageName] || {};
+        activePageData = sanitizeAndMerge(defaults, fetchedData);
+
+        renderPageVisualEditor(activePageData, pageName);
+        document.getElementById('pageRawJsonTextarea').value = JSON.stringify(activePageData, null, 2);
+    }
+
+    // ── LIVE IMAGE CONTROL WITH THUMBNAIL, PRESETS & LOCAL UPLOAD ──
+    function buildImageControl(label, initialUrl, onUpdate) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cms-field-block';
+
+        const defaultPlaceholder = 'https://images.unsplash.com/photo-1544025162-d76694265947?w=800';
+        let currentUrl = initialUrl || defaultPlaceholder;
+
+        wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-image" style="color:var(--gold);"></i> ${escapeHtml(label)}
+                <span class="cms-field-hint">Live Preview &amp; 1-Click Replace</span>
+            </div>
+            <div class="cms-image-card">
+                <div class="cms-image-preview-wrap">
+                    <img src="${escapeHtml(currentUrl)}" alt="Live Preview" onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?w=800'">
+                </div>
+                <div class="cms-image-controls">
+                    <div style="display:flex;gap:10px;align-items:center;">
+                        <input type="text" class="input-text img-url-input" value="${escapeHtml(initialUrl || '')}" placeholder="Paste image URL here..." style="flex:1;">
+                        <button type="button" class="cms-upload-btn upload-trigger-btn" title="Choose an image file from your PC">
+                            <i class="fas fa-upload"></i> Upload / Replace
+                        </button>
+                        <input type="file" accept="image/*" class="hidden-file-input" style="display:none;">
+                    </div>
+                    <div style="font-size:0.76rem;color:var(--text-dim);display:flex;align-items:center;gap:6px;">
+                        <span>Quick Popular Food Presets:</span>
+                        <a href="${escapeHtml(currentUrl)}" target="_blank" class="full-view-link" style="color:var(--gold);margin-left:auto;text-decoration:none;font-weight:600;"><i class="fas fa-external-link-alt"></i> View Full</a>
+                    </div>
+                    <div class="cms-preset-wrap"></div>
+                </div>
+            </div>
+        `;
+
+        const imgEl = wrap.querySelector('img');
+        const urlInput = wrap.querySelector('.img-url-input');
+        const uploadTrigger = wrap.querySelector('.upload-trigger-btn');
+        const fileInput = wrap.querySelector('.hidden-file-input');
+        const presetWrap = wrap.querySelector('.cms-preset-wrap');
+        const fullViewLink = wrap.querySelector('.full-view-link');
+
+        // Typing / Pasting URL
+        urlInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            imgEl.src = val || defaultPlaceholder;
+            fullViewLink.href = val || '#';
+            onUpdate(val);
+            syncRawJsonTextarea();
+        });
+
+        // Trigger file picker
+        uploadTrigger.addEventListener('click', () => fileInput.click());
+
+        // Handle local file upload
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (uploadEvent) => {
+                const dataUrl = uploadEvent.target.result;
+                urlInput.value = dataUrl;
+                imgEl.src = dataUrl;
+                fullViewLink.href = dataUrl;
+                onUpdate(dataUrl);
+                syncRawJsonTextarea();
+                showNotification('Image replaced successfully from your device!');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Preset Chips
+        IMAGE_PRESETS.forEach(preset => {
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'cms-preset-chip';
+            chip.innerHTML = preset.label;
+            chip.addEventListener('click', () => {
+                urlInput.value = preset.url;
+                imgEl.src = preset.url;
+                fullViewLink.href = preset.url;
+                onUpdate(preset.url);
+                syncRawJsonTextarea();
+                showNotification(`Applied preset image: ${preset.label}`);
+            });
+            presetWrap.appendChild(chip);
+        });
+
+        return wrap;
+    }
+
+    // ── STATS MANAGER (FOR HERO & ABOUT) ──
+    function buildStatsManager(statsArray, onUpdate) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cms-field-block';
+        wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-chart-line" style="color:var(--gold);"></i> Statistics Counters
+                <span class="cms-field-hint">Displayed prominently on the live site</span>
+            </div>
+            <div class="stats-list-container"></div>
+            <button type="button" class="btn-outline-gold add-stat-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add New Stat
+            </button>
+        `;
+
+        const listContainer = wrap.querySelector('.stats-list-container');
+
+        function renderList() {
+            listContainer.innerHTML = '';
+            statsArray.forEach((stat, idx) => {
+                const row = document.createElement('div');
+                row.className = 'cms-sub-box';
+                row.style.display = 'flex';
+                row.style.gap = '12px';
+                row.style.alignItems = 'center';
+                row.innerHTML = `
+                    <div style="flex:1;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Stat Number / Value</span>
+                        <input type="text" class="input-text stat-num" value="${escapeHtml(stat.number || '')}" placeholder="e.g. 2,500+" style="width:100%;">
+                    </div>
+                    <div style="flex:1.5;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Stat Label / Title</span>
+                        <input type="text" class="input-text stat-lbl" value="${escapeHtml(stat.label || '')}" placeholder="e.g. Restaurants" style="width:100%;">
+                    </div>
+                    <button type="button" class="btn-danger-sm del-stat-btn" title="Remove Stat" style="margin-top:18px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+
+                row.querySelector('.stat-num').addEventListener('input', (e) => {
+                    stat.number = e.target.value;
+                    onUpdate(statsArray);
+                    syncRawJsonTextarea();
+                });
+                row.querySelector('.stat-lbl').addEventListener('input', (e) => {
+                    stat.label = e.target.value;
+                    onUpdate(statsArray);
+                    syncRawJsonTextarea();
+                });
+                row.querySelector('.del-stat-btn').addEventListener('click', () => {
+                    statsArray.splice(idx, 1);
+                    renderList();
+                    onUpdate(statsArray);
+                    syncRawJsonTextarea();
+                });
+
+                listContainer.appendChild(row);
+            });
+        }
+
+        wrap.querySelector('.add-stat-btn').addEventListener('click', () => {
+            statsArray.push({ number: '1,000+', label: 'New Metric' });
+            renderList();
+            onUpdate(statsArray);
+            syncRawJsonTextarea();
+        });
+
+        renderList();
+        return wrap;
+    }
+
+    // ── BULLETS MANAGER (FOR SPLIT 1 & SPLIT 2) ──
+    function buildBulletsManager(bulletsArray, onUpdate) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cms-field-block';
+        wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-check-circle" style="color:var(--gold);"></i> Feature Highlights / Bullet Points
+                <span class="cms-field-hint">Key checkmarks shown next to image</span>
+            </div>
+            <div class="bullets-list-container"></div>
+            <button type="button" class="btn-outline-gold add-bullet-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add Bullet Point
+            </button>
+        `;
+
+        const listContainer = wrap.querySelector('.bullets-list-container');
+
+        function renderList() {
+            listContainer.innerHTML = '';
+            bulletsArray.forEach((bullet, idx) => {
+                const row = document.createElement('div');
+                row.className = 'cms-sub-box';
+                row.style.display = 'flex';
+                row.style.gap = '12px';
+                row.style.alignItems = 'center';
+                row.innerHTML = `
+                    <div style="width:160px;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Icon Class</span>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <i class="${escapeHtml(bullet.icon || 'fas fa-check-circle')} icon-prev" style="color:var(--gold);font-size:1.1rem;width:22px;text-align:center;"></i>
+                            <input type="text" class="input-text bullet-icon" value="${escapeHtml(bullet.icon || 'fas fa-check-circle')}" placeholder="fas fa-check-circle" style="width:100%;">
+                        </div>
+                    </div>
+                    <div style="flex:1;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Highlight Text</span>
+                        <input type="text" class="input-text bullet-text" value="${escapeHtml(bullet.text || '')}" placeholder="Enter feature text..." style="width:100%;">
+                    </div>
+                    <button type="button" class="btn-danger-sm del-bullet-btn" title="Remove Bullet" style="margin-top:18px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+
+                const iconInput = row.querySelector('.bullet-icon');
+                const iconPrev = row.querySelector('.icon-prev');
+                iconInput.addEventListener('input', (e) => {
+                    bullet.icon = e.target.value.trim();
+                    iconPrev.className = bullet.icon + ' icon-prev';
+                    onUpdate(bulletsArray);
+                    syncRawJsonTextarea();
+                });
+
+                row.querySelector('.bullet-text').addEventListener('input', (e) => {
+                    bullet.text = e.target.value;
+                    onUpdate(bulletsArray);
+                    syncRawJsonTextarea();
+                });
+
+                row.querySelector('.del-bullet-btn').addEventListener('click', () => {
+                    bulletsArray.splice(idx, 1);
+                    renderList();
+                    onUpdate(bulletsArray);
+                    syncRawJsonTextarea();
+                });
+
+                listContainer.appendChild(row);
+            });
+        }
+
+        wrap.querySelector('.add-bullet-btn').addEventListener('click', () => {
+            bulletsArray.push({ icon: 'fas fa-check-circle', text: 'New feature highlight' });
+            renderList();
+            onUpdate(bulletsArray);
+            syncRawJsonTextarea();
+        });
+
+        renderList();
+        return wrap;
+    }
+
+    // ── STEPS MANAGER (FOR HOW IT WORKS) ──
+    function buildStepsManager(stepsArray, onUpdate) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cms-field-block';
+        wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-shoe-prints" style="color:var(--gold);"></i> Process Steps
+                <span class="cms-field-hint">Numbered cards showing how it works</span>
+            </div>
+            <div class="steps-list-container"></div>
+            <button type="button" class="btn-outline-gold add-step-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add Process Step
+            </button>
+        `;
+
+        const listContainer = wrap.querySelector('.steps-list-container');
+
+        function renderList() {
+            listContainer.innerHTML = '';
+            stepsArray.forEach((step, idx) => {
+                const box = document.createElement('div');
+                box.className = 'cms-sub-box';
+                box.style.marginBottom = '14px';
+                box.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <span style="font-weight:700;color:var(--gold);font-size:0.9rem;">
+                            <i class="fas fa-circle-notch"></i> Step ${idx + 1}
+                        </span>
+                        <button type="button" class="btn-danger-sm del-step-btn" title="Remove Step">
+                            <i class="fas fa-trash"></i> Delete Step
+                        </button>
+                    </div>
+                    <div class="form-row">
+                        <div style="flex:1;">
+                            <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">FontAwesome Icon</span>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <i class="${escapeHtml(step.icon || 'fas fa-star')} step-icon-prev" style="color:var(--gold);font-size:1.1rem;width:24px;text-align:center;"></i>
+                                <input type="text" class="input-text step-icon" value="${escapeHtml(step.icon || '')}" placeholder="fas fa-search" style="width:100%;">
+                            </div>
+                        </div>
+                        <div style="flex:2;">
+                            <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Step Title</span>
+                            <input type="text" class="input-text step-title" value="${escapeHtml(step.title || '')}" placeholder="Browse & Discover" style="width:100%;">
+                        </div>
+                    </div>
+                    <div style="margin-top:10px;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Step Description</span>
+                        <textarea class="input-textarea step-text" rows="2" style="width:100%;" placeholder="Describe this step...">${escapeHtml(step.text || '')}</textarea>
+                    </div>
+                `;
+
+                const iconInput = box.querySelector('.step-icon');
+                const iconPrev = box.querySelector('.step-icon-prev');
+                iconInput.addEventListener('input', (e) => {
+                    step.icon = e.target.value.trim();
+                    iconPrev.className = step.icon + ' step-icon-prev';
+                    onUpdate(stepsArray);
+                    syncRawJsonTextarea();
+                });
+
+                box.querySelector('.step-title').addEventListener('input', (e) => {
+                    step.title = e.target.value;
+                    onUpdate(stepsArray);
+                    syncRawJsonTextarea();
+                });
+
+                box.querySelector('.step-text').addEventListener('input', (e) => {
+                    step.text = e.target.value;
+                    onUpdate(stepsArray);
+                    syncRawJsonTextarea();
+                });
+
+                box.querySelector('.del-step-btn').addEventListener('click', () => {
+                    stepsArray.splice(idx, 1);
+                    renderList();
+                    onUpdate(stepsArray);
+                    syncRawJsonTextarea();
+                });
+
+                listContainer.appendChild(box);
+            });
+        }
+
+        wrap.querySelector('.add-step-btn').addEventListener('click', () => {
+            stepsArray.push({ icon: 'fas fa-check', title: 'New Step', text: 'Description of this step' });
+            renderList();
+            onUpdate(stepsArray);
+            syncRawJsonTextarea();
+        });
+
+        renderList();
+        return wrap;
+    }
+
+    // ── FAQ MANAGER ──
+    function buildFaqManager(faqArray, onUpdate) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cms-field-block';
+        wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-question-circle" style="color:var(--gold);"></i> Frequently Asked Questions
+            </div>
+            <div class="faq-list-container"></div>
+            <button type="button" class="btn-outline-gold add-faq-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add New FAQ
+            </button>
+        `;
+
+        const listContainer = wrap.querySelector('.faq-list-container');
+
+        function renderList() {
+            listContainer.innerHTML = '';
+            faqArray.forEach((item, idx) => {
+                const box = document.createElement('div');
+                box.className = 'cms-sub-box';
+                box.style.marginBottom = '12px';
+                box.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <span style="color:var(--gold);font-weight:600;font-size:0.85rem;">Q${idx + 1}</span>
+                        <button type="button" class="btn-danger-sm del-faq-btn" title="Delete FAQ"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Question</span>
+                        <input type="text" class="input-text faq-q" value="${escapeHtml(item.question || '')}" style="width:100%;">
+                    </div>
+                    <div>
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Answer</span>
+                        <textarea class="input-textarea faq-a" rows="3" style="width:100%;">${escapeHtml(item.answer || '')}</textarea>
+                    </div>
+                `;
+
+                box.querySelector('.faq-q').addEventListener('input', (e) => {
+                    item.question = e.target.value;
+                    onUpdate(faqArray);
+                    syncRawJsonTextarea();
+                });
+                box.querySelector('.faq-a').addEventListener('input', (e) => {
+                    item.answer = e.target.value;
+                    onUpdate(faqArray);
+                    syncRawJsonTextarea();
+                });
+                box.querySelector('.del-faq-btn').addEventListener('click', () => {
+                    faqArray.splice(idx, 1);
+                    renderList();
+                    onUpdate(faqArray);
+                    syncRawJsonTextarea();
+                });
+
+                listContainer.appendChild(box);
+            });
+        }
+
+        wrap.querySelector('.add-faq-btn').addEventListener('click', () => {
+            faqArray.push({ question: 'New Question?', answer: 'Detailed answer here.' });
+            renderList();
+            onUpdate(faqArray);
+            syncRawJsonTextarea();
+        });
+
+        renderList();
+        return wrap;
+    }
+
+    // ── CONTACT INFO MANAGER (FOR CONTACT PAGE) ──
+    function buildContactInfoManager(itemsArray, onUpdate) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cms-field-block';
+        wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-address-book" style="color:var(--gold);"></i> Contact Information Items
+                <span class="cms-field-hint">Address, Phone, Email & Hours displayed on Contact page</span>
+            </div>
+            <div class="contact-list-container"></div>
+            <button type="button" class="btn-outline-gold add-contact-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add Contact Detail
+            </button>
+        `;
+
+        const listContainer = wrap.querySelector('.contact-list-container');
+
+        function renderList() {
+            listContainer.innerHTML = '';
+            itemsArray.forEach((item, idx) => {
+                const row = document.createElement('div');
+                row.className = 'cms-sub-box';
+                row.style.display = 'flex';
+                row.style.gap = '12px';
+                row.style.alignItems = 'center';
+                row.innerHTML = `
+                    <div style="width:160px;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Icon Class</span>
+                        <div style="display:flex;align-items:center;gap:8px;">
+                            <i class="${escapeHtml(item.icon || 'fas fa-info-circle')} icon-prev" style="color:var(--gold);font-size:1.1rem;width:22px;text-align:center;"></i>
+                            <input type="text" class="input-text c-icon" value="${escapeHtml(item.icon || '')}" placeholder="fas fa-map-marker-alt" style="width:100%;">
+                        </div>
+                    </div>
+                    <div style="width:180px;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Field Label</span>
+                        <input type="text" class="input-text c-lbl" value="${escapeHtml(item.label || '')}" placeholder="e.g. Phone, Address" style="width:100%;">
+                    </div>
+                    <div style="flex:1;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Value / Information</span>
+                        <input type="text" class="input-text c-val" value="${escapeHtml(item.value || '')}" placeholder="e.g. +1 (555) 987-6543" style="width:100%;">
+                    </div>
+                    <button type="button" class="btn-danger-sm del-c-btn" title="Remove Detail" style="margin-top:18px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+
+                const iconInput = row.querySelector('.c-icon');
+                const iconPrev = row.querySelector('.icon-prev');
+                iconInput.addEventListener('input', (e) => {
+                    item.icon = e.target.value.trim();
+                    iconPrev.className = item.icon + ' icon-prev';
+                    onUpdate(itemsArray);
+                    syncRawJsonTextarea();
+                });
+
+                row.querySelector('.c-lbl').addEventListener('input', (e) => {
+                    item.label = e.target.value;
+                    onUpdate(itemsArray);
+                    syncRawJsonTextarea();
+                });
+
+                row.querySelector('.c-val').addEventListener('input', (e) => {
+                    item.value = e.target.value;
+                    onUpdate(itemsArray);
+                    syncRawJsonTextarea();
+                });
+
+                row.querySelector('.del-c-btn').addEventListener('click', () => {
+                    itemsArray.splice(idx, 1);
+                    renderList();
+                    onUpdate(itemsArray);
+                    syncRawJsonTextarea();
+                });
+
+                listContainer.appendChild(row);
+            });
+        }
+
+        wrap.querySelector('.add-contact-btn').addEventListener('click', () => {
+            itemsArray.push({ icon: 'fas fa-info-circle', label: 'New Label', value: 'Information here' });
+            renderList();
+            onUpdate(itemsArray);
+            syncRawJsonTextarea();
+        });
+
+        renderList();
+        return wrap;
+    }
+
+    // ── GENERIC OBJECT & STRING ARRAY BUILDERS ──
+    function buildGenericObjectArray(label, arr, onUpdate) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cms-field-block';
+        wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-list" style="color:var(--gold);"></i> ${escapeHtml(label)}
+            </div>
+            <div class="obj-list-container"></div>
+            <button type="button" class="btn-outline-gold add-obj-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add Item
+            </button>
+        `;
+
+        const listContainer = wrap.querySelector('.obj-list-container');
+
+        function renderList() {
+            listContainer.innerHTML = '';
+            arr.forEach((item, idx) => {
+                const box = document.createElement('div');
+                box.className = 'cms-sub-box';
+                box.style.marginBottom = '10px';
+                box.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <span style="color:var(--gold);font-weight:600;font-size:0.82rem;">Item #${idx + 1}</span>
+                        <button type="button" class="btn-danger-sm del-obj-btn"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="obj-fields-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:10px;"></div>
+                `;
+
+                const grid = box.querySelector('.obj-fields-grid');
+                for (const k in item) {
+                    const fDiv = document.createElement('div');
+                    fDiv.innerHTML = `<span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:3px;">${escapeHtml(k.toUpperCase())}</span>`;
+                    const inp = (String(item[k]).length > 60) ? document.createElement('textarea') : document.createElement('input');
+                    inp.className = (String(item[k]).length > 60) ? 'input-textarea' : 'input-text';
+                    inp.style.width = '100%';
+                    if (String(item[k]).length > 60) inp.rows = 2;
+                    inp.value = item[k] || '';
+                    inp.addEventListener('input', (e) => {
+                        item[k] = e.target.value;
+                        onUpdate(arr);
+                        syncRawJsonTextarea();
+                    });
+                    fDiv.appendChild(inp);
+                    grid.appendChild(fDiv);
+                }
+
+                box.querySelector('.del-obj-btn').addEventListener('click', () => {
+                    arr.splice(idx, 1);
+                    renderList();
+                    onUpdate(arr);
+                    syncRawJsonTextarea();
+                });
+
+                listContainer.appendChild(box);
+            });
+        }
+
+        wrap.querySelector('.add-obj-btn').addEventListener('click', () => {
+            const sample = arr.length > 0 ? JSON.parse(JSON.stringify(arr[0])) : { name: 'New Item' };
+            for (const k in sample) sample[k] = '';
+            arr.push(sample);
+            renderList();
+            onUpdate(arr);
+            syncRawJsonTextarea();
+        });
+
+        renderList();
+        return wrap;
+    }
+
+    function buildGenericStringArray(label, arr, onUpdate) {
+        const wrap = document.createElement('div');
+        wrap.className = 'cms-field-block';
+        wrap.innerHTML = `
+            <div class="cms-field-label">${escapeHtml(label)}</div>
+            <div class="str-list-container"></div>
+            <button type="button" class="btn-outline-gold add-str-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add Item
+            </button>
+        `;
+
+        const listContainer = wrap.querySelector('.str-list-container');
+
+        function renderList() {
+            listContainer.innerHTML = '';
+            arr.forEach((str, idx) => {
+                const row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.gap = '8px';
+                row.style.marginBottom = '8px';
+                row.innerHTML = `
+                    <input type="text" class="input-text str-val" value="${escapeHtml(str || '')}" style="flex:1;">
+                    <button type="button" class="btn-danger-sm del-str-btn"><i class="fas fa-trash"></i></button>
+                `;
+                row.querySelector('.str-val').addEventListener('input', (e) => {
+                    arr[idx] = e.target.value;
+                    onUpdate(arr);
+                    syncRawJsonTextarea();
+                });
+                row.querySelector('.del-str-btn').addEventListener('click', () => {
+                    arr.splice(idx, 1);
+                    renderList();
+                    onUpdate(arr);
+                    syncRawJsonTextarea();
+                });
+                listContainer.appendChild(row);
+            });
+        }
+
+        wrap.querySelector('.add-str-btn').addEventListener('click', () => {
+            arr.push('New Item');
+            renderList();
+            onUpdate(arr);
+            syncRawJsonTextarea();
+        });
+
+        renderList();
+        return wrap;
+    }
+
+    // ── UNIVERSAL SMART ARRAY DETECTOR (NEVER ALLOWS [object Object]) ──
+    function buildSmartArrayManager(label, arr, onUpdate) {
+        if (!Array.isArray(arr) || arr.length === 0) {
+            return buildGenericStringArray(label, arr || [], onUpdate);
+        }
+
+        const first = arr[0];
+        if (typeof first === 'object' && first !== null) {
+            if ('question' in first || 'answer' in first) {
+                return buildFaqManager(arr, onUpdate);
+            }
+            if ('number' in first && 'label' in first) {
+                return buildStatsManager(arr, onUpdate);
+            }
+            if (('icon' in first && 'label' in first && 'value' in first) || ('label' in first && 'value' in first)) {
+                return buildContactInfoManager(arr, onUpdate);
+            }
+            if ('icon' in first && 'title' in first && 'text' in first) {
+                return buildStepsManager(arr, onUpdate);
+            }
+            if ('icon' in first && 'text' in first) {
+                return buildBulletsManager(arr, onUpdate);
+            }
+            return buildGenericObjectArray(label, arr, onUpdate);
+        } else {
+            return buildGenericStringArray(label, arr, onUpdate);
         }
     }
 
-    function renderPageVisualEditor(data) {
+    function isImageField(key, val) {
+        const k = String(key).toLowerCase();
+        if (k.includes('image') || k.includes('banner') || k.includes('photo') || k.includes('pic') || k.includes('logo')) {
+            return true;
+        }
+        if (typeof val === 'string' && (val.startsWith('http://') || val.startsWith('https://') || val.startsWith('data:image/'))) {
+            if (val.includes('unsplash.com') || val.includes('images.') || val.match(/\.(jpeg|jpg|gif|png|webp|svg)/i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // ── MAIN RENDERER WITH LIVE-WEBSITE SECTION ORDERING FOR ALL 10 PAGES ──
+    function renderPageVisualEditor(data, pageName) {
         const container = document.getElementById('pageVisualEditorContainer');
         container.innerHTML = '';
 
-        for (const sectionKey in data) {
-            // Skip SEO metadata here since handled on Tab 1
-            if (sectionKey === 'seo' || sectionKey === 'seo_global') continue;
+        // Section metadata & order matching live website
+        const SECTION_META = {
+            hero: { title: "HERO BANNER & HEADER", badge: "Live Website Top", icon: "fas fa-compass" },
+            featured: { title: "FEATURED RESTAURANTS SECTION", badge: "Our Selection Grid", icon: "fas fa-star" },
+            split_1: { title: "SPLIT SECTION 1 (WHY CHOOSE US)", badge: "Steak Image Right", icon: "fas fa-award" },
+            split_2: { title: "SPLIT SECTION 2 (COMMUNITY DRIVEN)", badge: "Chef Image Left", icon: "fas fa-users" },
+            how_it_works: { title: "HOW DINEVAULT WORKS", badge: "3 Simple Steps", icon: "fas fa-tasks" },
+            cta: { title: "CALL TO ACTION BANNER", badge: "Own a Restaurant? Banner", icon: "fas fa-bullhorn" },
+            mission: { title: "OUR MISSION", badge: "About Us", icon: "fas fa-bullseye" },
+            vision: { title: "OUR VISION", badge: "About Us", icon: "fas fa-eye" },
+            stats: { title: "IMPACT METRICS (BY THE NUMBERS)", badge: "4 Stat Counters", icon: "fas fa-chart-line" },
+            form: { title: "INTERACTIVE FORM LABELS", badge: "Submission Form", icon: "fas fa-envelope-open-text" },
+            info: { title: "CONTACT DETAILS & ADDRESS", badge: "Sidebar Info Card", icon: "fas fa-address-card" },
+            items: { title: "FREQUENTLY ASKED QUESTIONS", badge: "FAQs Accordion", icon: "fas fa-question-circle" },
+            filters: { title: "SEARCH & SIDEBAR FILTERS", badge: "Directory Filters", icon: "fas fa-sliders-h" },
+            empty_state: { title: "EMPTY SEARCH RESULTS MESSAGE", badge: "Search Feedback", icon: "fas fa-search" },
+            content: { title: "DOCUMENT BODY CONTENT", badge: "Full Document Text", icon: "fas fa-file-contract" }
+        };
 
+        // Determine correct visual order per page
+        let order = [];
+        if (pageName === 'home') {
+            order = ['hero', 'featured', 'split_1', 'split_2', 'how_it_works', 'cta'];
+        } else if (pageName === 'about') {
+            order = ['hero', 'mission', 'vision', 'stats', 'cta'];
+        } else if (pageName === 'contact') {
+            order = ['hero', 'form', 'info'];
+        } else if (pageName === 'faqs') {
+            order = ['hero', 'items', 'cta'];
+        } else if (pageName === 'get-listed') {
+            order = ['hero', 'form'];
+        } else if (pageName === 'listings') {
+            order = ['hero', 'search_placeholder', 'results_text', 'filters', 'empty_state'];
+        } else if (pageName === 'privacy' || pageName === 'terms' || pageName === 'disclaimer') {
+            order = ['hero', 'content'];
+        }
+
+        // Special dedicated grouping for Restaurant Details page
+        if (pageName === 'restaurant') {
+            const groups = [
+                {
+                    title: "GENERAL RESTAURANT LABELS",
+                    badge: "Page Headings & Labels",
+                    icon: "fas fa-store",
+                    keys: ['welcome_title', 'menu_title', 'info_title', 'hours_label', 'location_label']
+                },
+                {
+                    title: "MENU TOGGLE & DOWNLOAD LABELS",
+                    badge: "Menu View Switchers",
+                    icon: "fas fa-utensils",
+                    keys: ['menu_toggle_file', 'menu_toggle_text']
+                },
+                {
+                    title: "REVIEWS & FEEDBACK FORM LABELS",
+                    badge: "Customer Reviews",
+                    icon: "fas fa-comments",
+                    keys: ['reviews_title', 'review_form_title', 'review_form_name', 'review_form_rating', 'review_form_text', 'review_form_btn', 'review_success', 'no_reviews']
+                }
+            ];
+
+            groups.forEach(group => {
+                const sectionCard = document.createElement('div');
+                sectionCard.className = 'cms-section-card';
+                sectionCard.innerHTML = `
+                    <div class="cms-sec-header">
+                        <h4 class="cms-sec-title">
+                            <i class="${group.icon}" style="color:var(--gold);"></i> ${escapeHtml(group.title)}
+                        </h4>
+                        <span class="cms-sec-badge">${escapeHtml(group.badge)}</span>
+                    </div>
+                    <div class="cms-sec-body"></div>
+                `;
+                const bodyEl = sectionCard.querySelector('.cms-sec-body');
+
+                group.keys.forEach(k => {
+                    if (data[k] === undefined) return;
+                    const val = data[k];
+
+                    if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+                        // Button object
+                        const btnBlock = document.createElement('div');
+                        btnBlock.className = 'cms-field-block';
+                        btnBlock.innerHTML = `
+                            <div class="cms-field-label"><i class="fas fa-link" style="color:var(--gold);"></i> ${escapeHtml(k.replace(/_/g, ' ').toUpperCase())}</div>
+                            <div class="form-row">
+                                <div style="flex:1;">
+                                    <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Label</span>
+                                    <input type="text" class="input-text btn-lbl" value="${escapeHtml(val.label || '')}" style="width:100%;">
+                                </div>
+                                <div style="flex:1.5;">
+                                    <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">URL / Action</span>
+                                    <input type="text" class="input-text btn-url" value="${escapeHtml(val.url || '')}" style="width:100%;">
+                                </div>
+                            </div>
+                        `;
+                        btnBlock.querySelector('.btn-lbl').addEventListener('input', (e) => { val.label = e.target.value; syncRawJsonTextarea(); });
+                        btnBlock.querySelector('.btn-url').addEventListener('input', (e) => { val.url = e.target.value; syncRawJsonTextarea(); });
+                        bodyEl.appendChild(btnBlock);
+                    } else {
+                        const strBlock = document.createElement('div');
+                        strBlock.className = 'cms-field-block';
+                        strBlock.innerHTML = `
+                            <div class="cms-field-label">${escapeHtml(k.replace(/_/g, ' ').toUpperCase())}</div>
+                            <input type="text" class="input-text" value="${escapeHtml(val || '')}" style="width:100%;">
+                        `;
+                        strBlock.querySelector('input').addEventListener('input', (e) => {
+                            data[k] = e.target.value;
+                            syncRawJsonTextarea();
+                        });
+                        bodyEl.appendChild(strBlock);
+                    }
+                });
+
+                container.appendChild(sectionCard);
+            });
+            return;
+        }
+
+        // Add any additional keys not explicitly ordered
+        const allKeys = Object.keys(data).filter(k => k !== 'seo' && k !== 'seo_global');
+        allKeys.forEach(k => {
+            if (!order.includes(k)) order.push(k);
+        });
+
+        // Render each section
+        order.forEach(sectionKey => {
+            if (data[sectionKey] === undefined) return;
             const val = data[sectionKey];
-            const sectionCard = document.createElement('div');
-            sectionCard.className = 'section-box';
 
-            const sectionTitle = sectionKey.replace(/_/g, ' ').toUpperCase();
-            sectionCard.innerHTML = `<h4><i class="fas fa-layer-group"></i> ${escapeHtml(sectionTitle)}</h4>`;
+            const meta = SECTION_META[sectionKey] || {
+                title: sectionKey.replace(/_/g, ' ').toUpperCase(),
+                badge: "Section",
+                icon: "fas fa-layer-group"
+            };
+
+            const sectionCard = document.createElement('div');
+            sectionCard.className = 'cms-section-card';
+            sectionCard.innerHTML = `
+                <div class="cms-sec-header">
+                    <h4 class="cms-sec-title">
+                        <i class="${meta.icon}" style="color:var(--gold);"></i> ${escapeHtml(meta.title)}
+                    </h4>
+                    <span class="cms-sec-badge">${escapeHtml(meta.badge)}</span>
+                </div>
+                <div class="cms-sec-body"></div>
+            `;
+
+            const bodyEl = sectionCard.querySelector('.cms-sec-body');
 
             if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
-                // Object (e.g. Hero, Mission, Vision, Form)
+                // Render section object fields
                 for (const subKey in val) {
                     const subVal = val[subKey];
-                    const fieldWrapper = document.createElement('div');
-                    fieldWrapper.style.marginBottom = '14px';
 
-                    const fieldLabel = subKey.replace(/_/g, ' ').toUpperCase();
-                    fieldWrapper.innerHTML = `<label style="font-size:0.83rem;color:var(--text-muted);display:block;margin-bottom:6px;">${escapeHtml(fieldLabel)}</label>`;
-
-                    if (typeof subVal === 'object' && subVal !== null) {
-                        // Sub-object like button {label, url}
-                        const subRow = document.createElement('div');
-                        subRow.className = 'form-row';
-                        for (const bKey in subVal) {
-                            const bDiv = document.createElement('div');
-                            bDiv.innerHTML = `<span style="font-size:0.75rem;color:var(--text-dim);">${bKey.toUpperCase()}</span>`;
-                            const bInput = document.createElement('input');
-                            bInput.type = 'text';
-                            bInput.className = 'input-text';
-                            bInput.style.width = '100%';
-                            bInput.value = subVal[bKey] || '';
-                            bInput.addEventListener('input', (e) => {
-                                subVal[bKey] = e.target.value;
-                            });
-                            bDiv.appendChild(bInput);
-                            subRow.appendChild(bDiv);
-                        }
-                        fieldWrapper.appendChild(subRow);
-                    } else if (String(subVal).length > 80 || String(subVal).includes('\n')) {
-                        const textarea = document.createElement('textarea');
-                        textarea.className = 'input-textarea';
-                        textarea.rows = 3;
-                        textarea.style.width = '100%';
-                        textarea.value = subVal || '';
-                        textarea.addEventListener('input', (e) => {
-                            val[subKey] = e.target.value;
-                        });
-                        fieldWrapper.appendChild(textarea);
-                    } else {
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.className = 'input-text';
-                        input.style.width = '100%';
-                        input.value = subVal || '';
-                        input.addEventListener('input', (e) => {
-                            val[subKey] = e.target.value;
-                        });
-                        fieldWrapper.appendChild(input);
+                    // 1. Image fields
+                    if (isImageField(subKey, subVal)) {
+                        const imgCtrl = buildImageControl(
+                            subKey.replace(/_/g, ' ').toUpperCase(),
+                            subVal,
+                            (newUrl) => { val[subKey] = newUrl; }
+                        );
+                        bodyEl.appendChild(imgCtrl);
                     }
-                    sectionCard.appendChild(fieldWrapper);
+                    // 2. Any array inside a section (stats, bullets, steps, contact items, etc.)
+                    else if (Array.isArray(subVal)) {
+                        const arrCtrl = buildSmartArrayManager(
+                            subKey.replace(/_/g, ' ').toUpperCase(),
+                            subVal,
+                            (newArr) => { val[subKey] = newArr; }
+                        );
+                        bodyEl.appendChild(arrCtrl);
+                    }
+                    // 3. Button object { label, url }
+                    else if (typeof subVal === 'object' && subVal !== null && !Array.isArray(subVal)) {
+                        const btnBlock = document.createElement('div');
+                        btnBlock.className = 'cms-field-block';
+                        btnBlock.innerHTML = `
+                            <div class="cms-field-label">
+                                <i class="fas fa-link" style="color:var(--gold);"></i> ${escapeHtml(subKey.replace(/_/g, ' ').toUpperCase())} BUTTON
+                            </div>
+                            <div class="form-row">
+                                <div style="flex:1;">
+                                    <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Button Label</span>
+                                    <input type="text" class="input-text btn-lbl" value="${escapeHtml(subVal.label || '')}" placeholder="Button Text" style="width:100%;">
+                                </div>
+                                <div style="flex:1.5;">
+                                    <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Button URL / Link</span>
+                                    <input type="text" class="input-text btn-url" value="${escapeHtml(subVal.url || '')}" placeholder="/page.html or #id" style="width:100%;">
+                                </div>
+                            </div>
+                        `;
+
+                        btnBlock.querySelector('.btn-lbl').addEventListener('input', (e) => {
+                            subVal.label = e.target.value;
+                            syncRawJsonTextarea();
+                        });
+                        btnBlock.querySelector('.btn-url').addEventListener('input', (e) => {
+                            subVal.url = e.target.value;
+                            syncRawJsonTextarea();
+                        });
+
+                        bodyEl.appendChild(btnBlock);
+                    }
+                    // 4. Textarea fields (long text)
+                    else if (String(subVal).length > 70 || subKey === 'text' || subKey === 'subtitle' || subKey.includes('message') || subKey.includes('desc')) {
+                        const textBlock = document.createElement('div');
+                        textBlock.className = 'cms-field-block';
+                        textBlock.innerHTML = `
+                            <div class="cms-field-label">${escapeHtml(subKey.replace(/_/g, ' ').toUpperCase())}</div>
+                            <textarea class="input-textarea" rows="3" style="width:100%;">${escapeHtml(subVal || '')}</textarea>
+                        `;
+                        textBlock.querySelector('textarea').addEventListener('input', (e) => {
+                            val[subKey] = e.target.value;
+                            syncRawJsonTextarea();
+                        });
+                        bodyEl.appendChild(textBlock);
+                    }
+                    // 5. Regular short input
+                    else {
+                        const strBlock = document.createElement('div');
+                        strBlock.className = 'cms-field-block';
+                        strBlock.innerHTML = `
+                            <div class="cms-field-label">${escapeHtml(subKey.replace(/_/g, ' ').toUpperCase())}</div>
+                            <input type="text" class="input-text" value="${escapeHtml(subVal || '')}" style="width:100%;">
+                        `;
+                        strBlock.querySelector('input').addEventListener('input', (e) => {
+                            val[subKey] = e.target.value;
+                            syncRawJsonTextarea();
+                        });
+                        bodyEl.appendChild(strBlock);
+                    }
                 }
             } else if (Array.isArray(val)) {
-                // Array of items (e.g. FAQs, stats, features)
-                val.forEach((item, itemIdx) => {
-                    const itemBox = document.createElement('div');
-                    itemBox.style.background = 'rgba(0,0,0,0.2)';
-                    itemBox.style.padding = '12px';
-                    itemBox.style.borderRadius = '8px';
-                    itemBox.style.marginBottom = '10px';
-
-                    if (typeof item === 'object') {
-                        for (const iKey in item) {
-                            const iDiv = document.createElement('div');
-                            iDiv.style.marginBottom = '8px';
-                            iDiv.innerHTML = `<span style="font-size:0.78rem;color:var(--text-dim);">${iKey.toUpperCase()}:</span>`;
-                            const iInput = (String(item[iKey]).length > 80) ? document.createElement('textarea') : document.createElement('input');
-                            iInput.className = (String(item[iKey]).length > 80) ? 'input-textarea' : 'input-text';
-                            iInput.style.width = '100%';
-                            if (String(item[iKey]).length > 80) iInput.rows = 2;
-                            iInput.value = item[iKey] || '';
-                            iInput.addEventListener('input', (e) => {
-                                item[iKey] = e.target.value;
-                            });
-                            iDiv.appendChild(iInput);
-                            itemBox.appendChild(iDiv);
-                        }
-                    } else {
-                        const strInput = document.createElement('input');
-                        strInput.type = 'text';
-                        strInput.className = 'input-text';
-                        strInput.style.width = '100%';
-                        strInput.value = item;
-                        strInput.addEventListener('input', (e) => {
-                            val[itemIdx] = e.target.value;
-                        });
-                        itemBox.appendChild(strInput);
-                    }
-                    sectionCard.appendChild(itemBox);
-                });
+                // Top-level arrays (e.g. FAQs items, About stats)
+                bodyEl.appendChild(buildSmartArrayManager(meta.title, val, (newArr) => {
+                    data[sectionKey] = newArr;
+                }));
             } else {
-                // Simple string / boolean
-                const simpleInput = (String(val).length > 80) ? document.createElement('textarea') : document.createElement('input');
-                simpleInput.className = (String(val).length > 80) ? 'input-textarea' : 'input-text';
-                simpleInput.style.width = '100%';
-                if (String(val).length > 80) simpleInput.rows = 4;
-                simpleInput.value = val || '';
-                simpleInput.addEventListener('input', (e) => {
+                // Primitive string (e.g. privacy/terms policy body, search placeholder)
+                const simpleBlock = document.createElement('div');
+                simpleBlock.className = 'cms-field-block';
+                const isLong = String(val).length > 80 || String(val).includes('\n') || sectionKey === 'content';
+                const fieldEl = isLong ? document.createElement('textarea') : document.createElement('input');
+                fieldEl.className = isLong ? 'input-textarea' : 'input-text';
+                fieldEl.style.width = '100%';
+                if (isLong) fieldEl.rows = 8;
+                fieldEl.value = val || '';
+                fieldEl.addEventListener('input', (e) => {
                     data[sectionKey] = e.target.value;
+                    syncRawJsonTextarea();
                 });
-                sectionCard.appendChild(simpleInput);
+                simpleBlock.appendChild(fieldEl);
+                bodyEl.appendChild(simpleBlock);
             }
 
             container.appendChild(sectionCard);
+        });
+    }
+
+    function syncRawJsonTextarea() {
+        const raw = document.getElementById('pageRawJsonTextarea');
+        if (raw && !isRawMode) {
+            raw.value = JSON.stringify(activePageData, null, 2);
         }
     }
 
@@ -1154,6 +2440,7 @@
         const visual = document.getElementById('pageVisualEditorContainer');
         const raw = document.getElementById('pageRawJsonContainer');
         const btn = document.getElementById('toggleRawJsonBtn');
+        const pageName = document.getElementById('contentPageSelect').value;
 
         if (isRawMode) {
             visual.style.display = 'none';
@@ -1163,7 +2450,7 @@
         } else {
             try {
                 activePageData = JSON.parse(document.getElementById('pageRawJsonTextarea').value);
-                renderPageVisualEditor(activePageData);
+                renderPageVisualEditor(activePageData, pageName);
                 raw.style.display = 'none';
                 visual.style.display = 'block';
                 btn.innerHTML = '<i class="fas fa-code"></i> Raw JSON';
@@ -1175,6 +2462,14 @@
 
     async function saveIndividualPageContent() {
         const pageName = document.getElementById('contentPageSelect').value;
+        const saveBtn = event ? event.target.closest('button') : null;
+        let originalBtnHtml = '';
+        if (saveBtn) {
+            originalBtnHtml = saveBtn.innerHTML;
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        }
+
         let payload = activePageData;
 
         if (isRawMode) {
@@ -1183,6 +2478,7 @@
                 activePageData = payload;
             } catch (e) {
                 alert('Invalid JSON! Please check syntax.');
+                if (saveBtn) { saveBtn.disabled = false; saveBtn.innerHTML = originalBtnHtml; }
                 return;
             }
         }
@@ -1194,12 +2490,18 @@
                 body: JSON.stringify({ page_name: pageName, content_json: payload })
             });
             if (res.ok) {
-                showNotification(`Page content for '${pageName}' saved successfully!`);
+                showNotification(`Page content for '${pageName}' saved successfully to live website!`);
             } else {
-                alert('Failed to save page content');
+                const err = await res.json().catch(() => ({}));
+                alert('Failed to save page content: ' + (err.error || 'Server error'));
             }
         } catch (e) {
-            alert('Error saving page content');
+            alert('Network error saving page content: ' + e.message);
+        } finally {
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = originalBtnHtml;
+            }
         }
     }
 

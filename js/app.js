@@ -4,8 +4,9 @@
 
 const DEFAULT_GLOBAL = {
   nav: {
+    logo_image: "/assets/img/catering-menu-logo.png",
     logo_icon: "fas fa-utensils",
-    logo_text: "DineVault",
+    logo_text: "Catering Menu",
     links: [
       { label: "Home", url: "/index.html" },
       { label: "Restaurants", url: "/listings.html" },
@@ -16,8 +17,8 @@ const DEFAULT_GLOBAL = {
     cta_btn: { label: "Get Listed", url: "/get-listed.html" }
   },
   footer: {
-    about_heading: "About DineVault",
-    about_text: "DineVault is the premier destination for discovering exceptional dining experiences. We connect food lovers with the finest restaurants, curated reviews, and unforgettable culinary journeys across the city.",
+    about_heading: "About Catering Menu",
+    about_text: "Catering Menu is the premier destination for discovering exceptional catering and dining experiences. We connect food lovers with the finest restaurants, curated menus, reviews, and unforgettable culinary journeys across the city.",
     quick_heading: "Quick Links",
     quick_links: [
       { label: "Home", url: "/index.html" },
@@ -40,7 +41,7 @@ const DEFAULT_GLOBAL = {
       { icon: "fab fa-instagram", url: "#", label: "Instagram" },
       { icon: "fab fa-youtube", url: "#", label: "YouTube" }
     ],
-    copyright: "© 2026 DineVault. All rights reserved."
+    copyright: "© 2026 Catering Menu. All rights reserved."
   }
 };
 
@@ -112,11 +113,21 @@ function renderHeader(navData) {
     linksHtml += `<a href="${data.cta_btn.url}" class="nav-cta">${escapeHtml(data.cta_btn.label)}</a>`;
   }
 
+  const logoImgSrc = (data.logo_image !== undefined) ? data.logo_image : '/assets/img/catering-menu-logo.png';
+  const logoText = data.logo_text || 'Catering Menu';
+  const logoIcon = data.logo_icon || 'fas fa-utensils';
+
+  let logoInnerHtml = '';
+  if (logoImgSrc && logoImgSrc.trim()) {
+    logoInnerHtml = `<img src="${escapeHtml(logoImgSrc)}" alt="${escapeHtml(logoText)}" class="nav-logo-img">`;
+  } else {
+    logoInnerHtml = `<i class="${escapeHtml(logoIcon)}"></i> <span>${escapeHtml(logoText)}</span>`;
+  }
+
   navContainer.innerHTML = `
     <div class="container">
-      <a href="/index.html" class="nav-logo">
-        <i class="${escapeHtml(data.logo_icon || 'fas fa-utensils')}"></i>
-        ${escapeHtml(data.logo_text || 'DineVault')}
+      <a href="/index.html" class="nav-logo" aria-label="${escapeHtml(logoText)}">
+        ${logoInnerHtml}
       </a>
       <div class="nav-links" id="navLinks">
         ${linksHtml}
@@ -168,7 +179,7 @@ function renderFooter(footerData) {
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h4>${escapeHtml(data.about_heading || 'About DineVault')}</h4>
+          <h4>${escapeHtml(data.about_heading || 'About Catering Menu')}</h4>
           <p>${escapeHtml(data.about_text || '')}</p>
           <div class="footer-socials">${socialsHtml}</div>
         </div>
@@ -185,7 +196,7 @@ function renderFooter(footerData) {
           <ul>${socialListHtml}</ul>
         </div>
       </div>
-      <div class="footer-bottom">${escapeHtml(data.copyright || '© 2026 DineVault. All rights reserved.')}</div>
+      <div class="footer-bottom">${escapeHtml(data.copyright || '© 2026 Catering Menu. All rights reserved.')}</div>
     </div>
   `;
 }

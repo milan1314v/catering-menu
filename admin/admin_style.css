@@ -350,6 +350,13 @@ select option:checked {
     font-size: 1.1rem;
 }
 
+.sidebar-header img {
+    max-height: 38px;
+    max-width: 140px;
+    object-fit: contain;
+    display: inline-block;
+}
+
 .sidebar-nav {
     flex: 1;
     padding: 16px 12px;

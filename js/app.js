@@ -156,103 +156,11 @@ function renderHeader(navData) {
 }
 
 function enhanceLogoForDarkBackground(imgElement) {
-  if (!imgElement) return;
-
-  // Check cache to avoid re-processing
+  // Purge any previous dark-mode logo caches so the original logo is displayed naturally
   try {
-    const cached = sessionStorage.getItem('dark_logo_cache_v3');
-    if (cached) {
-      imgElement.src = cached;
-      return;
-    }
+    sessionStorage.removeItem('dark_logo_cache_v2');
+    sessionStorage.removeItem('dark_logo_cache_v3');
   } catch(e) {}
-
-  const processImg = (img) => {
-    try {
-      const w = img.naturalWidth || img.width;
-      const h = img.naturalHeight || img.height;
-      if (!w || !h) return;
-
-      const canvas = document.createElement('canvas');
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-
-      const imgData = ctx.getImageData(0, 0, w, h);
-      const data = imgData.data;
-
-      let minX = w, maxX = 0, minY = h, maxY = 0;
-      let hasContent = false;
-
-      for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-          const idx = (y * w + x) * 4;
-          const a = data[idx + 3];
-          if (a > 20) {
-            const r = data[idx];
-            const g = data[idx + 1];
-            const b = data[idx + 2];
-
-            // Ignore pure white background pixels if the PNG has a white canvas
-            if (r > 245 && g > 245 && b > 245) {
-              data[idx + 3] = 0;
-              continue;
-            }
-
-            hasContent = true;
-            if (x < minX) minX = x;
-            if (x > maxX) maxX = x;
-            if (y < minY) minY = y;
-            if (y > maxY) maxY = y;
-
-            // Detect black / dark typography (e.g. 'Catering', '.com', tagline)
-            // Pixels with r,g,b < 95 are converted to pure crisp white
-            if (r < 95 && g < 95 && b < 95) {
-              data[idx] = 255;
-              data[idx + 1] = 255;
-              data[idx + 2] = 255;
-            }
-          }
-        }
-      }
-
-      ctx.putImageData(imgData, 0, 0);
-
-      let finalDataUrl = '';
-      if (hasContent && (minX > 0 || minY > 0 || maxX < w - 1 || maxY < h - 1)) {
-        // Crop tight to artwork with a 6px safe margin to maximize display size in navbar
-        const pad = 6;
-        const cropX = Math.max(0, minX - pad);
-        const cropY = Math.max(0, minY - pad);
-        const cropW = Math.min(w - cropX, (maxX - minX) + pad * 2);
-        const cropH = Math.min(h - cropY, (maxY - minY) + pad * 2);
-
-        const cropCanvas = document.createElement('canvas');
-        cropCanvas.width = cropW;
-        cropCanvas.height = cropH;
-        const cropCtx = cropCanvas.getContext('2d');
-        cropCtx.drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
-
-        finalDataUrl = cropCanvas.toDataURL('image/png');
-      } else {
-        finalDataUrl = canvas.toDataURL('image/png');
-      }
-
-      if (finalDataUrl) {
-        imgElement.src = finalDataUrl;
-        try { sessionStorage.setItem('dark_logo_cache_v3', finalDataUrl); } catch(e){}
-      }
-    } catch(e) {
-      console.warn('Canvas logo contrast adjustment unavailable, relying on CSS drop-shadow filters', e);
-    }
-  };
-
-  if (imgElement.complete && imgElement.naturalWidth > 0) {
-    processImg(imgElement);
-  } else {
-    imgElement.addEventListener('load', () => processImg(imgElement), { once: true });
-  }
 }
 
 function renderFooter(footerData) {
@@ -340,8 +248,8 @@ function escapeHtml(str) {
 document.addEventListener('DOMContentLoaded', async () => {
   setupScrollBehaviors();
 
-  // Always automatically enhance all nav logos for dark navbar
-  document.querySelectorAll('.nav-logo-img, #mainNavLogo').forEach(img => {
-    enhanceLogoForDarkBackground(img);
-  });
+  try {
+    sessionStorage.removeItem('dark_logo_cache_v2');
+    sessionStorage.removeItem('dark_logo_cache_v3');
+  } catch(e) {}
 });

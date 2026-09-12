@@ -8,6 +8,149 @@
     <title>Manage Restaurants - DineVault Admin</title>
     <link rel="stylesheet" href="admin_style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .btn-gold {
+            background: var(--gold);
+            color: #0a0a1a;
+            font-weight: 700;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            transform: translateY(-1px);
+        }
+        .time-row {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .time-row label {
+            width: 120px;
+            font-size: 0.9rem;
+            margin: 0;
+            color: var(--text);
+            text-transform: capitalize;
+            font-weight: 500;
+        }
+        .menu-builder-container {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+        .menu-category-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .menu-category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .menu-category-header input {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--gold);
+            width: 60%;
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 1px solid rgba(255,255,255,0.15) !important;
+            padding: 4px 8px !important;
+        }
+        .menu-category-header input:focus {
+            border-bottom-color: var(--gold) !important;
+        }
+        .menu-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .menu-item-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .menu-item-name {
+            flex: 2;
+        }
+        .menu-item-price {
+            flex: 1;
+        }
+        .btn-remove-item {
+            background: rgba(244, 67, 54, 0.15);
+            color: #f44336;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+            border-radius: 6px;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-remove-item:hover {
+            background: #f44336;
+            color: #fff;
+        }
+        .btn-add-item {
+            background: transparent;
+            color: var(--gold);
+            border: 1px dashed var(--gold);
+            border-radius: 6px;
+            padding: 8px;
+            cursor: pointer;
+            margin-top: 12px;
+            width: 100%;
+            transition: 0.2s;
+        }
+        .btn-add-item:hover {
+            background: rgba(200, 169, 126, 0.1);
+        }
+        .btn-add-category {
+            background: rgba(200, 169, 126, 0.15);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            border-radius: 6px;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+        .btn-add-category:hover {
+            background: var(--gold);
+            color: #0a0a1a;
+        }
+        .review-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+    </style>
 </head>
 
 <body>
@@ -20,7 +163,7 @@
             </div>
             <nav class="sidebar-nav">
                 <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                <a href="manage_content.html"><i class="fas fa-edit"></i> Manage Content</a>
+                <a href="manage_content.html"><i class="fas fa-edit"></i> Manage Content & SEO</a>
                 <a href="manage_restaurants.html" class="active"><i class="fas fa-store"></i> Manage Restaurants</a>
             </nav>
             <div class="sidebar-footer">
@@ -30,11 +173,22 @@
         </aside>
 
         <main class="main-content">
-            <div class="topbar glass-topbar">
-                <h2>Manage Restaurants</h2>
-                <div style="display:flex;gap:12px;">
-                    <input type="text" id="filterInput" placeholder="Filter by name or cuisine..."
-                        style="background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.15);padding:8px 16px;border-radius:6px;">
+            <div class="topbar glass-topbar" style="margin-bottom: 20px;">
+                <div>
+                    <h2 style="font-size: 1.5rem; margin-bottom: 4px;"><i class="fas fa-store"></i> Manage Restaurants</h2>
+                    <p style="color: var(--text-muted); font-size: 0.88rem;">Add, edit, approve and manage restaurant menus, hours, and reviews.</p>
+                </div>
+                <div style="display:flex; gap:12px; align-items:center;">
+                    <div id="listControls" style="display:flex; gap:12px; align-items:center;">
+                        <input type="text" id="filterInput" placeholder="Filter by name or cuisine..."
+                            style="width: 240px;" oninput="applyFilter()">
+                        <button class="btn-gold" onclick="openAddRestaurantForm()">
+                            <i class="fas fa-plus"></i> Add New Restaurant
+                        </button>
+                    </div>
+                    <button id="backToListBtn" class="btn-sm" style="display:none; background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); padding:8px 16px; border-radius:6px; cursor:pointer;" onclick="showListView()">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </button>
                 </div>
             </div>
 
@@ -42,10 +196,13 @@
                 <i class="fas fa-check-circle"></i> <span id="restAlertText">Updated successfully</span>
             </div>
 
-            <!-- Restaurants Table Card -->
+            <!-- ═══════════════════════════════════════════════════════
+                 VIEW 1: RESTAURANTS LIST TABLE
+                 ═══════════════════════════════════════════════════════ -->
             <div class="card glass-card" id="listCard">
-                <div class="card-header">
-                    <h3><i class="fas fa-list"></i> All Listings</h3>
+                <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+                    <h3 id="listCountHeading"><i class="fas fa-list"></i> All Restaurants</h3>
+                    <span style="color:var(--text-muted); font-size:0.85rem;" id="filteredCountText"></span>
                 </div>
                 <div class="table-responsive">
                     <table class="data-table">
@@ -62,126 +219,182 @@
                         </thead>
                         <tbody id="restaurantsTableBody">
                             <tr>
-                                <td colspan="7" style="text-align:center;color:var(--text-dim);">Loading...</td>
+                                <td colspan="7" style="text-align:center;color:var(--text-dim);padding:30px;">
+                                    <i class="fas fa-circle-notch fa-spin"></i> Loading restaurants...
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Edit Restaurant Card (Shown when Edit is clicked) -->
-            <div class="card glass-card" id="editCard" style="display:none;margin-top:24px;">
-                <div class="card-header">
-                    <h3 id="editHeading"><i class="fas fa-edit"></i> Edit Restaurant</h3>
-                    <button class="btn-sm" onclick="closeEditCard()"
-                        style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;cursor:pointer;">
-                        <i class="fas fa-times"></i> Close
-                    </button>
+            <!-- ═══════════════════════════════════════════════════════
+                 VIEW 2: ADD / EDIT RESTAURANT FORM
+                 ═══════════════════════════════════════════════════════ -->
+            <div class="card glass-card" id="formCard" style="display:none;">
+                <div class="card-header" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; margin-bottom: 20px;">
+                    <div>
+                        <h3 id="formHeading" style="color:var(--gold); font-size:1.2rem; margin:0;"><i class="fas fa-edit"></i> Edit Restaurant</h3>
+                        <p id="formSubheading" style="color:var(--text-muted); font-size:0.85rem; margin:4px 0 0;"></p>
+                    </div>
+                    <div style="display:flex; gap:10px;">
+                        <button type="button" class="btn-sm" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); padding:8px 16px; border-radius:6px; cursor:pointer;" onclick="showListView()">
+                            Cancel
+                        </button>
+                        <button type="button" class="btn-gold" onclick="saveRestaurantForm()">
+                            <i class="fas fa-save"></i> Save Restaurant
+                        </button>
+                    </div>
                 </div>
-                <form id="editRestaurantForm" style="padding:20px 0;">
-                    <input type="hidden" id="editId">
-                    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+
+                <form id="restaurantForm" onsubmit="event.preventDefault(); saveRestaurantForm();" style="padding: 10px 0;">
+                    <input type="hidden" id="formRestId">
+
+                    <!-- Basic Info Row -->
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
                         <div class="form-group">
-                            <label>Restaurant Name</label>
-                            <input type="text" id="editName" required class="input-text">
+                            <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">RESTAURANT NAME *</label>
+                            <input type="text" id="formName" required placeholder="e.g. La Maison Dorée" style="width:100%;">
                         </div>
                         <div class="form-group">
-                            <label>Status</label>
-                            <select id="editStatus" class="input-text" style="background:#0a0a1a;color:#fff;">
-                                <option value="approved">Approved</option>
-                                <option value="pending">Pending</option>
+                            <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">STATUS</label>
+                            <select id="formStatus" style="width:100%;">
+                                <option value="approved">Approved (Live)</option>
+                                <option value="pending">Pending Review</option>
                                 <option value="rejected">Rejected</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
                         <div class="form-group">
-                            <label>Cuisine</label>
-                            <input type="text" id="editCuisine" class="input-text">
+                            <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">CUISINE</label>
+                            <input type="text" id="formCuisine" placeholder="e.g. French, Italian, Indian, American" style="width:100%;">
                         </div>
                         <div class="form-group">
-                            <label>Price Range</label>
-                            <select id="editPrice" class="input-text" style="background:#0a0a1a;color:#fff;">
-                                <option value="$">$</option>
-                                <option value="$$">$$</option>
-                                <option value="$$$">$$$</option>
-                                <option value="$$$$">$$$$</option>
+                            <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">PRICE RANGE</label>
+                            <select id="formPrice" style="width:100%;">
+                                <option value="$">$ (Budget Friendly)</option>
+                                <option value="$$">$$ (Moderate)</option>
+                                <option value="$$$">$$$ (Upscale)</option>
+                                <option value="$$$$">$$$$ (Fine Dining)</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
                         <div class="form-group">
-                            <label>Latitude</label>
-                            <input type="number" step="any" id="editLat" class="input-text">
+                            <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LATITUDE (GPS)</label>
+                            <input type="number" step="any" id="formLat" placeholder="e.g. 40.758" style="width:100%;">
                         </div>
                         <div class="form-group">
-                            <label>Longitude</label>
-                            <input type="number" step="any" id="editLng" class="input-text">
+                            <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LONGITUDE (GPS)</label>
+                            <input type="number" step="any" id="formLng" placeholder="e.g. -73.985" style="width:100%;">
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-top:12px;">
-                        <label>Banner Image URL</label>
-                        <input type="url" id="editBanner" class="input-text" style="width:100%;">
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">BANNER IMAGE URL</label>
+                        <input type="url" id="formBanner" placeholder="https://images.unsplash.com/..." style="width:100%;">
                     </div>
 
-                    <div class="form-group" style="margin-top:12px;">
-                        <label>About Text</label>
-                        <textarea id="editAbout" rows="4" class="input-textarea" style="width:100%;"></textarea>
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">ABOUT RESTAURANT</label>
+                        <textarea id="formAbout" rows="4" placeholder="Describe the restaurant experience, specialties, chef details..." style="width:100%;"></textarea>
                     </div>
 
-                    <div class="form-group" style="margin-top:12px;">
-                        <label>Direct Menu Text</label>
-                        <textarea id="editMenu" rows="6" class="input-textarea"
-                            style="width:100%;font-family:monospace;"></textarea>
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LOCATIONS (Separate multiple branches with |)</label>
+                        <input type="text" id="formLocations" placeholder="e.g. 742 Evergreen Ave, Downtown | 158 Oak Street, Midtown" style="width:100%;">
                     </div>
 
-                    <div class="form-group" style="margin-top:12px;">
-                        <label>Opening Days &amp; Hours</label>
-                        <input type="text" id="editOpeningDays" class="input-text" style="width:100%;">
+                    <!-- ═══════════════════════════════════════════════
+                         DIRECT MENU TEXT & VISUAL BUILDER
+                         ═══════════════════════════════════════════════ -->
+                    <div class="card glass-card" style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); padding:18px; margin-bottom:20px; border-radius:10px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                            <div>
+                                <h4 style="color:var(--gold); font-size:1rem; margin:0;"><i class="fas fa-book-open"></i> Restaurant Menu & Pricing</h4>
+                                <small style="color:var(--text-muted);">Visual interactive builder ya direct text mode me edit karein.</small>
+                            </div>
+                            <div style="display:flex; gap:8px;">
+                                <button type="button" class="btn-sm" onclick="toggleMenuMode()" style="background:var(--gold); color:#0a0a1a; font-weight:700; border:none; padding:6px 14px; border-radius:6px; cursor:pointer;">
+                                    <i class="fas fa-exchange-alt"></i> Switch Mode (Visual / Text)
+                                </button>
+                                <button type="button" id="insertTemplateBtn" class="btn-sm" onclick="insertMenuTemplate()" style="background:transparent; border:1px solid var(--gold); color:var(--gold); padding:6px 14px; border-radius:6px; cursor:pointer; display:none;">
+                                    <i class="fas fa-file-alt"></i> Insert Template
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Textarea for Text Mode -->
+                        <textarea id="formMenuText" rows="10" style="width:100%; font-family:monospace; font-size:13px; line-height:1.6; display:none;" placeholder="Enter menu text..."></textarea>
+
+                        <!-- Container for Visual Builder -->
+                        <div id="visualMenuBuilderContainer" class="menu-builder-container"></div>
                     </div>
 
-                    <div class="form-group" style="margin-top:12px;">
-                        <label>Location(s) (Separate multiple with |)</label>
-                        <input type="text" id="editLocations" class="input-text" style="width:100%;">
+                    <!-- ═══════════════════════════════════════════════
+                         DAY-WISE OPENING HOURS
+                         ═══════════════════════════════════════════════ -->
+                    <div class="card glass-card" style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); padding:18px; margin-bottom:24px; border-radius:10px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                            <div>
+                                <h4 style="color:var(--gold); font-size:1rem; margin:0;"><i class="fas fa-clock"></i> Day-wise Opening Hours</h4>
+                                <small style="color:var(--text-muted);">(Leave blank for Closed)</small>
+                            </div>
+                            <button type="button" onclick="applyMondayToAll()" class="btn-sm" style="background:var(--gold); color:#0a0a1a; font-weight:700; border:none; padding:6px 14px; border-radius:6px; cursor:pointer;">
+                                <i class="fas fa-copy"></i> Apply Monday to All
+                            </button>
+                        </div>
+
+                        <div id="openingHoursList">
+                            <!-- Rendered dynamically -->
+                        </div>
                     </div>
 
-                    <div style="margin-top:24px;display:flex;gap:12px;">
-                        <button type="submit" id="saveRestBtn" class="btn-primary"
-                            style="padding:10px 24px;border:none;cursor:pointer;">
-                            <i class="fas fa-save"></i> Save Changes
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.08); padding-top:18px;">
+                        <button type="button" id="deleteRestBtn" class="btn-sm" style="background:rgba(244,67,54,0.15); color:#f44336; border:1px solid rgba(244,67,54,0.3); padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:600;" onclick="deleteCurrentRestaurant()">
+                            <i class="fas fa-trash"></i> Delete Restaurant
                         </button>
-                        <button type="button" onclick="closeEditCard()" class="btn-sm"
-                            style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;cursor:pointer;">
-                            Cancel
-                        </button>
+                        <div style="display:flex; gap:10px;">
+                            <button type="button" class="btn-sm" style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); padding:10px 20px; border-radius:6px; cursor:pointer;" onclick="showListView()">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn-gold">
+                                <i class="fas fa-save"></i> Save Restaurant
+                            </button>
+                        </div>
                     </div>
                 </form>
 
-                <!-- Reviews Management Section -->
-                <div style="margin-top:40px;border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;">
-                    <h4><i class="fas fa-star" style="color:var(--gold);"></i> Reviews for this Restaurant</h4>
-                    <div id="editReviewsList" style="margin-top:16px;"></div>
+                <!-- ═══════════════════════════════════════════════
+                     CUSTOMER REVIEWS SECTION (EDIT MODE ONLY)
+                     ═══════════════════════════════════════════════ -->
+                <div id="reviewsSection" style="margin-top:30px; border-top:1px solid rgba(255,255,255,0.1); padding-top:24px;">
+                    <h3 style="color:var(--gold); font-size:1.15rem; margin-bottom:16px;">
+                        <i class="fas fa-star"></i> Customer Reviews (<span id="reviewsCountLabel">0</span>)
+                    </h3>
+                    
+                    <div id="reviewsListContainer" style="margin-bottom:24px;">
+                        <!-- Rendered dynamically -->
+                    </div>
 
-                    <div style="margin-top:24px;background:rgba(255,255,255,0.03);padding:16px;border-radius:8px;">
-                        <h5>Add a Review</h5>
-                        <div style="display:grid;grid-template-columns:1fr 120px;gap:12px;margin-top:12px;">
-                            <input type="text" id="newRevName" placeholder="Reviewer Name" class="input-text">
-                            <select id="newRevRating" class="input-text" style="background:#0a0a1a;color:#fff;">
-                                <option value="5">5 Stars</option>
-                                <option value="4">4 Stars</option>
-                                <option value="3">3 Stars</option>
-                                <option value="2">2 Stars</option>
-                                <option value="1">1 Star</option>
+                    <div class="card glass-card" style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); padding:18px; border-radius:10px;">
+                        <h4 style="color:var(--gold); font-size:0.95rem; margin-bottom:14px;"><i class="fas fa-plus-circle"></i> Add Customer Review</h4>
+                        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:14px; margin-bottom:12px;">
+                            <input type="text" id="newRevName" placeholder="Reviewer Name" style="width:100%;">
+                            <select id="newRevRating" style="width:100%;">
+                                <option value="5">★★★★★ (5 Stars)</option>
+                                <option value="4">★★★★☆ (4 Stars)</option>
+                                <option value="3">★★★☆☆ (3 Stars)</option>
+                                <option value="2">★★☆☆☆ (2 Stars)</option>
+                                <option value="1">★☆☆☆☆ (1 Star)</option>
                             </select>
                         </div>
-                        <textarea id="newRevText" placeholder="Review comments..." rows="2" class="input-textarea"
-                            style="width:100%;margin-top:8px;"></textarea>
-                        <button type="button" onclick="addReviewFromAdmin()" class="btn-sm btn-primary"
-                            style="margin-top:8px;border:none;cursor:pointer;">
-                            <i class="fas fa-plus"></i> Add Review
+                        <textarea id="newRevText" rows="3" placeholder="Review text..." style="width:100%; margin-bottom:12px;"></textarea>
+                        <button type="button" class="btn-gold" onclick="addNewReview()">
+                            <i class="fas fa-plus"></i> Submit Review
                         </button>
                     </div>
                 </div>
@@ -191,75 +404,98 @@
 
     <script src="admin.js"></script>
     <script>
-        if (!requireAuth()) { }
+        if (!requireAuth()) {}
 
         let allRestaurants = [];
-        let currentEditRestaurant = null;
+        let currentEditingRestaurant = null;
+        let menuMode = 'visual'; // 'visual' or 'text'
+        let menuBuilderData = [];
 
-        const tbody = document.getElementById('restaurantsTableBody');
-        const alertBox = document.getElementById('restAlert');
-        const alertText = document.getElementById('restAlertText');
-        const filterInput = document.getElementById('filterInput');
+        const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
+        // ═══════════════════════════════════════════════════════
+        // 1. LOAD & RENDER RESTAURANTS LIST
+        // ═══════════════════════════════════════════════════════
         async function loadRestaurants() {
+            const tbody = document.getElementById('restaurantsTableBody');
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);padding:30px;"><i class="fas fa-circle-notch fa-spin"></i> Loading restaurants...</td></tr>';
+
             try {
                 const res = await fetch('/api/admin/restaurants', {
                     headers: authHeaders()
                 });
-                if (res.status === 401) {
-                    adminLogout();
-                    return;
-                }
-                allRestaurants = await res.json();
-                renderTable(allRestaurants);
-
-                // Check if ?edit=id was passed
-                const urlParams = new URLSearchParams(window.location.search);
-                const editId = urlParams.get('edit');
-                if (editId) {
-                    openEdit(editId);
+                if (res.ok) {
+                    allRestaurants = await res.json();
+                    renderTable(allRestaurants);
+                    document.getElementById('listCountHeading').innerHTML = `<i class="fas fa-list"></i> All Restaurants (${allRestaurants.length})`;
                 }
             } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="7" style="color:red;text-align:center;">Failed to load listings</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#f44336;padding:30px;">Failed to load restaurants.</td></tr>';
             }
         }
 
         function renderTable(list) {
+            const tbody = document.getElementById('restaurantsTableBody');
             if (!list || list.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);">No restaurants found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-dim);padding:30px;">No restaurants found.</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = list.map(r => `
-            <tr>
-                <td>#${r.id}</td>
-                <td><strong>${escapeHtml(r.name || 'Untitled')}</strong></td>
-                <td>${escapeHtml(r.cuisine || '-')}</td>
-                <td>${escapeHtml(r.price_range || '$$')}</td>
-                <td><span class="badge badge-${r.status}">${(r.status || 'pending').toUpperCase()}</span></td>
-                <td>${(r.reviews || []).length} reviews</td>
-                <td>
-                    <div style="display:flex;gap:6px;">
-                        ${r.status === 'pending' ? `
-                            <button class="btn-sm btn-success" onclick="setStatus(${r.id}, 'approved')" title="Approve"><i class="fas fa-check"></i></button>
-                            <button class="btn-sm btn-danger" onclick="setStatus(${r.id}, 'rejected')" title="Reject"><i class="fas fa-ban"></i></button>
-                        ` : ''}
-                        <button class="btn-sm btn-info" onclick="openEdit(${r.id})"><i class="fas fa-edit"></i></button>
-                        <button class="btn-sm btn-danger" onclick="deleteRestaurant(${r.id})"><i class="fas fa-trash"></i></button>
-                    </div>
-                </td>
-            </tr>
-        `).join('');
+            tbody.innerHTML = list.map(r => {
+                const revCount = Array.isArray(r.reviews) ? r.reviews.length : 0;
+                const statusBadge = r.status === 'approved' 
+                    ? '<span class="badge badge-approved" style="background:rgba(76,175,80,0.2);color:#4caf50;border:1px solid #4caf50;padding:4px 10px;border-radius:12px;font-size:0.78rem;font-weight:700;">APPROVED</span>'
+                    : (r.status === 'rejected' 
+                        ? '<span class="badge badge-rejected" style="background:rgba(244,67,54,0.2);color:#f44336;border:1px solid #f44336;padding:4px 10px;border-radius:12px;font-size:0.78rem;font-weight:700;">REJECTED</span>'
+                        : '<span class="badge badge-pending" style="background:rgba(255,152,0,0.2);color:#ff9800;border:1px solid #ff9800;padding:4px 10px;border-radius:12px;font-size:0.78rem;font-weight:700;">PENDING</span>');
+
+                return `
+                    <tr>
+                        <td><strong>#${r.id}</strong></td>
+                        <td><strong>${escapeHtml(r.name || 'Untitled')}</strong></td>
+                        <td>${escapeHtml(r.cuisine || '-')}</td>
+                        <td>${escapeHtml(r.price_range || '-')}</td>
+                        <td>${statusBadge}</td>
+                        <td>${revCount} reviews</td>
+                        <td>
+                            <div class="action-btns" style="display:flex;gap:6px;">
+                                ${r.status !== 'approved' ? `
+                                    <button class="btn-sm" style="background:rgba(76,175,80,0.2);color:#4caf50;border:1px solid #4caf50;padding:6px 10px;border-radius:4px;cursor:pointer;" onclick="setStatus(${r.id}, 'approved')" title="Approve">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                ` : ''}
+                                ${r.status !== 'rejected' ? `
+                                    <button class="btn-sm" style="background:rgba(255,152,0,0.2);color:#ff9800;border:1px solid #ff9800;padding:6px 10px;border-radius:4px;cursor:pointer;" onclick="setStatus(${r.id}, 'rejected')" title="Reject">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                ` : ''}
+                                <button class="btn-sm" style="background:rgba(33,150,243,0.2);color:#2196f3;border:1px solid #2196f3;padding:6px 10px;border-radius:4px;cursor:pointer;" onclick="openEditRestaurant(${r.id})" title="Edit Details">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-sm" style="background:rgba(244,67,54,0.15);color:#f44336;border:1px solid #f44336;padding:6px 10px;border-radius:4px;cursor:pointer;" onclick="deleteRestaurantDirect(${r.id})" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
-        filterInput.addEventListener('input', () => {
-            const q = filterInput.value.toLowerCase().trim();
-            const filtered = allRestaurants.filter(r =>
-                (r.name || '').toLowerCase().includes(q) ||
-                (r.cuisine || '').toLowerCase().includes(q)
+        function applyFilter() {
+            const term = document.getElementById('filterInput').value.toLowerCase().trim();
+            if (!term) {
+                renderTable(allRestaurants);
+                document.getElementById('filteredCountText').textContent = '';
+                return;
+            }
+            const filtered = allRestaurants.filter(r => 
+                (r.name && r.name.toLowerCase().includes(term)) ||
+                (r.cuisine && r.cuisine.toLowerCase().includes(term))
             );
             renderTable(filtered);
-        });
+            document.getElementById('filteredCountText').textContent = `Showing ${filtered.length} of ${allRestaurants.length}`;
+        }
 
         async function setStatus(id, status) {
             try {
@@ -268,9 +504,8 @@
                     headers: authHeaders(),
                     body: JSON.stringify({ action: 'set_status', id, status })
                 });
-                const data = await res.json();
-                if (data.success) {
-                    showAlert(`Status updated to ${status}`);
+                if (res.ok) {
+                    showSuccess(`Restaurant #${id} status updated to ${status}`);
                     loadRestaurants();
                 }
             } catch (e) {
@@ -278,106 +513,467 @@
             }
         }
 
-        async function deleteRestaurant(id) {
-            if (!confirm(`Are you sure you want to delete restaurant #${id}?`)) return;
+        async function deleteRestaurantDirect(id) {
+            if (!confirm(`Are you sure you want to delete restaurant #${id}? This cannot be undone.`)) return;
             try {
                 const res = await fetch('/api/admin/restaurants', {
                     method: 'POST',
                     headers: authHeaders(),
                     body: JSON.stringify({ action: 'delete', id })
                 });
-                const data = await res.json();
-                if (data.success) {
-                    showAlert('Restaurant deleted');
+                if (res.ok) {
+                    showSuccess(`Restaurant #${id} deleted successfully`);
                     loadRestaurants();
-                    if (currentEditRestaurant && currentEditRestaurant.id == id) {
-                        closeEditCard();
-                    }
                 }
             } catch (e) {
                 alert('Failed to delete restaurant');
             }
         }
 
-        function openEdit(id) {
-            const rest = allRestaurants.find(r => r.id == id);
-            if (!rest) return;
-            currentEditRestaurant = rest;
-
-            document.getElementById('editId').value = rest.id;
-            document.getElementById('editHeading').innerHTML = `<i class="fas fa-edit"></i> Edit: ${escapeHtml(rest.name)}`;
-            document.getElementById('editName').value = rest.name || '';
-            document.getElementById('editStatus').value = rest.status || 'approved';
-            document.getElementById('editCuisine').value = rest.cuisine || '';
-            document.getElementById('editPrice').value = rest.price_range || '$$';
-            document.getElementById('editLat').value = rest.lat || '';
-            document.getElementById('editLng').value = rest.lng || '';
-            document.getElementById('editBanner').value = rest.banner_url || '';
-            document.getElementById('editAbout').value = rest.about_text || '';
-            document.getElementById('editMenu').value = rest.direct_menu_text || '';
-            document.getElementById('editOpeningDays').value = rest.opening_days || '';
-            document.getElementById('editLocations').value = rest.locations || '';
-
-            renderEditReviews(rest.reviews || []);
-
-            const editCard = document.getElementById('editCard');
-            editCard.style.display = 'block';
-            editCard.scrollIntoView({ behavior: 'smooth' });
+        // ═══════════════════════════════════════════════════════
+        // 2. FORM VIEW MANAGEMENT (ADD & EDIT)
+        // ═══════════════════════════════════════════════════════
+        function showListView() {
+            document.getElementById('listCard').style.display = 'block';
+            document.getElementById('listControls').style.display = 'flex';
+            document.getElementById('formCard').style.display = 'none';
+            document.getElementById('backToListBtn').style.display = 'none';
+            currentEditingRestaurant = null;
         }
 
-        function closeEditCard() {
-            document.getElementById('editCard').style.display = 'none';
-            currentEditRestaurant = null;
+        function showFormView() {
+            document.getElementById('listCard').style.display = 'none';
+            document.getElementById('listControls').style.display = 'none';
+            document.getElementById('formCard').style.display = 'block';
+            document.getElementById('backToListBtn').style.display = 'inline-flex';
         }
 
-        function renderEditReviews(reviews) {
-            const container = document.getElementById('editReviewsList');
-            if (!reviews || reviews.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-dim);font-size:0.9rem;">No reviews yet.</p>';
+        function openAddRestaurantForm() {
+            currentEditingRestaurant = null;
+            document.getElementById('formHeading').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Restaurant';
+            document.getElementById('formSubheading').textContent = 'Create a new restaurant listing with menus, hours, and location.';
+            document.getElementById('deleteRestBtn').style.display = 'none';
+            document.getElementById('reviewsSection').style.display = 'none';
+
+            // Reset fields
+            document.getElementById('formRestId').value = '';
+            document.getElementById('formName').value = '';
+            document.getElementById('formStatus').value = 'approved';
+            document.getElementById('formCuisine').value = '';
+            document.getElementById('formPrice').value = '$$';
+            document.getElementById('formLat').value = '';
+            document.getElementById('formLng').value = '';
+            document.getElementById('formBanner').value = '';
+            document.getElementById('formAbout').value = '';
+            document.getElementById('formLocations').value = '';
+            document.getElementById('formMenuText').value = '';
+
+            renderOpeningHoursInputs({});
+            initMenuBuilder('');
+            showFormView();
+        }
+
+        function openEditRestaurant(id) {
+            const r = allRestaurants.find(item => item.id == id);
+            if (!r) return;
+
+            currentEditingRestaurant = r;
+            document.getElementById('formHeading').innerHTML = `<i class="fas fa-edit"></i> Edit: ${escapeHtml(r.name || 'Restaurant')}`;
+            document.getElementById('formSubheading').textContent = `Editing restaurant ID #${r.id}`;
+            document.getElementById('deleteRestBtn').style.display = 'inline-block';
+            document.getElementById('reviewsSection').style.display = 'block';
+
+            // Populate fields
+            document.getElementById('formRestId').value = r.id;
+            document.getElementById('formName').value = r.name || '';
+            document.getElementById('formStatus').value = r.status || 'approved';
+            document.getElementById('formCuisine').value = r.cuisine || '';
+            document.getElementById('formPrice').value = r.price_range || '$$';
+            document.getElementById('formLat').value = r.lat || '';
+            document.getElementById('formLng').value = r.lng || '';
+            document.getElementById('formBanner').value = r.banner_url || '';
+            document.getElementById('formAbout').value = r.about_text || '';
+            document.getElementById('formLocations').value = r.locations || '';
+
+            const menuStr = r.direct_menu_text || '';
+            document.getElementById('formMenuText').value = menuStr;
+
+            renderOpeningHoursInputs(r.opening_hours || {}, r.opening_days || '');
+            initMenuBuilder(menuStr);
+            renderReviewsList(r.reviews || []);
+            showFormView();
+        }
+
+        async function saveRestaurantForm() {
+            const name = document.getElementById('formName').value.trim();
+            if (!name) {
+                alert('Please enter a restaurant name.');
                 return;
             }
-            container.innerHTML = reviews.map((rev, idx) => `
-            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);padding:12px;border-radius:6px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
-                <div>
-                    <strong>${escapeHtml(rev.name)}</strong> (${rev.rating}★) - <small style="color:var(--text-dim);">${escapeHtml(rev.date || '')}</small>
-                    <p style="margin:4px 0 0;font-size:0.9rem;color:var(--text-muted);">${escapeHtml(rev.text)}</p>
-                </div>
-                <button type="button" class="btn-sm btn-danger" onclick="deleteReviewFromAdmin(${idx})" title="Delete Review">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `).join('');
-        }
 
-        async function deleteReviewFromAdmin(index) {
-            if (!confirm('Delete this review?')) return;
+            // Sync menu text from builder if in visual mode
+            if (menuMode === 'visual') {
+                syncMenuToTextarea();
+            }
+
+            const menuText = document.getElementById('formMenuText').value;
+
+            // Collect opening hours
+            const opening_hours = {};
+            DAYS.forEach(d => {
+                const open = document.getElementById(`oh_${d}_open`).value;
+                const close = document.getElementById(`oh_${d}_close`).value;
+                if (!open || !close) {
+                    opening_hours[d] = 'Closed';
+                } else {
+                    opening_hours[d] = `${formatTimeAmPm(open)} – ${formatTimeAmPm(close)}`;
+                }
+            });
+
+            const restData = {
+                name: name,
+                cuisine: document.getElementById('formCuisine').value.trim(),
+                price_range: document.getElementById('formPrice').value,
+                lat: parseFloat(document.getElementById('formLat').value) || 0,
+                lng: parseFloat(document.getElementById('formLng').value) || 0,
+                banner_url: document.getElementById('formBanner').value.trim(),
+                about_text: document.getElementById('formAbout').value.trim(),
+                locations: document.getElementById('formLocations').value.trim(),
+                direct_menu_text: menuText,
+                menu_file_path: '',
+                opening_hours: opening_hours,
+                reviews: currentEditingRestaurant ? (currentEditingRestaurant.reviews || []) : []
+            };
+
+            const status = document.getElementById('formStatus').value;
+            const editId = document.getElementById('formRestId').value;
+
             try {
-                const res = await fetch('/api/admin/restaurants', {
-                    method: 'POST',
-                    headers: authHeaders(),
-                    body: JSON.stringify({
-                        action: 'delete_review',
-                        id: currentEditRestaurant.id,
-                        review_index: index
-                    })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    currentEditRestaurant.reviews.splice(index, 1);
-                    renderEditReviews(currentEditRestaurant.reviews);
-                    showAlert('Review deleted');
+                if (editId) {
+                    // Update
+                    const res = await fetch('/api/admin/restaurants', {
+                        method: 'POST',
+                        headers: authHeaders(),
+                        body: JSON.stringify({
+                            action: 'update_restaurant',
+                            id: editId,
+                            restaurant_data: restData,
+                            status: status
+                        })
+                    });
+                    if (res.ok) {
+                        showSuccess('Restaurant updated successfully!');
+                        loadRestaurants();
+                        showListView();
+                    } else {
+                        alert('Failed to update restaurant');
+                    }
+                } else {
+                    // Create
+                    const res = await fetch('/api/admin/restaurants', {
+                        method: 'POST',
+                        headers: authHeaders(),
+                        body: JSON.stringify({
+                            action: 'create',
+                            restaurant_data: restData,
+                            status: status
+                        })
+                    });
+                    if (res.ok) {
+                        showSuccess('New restaurant added successfully!');
+                        loadRestaurants();
+                        showListView();
+                    } else {
+                        alert('Failed to create restaurant');
+                    }
                 }
             } catch (e) {
-                alert('Failed to delete review');
+                alert('Network error saving restaurant');
             }
         }
 
-        async function addReviewFromAdmin() {
+        async function deleteCurrentRestaurant() {
+            if (!currentEditingRestaurant) return;
+            deleteRestaurantDirect(currentEditingRestaurant.id);
+            showListView();
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // 3. DAY-WISE OPENING HOURS LOGIC
+        // ═══════════════════════════════════════════════════════
+        function renderOpeningHoursInputs(oh, legacyOpeningDays) {
+            const container = document.getElementById('openingHoursList');
+            container.innerHTML = '';
+
+            // Handle fallback if legacy text exists
+            let defaultTimes = {};
+            if (legacyOpeningDays && Object.keys(oh).length === 0) {
+                const parts = legacyOpeningDays.split(/[:\–\-]/);
+                // default to 11:00 to 22:00 if exists
+            }
+
+            DAYS.forEach(day => {
+                const row = document.createElement('div');
+                row.className = 'time-row';
+
+                const timeStr = oh[day] || '';
+                const [openVal, closeVal] = parseTimeStr(timeStr);
+
+                row.innerHTML = `
+                    <label>${day}</label>
+                    <input type="time" id="oh_${day}_open" value="${openVal}" style="flex:1; cursor:pointer;">
+                    <span style="color:var(--text-muted); font-size:0.85rem;">to</span>
+                    <input type="time" id="oh_${day}_close" value="${closeVal}" style="flex:1; cursor:pointer;">
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function parseTimeStr(str) {
+            if (!str || str.toLowerCase() === 'closed') return ['', ''];
+            const parts = str.split(/[–\-]/);
+            if (parts.length === 2) {
+                return [convertAmPmTo24(parts[0].trim()), convertAmPmTo24(parts[1].trim())];
+            }
+            return ['', ''];
+        }
+
+        function convertAmPmTo24(timeStr) {
+            const match = timeStr.match(/^(\d+):(\d+)\s*(AM|PM)?$/i);
+            if (!match) return '';
+            let hours = parseInt(match[1], 10);
+            const minutes = match[2];
+            const ampm = (match[3] || '').toUpperCase();
+            if (ampm === 'PM' && hours < 12) hours += 12;
+            if (ampm === 'AM' && hours === 12) hours = 0;
+            return `${String(hours).padStart(2, '0')}:${minutes}`;
+        }
+
+        function formatTimeAmPm(time24) {
+            if (!time24) return '';
+            const [hStr, mStr] = time24.split(':');
+            let h = parseInt(hStr, 10);
+            const m = mStr || '00';
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12 || 12;
+            return `${h}:${m} ${ampm}`;
+        }
+
+        function applyMondayToAll() {
+            const monOpen = document.getElementById('oh_monday_open').value;
+            const monClose = document.getElementById('oh_monday_close').value;
+            DAYS.slice(1).forEach(d => {
+                document.getElementById(`oh_${d}_open`).value = monOpen;
+                document.getElementById(`oh_${d}_close`).value = monClose;
+            });
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // 4. MENU BUILDER & TEMPLATE LOGIC
+        // ═══════════════════════════════════════════════════════
+        function toggleMenuMode() {
+            const textarea = document.getElementById('formMenuText');
+            const builder = document.getElementById('visualMenuBuilderContainer');
+            const templateBtn = document.getElementById('insertTemplateBtn');
+
+            if (menuMode === 'visual') {
+                // Switch to Text
+                syncMenuToTextarea();
+                menuMode = 'text';
+                textarea.style.display = 'block';
+                builder.style.display = 'none';
+                templateBtn.style.display = 'inline-block';
+            } else {
+                // Switch to Visual
+                initMenuBuilder(textarea.value);
+                menuMode = 'visual';
+                textarea.style.display = 'none';
+                builder.style.display = 'block';
+                templateBtn.style.display = 'none';
+            }
+        }
+
+        function insertMenuTemplate() {
+            const template = `================================
+      YOUR RESTAURANT MENU
+================================
+
+--- STARTERS ---
+
+Garlic Bread ............... $6
+Cheese Sticks ............. $8
+Stuffed Mushrooms ....... $10
+
+--- MAIN COURSE ---
+
+Grilled Salmon ............ $24
+Filet Mignon .............. $32
+Vegetable Pasta .......... $18
+
+--- DESSERTS ---
+
+Crème Brûlée ............... $12
+Chocolate Lava Cake .... $10`;
+
+            const textarea = document.getElementById('formMenuText');
+            if (!textarea.value.trim() || confirm('Overwrite current menu with standard template?')) {
+                textarea.value = template;
+                if (menuMode === 'visual') {
+                    initMenuBuilder(template);
+                }
+            }
+        }
+
+        function initMenuBuilder(text) {
+            menuBuilderData = [];
+            const trimmed = (text || '').trim();
+
+            if (trimmed) {
+                const lines = trimmed.split('\n');
+                let currentCat = null;
+                lines.forEach(line => {
+                    const l = line.trim();
+                    if (!l || l.startsWith('===')) return;
+                    if (l.startsWith('---') && l.endsWith('---')) {
+                        currentCat = {
+                            title: l.replace(/---/g, '').trim(),
+                            items: []
+                        };
+                        menuBuilderData.push(currentCat);
+                    } else if (currentCat && l.includes('.')) {
+                        const parts = l.split(/\.{2,}/);
+                        if (parts.length >= 2) {
+                            currentCat.items.push({
+                                name: parts[0].trim(),
+                                price: parts[parts.length - 1].trim()
+                            });
+                        }
+                    }
+                });
+            }
+
+            if (menuBuilderData.length === 0) {
+                menuBuilderData.push({ title: 'Starters', items: [{ name: '', price: '' }] });
+            }
+
+            renderMenuBuilder();
+        }
+
+        function renderMenuBuilder() {
+            const container = document.getElementById('visualMenuBuilderContainer');
+            container.innerHTML = '';
+
+            menuBuilderData.forEach((cat, cIdx) => {
+                const card = document.createElement('div');
+                card.className = 'menu-category-card';
+
+                let itemsHtml = cat.items.map((item, iIdx) => `
+                    <div class="menu-item-row">
+                        <input type="text" class="menu-item-name" placeholder="Item Name (e.g. Garlic Bread)" value="${escapeHtml(item.name)}" oninput="menuBuilderData[${cIdx}].items[${iIdx}].name = this.value">
+                        <input type="text" class="menu-item-price" placeholder="Price (e.g. $8)" value="${escapeHtml(item.price)}" oninput="menuBuilderData[${cIdx}].items[${iIdx}].price = this.value">
+                        <button type="button" class="btn-remove-item" onclick="removeMenuItem(${cIdx}, ${iIdx})" title="Remove Item"><i class="fas fa-times"></i></button>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="menu-category-header">
+                        <input type="text" placeholder="Category Title" value="${escapeHtml(cat.title)}" oninput="menuBuilderData[${cIdx}].title = this.value">
+                        <button type="button" class="btn-remove-item" onclick="removeMenuCategory(${cIdx})" title="Delete Category"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="menu-items-list">${itemsHtml}</div>
+                    <button type="button" class="btn-add-item" onclick="addMenuItem(${cIdx})"><i class="fas fa-plus"></i> Add Item</button>
+                `;
+                container.appendChild(card);
+            });
+
+            const addCatBtn = document.createElement('button');
+            addCatBtn.type = 'button';
+            addCatBtn.className = 'btn-add-category';
+            addCatBtn.innerHTML = '<i class="fas fa-plus"></i> Add Menu Category';
+            addCatBtn.onclick = addMenuCategory;
+            container.appendChild(addCatBtn);
+        }
+
+        function addMenuItem(cIdx) {
+            menuBuilderData[cIdx].items.push({ name: '', price: '' });
+            renderMenuBuilder();
+        }
+
+        function removeMenuItem(cIdx, iIdx) {
+            menuBuilderData[cIdx].items.splice(iIdx, 1);
+            renderMenuBuilder();
+        }
+
+        function addMenuCategory() {
+            menuBuilderData.push({ title: 'New Category', items: [{ name: '', price: '' }] });
+            renderMenuBuilder();
+        }
+
+        function removeMenuCategory(cIdx) {
+            if (confirm('Delete this menu category?')) {
+                menuBuilderData.splice(cIdx, 1);
+                renderMenuBuilder();
+            }
+        }
+
+        function syncMenuToTextarea() {
+            let out = `================================\n      RESTAURANT MENU\n================================\n\n`;
+            menuBuilderData.forEach(cat => {
+                if (!cat.title.trim() && cat.items.length === 0) return;
+                out += `--- ${cat.title.toUpperCase()} ---\n\n`;
+                cat.items.forEach(item => {
+                    const name = item.name.trim();
+                    const price = item.price.trim();
+                    if (name || price) {
+                        const dots = '.'.repeat(Math.max(3, 40 - name.length - price.length));
+                        out += `${name} ${dots} ${price}\n`;
+                    }
+                });
+                out += '\n';
+            });
+            document.getElementById('formMenuText').value = out;
+        }
+
+        // ═══════════════════════════════════════════════════════
+        // 5. REVIEWS MANAGEMENT LOGIC
+        // ═══════════════════════════════════════════════════════
+        function renderReviewsList(reviews) {
+            const container = document.getElementById('reviewsListContainer');
+            document.getElementById('reviewsCountLabel').textContent = reviews.length;
+
+            if (!reviews || reviews.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-dim);">No customer reviews yet for this restaurant.</p>';
+                return;
+            }
+
+            container.innerHTML = reviews.map((rev, idx) => {
+                const stars = '★'.repeat(rev.rating || 5) + '☆'.repeat(Math.max(0, 5 - (rev.rating || 5)));
+                return `
+                    <div class="review-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <div>
+                                <strong>${escapeHtml(rev.name || 'Anonymous')}</strong>
+                                <span style="color:#ffc107; margin-left:8px;">${stars}</span>
+                                <span style="color:var(--text-dim); font-size:0.8rem; margin-left:8px;">${escapeHtml(rev.date || '')}</span>
+                            </div>
+                            <button type="button" class="btn-sm" style="background:rgba(244,67,54,0.15); color:#f44336; border:1px solid #f44336; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="deleteReview(${idx})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <p style="color:var(--text); font-size:0.9rem; margin:0; line-height:1.5;">${escapeHtml(rev.text || '')}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function addNewReview() {
+            if (!currentEditingRestaurant) return;
             const name = document.getElementById('newRevName').value.trim();
-            const rating = document.getElementById('newRevRating').value;
+            const rating = parseInt(document.getElementById('newRevRating').value, 10);
             const text = document.getElementById('newRevText').value.trim();
+
             if (!name || !text) {
-                alert('Please enter reviewer name and text');
+                alert('Please enter reviewer name and text.');
                 return;
             }
 
@@ -387,81 +983,64 @@
                     headers: authHeaders(),
                     body: JSON.stringify({
                         action: 'add_review',
-                        id: currentEditRestaurant.id,
+                        id: currentEditingRestaurant.id,
                         name,
                         rating,
-                        text
+                        text,
+                        date: new Date().toISOString().split('T')[0]
                     })
                 });
-                const data = await res.json();
-                if (data.success) {
-                    if (!Array.isArray(currentEditRestaurant.reviews)) currentEditRestaurant.reviews = [];
-                    currentEditRestaurant.reviews.unshift({
-                        name, rating: Number(rating), text, date: new Date().toISOString().split('T')[0]
-                    });
-                    renderEditReviews(currentEditRestaurant.reviews);
+
+                if (res.ok) {
+                    showSuccess('Review added successfully!');
                     document.getElementById('newRevName').value = '';
                     document.getElementById('newRevText').value = '';
-                    showAlert('Review added');
+
+                    // update local state
+                    currentEditingRestaurant.reviews = currentEditingRestaurant.reviews || [];
+                    currentEditingRestaurant.reviews.unshift({
+                        name, rating, text, date: new Date().toISOString().split('T')[0]
+                    });
+                    renderReviewsList(currentEditingRestaurant.reviews);
+                    loadRestaurants();
                 }
             } catch (e) {
                 alert('Failed to add review');
             }
         }
 
-        document.getElementById('editRestaurantForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('editId').value;
-            const status = document.getElementById('editStatus').value;
-
-            const updatedData = {
-                ...currentEditRestaurant,
-                name: document.getElementById('editName').value.trim(),
-                cuisine: document.getElementById('editCuisine').value.trim(),
-                price_range: document.getElementById('editPrice').value,
-                lat: parseFloat(document.getElementById('editLat').value) || 40.7128,
-                lng: parseFloat(document.getElementById('editLng').value) || -74.0060,
-                banner_url: document.getElementById('editBanner').value.trim(),
-                about_text: document.getElementById('editAbout').value.trim(),
-                direct_menu_text: document.getElementById('editMenu').value.trim(),
-                opening_days: document.getElementById('editOpeningDays').value.trim(),
-                locations: document.getElementById('editLocations').value.trim()
-            };
-
-            const saveBtn = document.getElementById('saveRestBtn');
-            saveBtn.disabled = true;
-            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        async function deleteReview(idx) {
+            if (!currentEditingRestaurant) return;
+            if (!confirm('Are you sure you want to delete this customer review?')) return;
 
             try {
                 const res = await fetch('/api/admin/restaurants', {
                     method: 'POST',
                     headers: authHeaders(),
                     body: JSON.stringify({
-                        action: 'update_restaurant',
-                        id,
-                        status,
-                        restaurant_data: updatedData
+                        action: 'delete_review',
+                        id: currentEditingRestaurant.id,
+                        review_index: idx
                     })
                 });
-                const data = await res.json();
-                if (data.success) {
-                    showAlert('Restaurant updated successfully!');
-                    loadRestaurants();
-                } else {
-                    alert(data.error || 'Failed to update');
-                }
-            } catch (err) {
-                alert('Error updating restaurant');
-            } finally {
-                saveBtn.disabled = false;
-                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
-            }
-        });
 
-        function showAlert(msg) {
-            alertText.textContent = msg;
-            alertBox.style.display = 'flex';
-            setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
+                if (res.ok) {
+                    showSuccess('Review deleted');
+                    currentEditingRestaurant.reviews.splice(idx, 1);
+                    renderReviewsList(currentEditingRestaurant.reviews);
+                    loadRestaurants();
+                }
+            } catch (e) {
+                alert('Failed to delete review');
+            }
+        }
+
+        function showSuccess(msg) {
+            const box = document.getElementById('restAlert');
+            const text = document.getElementById('restAlertText');
+            text.textContent = msg;
+            box.style.display = 'inline-flex';
+            setTimeout(() => { box.style.display = 'none'; }, 4000);
         }
 
         document.addEventListener('DOMContentLoaded', () => {

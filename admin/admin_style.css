@@ -210,6 +210,52 @@ img {
     min-height: 100px;
 }
 
+/* ── UNIVERSAL INPUT & TEXTAREA DARK GLASS STYLING ───────── */
+.input-text,
+.input-textarea,
+input[type="text"],
+input[type="url"],
+input[type="number"],
+input[type="time"],
+input[type="email"],
+input[type="password"],
+textarea {
+    background: rgba(10, 10, 26, 0.85) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+    padding: 10px 16px !important;
+    font-size: 0.95rem !important;
+    font-family: inherit !important;
+    outline: none !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
+}
+
+.input-text:focus,
+.input-textarea:focus,
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+input[type="time"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    background: rgba(18, 18, 45, 0.95) !important;
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 3px rgba(200, 169, 126, 0.25) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) opacity(0.7);
+    cursor: pointer;
+}
+
 /* ── UNIVERSAL SELECT & OPTION STYLING ─────────────── */
 select {
     background-color: #12122a !important;

@@ -52,6 +52,17 @@ export async function onRequest(context) {
       const body = await request.json();
       const action = body.action || 'create';
 
+      // Create new restaurant
+      if (action === 'create') {
+        const { restaurant_data, status } = body;
+        const jsonStr = typeof restaurant_data === 'string' ? restaurant_data : JSON.stringify(restaurant_data);
+        const res = await env.DB.prepare(
+          'INSERT INTO restaurants (status, restaurant_json) VALUES (?, ?)'
+        ).bind(status || 'approved', jsonStr).run();
+
+        return new Response(JSON.stringify({ success: true, message: 'Restaurant added successfully', id: res.meta?.last_row_id }), { status: 200, headers });
+      }
+
       // Approve or Reject status change
       if (action === 'set_status') {
         const { id, status } = body;

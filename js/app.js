@@ -85,8 +85,6 @@ function applySEOMetadata(cms) {
   }
 
   // 3. Dynamic Robots Meta (Global Switch from D1)
-  const isGlobalIndexingEnabled = cms.seo_global && cms.seo_global.indexing_enabled === true;
-  
   let robotsMeta = document.querySelector('meta[name="robots"]');
   if (!robotsMeta) {
     robotsMeta = document.createElement('meta');
@@ -94,10 +92,14 @@ function applySEOMetadata(cms) {
     document.head.appendChild(robotsMeta);
   }
 
-  if (!isGlobalIndexingEnabled) {
-    robotsMeta.content = 'noindex, nofollow';
+  if (cms.seo_global && cms.seo_global.indexing_enabled === true) {
+    if (cms.seo && cms.seo.robots) {
+      robotsMeta.content = cms.seo.robots;
+    } else {
+      robotsMeta.content = 'index, follow';
+    }
   } else {
-    robotsMeta.content = (cms.seo && cms.seo.robots) || 'index, follow';
+    robotsMeta.content = 'noindex, nofollow';
   }
 }
 

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, follow">
+    <title>404 - Page Not Found | Catering Menu</title>
+    <meta name="description" content="The catering menu or page you are looking for could not be found. Explore top-rated caterers and menus on Catering Menu.">
+    
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/img/site.webmanifest">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/style.css?v=2.8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        .error-page-wrapper {
+            min-height: calc(100vh - var(--nav-height) - 300px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+        .error-card {
+            max-width: 640px;
+            width: 100%;
+            padding: 50px 36px;
+            border-radius: 28px;
+            background: #ffffff;
+            border: 1.5px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #f59e0b, #ea580c);
+        }
+
+        .error-badge-icon {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(234, 88, 12, 0.1));
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            margin: 0 auto 24px;
+            border: 2px dashed rgba(217, 119, 6, 0.4);
+        }
+
+        .error-code {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, #0f172a 30%, #d97706 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            font-family: var(--font-heading);
+        }
+
+        .error-card h1 {
+            font-size: 1.85rem;
+            color: #0f172a;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .error-card p {
+            font-size: 1rem;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .error-search-box {
+            display: flex;
+            align-items: center;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 6px 8px 6px 20px;
+            margin-bottom: 32px;
+            transition: all 0.25s ease;
+        }
+
+        .error-search-box:focus-within {
+            background: #ffffff;
+            border-color: #d97706;
+            box-shadow: 0 4px 20px rgba(217, 119, 6, 0.15);
+        }
+
+        .error-search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 0.95rem;
+            color: #0f172a;
+            font-family: inherit;
+        }
+
+        .error-search-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 22px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .error-search-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+        }
+
+        .error-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .error-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+            transition: all 0.2s;
+        }
+
+        .error-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(217, 119, 6, 0.4);
+            color: #ffffff;
+        }
+
+        .error-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f8fafc;
+            color: #334155;
+            border: 1.5px solid #e2e8f0;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .error-btn-secondary:hover {
+            background: #ffffff;
+            border-color: #cbd5e1;
+            color: #0f172a;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" id="navbar">
+        <!-- Rendered by js/app.js -->
+    </nav>
+
+    <!-- 404 CONTENT -->
+    <main class="error-page-wrapper">
+        <div class="error-card glass">
+            <div class="error-badge-icon">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <div class="error-code">404</div>
+            <h1>Catering Page Not Found</h1>
+            <p>The caterer profile, event menu, or address you are looking for may have been moved, renamed, or is currently unavailable.</p>
+            
+            <!-- Quick Search -->
+            <form id="errorSearchForm" onsubmit="handleErrorSearch(event)" class="error-search-box">
+                <i class="fas fa-search" style="color:#d97706;margin-right:10px;"></i>
+                <input type="text" id="errorSearchInput" placeholder="Search caterers, cuisines, or services..." autocomplete="off">
+                <button type="submit" class="error-search-btn">Search</button>
+            </form>
+
+            <!-- Quick Links -->
+            <div class="error-actions">
+                <a href="/listings" class="error-btn-primary">
+                    <i class="fas fa-compass"></i> Explore All Caterers
+                </a>
+                <a href="/" class="error-btn-secondary">
+                    <i class="fas fa-home"></i> Return Home
+                </a>
+                <a href="/contact" class="error-btn-secondary">
+                    <i class="fas fa-envelope"></i> Contact Support
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="footer">
+        <!-- Rendered by js/app.js -->
+    </footer>
+
+    <script src="/js/app.js?v=2.6"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const cms = await fetchCMSContent('global');
+            if (cms) {
+                if (cms.nav) renderHeader(cms.nav);
+                if (cms.footer) renderFooter(cms.footer);
+            } else {
+                renderHeader();
+                renderFooter();
+            }
+        });
+
+        function handleErrorSearch(e) {
+            e.preventDefault();
+            const val = document.getElementById('errorSearchInput').value.trim();
+            if (val) {
+                window.location.href = `/listings/${encodeURIComponent(val.toLowerCase())}`;
+            } else {
+                window.location.href = '/listings';
+            }
+        }
+    </script>
+</body>
+</html>

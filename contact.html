@@ -6,14 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <title>Contact Us - Catering Menu</title>
+    <meta name="description" content="Get in touch with the Catering Menu support team for inquiries, caterer partnerships, booking support, or feedback.">
+    <link rel="canonical" href="https://www.catering-menu.com/contact">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Catering Menu">
+    <meta property="og:title" content="Contact Us - Catering Menu">
+    <meta property="og:description" content="Get in touch with the Catering Menu support team for inquiries, caterer partnerships, booking support, or feedback.">
+    <meta property="og:url" content="https://www.catering-menu.com/contact">
+    <meta property="og:image" content="https://www.catering-menu.com/assets/img/catering-menu-logo.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Contact Us - Catering Menu">
+    <meta name="twitter:description" content="Get in touch with the Catering Menu support team for inquiries, caterer partnerships, booking support, or feedback.">
+    <meta name="twitter:image" content="https://www.catering-menu.com/assets/img/catering-menu-logo.png">
+
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/assets/img/site.webmanifest">
-    <link rel="stylesheet" href="/style.css?v=2.5">
+    <link rel="stylesheet" href="/style.css?v=2.8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Schema.org ContactPage Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": "Contact Catering Menu",
+      "url": "https://www.catering-menu.com/contact",
+      "description": "Customer inquiry and catering partnership contact page.",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "Catering Menu",
+        "url": "https://www.catering-menu.com/",
+        "logo": "https://www.catering-menu.com/assets/img/catering-menu-logo.png",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "hello@catering-menu.com"
+        }
+      }
+    }
+    </script>
 </head>
 
 <body>
@@ -110,7 +149,7 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script src="/js/app.js?v=2.5"></script>
+    <script src="/js/app.js?v=2.6"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const cms = await fetchCMSContent('contact');

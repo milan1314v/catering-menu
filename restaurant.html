@@ -5,7 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Restaurant Details - Catering Menu</title>
+    <title id="pageMetaTitle">Catering Menu & Services Profile | Catering Menu</title>
+    <meta name="description" id="pageMetaDesc" content="Explore bespoke catering menus, packages, direct photos, verified client reviews, and booking details on Catering Menu.">
+    <link rel="canonical" id="pageCanonical" href="https://www.catering-menu.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="restaurant.restaurant">
+    <meta property="og:site_name" content="Catering Menu">
+    <meta property="og:title" id="ogTitle" content="Catering Menu & Services Profile | Catering Menu">
+    <meta property="og:description" id="ogDesc" content="Explore bespoke catering menus, packages, direct photos, verified client reviews, and booking details on Catering Menu.">
+    <meta property="og:url" id="ogUrl" content="https://www.catering-menu.com/">
+    <meta property="og:image" id="ogImage" content="https://www.catering-menu.com/assets/img/catering-menu-logo.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="twTitle" content="Catering Menu & Services Profile | Catering Menu">
+    <meta name="twitter:description" id="twDesc" content="Explore bespoke catering menus, packages, direct photos, verified client reviews, and booking details on Catering Menu.">
+    <meta name="twitter:image" id="twImage" content="https://www.catering-menu.com/assets/img/catering-menu-logo.png">
+
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
@@ -16,6 +33,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Schema.org Placeholder Container -->
+    <script type="application/ld+json" id="restaurantSchemaJson">
+    {
+      "@context": "https://schema.org",
+      "@type": "FoodEstablishment",
+      "name": "Catering Service",
+      "url": "https://www.catering-menu.com/"
+    }
+    </script>
 </head>
 
 <body>
@@ -466,7 +493,36 @@
             }
 
             const rest = currentRestaurant;
-            document.title = `${rest.name} - Catering Menu`;
+            const catererCanonical = `https://${rest.slug || 'caterer'}.catering-menu.com/`;
+            const seoPageTitle = `${rest.name} - Catering Menu, Pricing & Reviews | Catering Menu`;
+            const seoPageDesc = (rest.about_text || `Explore ${rest.name} catering packages, menus, and client reviews on Catering Menu.`).substring(0, 160).trim();
+
+            document.title = seoPageTitle;
+            const metaTitleEl = document.getElementById('pageMetaTitle');
+            if (metaTitleEl) metaTitleEl.textContent = seoPageTitle;
+
+            const metaDescEl = document.getElementById('pageMetaDesc');
+            if (metaDescEl) metaDescEl.setAttribute('content', seoPageDesc);
+
+            const canonicalEl = document.getElementById('pageCanonical');
+            if (canonicalEl) canonicalEl.setAttribute('href', catererCanonical);
+
+            const ogTitle = document.getElementById('ogTitle');
+            if (ogTitle) ogTitle.setAttribute('content', seoPageTitle);
+            const ogDesc = document.getElementById('ogDesc');
+            if (ogDesc) ogDesc.setAttribute('content', seoPageDesc);
+            const ogUrl = document.getElementById('ogUrl');
+            if (ogUrl) ogUrl.setAttribute('content', catererCanonical);
+            const ogImg = document.getElementById('ogImage');
+            if (ogImg && rest.banner_url) ogImg.setAttribute('content', rest.banner_url);
+
+            const twTitle = document.getElementById('twTitle');
+            if (twTitle) twTitle.setAttribute('content', seoPageTitle);
+            const twDesc = document.getElementById('twDesc');
+            if (twDesc) twDesc.setAttribute('content', seoPageDesc);
+            const twImg = document.getElementById('twImage');
+            if (twImg && rest.banner_url) twImg.setAttribute('content', rest.banner_url);
+
             document.getElementById('breadcrumbName').textContent = rest.name;
             document.getElementById('restName').textContent = rest.name;
             document.getElementById('welcomeTitle').textContent = `About ${rest.name} Catering`;
@@ -490,6 +546,32 @@
             for (let i = 0; i < Math.round(avg); i++) starIcons += '<i class="fas fa-star"></i>';
             for (let i = Math.round(avg); i < 5; i++) starIcons += '<i class="far fa-star"></i>';
             document.getElementById('sidebarRatingStars').innerHTML = starIcons;
+
+            // Dynamic Schema.org JSON-LD
+            const schemaEl = document.getElementById('restaurantSchemaJson');
+            if (schemaEl) {
+                const schemaObj = {
+                    "@context": "https://schema.org",
+                    "@type": "FoodEstablishment",
+                    "name": rest.name,
+                    "image": rest.banner_url || "https://www.catering-menu.com/assets/img/catering-menu-logo.png",
+                    "servesCuisine": rest.cuisine || "Catering Services",
+                    "description": seoPageDesc,
+                    "url": catererCanonical,
+                    "address": {
+                        "@type": "PostalAddress",
+                        "streetAddress": (rest.locations || 'Citywide').split('|')[0].trim()
+                    }
+                };
+                if (reviews.length > 0) {
+                    schemaObj.aggregateRating = {
+                        "@type": "AggregateRating",
+                        "ratingValue": avg,
+                        "reviewCount": reviews.length
+                    };
+                }
+                schemaEl.textContent = JSON.stringify(schemaObj, null, 2);
+            }
 
             // Direct Menu Images Gallery
             renderMenuImages(rest);

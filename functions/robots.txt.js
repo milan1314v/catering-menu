@@ -4,9 +4,9 @@
 export async function onRequestGet(context) {
   const { env } = context;
 
-  let isIndexingEnabled = false;
+  let isIndexingEnabled = false; // Default: Blocked until client approval
 
-  if (env.DB) {
+  if (env && env.DB) {
     try {
       const row = await env.DB.prepare(
         "SELECT content_json FROM site_pages WHERE page_name = 'global'"
@@ -24,14 +24,24 @@ export async function onRequestGet(context) {
   }
 
   const robotsContent = isIndexingEnabled
-    ? "User-agent: *\nAllow: /\n\n# Dynamic robots.txt managed via Admin Panel"
-    : "User-agent: *\nDisallow: /\n\n# Search engines blocked via Admin Panel";
+    ? `User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://www.catering-menu.com/sitemap.xml
+
+# Dynamic robots.txt managed via Catering Menu Systems`
+    : `User-agent: *
+Disallow: /
+
+# Search engines temporarily blocked via Admin Panel`;
 
   return new Response(robotsContent, {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=60, s-maxage=60"
+      "Cache-Control": "public, max-age=300, s-maxage=300"
     }
   });
 }

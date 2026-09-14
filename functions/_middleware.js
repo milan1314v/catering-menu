@@ -1,5 +1,5 @@
 // functions/_middleware.js
-// Cloudflare Pages middleware for Subdomain Routing & Dynamic X-Robots-Tag
+// Cloudflare Pages middleware for Subdomain Routing, Clean URLs, 404 Fallback & Dynamic X-Robots-Tag
 
 export async function onRequest(context) {
   const { request, env, next } = context;
@@ -32,12 +32,44 @@ export async function onRequest(context) {
 
       // If visiting root of subdomain (e.g. https://spice-route.catering-menu.com/)
       if (url.pathname === '/' || url.pathname === '/index.html' || url.pathname === '/index' || url.pathname === '') {
+        // Verify if caterer subdomain exists in D1
+        let catererExists = true;
+        if (env && env.DB) {
+          try {
+            const row = await env.DB.prepare(
+              "SELECT id, restaurant_json FROM restaurants WHERE status = 'approved'"
+            ).all();
+            
+            const list = (row && row.results) || [];
+            catererExists = list.some(r => {
+              try {
+                const d = JSON.parse(r.restaurant_json);
+                const s = d.slug || (d.name || '').toLowerCase().replace(/[^a-z0-9]/g, '-');
+                return s === subdomain;
+              } catch(e) { return false; }
+            });
+          } catch(e) {
+            catererExists = true; // Fallback to serve restaurant.html if DB check fails
+          }
+        }
+
+        if (!catererExists) {
+          // Serve branded 404 page with 404 HTTP status
+          const notFoundUrl = new URL('/404.html', request.url);
+          const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl, request));
+          return new Response(notFoundRes.body, {
+            status: 404,
+            statusText: 'Not Found',
+            headers: notFoundRes.headers
+          });
+        }
+
         const rewriteUrl = new URL('/restaurant.html', request.url);
         rewriteUrl.searchParams.set('slug', subdomain);
 
         // Fetch the restaurant.html page internally
         let response = await env.ASSETS.fetch(new Request(rewriteUrl, request));
-        return applyRobotsHeader(response, env);
+        return applyRobotsHeader(response, env, request);
       }
     }
   }
@@ -55,7 +87,7 @@ export async function onRequest(context) {
       const rewriteUrl = new URL('/listings.html', request.url);
       rewriteUrl.searchParams.set('q', decodeURIComponent(rawCategory));
       let response = await env.ASSETS.fetch(new Request(rewriteUrl, request));
-      return applyRobotsHeader(response, env);
+      return applyRobotsHeader(response, env, request);
     }
   }
 
@@ -69,13 +101,40 @@ export async function onRequest(context) {
   }
 
   // 2. Normal Request
-  const response = await next();
-  return applyRobotsHeader(response, env);
+  let response = await next();
+
+  // 3. Branded 404 fallback for non-existent static routes
+  if (response.status === 404 && !url.pathname.startsWith('/api/')) {
+    try {
+      const notFoundUrl = new URL('/404.html', request.url);
+      const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl, request));
+      return new Response(notFoundRes.body, {
+        status: 404,
+        statusText: 'Not Found',
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'X-Robots-Tag': 'noindex, follow'
+        }
+      });
+    } catch(e) {}
+  }
+
+  return applyRobotsHeader(response, env, request);
 }
 
-async function applyRobotsHeader(response, env) {
-  let isIndexingEnabled = false;
+async function applyRobotsHeader(response, env, request) {
+  const url = new URL(request.url);
+  const path = url.pathname.toLowerCase();
 
+  // Always protect admin and internal api from search indexing
+  if (path.startsWith('/admin') || path.startsWith('/api')) {
+    const adminResponse = new Response(response.body, response);
+    adminResponse.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    return adminResponse;
+  }
+
+  let isIndexingEnabled = false; // Default: Blocked until client approval
+ 
   if (env && env.DB) {
     try {
       const row = await env.DB.prepare(
@@ -87,7 +146,9 @@ async function applyRobotsHeader(response, env) {
           isIndexingEnabled = true;
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      isIndexingEnabled = false;
+    }
   }
 
   const newResponse = new Response(response.body, response);

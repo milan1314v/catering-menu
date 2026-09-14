@@ -24,46 +24,36 @@
     <!-- PAGE HERO -->
     <section class="page-hero">
         <div class="container">
-            <h1 id="heroTitle">List Your Restaurant</h1>
-            <p id="heroSubtitle">Join thousands of restaurants already on Catering Menu. Showcase your menu, gather reviews, and attract new customers.</p>
+            <h1 id="heroTitle">List Your Catering Business</h1>
+            <p id="heroSubtitle">Join thousands of caterers already on Catering Menu. Showcase your event menus, gather host reviews, and attract bookings.</p>
         </div>
     </section>
 
     <section class="section">
         <div class="container">
             <div id="submitSuccessMsg" class="success-message" style="display:none;max-width:720px;margin:0 auto 32px;">
-                <i class="fas fa-check-circle"></i> Thank you! Your restaurant has been submitted for review. Our team will approve it shortly.
+                <i class="fas fa-check-circle"></i> Thank you! Your catering business has been submitted for review. Our team will approve it shortly.
             </div>
 
             <div class="get-listed-form glass">
-                <h2 id="formTitle">Submit Your Restaurant</h2>
+                <h2 id="formTitle">Submit Your Catering Business</h2>
                 <form id="getListedForm">
                     <div class="form-group">
-                        <label id="nameLabel">Restaurant Name</label>
-                        <input type="text" id="rest_name" required placeholder="Enter restaurant name">
+                        <label id="nameLabel">Catering Business Name</label>
+                        <input type="text" id="rest_name" required placeholder="Enter catering business name">
                     </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Cuisine</label>
-                            <input type="text" id="rest_cuisine" placeholder="e.g. Italian, French, Japanese">
-                        </div>
-                        <div class="form-group">
-                            <label>Price Range</label>
-                            <select id="rest_price">
-                                <option value="$">$ (Inexpensive)</option>
-                                <option value="$$" selected>$$ (Moderate)</option>
-                                <option value="$$$">$$$ (Upscale)</option>
-                                <option value="$$$$">$$$$ (Fine Dining)</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label>Primary Cuisine &amp; Specialities</label>
+                        <input type="text" id="rest_cuisine" placeholder="e.g. Multi-Cuisine, North Indian, Italian, Live Counters">
+                        <input type="hidden" id="rest_price" value="$$">
                     </div>
                     <div class="form-group">
                         <label id="bannerLabel">Banner Image URL</label>
-                        <input type="url" id="rest_banner" placeholder="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400">
+                        <input type="url" id="rest_banner" placeholder="https://images.unsplash.com/photo-1555244162-803834f70033?w=1400">
                     </div>
                     <div class="form-group">
-                        <label id="aboutLabel">About Your Restaurant</label>
-                        <textarea id="rest_about" required placeholder="Tell diners about your culinary story, specialties, and ambiance..."></textarea>
+                        <label id="aboutLabel">About Your Catering Business</label>
+                        <textarea id="rest_about" required placeholder="Tell event hosts about your culinary experience, service styles, team, and specialties..."></textarea>
                     </div>
                     <div class="form-group" style="margin-bottom: 24px;">
                         <label style="display:flex; justify-content:space-between; align-items:center;">

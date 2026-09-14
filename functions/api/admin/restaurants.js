@@ -1,6 +1,16 @@
 // functions/api/admin/restaurants.js
 // Admin restaurant management for Cloudflare D1
 
+function slugify(text) {
+  if (!text) return '';
+  return text.toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
 export async function onRequest(context) {
   const { request, env } = context;
   const method = request.method;
@@ -38,9 +48,10 @@ export async function onRequest(context) {
       const items = (results || []).map(row => {
         try {
           const data = JSON.parse(row.restaurant_json);
-          return { id: row.id, status: row.status, ...data };
+          const slug = data.slug || slugify(data.name || '');
+          return { id: row.id, status: row.status, slug, ...data };
         } catch (e) {
-          return { id: row.id, status: row.status };
+          return { id: row.id, status: row.status, slug: '' };
         }
       });
 
@@ -55,12 +66,14 @@ export async function onRequest(context) {
       // Create new restaurant
       if (action === 'create') {
         const { restaurant_data, status } = body;
-        const jsonStr = typeof restaurant_data === 'string' ? restaurant_data : JSON.stringify(restaurant_data);
+        let dataObj = typeof restaurant_data === 'string' ? JSON.parse(restaurant_data) : { ...restaurant_data };
+        dataObj.slug = dataObj.slug || slugify(dataObj.name || '');
+        const jsonStr = JSON.stringify(dataObj);
         const res = await env.DB.prepare(
           'INSERT INTO restaurants (status, restaurant_json) VALUES (?, ?)'
         ).bind(status || 'approved', jsonStr).run();
 
-        return new Response(JSON.stringify({ success: true, message: 'Restaurant added successfully', id: res.meta?.last_row_id }), { status: 200, headers });
+        return new Response(JSON.stringify({ success: true, message: 'Caterer added successfully', id: res.meta?.last_row_id }), { status: 200, headers });
       }
 
       // Approve or Reject status change
@@ -118,15 +131,17 @@ export async function onRequest(context) {
       // Update full restaurant details
       if (action === 'update_restaurant') {
         const { id, restaurant_data, status } = body;
+        let dataObj = typeof restaurant_data === 'string' ? JSON.parse(restaurant_data) : { ...restaurant_data };
+        dataObj.slug = dataObj.slug || slugify(dataObj.name || '');
         await env.DB.prepare(
           'UPDATE restaurants SET restaurant_json = ?, status = ? WHERE id = ?'
         ).bind(
-          typeof restaurant_data === 'string' ? restaurant_data : JSON.stringify(restaurant_data),
+          JSON.stringify(dataObj),
           status || 'approved',
           id
         ).run();
 
-        return new Response(JSON.stringify({ success: true, message: 'Restaurant updated successfully' }), { status: 200, headers });
+        return new Response(JSON.stringify({ success: true, message: 'Caterer updated successfully' }), { status: 200, headers });
       }
 
       // Delete restaurant

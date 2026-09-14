@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Catering Menu - Discover Extraordinary Dining Experiences</title>
+    <title>Catering Menu - Premier Catering Directory & Event Menus</title>
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
@@ -21,16 +21,16 @@
     <!-- NAVIGATION -->
     <nav class="navbar" id="navbar">
         <div class="container">
-            <a href="/index.html" class="nav-logo">
+            <a href="/" class="nav-logo">
                 <img src="/assets/img/catering-menu-logo.png" alt="Catering Menu" class="nav-logo-img" id="mainNavLogo">
             </a>
             <div class="nav-links" id="navLinks">
-                <a href="/index.html" class="active">Home</a>
-                <a href="/listings.html">Restaurants</a>
-                <a href="/about.html">About Us</a>
-                <a href="/faqs.html">FAQs</a>
-                <a href="/contact.html">Contact</a>
-                <a href="/get-listed.html" class="nav-cta">Get Listed</a>
+                <a href="/" class="active">Home</a>
+                <a href="/listings">Caterers</a>
+                <a href="/about">About Us</a>
+                <a href="/faqs">FAQs</a>
+                <a href="/contact">Contact</a>
+                <a href="/get-listed" class="nav-cta">List Your Business</a>
             </div>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu">
                 <span></span><span></span><span></span>
@@ -43,47 +43,49 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge" id="heroBadge">
-                    <i class="fas fa-star"></i> Premium Dining Directory
+                    <i class="fas fa-sparkles"></i> Premier Catering Directory
                 </div>
-                <h1 id="heroTitle">Discover Extraordinary Dining Experiences</h1>
-                <p id="heroSubtitle">Explore handpicked restaurants, read authentic reviews, and find your next favorite
-                    meal - all in one place.</p>
-                <div class="hero-search">
-                    <input type="text" placeholder="Search restaurants by name or cuisine..." id="searchInput">
-                    <button id="searchBtn" class="btn-primary" style="border:none;cursor:pointer;">Explore Now</button>
+                <h1 id="heroTitle">Discover Extraordinary Catering Experiences</h1>
+                <p id="heroSubtitle">Explore handpicked caterers, browse exquisite event menus, and find the perfect culinary service for your wedding, corporate event, or private party.</p>
+                <div class="hero-search-wrap">
+                    <div class="hero-search">
+                        <input type="text" placeholder="Search caterers by name, cuisine, or occasion..." id="searchInput" autocomplete="off">
+                        <button id="searchBtn" class="btn-primary" style="border:none;cursor:pointer;">Explore Now</button>
+                    </div>
+                    <div class="search-suggestions" id="heroSearchSuggestions"></div>
                 </div>
                 <div class="hero-stats" id="heroStats">
                     <div>
                         <div class="hero-stat-number">2,500+</div>
-                        <div class="hero-stat-label">Restaurants</div>
+                        <div class="hero-stat-label">Caterers Listed</div>
                     </div>
                     <div>
                         <div class="hero-stat-number">15,000+</div>
-                        <div class="hero-stat-label">Reviews</div>
+                        <div class="hero-stat-label">Curated Menus</div>
                     </div>
                     <div>
                         <div class="hero-stat-number">50,000+</div>
-                        <div class="hero-stat-label">Happy Diners</div>
+                        <div class="hero-stat-label">Happy Guests Served</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FEATURED RESTAURANTS -->
+    <!-- FEATURED CATERERS -->
     <section class="section" id="restaurants">
         <div class="container">
             <div class="section-header">
-                <div class="overline" id="featuredOverline">Our Selection</div>
-                <h2 id="featuredTitle">Featured Restaurants</h2>
-                <p id="featuredSubtitle">Handpicked dining destinations that our community loves the most.</p>
+                <div class="overline" id="featuredOverline">Top Rated</div>
+                <h2 id="featuredTitle">Featured Catering Services</h2>
+                <p id="featuredSubtitle">Handpicked catering partners for weddings, corporate galas, and special celebrations.</p>
             </div>
             <div class="restaurants-grid" id="restaurantsGrid">
                 <!-- Dynamically loaded -->
             </div>
             <div style="text-align:center;margin-top:48px;">
-                <a href="/listings.html" class="btn-glass" id="featuredViewAll">
-                    View All Restaurants <i class="fas fa-arrow-right"></i>
+                <a href="/listings" class="btn-glass" id="featuredViewAll">
+                    View All Caterers <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
         </div>
@@ -94,27 +96,23 @@
         <div class="container split-inner">
             <div class="split-content split-content-visual">
                 <div class="overline" id="split1Overline">Why Choose Us</div>
-                <h2 id="split1Title">Curated by Experts, Loved by Diners</h2>
-                <p id="split1Text">Every restaurant on Catering Menu is handpicked by our culinary experts. We visit, taste,
-                    and verify each establishment before it appears on our platform. Our rigorous selection process
-                    ensures that when you choose a restaurant from Catering Menu, you are choosing excellence.</p>
+                <h2 id="split1Title">Curated Catering Teams for Every Occasion</h2>
+                <p id="split1Text">Every catering service on Catering Menu is handpicked by our culinary experts. We visit, taste,
+                    and verify kitchen standards and event execution before feature approval. Our rigorous selection process
+                    ensures your guests enjoy nothing short of culinary perfection.</p>
                 <div class="split-bullets" id="split1Bullets">
-                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Expert-curated restaurant selections
-                    </div>
-                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Authentic verified customer reviews
-                    </div>
-                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Real-time menu and pricing updates
-                    </div>
-                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Exclusive partnership perks and offers
-                    </div>
+                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Handpicked &amp; verified catering partners</div>
+                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Customizable multi-course event menus</div>
+                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Live food counters &amp; buffet setups</div>
+                    <div class="split-bullet"><i class="fas fa-check-circle"></i> Authentic verified host reviews &amp; photos</div>
                 </div>
-                <a href="/about.html" class="btn-primary" id="split1Btn">
+                <a href="/about" class="btn-primary" id="split1Btn">
                     Learn More <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
             <div class="split-image">
-                <img id="split1Img" src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800"
-                    alt="Premium steak dining experience">
+                <img id="split1Img" src="https://images.unsplash.com/photo-1555244162-803834f70033?w=800"
+                    alt="Luxury catering buffet setup">
             </div>
         </div>
     </section>
@@ -124,24 +122,22 @@
         <div class="container split-inner">
             <div class="split-content split-content-visual">
                 <div class="overline" id="split2Overline">Community Driven</div>
-                <h2 id="split2Title">Real Reviews from Real Food Lovers</h2>
-                <p id="split2Text">Our community of over 50,000 passionate diners shares their honest experiences every
-                    day. From hidden neighborhood gems to celebrated fine dining destinations, our reviews help you make
-                    confident choices. Every review is verified, every rating is genuine, and every recommendation comes
-                    from someone who has truly dined there.</p>
+                <h2 id="split2Title">Real Reviews from Real Event Hosts</h2>
+                <p id="split2Text">From weddings to corporate conferences, over 50,000 event hosts share authentic experiences,
+                    setup photos, and honest reviews. Make confident choices backed by genuine guest satisfaction scores.</p>
                 <div class="split-bullets" id="split2Bullets">
-                    <div class="split-bullet"><i class="fas fa-shield-alt"></i> 100% verified diner reviews</div>
-                    <div class="split-bullet"><i class="fas fa-users"></i> 50,000+ active community members</div>
-                    <div class="split-bullet"><i class="fas fa-camera"></i> Photo reviews and food stories</div>
-                    <div class="split-bullet"><i class="fas fa-trophy"></i> Top reviewer recognition program</div>
+                    <div class="split-bullet"><i class="fas fa-shield-alt"></i> 100% verified host reviews</div>
+                    <div class="split-bullet"><i class="fas fa-users"></i> 50,000+ active event planners</div>
+                    <div class="split-bullet"><i class="fas fa-camera"></i> Photos of real buffets &amp; live counters</div>
+                    <div class="split-bullet"><i class="fas fa-trophy"></i> Top caterer excellence recognition</div>
                 </div>
-                <a href="/listings.html" class="btn-primary" id="split2Btn">
-                    Read Reviews <i class="fas fa-arrow-right"></i>
+                <a href="/listings" class="btn-primary" id="split2Btn">
+                    Browse Reviews <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
             <div class="split-image">
-                <img id="split2Img" src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800"
-                    alt="Friends enjoying dinner together">
+                <img id="split2Img" src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800"
+                    alt="Guests enjoying catering at celebration">
             </div>
         </div>
     </section>
@@ -152,26 +148,23 @@
             <div class="section-header">
                 <div class="overline" id="hiwOverline">Simple Process</div>
                 <h2 id="hiwTitle">How Catering Menu Works</h2>
-                <p id="hiwSubtitle">Finding the perfect restaurant is just three simple steps away.</p>
+                <p id="hiwSubtitle">Booking the ideal catering for your event is effortless in three simple steps.</p>
             </div>
             <div class="hiw-grid" id="hiwGrid">
                 <div class="hiw-card glass">
                     <div class="hiw-icon"><i class="fas fa-search"></i></div>
                     <h3>Browse &amp; Discover</h3>
-                    <p>Explore our curated collection of top-rated restaurants. Filter by cuisine, location, or rating
-                        to find exactly what you crave.</p>
-                </div>
-                <div class="hiw-card glass">
-                    <div class="hiw-icon"><i class="fas fa-star"></i></div>
-                    <h3>Read Real Reviews</h3>
-                    <p>Dive into authentic reviews from verified diners. See ratings, photos, and detailed experiences
-                        before making your choice.</p>
+                    <p>Explore top-rated caterers. Filter by cuisine, event type, or guest capacity to find your ideal match.</p>
                 </div>
                 <div class="hiw-card glass">
                     <div class="hiw-icon"><i class="fas fa-book-open"></i></div>
-                    <h3>Reserve &amp; Enjoy</h3>
-                    <p>Connect directly with your chosen restaurant. Get directions, view menus, and plan your perfect
-                        dining experience.</p>
+                    <h3>Explore Menus &amp; Reviews</h3>
+                    <p>Browse detailed food menus, buffet items, and verified reviews from past event hosts.</p>
+                </div>
+                <div class="hiw-card glass">
+                    <div class="hiw-icon"><i class="fas fa-phone-volume"></i></div>
+                    <h3>Connect &amp; Plan</h3>
+                    <p>Get in touch directly with the caterer, customize your menu, and create unforgettable moments.</p>
                 </div>
             </div>
         </div>
@@ -181,10 +174,9 @@
     <section class="cta-banner">
         <div class="container">
             <div class="cta-inner glass-medium">
-                <h2 id="ctaTitle">Own a Restaurant?</h2>
-                <p id="ctaText">Join Catering Menu and reach thousands of food enthusiasts. List your restaurant for free
-                    and let diners discover your culinary excellence.</p>
-                <a href="/get-listed.html" class="btn-primary" id="ctaBtn">Get Listed Today <i
+                <h2 id="ctaTitle">Own a Catering Business?</h2>
+                <p id="ctaText">Join Catering Menu and connect with thousands of event organizers, wedding planners, and corporate hosts looking for exceptional food services.</p>
+                <a href="/get-listed" class="btn-primary" id="ctaBtn">List Your Business Today <i
                         class="fas fa-arrow-right"></i></a>
             </div>
         </div>
@@ -202,19 +194,22 @@
     <script src="js/app.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            // 1. Search button trigger
             const searchInput = document.getElementById('searchInput');
             const searchBtn = document.getElementById('searchBtn');
+
             function doSearch() {
                 const q = searchInput.value.trim();
-                window.location.href = q ? `/listings.html?q=${encodeURIComponent(q)}` : '/listings.html';
+                window.location.href = q ? `/listings?q=${encodeURIComponent(q)}` : '/listings';
             }
+
             if (searchBtn) searchBtn.addEventListener('click', doSearch);
-            if (searchInput) {
-                searchInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') doSearch();
-                });
-            }
+
+            // Initialize Live Search Suggestions for Hero Search
+            initLiveSearchSuggestions({
+                inputId: 'searchInput',
+                suggestionsId: 'heroSearchSuggestions',
+                mode: 'navigate'
+            });
 
             // 2. Load CMS Content
             const cms = await fetchCMSContent('home');
@@ -223,7 +218,7 @@
                 if (cms.footer) renderFooter(cms.footer);
 
                 if (cms.hero) {
-                    if (cms.hero.badge) document.getElementById('heroBadge').innerHTML = `<i class="fas fa-star"></i> ${escapeHtml(cms.hero.badge)}`;
+                    if (cms.hero.badge) document.getElementById('heroBadge').innerHTML = `<i class="fas fa-sparkles"></i> ${escapeHtml(cms.hero.badge)}`;
                     if (cms.hero.title) document.getElementById('heroTitle').textContent = cms.hero.title;
                     if (cms.hero.subtitle) document.getElementById('heroSubtitle').textContent = cms.hero.subtitle;
                     if (cms.hero.search_placeholder && searchInput) searchInput.placeholder = cms.hero.search_placeholder;
@@ -244,7 +239,7 @@
                     if (cms.featured.subtitle) document.getElementById('featuredSubtitle').textContent = cms.featured.subtitle;
                     if (cms.featured.view_all_btn) {
                         const btn = document.getElementById('featuredViewAll');
-                        btn.href = '/listings.html';
+                        btn.href = '/listings';
                         btn.innerHTML = `${escapeHtml(cms.featured.view_all_btn.label || 'View All')} <i class="fas fa-arrow-right"></i>`;
                     }
                 }
@@ -258,7 +253,7 @@
                         const btn = document.getElementById('split1Btn');
                         if (btn) {
                             btn.innerHTML = `${escapeHtml(cms.split_1.btn.label || 'Learn More')} <i class="fas fa-arrow-right"></i>`;
-                            if (cms.split_1.btn.url) btn.href = cms.split_1.btn.url;
+                            if (cms.split_1.btn.url) btn.href = cms.split_1.btn.url.replace(/\.html$/, '');
                         }
                     }
                     if (Array.isArray(cms.split_1.bullets)) {
@@ -276,8 +271,8 @@
                     if (cms.split_2.btn) {
                         const btn = document.getElementById('split2Btn');
                         if (btn) {
-                            btn.innerHTML = `${escapeHtml(cms.split_2.btn.label || 'Read Reviews')} <i class="fas fa-arrow-right"></i>`;
-                            if (cms.split_2.btn.url) btn.href = cms.split_2.btn.url;
+                            btn.innerHTML = `${escapeHtml(cms.split_2.btn.label || 'Browse Reviews')} <i class="fas fa-arrow-right"></i>`;
+                            if (cms.split_2.btn.url) btn.href = cms.split_2.btn.url.replace(/\.html$/, '');
                         }
                     }
                     if (Array.isArray(cms.split_2.bullets)) {
@@ -306,7 +301,7 @@
                 renderFooter();
             }
 
-            // 3. Load Featured Restaurants (Limit 3)
+            // 3. Load Featured Caterers (Limit 3) with Subdomain URLs and NO price
             try {
                 const restRes = await fetch('/api/restaurants?status=approved&limit=3');
                 if (restRes.ok) {
@@ -314,7 +309,7 @@
                     renderFeaturedRestaurants(rests);
                 }
             } catch (e) {
-                console.warn('Could not load restaurants', e);
+                console.warn('Could not load caterers', e);
             }
         });
 
@@ -324,15 +319,16 @@
 
             grid.innerHTML = rests.map(r => {
                 const reviews = Array.isArray(r.reviews) ? r.reviews : [];
-                let avg = 0;
+                let avg = '5.0';
                 if (reviews.length > 0) {
                     const total = reviews.reduce((sum, rev) => sum + (Number(rev.rating) || 0), 0);
                     avg = (total / reviews.length).toFixed(1);
                 }
                 const snippet = (r.about_text || '').substring(0, 120);
+                const catererUrl = getCatererUrl(r);
 
                 return `
-                    <a href="/restaurant.html?id=${r.id}" class="rest-card glass">
+                    <a href="${catererUrl}" class="rest-card glass">
                         <div class="rest-card-img">
                             <img src="${escapeHtml(r.banner_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400')}" alt="${escapeHtml(r.name)}">
                             <div class="rest-card-badge">
@@ -348,7 +344,7 @@
                                     <span style="color:var(--text-dim);font-weight:400;">(${reviews.length})</span>
                                 </div>
                                 <div class="rest-card-link">
-                                    View Details <i class="fas fa-arrow-right"></i>
+                                    View Catering Menu <i class="fas fa-arrow-right"></i>
                                 </div>
                             </div>
                         </div>

@@ -27,7 +27,7 @@
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <a href="manage_content.html"><i class="fas fa-edit"></i> Manage Content</a>
-                <a href="manage_restaurants.html"><i class="fas fa-store"></i> Manage Restaurants</a>
+                <a href="manage_restaurants.html"><i class="fas fa-store"></i> Manage Caterers</a>
             </nav>
             <div class="sidebar-footer">
                 <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a>
@@ -55,7 +55,7 @@
                             class="fas fa-store"></i></div>
                     <div>
                         <div class="stat-number-admin" id="statTotalRestaurants">...</div>
-                        <div class="stat-label-admin">Total Restaurants</div>
+                        <div class="stat-label-admin">Total Caterers</div>
                     </div>
                 </div>
                 <div class="stat-card-admin glass-card">
@@ -78,7 +78,7 @@
 
             <div class="card glass-card">
                 <div class="card-header">
-                    <h3><i class="fas fa-store"></i> Recent Restaurants</h3>
+                    <h3><i class="fas fa-store"></i> Recent Caterers</h3>
                     <a href="manage_restaurants.html" class="btn-sm">View All</a>
                 </div>
                 <div class="table-responsive">
@@ -158,7 +158,7 @@
                     </tr>
                 `).join('');
                 } else {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);">No restaurants found</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);">No caterers found</td></tr>';
                 }
 
                 const cbody = document.getElementById('recentContactsBody');

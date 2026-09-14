@@ -778,6 +778,7 @@ ul {
     background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     box-shadow: 0 20px 50px rgba(49, 46, 129, 0.25) !important;
+    padding: 30px 0;
 }
 
 .cta-banner h2 {
@@ -959,13 +960,19 @@ ul {
     box-shadow: 0 6px 28px rgba(200, 169, 126, 0.5);
 }
 
-/* ── LISTINGS PAGE ────────────────────────────────── */
+/* ── LISTINGS & SEARCH ────────────────────────────── */
+.hero-search-wrap {
+    position: relative;
+    max-width: 560px;
+    z-index: 50;
+}
+
 .listings-search {
     padding: 16px 24px;
     margin-bottom: 32px;
     border-radius: var(--radius-lg);
     background: #ffffff;
-    border: 1px solid rgba(226, 232, 240, 0.9);
+    border: 1px solid rgba(226, 232, 240, 0.95);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
     position: relative;
     z-index: 50;
@@ -989,74 +996,172 @@ ul {
     border: none;
     outline: none;
     color: #0f172a;
-    font-size: 1rem;
+    font-size: 1.05rem;
     padding: 8px 0;
+    font-weight: 500;
 }
 
 .search-input-wrap input::placeholder {
     color: #94a3b8;
 }
 
+/* ── LIVE SEARCH SUGGESTIONS DROPDOWN ───────────────── */
 .search-suggestions {
     display: none;
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 10px);
     left: 0;
     right: 0;
     background: #ffffff;
     border: 1px solid rgba(226, 232, 240, 0.95);
-    border-radius: var(--radius);
+    border-radius: 18px;
     z-index: 9999;
     overflow: hidden;
-    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
-    max-height: 320px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
+    max-height: 400px;
     overflow-y: auto;
 }
 
-.suggestion-item {
+.search-suggest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #64748b;
+    border-bottom: 1px solid #f1f5f9;
+    background: #fafaf9;
+}
+
+.search-suggest-count {
+    color: #d97706;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.search-suggest-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px 16px;
-    cursor: pointer;
-    transition: background 0.2s;
+    gap: 14px;
+    padding: 12px 18px;
+    text-decoration: none;
     color: #1e293b;
-    font-size: 0.92rem;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f8fafc;
+    transition: all 0.2s ease;
 }
 
-.suggestion-item:last-child {
-    border-bottom: none;
-}
-
-.suggestion-item:hover {
+.search-suggest-item:hover,
+.search-suggest-item.selected {
     background: #fffbeb;
+    padding-left: 22px;
 }
 
-.suggestion-item i {
-    color: var(--gold);
-    font-size: 0.85rem;
-    margin: 0;
-    width: 20px;
-    text-align: center;
+.search-suggest-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-.suggestion-item strong {
+.search-suggest-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.search-suggest-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-suggest-name {
+    font-weight: 700;
+    font-size: 0.95rem;
     color: #0f172a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
 }
 
-.suggestion-item span {
-    color: var(--gold);
+.search-suggest-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-size: 0.8rem;
-    margin-left: auto;
-    background: rgba(245, 158, 11, 0.1);
-    padding: 2px 8px;
-    border-radius: 4px;
+    color: #64748b;
+    margin-top: 3px;
 }
 
+.search-suggest-cuisine {
+    color: #d97706;
+    font-weight: 600;
+}
+
+.search-suggest-cuisine i,
+.search-suggest-loc i {
+    font-size: 0.75rem;
+    margin-right: 4px;
+}
+
+.search-suggest-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: #fef3c7;
+    color: #b45309;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.search-suggest-rating i {
+    color: #f59e0b;
+    font-size: 0.75rem;
+}
+
+.search-suggest-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    background: #f8fafc;
+    color: #d97706;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background 0.2s;
+    border-top: 1px solid #e2e8f0;
+}
+
+.search-suggest-footer:hover {
+    background: #fffbeb;
+    color: #b45309;
+}
+
+.search-suggest-empty {
+    padding: 24px;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.search-suggest-empty i {
+    color: #94a3b8;
+    margin-right: 6px;
+}
+
+/* ── LUXURY FILTER SIDEBAR REDESIGN ──────────────── */
 .listings-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 290px 1fr;
     gap: 32px;
     align-items: start;
     position: relative;
@@ -1064,13 +1169,13 @@ ul {
 }
 
 .listings-filters {
-    padding: 28px;
-    border-radius: var(--radius-lg);
+    padding: 24px;
+    border-radius: 22px;
     position: sticky;
     top: calc(var(--nav-height) + 20px);
     background: #ffffff;
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.05);
     max-height: calc(100vh - var(--nav-height) - 40px);
     overflow-y: auto;
     scrollbar-width: none;
@@ -1085,29 +1190,77 @@ ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    border-bottom: 1.5px solid #f1f5f9;
+}
+
+.filter-header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-icon-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.88rem;
+    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.25);
 }
 
 .filter-header h3 {
-    font-size: 1.05rem;
-    font-weight: 700;
+    font-size: 1.12rem;
+    font-weight: 800;
     color: #0f172a;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    letter-spacing: -0.3px;
     margin: 0;
 }
 
-.filter-header h3 i {
-    color: var(--gold);
+.filter-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fef3c7;
+    color: #b45309;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 6px;
 }
 
 .filter-header-actions {
     display: flex;
     align-items: center;
     gap: 8px;
+}
+
+.filter-clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.filter-clear:hover {
+    background: #fee2e2;
+    color: #dc2626;
+    border-color: #fca5a5;
+    transform: translateY(-1px);
 }
 
 .filter-close {
@@ -1136,91 +1289,189 @@ ul {
     }
 }
 
-.filter-clear {
-    background: none;
-    border: 1px solid rgba(217, 119, 6, 0.3);
-    color: var(--gold);
-    font-size: 0.78rem;
-    cursor: pointer;
-    padding: 5px 12px;
-    border-radius: 6px;
-    transition: all 0.2s;
-    font-weight: 600;
+.filter-section {
+    margin-bottom: 24px;
 }
 
-.filter-clear:hover {
-    background: #fffbeb;
-    border-color: var(--gold);
-}
-
-.filter-group {
-    margin-bottom: 28px;
-}
-
-.filter-group:last-child {
+.filter-section:last-child {
     margin-bottom: 0;
 }
 
-.filter-group h4 {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-}
-
-.filter-check {
+.filter-title {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 9px 0;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748b;
+    margin-bottom: 14px;
+}
+
+.filter-title span i {
+    color: #d97706;
+    margin-right: 6px;
+}
+
+/* Modern Chip / Pill Grid for Cuisines & Occasions */
+.filter-chips-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #334155;
     cursor: pointer;
-    color: #475569;
-    font-size: 0.88rem;
-    transition: color 0.2s;
+    transition: all 0.2s ease;
+    user-select: none;
 }
 
-.filter-check:hover {
-    color: #0f172a;
+.filter-chip:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
 }
 
-.filter-check input {
+.filter-chip input {
     display: none;
 }
 
-.checkmark {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #cbd5e1;
-    border-radius: 5px;
+.filter-chip.active,
+.filter-chip:has(input:checked) {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border-color: #d97706;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.28);
+    transform: translateY(-1px);
+}
+
+.filter-chip-count {
+    font-size: 0.72rem;
+    opacity: 0.8;
+    margin-left: 2px;
+}
+
+/* Luxury Rating Cards */
+.filter-rating-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-rating-item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.25s ease;
+    justify-content: space-between;
+    padding: 9px 14px;
     background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
 }
 
-.filter-check input:checked+.checkmark {
-    background: var(--gold);
-    border-color: var(--gold);
-    box-shadow: 0 0 10px rgba(217, 119, 6, 0.3);
+.filter-rating-item:hover {
+    background: #fffbeb;
+    border-color: #fde68a;
+    transform: translateX(2px);
 }
 
-.filter-check input:checked+.checkmark::after {
-    content: '\f00c';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    font-size: 0.65rem;
-    color: #ffffff;
+.filter-rating-item input {
+    display: none;
 }
 
-.filter-check:has(input:checked) {
-    color: #0f172a;
+.filter-rating-item.active,
+.filter-rating-item:has(input:checked) {
+    background: #fef3c7;
+    border-color: #f59e0b;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+}
+
+.filter-rating-stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.88rem;
     font-weight: 700;
+    color: #0f172a;
+}
+
+.filter-rating-stars i {
+    color: #f59e0b;
+    font-size: 0.8rem;
+}
+
+.filter-rating-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.filter-rating-item:has(input:checked) .filter-rating-label {
+    color: #b45309;
+    font-weight: 700;
+}
+
+/* Active Filter Pills Bar (Above Cards Grid) */
+.active-filters-bar {
+    display: none;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 12px 18px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.active-filters-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 4px;
+}
+
+.active-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: #fef3c7;
+    border: 1px solid #fde68a;
+    color: #b45309;
+    border-radius: 16px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.active-tag-remove {
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #b45309;
+    display: flex;
+    align-items: center;
+    transition: transform 0.15s;
+}
+
+.active-tag-remove:hover {
+    transform: scale(1.2);
+    color: #991b1b;
 }
 
 .listings-header {

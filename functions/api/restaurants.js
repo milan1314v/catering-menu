@@ -39,16 +39,28 @@ export async function onRequestGet(context) {
 
     const { results } = await stmt.all();
 
+    function slugify(text) {
+      if (!text) return '';
+      return text.toString().toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    }
+
     const restaurants = (results || []).map(row => {
       try {
         const data = JSON.parse(row.restaurant_json);
+        const slug = data.slug || slugify(data.name || '');
         return {
           id: row.id,
           status: row.status,
+          slug,
           ...data
         };
       } catch (e) {
-        return { id: row.id, status: row.status };
+        return { id: row.id, status: row.status, slug: '' };
       }
     });
 

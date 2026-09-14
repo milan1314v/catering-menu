@@ -8,31 +8,31 @@ const DEFAULT_GLOBAL = {
     logo_icon: "fas fa-utensils",
     logo_text: "Catering Menu",
     links: [
-      { label: "Home", url: "/index.html" },
-      { label: "Restaurants", url: "/listings.html" },
-      { label: "About Us", url: "/about.html" },
-      { label: "FAQs", url: "/faqs.html" },
-      { label: "Contact", url: "/contact.html" }
+      { label: "Home", url: "/" },
+      { label: "Caterers", url: "/listings" },
+      { label: "About Us", url: "/about" },
+      { label: "FAQs", url: "/faqs" },
+      { label: "Contact", url: "/contact" }
     ],
-    cta_btn: { label: "Get Listed", url: "/get-listed.html" }
+    cta_btn: { label: "List Your Business", url: "/get-listed" }
   },
   footer: {
     about_heading: "About Catering Menu",
-    about_text: "Catering Menu is the premier destination for discovering exceptional catering and dining experiences. We connect food lovers with the finest restaurants, curated menus, reviews, and unforgettable culinary journeys across the city.",
+    about_text: "Catering Menu is the premier discovery directory for exceptional catering services and culinary experiences. We connect event planners and hosts with top-rated caterers, verified menus, genuine reviews, and seamless booking inquiries.",
     quick_heading: "Quick Links",
     quick_links: [
-      { label: "Home", url: "/index.html" },
-      { label: "About Us", url: "/about.html" },
-      { label: "Restaurants", url: "/listings.html" },
-      { label: "Get Listed", url: "/get-listed.html" },
-      { label: "FAQs", url: "/faqs.html" },
-      { label: "Contact", url: "/contact.html" }
+      { label: "Home", url: "/" },
+      { label: "Caterers", url: "/listings" },
+      { label: "About Us", url: "/about" },
+      { label: "List Your Business", url: "/get-listed" },
+      { label: "FAQs", url: "/faqs" },
+      { label: "Contact", url: "/contact" }
     ],
     legal_heading: "Legal",
     legal_links: [
-      { label: "Privacy Policy", url: "/privacy.html" },
-      { label: "Terms of Service", url: "/terms.html" },
-      { label: "Disclaimer", url: "/disclaimer.html" }
+      { label: "Privacy Policy", url: "/privacy" },
+      { label: "Terms of Service", url: "/terms" },
+      { label: "Disclaimer", url: "/disclaimer" }
     ],
     social_heading: "Follow Us",
     socials: [
@@ -100,17 +100,19 @@ function renderHeader(navData) {
   if (!navContainer) return;
 
   const data = navData || DEFAULT_GLOBAL.nav;
-  const currentPath = window.location.pathname;
+  const currentPath = (window.location.pathname.replace(/\/$/, '') || '/').replace(/\.html$/, '');
 
   let linksHtml = '';
   (data.links || []).forEach(link => {
-    const isActive = currentPath.endsWith(link.url) || 
-      (link.url === '/index.html' && (currentPath === '/' || currentPath.endsWith('/index.html') || currentPath === ''));
-    linksHtml += `<a href="${link.url}" class="${isActive ? 'active' : ''}">${escapeHtml(link.label)}</a>`;
+    const linkClean = (link.url.replace(/\/$/, '') || '/').replace(/\.html$/, '');
+    const isActive = (currentPath === linkClean) || 
+      (linkClean === '/' && (currentPath === '' || currentPath === '/' || currentPath === '/index'));
+    linksHtml += `<a href="${linkClean}" class="${isActive ? 'active' : ''}">${escapeHtml(link.label)}</a>`;
   });
 
   if (data.cta_btn) {
-    linksHtml += `<a href="${data.cta_btn.url}" class="nav-cta">${escapeHtml(data.cta_btn.label)}</a>`;
+    const ctaClean = data.cta_btn.url.replace(/\.html$/, '');
+    linksHtml += `<a href="${ctaClean}" class="nav-cta">${escapeHtml(data.cta_btn.label)}</a>`;
   }
 
   const logoImgSrc = (data.logo_image !== undefined) ? data.logo_image : '/assets/img/catering-menu-logo.png';
@@ -126,7 +128,7 @@ function renderHeader(navData) {
 
   navContainer.innerHTML = `
     <div class="container">
-      <a href="/index.html" class="nav-logo" aria-label="${escapeHtml(logoText)}">
+      <a href="/" class="nav-logo" aria-label="${escapeHtml(logoText)}">
         ${logoInnerHtml}
       </a>
       <div class="nav-links" id="navLinks">
@@ -156,7 +158,6 @@ function renderHeader(navData) {
 }
 
 function enhanceLogoForDarkBackground(imgElement) {
-  // Purge any previous dark-mode logo caches so the original logo is displayed naturally
   try {
     sessionStorage.removeItem('dark_logo_cache_v2');
     sessionStorage.removeItem('dark_logo_cache_v3');
@@ -176,12 +177,14 @@ function renderFooter(footerData) {
 
   let quickHtml = '';
   (data.quick_links || []).forEach(l => {
-    quickHtml += `<li><a href="${l.url}">${escapeHtml(l.label)}</a></li>`;
+    const clean = l.url.replace(/\.html$/, '');
+    quickHtml += `<li><a href="${clean}">${escapeHtml(l.label)}</a></li>`;
   });
 
   let legalHtml = '';
   (data.legal_links || []).forEach(l => {
-    legalHtml += `<li><a href="${l.url}">${escapeHtml(l.label)}</a></li>`;
+    const clean = l.url.replace(/\.html$/, '');
+    legalHtml += `<li><a href="${clean}">${escapeHtml(l.label)}</a></li>`;
   });
 
   let socialListHtml = '';
@@ -243,6 +246,208 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+function slugify(text) {
+  if (!text) return '';
+  return text.toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
+/**
+ * Generates caterer detail page URL.
+ * In production (*.catering-menu.com): https://[slug].catering-menu.com
+ * In development / fallback: /restaurant?slug=[slug]
+ */
+function getCatererUrl(caterer) {
+  if (!caterer) return '/listings';
+  const slug = (caterer.slug || slugify(caterer.name || 'caterer')).toLowerCase();
+  const host = window.location.hostname.toLowerCase();
+
+  // If in production on catering-menu.com domain
+  if (host.endsWith('catering-menu.com')) {
+    return `${window.location.protocol}//${slug}.catering-menu.com`;
+  }
+
+  // If running locally, in staging or preview
+  return `/restaurant?slug=${encodeURIComponent(slug)}`;
+}
+
+let cachedApprovedCaterers = null;
+
+async function fetchAllApprovedCaterers() {
+  if (cachedApprovedCaterers) return cachedApprovedCaterers;
+  try {
+    const res = await fetch('/api/restaurants?status=approved');
+    if (res.ok) {
+      cachedApprovedCaterers = await res.json();
+      return cachedApprovedCaterers;
+    }
+  } catch (e) {
+    console.warn('Could not load caterers for live search', e);
+  }
+  return [];
+}
+
+/**
+ * Initializes a live suggestion dropdown for any search input.
+ * Supports arrow keys, enter, direct caterer click, and see all results link.
+ */
+function initLiveSearchSuggestions({ inputId, suggestionsId, mode = 'navigate' }) {
+  const input = document.getElementById(inputId);
+  const container = document.getElementById(suggestionsId);
+  if (!input || !container) return;
+
+  let caterers = [];
+  let selectedIndex = -1;
+
+  fetchAllApprovedCaterers().then(data => {
+    caterers = data;
+  });
+
+  function renderSuggestions() {
+    const q = input.value.trim().toLowerCase();
+    if (!q) {
+      container.style.display = 'none';
+      container.innerHTML = '';
+      selectedIndex = -1;
+      return;
+    }
+
+    const matches = caterers.filter(c => {
+      const name = (c.name || '').toLowerCase();
+      const cuisine = (c.cuisine || '').toLowerCase();
+      const loc = (c.locations || '').toLowerCase();
+      const about = (c.about_text || '').toLowerCase();
+      return name.includes(q) || cuisine.includes(q) || loc.includes(q) || about.includes(q);
+    }).slice(0, 6);
+
+    if (matches.length === 0) {
+      container.innerHTML = `
+        <div class="search-suggest-empty">
+          <i class="fas fa-search"></i> No catering services found for "<strong>${escapeHtml(q)}</strong>"
+        </div>
+      `;
+      container.style.display = 'block';
+      selectedIndex = -1;
+      return;
+    }
+
+    let itemsHtml = `
+      <div class="search-suggest-header">
+        <span><i class="fas fa-sparkles" style="color:var(--gold);"></i> Suggested Caterers</span>
+        <span class="search-suggest-count">${matches.length} found</span>
+      </div>
+    `;
+
+    matches.forEach((c, idx) => {
+      const reviews = Array.isArray(c.reviews) ? c.reviews : [];
+      let avg = '5.0';
+      if (reviews.length > 0) {
+        const total = reviews.reduce((sum, rev) => sum + (Number(rev.rating) || 0), 0);
+        avg = (total / reviews.length).toFixed(1);
+      }
+      const firstLoc = (c.locations || '').split('|')[0].trim();
+      const targetUrl = getCatererUrl(c);
+
+      itemsHtml += `
+        <a href="${targetUrl}" class="search-suggest-item ${idx === selectedIndex ? 'selected' : ''}" data-index="${idx}">
+          <div class="search-suggest-thumb">
+            <img src="${escapeHtml(c.banner_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200')}" alt="${escapeHtml(c.name)}">
+          </div>
+          <div class="search-suggest-info">
+            <div class="search-suggest-name">${escapeHtml(c.name)}</div>
+            <div class="search-suggest-meta">
+              <span class="search-suggest-cuisine"><i class="fas fa-utensils"></i> ${escapeHtml(c.cuisine || 'Catering')}</span>
+              ${firstLoc ? `<span class="search-suggest-loc"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(firstLoc)}</span>` : ''}
+            </div>
+          </div>
+          <div class="search-suggest-rating">
+            <i class="fas fa-star"></i> ${avg}
+          </div>
+        </a>
+      `;
+    });
+
+    itemsHtml += `
+      <a href="/listings?q=${encodeURIComponent(q)}" class="search-suggest-footer">
+        <span>View all results for "<strong>${escapeHtml(q)}</strong>"</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    `;
+
+    container.innerHTML = itemsHtml;
+    container.style.display = 'block';
+  }
+
+  input.addEventListener('input', () => {
+    selectedIndex = -1;
+    if (caterers.length === 0) {
+      fetchAllApprovedCaterers().then(data => {
+        caterers = data;
+        renderSuggestions();
+      });
+    } else {
+      renderSuggestions();
+    }
+  });
+
+  input.addEventListener('focus', () => {
+    if (input.value.trim().length > 0) {
+      renderSuggestions();
+    }
+  });
+
+  input.addEventListener('keydown', (e) => {
+    const items = container.querySelectorAll('.search-suggest-item');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (items.length > 0) {
+        selectedIndex = (selectedIndex + 1) % items.length;
+        updateSelectedSuggestItem(items, selectedIndex);
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (items.length > 0) {
+        selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+        updateSelectedSuggestItem(items, selectedIndex);
+      }
+    } else if (e.key === 'Enter') {
+      if (selectedIndex >= 0 && items[selectedIndex]) {
+        e.preventDefault();
+        items[selectedIndex].click();
+      } else if (mode === 'navigate') {
+        const q = input.value.trim();
+        if (q) {
+          window.location.href = `/listings?q=${encodeURIComponent(q)}`;
+        }
+      }
+    } else if (e.key === 'Escape') {
+      container.style.display = 'none';
+      selectedIndex = -1;
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#' + inputId) && !e.target.closest('#' + suggestionsId)) {
+      container.style.display = 'none';
+    }
+  });
+}
+
+function updateSelectedSuggestItem(items, selectedIndex) {
+  items.forEach((item, idx) => {
+    if (idx === selectedIndex) {
+      item.classList.add('selected');
+      item.scrollIntoView({ block: 'nearest' });
+    } else {
+      item.classList.remove('selected');
+    }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

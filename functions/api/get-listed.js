@@ -40,8 +40,19 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ error: 'Restaurant name and description are required.' }), { status: 400, headers });
     }
 
+    function slugify(text) {
+      if (!text) return '';
+      return text.toString().toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-');
+    }
+
     const restaurantObj = {
       name: name.trim(),
+      slug: slugify(name),
       cuisine: (cuisine || 'International').trim(),
       price_range: (price_range || '$$').trim(),
       lat: lat ? parseFloat(lat) : 40.7128,

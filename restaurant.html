@@ -28,13 +28,13 @@
     <!-- RESTAURANT HERO -->
     <section class="rest-hero">
         <img id="restBanner" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400"
-            alt="Restaurant Banner">
+            alt="Catering Banner">
         <div class="rest-hero-overlay">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/index.html">Home</a>
+                    <a href="/">Home</a>
                     <span>/</span>
-                    <a href="/listings.html">Restaurants</a>
+                    <a href="/listings">Caterers</a>
                     <span>/</span>
                     <strong id="breadcrumbName">Loading...</strong>
                 </div>
@@ -52,12 +52,12 @@
             <div class="rest-main">
                 <!-- ABOUT -->
                 <section style="padding:60px 0 0;">
-                    <h2 style="font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:8px;" id="welcomeTitle">
-                        Welcome to Restaurant
+                    <h2 style="font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:8px;" id="welcomeTitle">
+                        About Catering Service
                     </h2>
                     <p style="font-size:1.02rem;color:var(--text-muted);line-height:1.9;margin-top:16px;white-space:pre-line;"
                         id="restAbout">
-                        Loading restaurant description...
+                        Loading catering description...
                     </p>
                 </section>
 
@@ -65,7 +65,7 @@
                 <section class="menu-section">
                     <div class="menu-header">
                         <div class="menu-header-icon"><i class="fas fa-utensils"></i></div>
-                        <h2>Our Menu</h2>
+                        <h2>Our Catering Menu</h2>
                     </div>
                     <div id="menuToggleBar" class="menu-toggle" style="display:none;">
                         <button class="menu-toggle-btn active" id="menuTextBtn" onclick="showMenu('text')">
@@ -285,8 +285,15 @@
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const id = urlParams.get('id') || '1';
+            let identifier = null;
+            const hostParts = window.location.hostname.toLowerCase().split('.');
+            if (hostParts.length > 2 && hostParts[0] !== 'www' && hostParts[0] !== 'admin' && hostParts[0] !== 'api') {
+                identifier = hostParts[0];
+            }
+            if (!identifier) {
+                const urlParams = new URLSearchParams(window.location.search);
+                identifier = urlParams.get('slug') || urlParams.get('id') || '1';
+            }
 
             // 1. Fetch CMS global labels
             const cms = await fetchCMSContent('restaurant');
@@ -298,16 +305,16 @@
                 renderFooter();
             }
 
-            // 2. Fetch Restaurant Data
+            // 2. Fetch Caterer Data
             try {
-                const res = await fetch(`/api/restaurant/${encodeURIComponent(id)}`);
+                const res = await fetch(`/api/restaurant/${encodeURIComponent(identifier)}`);
                 if (!res.ok) {
-                    window.location.href = '/listings.html';
+                    window.location.href = '/listings';
                     return;
                 }
                 currentRestaurant = await res.json();
             } catch (e) {
-                console.error('Error fetching restaurant', e);
+                console.error('Error fetching caterer', e);
                 return;
             }
 
@@ -315,7 +322,7 @@
             document.title = `${rest.name} - Catering Menu`;
             document.getElementById('breadcrumbName').textContent = rest.name;
             document.getElementById('restName').textContent = rest.name;
-            document.getElementById('welcomeTitle').textContent = `Welcome to ${rest.name}`;
+            document.getElementById('welcomeTitle').textContent = `About ${rest.name} Catering`;
             document.getElementById('locCardName').textContent = rest.name;
             document.getElementById('restAbout').textContent = rest.about_text || '';
             if (rest.banner_url) document.getElementById('restBanner').src = rest.banner_url;
@@ -431,7 +438,7 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            restaurant_id: id,
+                            restaurant_id: currentRestaurant.id || identifier,
                             name,
                             rating,
                             text

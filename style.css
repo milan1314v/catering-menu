@@ -890,15 +890,27 @@ ul {
 }
 
 .footer-logo-link {
-    display: inline-block;
-    max-width: 200px;
+    display: inline-flex;
+    align-items: center;
+    background: #ffffff;
+    padding: 6px 14px;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    border: 1.5px solid rgba(255, 255, 255, 0.9);
+    width: fit-content;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.footer-logo-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(217, 119, 6, 0.3);
 }
 
 .footer-logo-img {
-    height: 44px;
+    height: 38px;
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.4));
+    display: block;
 }
 
 .footer-brand p {
@@ -1924,8 +1936,20 @@ ul {
     flex-direction: column;
     gap: 24px;
     position: sticky;
-    top: calc(var(--nav-height) + 24px);
+    top: calc(var(--nav-height) + 20px);
+    max-height: calc(100vh - var(--nav-height) - 30px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE & Edge */
     z-index: 20;
+    padding-right: 2px;
+}
+
+.rest-sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge, Opera */
+    width: 0;
+    height: 0;
 }
 
 .sidebar-card {

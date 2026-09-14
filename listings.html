@@ -280,11 +280,29 @@
                 mode: 'filter'
             });
 
-            // 6. Check URL parameters (e.g. ?q=indian)
-            const urlParams = new URLSearchParams(window.location.search);
-            const queryParam = urlParams.get('q');
+            // 6. Check URL parameters or clean pathname (e.g. /listings/asian or ?q=asian)
+            let queryParam = '';
+            const pathMatch = window.location.pathname.match(/^\/listings\/(.+)$/);
+            if (pathMatch && pathMatch[1]) {
+                queryParam = decodeURIComponent(pathMatch[1].replace(/\/$/, ''));
+            } else {
+                const urlParams = new URLSearchParams(window.location.search);
+                queryParam = urlParams.get('q') || '';
+            }
             if (queryParam) {
                 searchInput.value = queryParam;
+            }
+
+            function updateCleanUrl(q, checkedCuisines) {
+                let cleanPath = '/listings';
+                if (q) {
+                    cleanPath = `/listings/${encodeURIComponent(q.trim().toLowerCase())}`;
+                } else if (checkedCuisines && checkedCuisines.length === 1) {
+                    cleanPath = `/listings/${encodeURIComponent(checkedCuisines[0].trim().toLowerCase())}`;
+                }
+                if (window.location.pathname !== cleanPath && !window.location.pathname.endsWith('.html')) {
+                    window.history.replaceState(null, '', cleanPath);
+                }
             }
 
             function applyFilters() {
@@ -292,6 +310,9 @@
                 const checkedCuisines = Array.from(document.querySelectorAll('input[name="cuisine"]:checked')).map(i => i.value);
                 const checkedServices = Array.from(document.querySelectorAll('input[name="service"]:checked')).map(i => i.value);
                 const checkedRatings = Array.from(document.querySelectorAll('input[name="rating"]:checked')).map(i => parseFloat(i.value));
+
+                // Synchronize clean browser URL
+                updateCleanUrl(q, checkedCuisines);
 
                 let totalActiveFilters = checkedCuisines.length + checkedServices.length + checkedRatings.length;
                 if (q) totalActiveFilters++;

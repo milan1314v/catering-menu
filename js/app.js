@@ -31,12 +31,12 @@ const DEFAULT_GLOBAL = {
     ],
     cuisines_heading: "Popular Catering",
     cuisine_links: [
-      { label: "Wedding Catering", url: "/listings?q=wedding" },
-      { label: "Corporate Galas", url: "/listings?q=corporate" },
-      { label: "Live BBQ & Grill Stations", url: "/listings?q=bbq" },
-      { label: "Italian & Wood-Fired", url: "/listings?q=italian" },
-      { label: "Royal Indian & Asian", url: "/listings?q=asian" },
-      { label: "Cocktails & Canapés", url: "/listings?q=cocktail" }
+      { label: "Wedding Catering", url: "/listings/wedding" },
+      { label: "Corporate Galas", url: "/listings/corporate" },
+      { label: "Live BBQ & Grill Stations", url: "/listings/bbq" },
+      { label: "Italian & Wood-Fired", url: "/listings/italian" },
+      { label: "Royal Indian & Asian", url: "/listings/asian" },
+      { label: "Cocktails & Canapés", url: "/listings/cocktail" }
     ],
     legal_heading: "Legal & Policy",
     legal_links: [
@@ -217,12 +217,12 @@ function renderFooter(footerData) {
 
   // Cuisines / Specialties
   const cuisineLinks = (data.cuisine_links && data.cuisine_links.length > 0) ? data.cuisine_links : [
-    { label: "Wedding Catering", url: "/listings?q=wedding" },
-    { label: "Corporate Galas", url: "/listings?q=corporate" },
-    { label: "Live BBQ & Grill Stations", url: "/listings?q=bbq" },
-    { label: "Italian & Wood-Fired", url: "/listings?q=italian" },
-    { label: "Royal Indian & Asian", url: "/listings?q=asian" },
-    { label: "Cocktails & Canapés", url: "/listings?q=cocktail" }
+    { label: "Wedding Catering", url: "/listings/wedding" },
+    { label: "Corporate Galas", url: "/listings/corporate" },
+    { label: "Live BBQ & Grill Stations", url: "/listings/bbq" },
+    { label: "Italian & Wood-Fired", url: "/listings/italian" },
+    { label: "Royal Indian & Asian", url: "/listings/asian" },
+    { label: "Cocktails & Canapés", url: "/listings/cocktail" }
   ];
   let cuisineHtml = '';
   cuisineLinks.forEach(l => {
@@ -525,7 +525,7 @@ function initLiveSearchSuggestions({ inputId, suggestionsId, mode = 'navigate' }
     });
 
     itemsHtml += `
-      <a href="/listings?q=${encodeURIComponent(q)}" class="search-suggest-footer">
+      <a href="/listings/${encodeURIComponent(q.toLowerCase())}" class="search-suggest-footer">
         <span>View all results for "<strong>${escapeHtml(q)}</strong>"</span>
         <i class="fas fa-arrow-right"></i>
       </a>
@@ -574,7 +574,7 @@ function initLiveSearchSuggestions({ inputId, suggestionsId, mode = 'navigate' }
       } else if (mode === 'navigate') {
         const q = input.value.trim();
         if (q) {
-          window.location.href = `/listings?q=${encodeURIComponent(q)}`;
+          window.location.href = `/listings/${encodeURIComponent(q.toLowerCase())}`;
         }
       }
     } else if (e.key === 'Escape') {

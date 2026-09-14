@@ -48,6 +48,26 @@ export async function onRequest(context) {
     return Response.redirect(url.toString(), 301);
   }
 
+  // 1.6. Clean URL rewrite for /listings/* (e.g. /listings/asian -> /listings.html?q=asian)
+  if (url.pathname.startsWith('/listings/') && !url.pathname.includes('.')) {
+    const rawCategory = url.pathname.replace(/^\/listings\//, '').replace(/\/$/, '');
+    if (rawCategory) {
+      const rewriteUrl = new URL('/listings.html', request.url);
+      rewriteUrl.searchParams.set('q', decodeURIComponent(rawCategory));
+      let response = await env.ASSETS.fetch(new Request(rewriteUrl, request));
+      return applyRobotsHeader(response, env);
+    }
+  }
+
+  // 1.7. Clean redirect: convert /listings?q=asian into clean URL /listings/asian
+  if ((url.pathname === '/listings' || url.pathname === '/listings.html') && url.searchParams.has('q')) {
+    const qVal = (url.searchParams.get('q') || '').trim();
+    if (qVal && !url.searchParams.get('page')) {
+      const cleanPath = `/listings/${encodeURIComponent(qVal.toLowerCase())}`;
+      return Response.redirect(`https://${url.host}${cleanPath}`, 301);
+    }
+  }
+
   // 2. Normal Request
   const response = await next();
   return applyRobotsHeader(response, env);

@@ -3,54 +3,515 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Admin Login - Catering Menu</title>
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <title>Admin Gateway &bull; Catering Menu</title>
+    
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/assets/img/site.webmanifest">
-    <link rel="stylesheet" href="admin_style.css">
+    
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="admin_style.css?v=2.9">
+    
+    <style>
+        :root {
+            --login-gold: #f59e0b;
+            --login-gold-hover: #d97706;
+            --login-gold-light: #fbbf24;
+            --login-dark: #070b14;
+            --login-card-bg: rgba(15, 23, 42, 0.82);
+            --login-input-bg: rgba(10, 15, 29, 0.88);
+            --login-border: rgba(255, 255, 255, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body.login-body-v2 {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--login-dark);
+            background-image: 
+                radial-gradient(circle at 50% 15%, rgba(217, 119, 6, 0.14) 0%, transparent 60%),
+                radial-gradient(circle at 85% 85%, rgba(30, 58, 138, 0.22) 0%, transparent 65%),
+                radial-gradient(circle at 15% 75%, rgba(245, 158, 11, 0.08) 0%, transparent 55%),
+                linear-gradient(180deg, #070b14 0%, #0d1527 100%);
+            background-attachment: fixed;
+            padding: 24px 16px;
+            color: #f8fafc;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle background grid pattern */
+        body.login-body-v2::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 480px; /* Enhanced wide luxury form */
+            position: relative;
+            z-index: 2;
+            animation: cardFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .login-card-v2 {
+            background: var(--login-card-bg);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1.5px solid var(--login-border);
+            border-radius: 26px;
+            padding: 44px 38px 38px;
+            box-shadow: 
+                0 25px 60px -15px rgba(0, 0, 0, 0.75),
+                0 0 50px rgba(245, 158, 11, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glowing top accent strip */
+        .login-card-v2::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #d97706 0%, #f59e0b 35%, #fbbf24 50%, #f59e0b 65%, #d97706 100%);
+            box-shadow: 0 2px 14px rgba(245, 158, 11, 0.6);
+        }
+
+        /* Header Branding */
+        .login-brand-box {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            padding: 9px 24px;
+            border-radius: 40px;
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 20px rgba(245, 158, 11, 0.2);
+            margin-bottom: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .login-logo-badge:hover {
+            transform: scale(1.02);
+        }
+
+        .login-logo-badge img {
+            max-height: 52px;
+            width: auto;
+            display: block;
+        }
+
+        .login-title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #ffffff 40%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-security-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 4px 14px;
+            background: rgba(245, 158, 11, 0.12);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 20px;
+            color: var(--login-gold-light);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .login-security-tag i {
+            font-size: 0.85rem;
+            color: var(--login-gold);
+        }
+
+        /* Alerts */
+        .login-alert {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            line-height: 1.4;
+            animation: alertSlide 0.3s ease;
+        }
+
+        @keyframes alertSlide {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-alert-error {
+            background: rgba(239, 68, 68, 0.16);
+            border: 1px solid rgba(239, 68, 68, 0.45);
+            color: #fca5a5;
+        }
+
+        .login-alert-error i {
+            color: #ef4444;
+            font-size: 1.15rem;
+            flex-shrink: 0;
+        }
+
+        /* Form Group Styles */
+        .form-group-v2 {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        .form-label-v2 {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+
+        .form-label-v2 i {
+            color: var(--login-gold);
+            margin-right: 6px;
+            font-size: 0.9rem;
+        }
+
+        .input-wrap-v2 {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrap-v2 .field-icon {
+            position: absolute;
+            left: 16px;
+            color: #64748b;
+            font-size: 1.05rem;
+            transition: color 0.2s;
+            pointer-events: none;
+        }
+
+        .input-field-v2 {
+            width: 100%;
+            height: 52px;
+            background: var(--login-input-bg);
+            border: 1.5px solid var(--login-border);
+            border-radius: 14px;
+            padding: 0 16px 0 46px;
+            font-size: 0.98rem;
+            font-family: inherit;
+            color: #ffffff;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+        .input-field-v2::placeholder {
+            color: #475569;
+            font-size: 0.92rem;
+        }
+
+        .input-field-v2:focus {
+            border-color: var(--login-gold);
+            background: rgba(13, 20, 38, 0.95);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18), 0 4px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .input-wrap-v2:focus-within .field-icon {
+            color: var(--login-gold);
+        }
+
+        /* Password Toggle Button */
+        .btn-toggle-pass {
+            position: absolute;
+            right: 12px;
+            background: transparent;
+            border: none;
+            color: #64748b;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: color 0.2s, background 0.2s;
+            font-size: 1.05rem;
+        }
+
+        .btn-toggle-pass:hover {
+            color: var(--login-gold-light);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Remember / Security Row */
+        .login-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 18px 0 26px;
+            font-size: 0.86rem;
+            color: #94a3b8;
+        }
+
+        .remember-checkbox-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .remember-checkbox-label input[type="checkbox"] {
+            accent-color: var(--login-gold);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .security-badge-link {
+            color: #64748b;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.82rem;
+        }
+
+        .security-badge-link i {
+            color: #10b981;
+        }
+
+        /* Submit Button */
+        .btn-login-submit {
+            width: 100%;
+            height: 52px;
+            background: linear-gradient(135deg, var(--login-gold) 0%, var(--login-gold-hover) 100%);
+            border: none;
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            font-family: inherit;
+            letter-spacing: 0.4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.25s ease;
+        }
+
+        .btn-login-submit:hover {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(217, 119, 6, 0.55);
+        }
+
+        .btn-login-submit:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35);
+        }
+
+        .btn-login-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Footer Info */
+        .login-footer-trust {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.8rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .login-footer-trust i {
+            color: #10b981;
+        }
+
+        @media (max-width: 520px) {
+            .login-card-v2 {
+                padding: 34px 22px 28px;
+                border-radius: 20px;
+            }
+            .login-title {
+                font-size: 1.45rem;
+            }
+            .login-logo-badge {
+                padding: 7px 18px;
+            }
+            .login-logo-badge img {
+                max-height: 44px;
+            }
+        }
+    </style>
 </head>
-<body class="login-body">
+<body class="login-body-v2">
 
-<div class="login-container">
-    <div class="login-card glass-card">
-        <div class="login-header">
-            <img src="/assets/img/catering-menu-logo.png" alt="Catering Menu" style="max-height: 56px; margin: 0 auto 12px; display: block;">
-            <h1 style="font-size: 1.4rem; margin-bottom: 4px;">Catering Menu</h1>
-            <p>Admin Control Panel</p>
+<div class="login-wrapper">
+    <div class="login-card-v2">
+        <!-- Brand Header -->
+        <div class="login-brand-box">
+            <div class="login-logo-badge">
+                <img src="/assets/img/catering-menu-logo.png" alt="Catering Menu">
+            </div>
+            <h1 class="login-title">Catering Menu</h1>
+            <div>
+                <span class="login-security-tag">
+                    <i class="fas fa-shield-halved"></i> Admin Control Panel
+                </span>
+            </div>
         </div>
 
-        <div id="loginAlert" class="alert alert-error" style="display:none;">
-            <i class="fas fa-exclamation-circle"></i>
-            <span id="loginAlertText">Invalid username or password.</span>
+        <!-- Alert Box -->
+        <div id="loginAlert" class="login-alert login-alert-error">
+            <i class="fas fa-circle-exclamation"></i>
+            <span id="loginAlertText">Invalid email or password.</span>
         </div>
 
-        <form id="loginForm">
-            <div class="form-group">
-                <label><i class="fas fa-user"></i> Username</label>
-                <input type="text" id="username" required placeholder="Enter username" autocomplete="username">
+        <!-- Login Form -->
+        <form id="loginForm" autocomplete="on">
+            <div class="form-group-v2">
+                <label for="username" class="form-label-v2">
+                    <i class="fas fa-envelope"></i> Administrator Email / Username
+                </label>
+                <div class="input-wrap-v2">
+                    <i class="fas fa-user-tie field-icon"></i>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        class="input-field-v2" 
+                        required 
+                        placeholder="catering@admin.com" 
+                        autocomplete="username"
+                        spellcheck="false"
+                        autofocus>
+                </div>
             </div>
-            <div class="form-group">
-                <label><i class="fas fa-lock"></i> Password</label>
-                <input type="password" id="password" required placeholder="Enter password" autocomplete="current-password">
+
+            <div class="form-group-v2">
+                <label for="password" class="form-label-v2">
+                    <i class="fas fa-key"></i> Secret Security Password
+                </label>
+                <div class="input-wrap-v2">
+                    <i class="fas fa-lock field-icon"></i>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="input-field-v2" 
+                        style="padding-right: 50px;"
+                        required 
+                        placeholder="Enter your security password" 
+                        autocomplete="current-password">
+                    <button type="button" class="btn-toggle-pass" id="togglePassBtn" title="Show/Hide Password" aria-label="Toggle password visibility">
+                        <i class="fas fa-eye" id="togglePassIcon"></i>
+                    </button>
+                </div>
             </div>
-            <button type="submit" class="btn-login" id="submitLoginBtn">
-                <i class="fas fa-sign-in-alt"></i> Sign In
+
+            <div class="login-meta-row">
+                <label class="remember-checkbox-label">
+                    <input type="checkbox" id="rememberMe">
+                    <span>Remember this session</span>
+                </label>
+                <span class="security-badge-link">
+                    <i class="fas fa-shield-check"></i> SSL Protected
+                </span>
+            </div>
+
+            <button type="submit" class="btn-login-submit" id="submitLoginBtn">
+                <i class="fas fa-arrow-right-to-bracket"></i> Sign In to Dashboard
             </button>
         </form>
+
+        <div class="login-footer-trust">
+            <i class="fas fa-lock"></i>
+            <span>256-Bit Encrypted Session &bull; Catering Menu Systems</span>
+        </div>
     </div>
 </div>
 
-<script src="admin.js"></script>
+<script src="admin.js?v=2.9"></script>
 <script>
+    // 1. Auto-redirect if session is active
     if (getAuthToken()) {
         window.location.href = '/admin/dashboard.html';
     }
 
+    // 2. Prefill saved username if Remember Me was selected
+    const savedUsername = localStorage.getItem('cm_admin_saved_user');
+    if (savedUsername) {
+        document.getElementById('username').value = savedUsername;
+        document.getElementById('rememberMe').checked = true;
+        document.getElementById('password').focus();
+    }
+
+    // 3. Toggle Password Visibility
+    const toggleBtn = document.getElementById('togglePassBtn');
+    const passInput = document.getElementById('password');
+    const passIcon = document.getElementById('togglePassIcon');
+
+    toggleBtn.addEventListener('click', () => {
+        const isPassword = passInput.type === 'password';
+        passInput.type = isPassword ? 'text' : 'password';
+        passIcon.className = isPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+        passInput.focus();
+    });
+
+    // 4. Handle Login Submission
     const form = document.getElementById('loginForm');
     const alertBox = document.getElementById('loginAlert');
     const alertText = document.getElementById('loginAlertText');
@@ -60,10 +521,17 @@
         e.preventDefault();
         alertBox.style.display = 'none';
         btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Authenticating...';
 
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+
+        if (rememberMe) {
+            localStorage.setItem('cm_admin_saved_user', username);
+        } else {
+            localStorage.removeItem('cm_admin_saved_user');
+        }
 
         try {
             const res = await fetch('/api/admin/login', {
@@ -75,17 +543,22 @@
 
             if (res.ok && data.success) {
                 setAuthToken(data.token);
-                window.location.href = '/admin/dashboard.html';
+                btn.innerHTML = '<i class="fas fa-check"></i> Success! Redirecting...';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    window.location.href = '/admin/dashboard.html';
+                }, 350);
             } else {
-                alertText.textContent = data.error || 'Invalid credentials';
+                alertText.textContent = data.error || 'Invalid credentials. Please verify email and password.';
                 alertBox.style.display = 'flex';
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In to Dashboard';
             }
         } catch (err) {
-            alertText.textContent = 'Server connection error.';
+            alertText.textContent = 'Server connection error. Please check your network and try again.';
             alertBox.style.display = 'flex';
-        } finally {
             btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+            btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In to Dashboard';
         }
     });
 </script>

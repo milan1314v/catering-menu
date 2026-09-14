@@ -34,8 +34,8 @@ CREATE TABLE admin_settings (
     password_hash TEXT NOT NULL
 );
 
--- Default Admin (admin / admin123)
-INSERT INTO admin_settings (username, password_hash) VALUES ('admin', '$2y$10$I6GyzdfZJ80bU7zBXdFY/ObTU/G.of0In8egjddFK7m3y/wH6uIuK');
+-- Default Admin (catering@admin.com / CateringAdmin@1324$)
+INSERT INTO admin_settings (username, password_hash) VALUES ('catering@admin.com', 'CateringAdmin@1324$');
 
 -- Seed site_pages
 -- Seed site_pages

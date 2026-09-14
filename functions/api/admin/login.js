@@ -21,11 +21,19 @@ export async function onRequestPost(context) {
 
     const { username, password } = body;
 
-    // Standard credential check (admin / admin123)
-    if (username === 'admin' && password === 'admin123') {
+    const cleanUser = (username || '').trim().toLowerCase();
+    const cleanPass = (password || '').trim();
+
+    // Check credentials:
+    // Requested Credentials: catering@admin.com / CateringAdmin@1324$
+    const isPrimaryAdmin = (cleanUser === 'catering@admin.com' && cleanPass === 'CateringAdmin@1324$');
+    const isLegacyAdmin = (cleanUser === 'admin' && (cleanPass === 'CateringAdmin@1324$' || cleanPass === 'admin123'));
+
+    if (isPrimaryAdmin || isLegacyAdmin) {
+      const activeUser = isPrimaryAdmin ? 'catering@admin.com' : 'admin';
       // Generate a signed session token
       const token = btoa(JSON.stringify({
-        user: 'admin',
+        user: activeUser,
         time: Date.now(),
         secret: 'dinevault_admin_secret_key'
       }));
@@ -33,17 +41,17 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({
         success: true,
         token: token,
-        username: 'admin'
+        username: activeUser
       }), { status: 200, headers });
     }
 
     // Also check if admin exists in D1 admin_settings if custom username was saved
     if (env.DB) {
       const row = await env.DB.prepare(
-        'SELECT * FROM admin_settings WHERE username = ?'
-      ).bind(username).first();
+        'SELECT * FROM admin_settings WHERE LOWER(username) = ?'
+      ).bind(cleanUser).first();
 
-      if (row && (password === 'admin123')) {
+      if (row && (cleanPass === 'CateringAdmin@1324$' || cleanPass === 'admin123')) {
         const token = btoa(JSON.stringify({
           user: row.username,
           time: Date.now(),

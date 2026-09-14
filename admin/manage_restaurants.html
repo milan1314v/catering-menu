@@ -175,6 +175,90 @@
             padding: 16px;
             margin-bottom: 12px;
         }
+
+        /* ── Form Card & Spacing Enhancements ──────────────── */
+        #formCard {
+            padding: 36px 40px 42px 40px !important;
+            border-radius: 20px !important;
+            margin: 0 32px 40px 32px !important;
+            background: rgba(14, 14, 30, 0.8) !important;
+            backdrop-filter: blur(24px) !important;
+            -webkit-backdrop-filter: blur(24px) !important;
+            border: 1px solid rgba(200, 169, 126, 0.22) !important;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45) !important;
+        }
+
+        #formCard .card-header {
+            padding: 0 0 20px 0 !important;
+            margin-bottom: 26px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+
+        #restaurantForm {
+            padding: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 24px !important;
+        }
+
+        .form-row-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+            gap: 22px !important;
+            margin: 0 !important;
+        }
+
+        .form-panel-box {
+            background: rgba(255, 255, 255, 0.025) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 14px !important;
+            padding: 24px 26px !important;
+            margin: 0 !important;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15) !important;
+            transition: border-color 0.2s ease !important;
+        }
+
+        .form-panel-box:hover {
+            border-color: rgba(200, 169, 126, 0.3) !important;
+        }
+
+        .form-panel-box.card {
+            margin: 0 !important;
+        }
+
+        .form-label {
+            font-size: 0.82rem !important;
+            letter-spacing: 0.5px !important;
+            color: var(--text-muted) !important;
+            font-weight: 600 !important;
+            display: block !important;
+            margin-bottom: 8px !important;
+            text-transform: uppercase !important;
+        }
+
+        #formMenuText {
+            width: 100% !important;
+            font-family: 'Consolas', 'Courier New', monospace !important;
+            font-size: 13.5px !important;
+            line-height: 1.65 !important;
+            padding: 18px 22px !important;
+            background: #080816 !important;
+            border: 1px solid rgba(200, 169, 126, 0.3) !important;
+            border-radius: 10px !important;
+            color: #f3f3f8 !important;
+            tab-size: 4 !important;
+            min-height: 340px !important;
+            white-space: pre !important;
+            overflow-x: auto !important;
+        }
+
+        #formMenuText:focus {
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 3px rgba(200, 169, 126, 0.25) !important;
+        }
     </style>
 </head>
 
@@ -262,16 +346,15 @@
                  VIEW 2: ADD / EDIT RESTAURANT FORM
                  ═══════════════════════════════════════════════════════ -->
             <div class="card glass-card" id="formCard" style="display:none;">
-                <div class="card-header"
-                    style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; margin-bottom: 20px;">
+                <div class="card-header">
                     <div>
-                        <h3 id="formHeading" style="color:var(--gold); font-size:1.2rem; margin:0;"><i
+                        <h3 id="formHeading" style="color:var(--gold); font-size:1.25rem; margin:0;"><i
                                 class="fas fa-edit"></i> Edit Caterer</h3>
                         <p id="formSubheading" style="color:var(--text-muted); font-size:0.85rem; margin:4px 0 0;"></p>
                     </div>
-                    <div style="display:flex; gap:10px;">
+                    <div style="display:flex; gap:12px;">
                         <button type="button" class="btn-sm"
-                            style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); padding:8px 16px; border-radius:6px; cursor:pointer;"
+                            style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); padding:9px 18px; border-radius:6px; cursor:pointer; font-weight:600;"
                             onclick="showListView()">
                             Cancel
                         </button>
@@ -281,23 +364,18 @@
                     </div>
                 </div>
 
-                <form id="restaurantForm" onsubmit="event.preventDefault(); saveRestaurantForm();"
-                    style="padding: 10px 0;">
+                <form id="restaurantForm" onsubmit="event.preventDefault(); saveRestaurantForm();">
                     <input type="hidden" id="formRestId">
 
                     <!-- Basic Info Row -->
-                    <div
-                        style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                    <div class="form-row-grid">
                         <div class="form-group">
-                            <label
-                                style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">CATERING
-                                BUSINESS NAME *</label>
+                            <label class="form-label">Catering Business Name *</label>
                             <input type="text" id="formName" required placeholder="e.g. Spice Route Catering"
                                 style="width:100%;" oninput="autoPopulateSlug(this.value)">
                         </div>
                         <div class="form-group">
-                            <label
-                                style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">STATUS</label>
+                            <label class="form-label">Status</label>
                             <select id="formStatus" style="width:100%;">
                                 <option value="approved">Approved (Live)</option>
                                 <option value="pending">Pending Review</option>
@@ -306,29 +384,26 @@
                         </div>
                     </div>
 
-                    <div
-                        style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                    <!-- Slug & Cuisine Row -->
+                    <div class="form-row-grid">
                         <div class="form-group">
-                            <label
-                                style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">SUBDOMAIN
-                                / SLUG (Unique identifier)</label>
-                            <div style="display:flex; align-items:center; gap:6px;">
+                            <label class="form-label">Subdomain / Slug (Unique identifier)</label>
+                            <div style="display:flex; align-items:center; gap:8px;">
                                 <input type="text" id="formSlug" placeholder="spice-route" style="flex:1;">
-                                <span style="color:var(--text-dim); font-size:0.85rem;">.catering-menu.com</span>
+                                <span style="color:var(--text-dim); font-size:0.85rem; font-weight:600; white-space:nowrap;">.catering-menu.com</span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label
-                                style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">CUISINE
-                                / SPECIALTIES</label>
+                            <label class="form-label">Cuisine / Specialties</label>
                             <input type="text" id="formCuisine"
                                 placeholder="e.g. Indian, Mughlai, Weddings, Live Counters" style="width:100%;">
                         </div>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
+                    <!-- Pricing & Coordinates Row -->
+                    <div class="form-row-grid">
                         <div class="form-group">
-                            <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">PRICING TIER (1, 2, 3, 4 OR CUSTOM)</label>
+                            <label class="form-label">Pricing Tier (1, 2, 3, 4 or Custom)</label>
                             <div style="display:flex; gap:10px; align-items:center;">
                                 <div style="position:relative; flex:1;">
                                     <select id="formPriceSelect" style="width:100%; appearance:none; -webkit-appearance:none; background:rgba(0,0,0,0.3); border:1px solid var(--border); padding:10px 34px 10px 14px; border-radius:6px; color:#fff; cursor:pointer;" onchange="handleAdminPriceSelectChange(this.value)">
@@ -346,27 +421,27 @@
                         </div>
                         <div class="form-group" style="display:flex; gap:12px;">
                             <div style="flex:1;">
-                                <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LATITUDE (GPS)</label>
+                                <label class="form-label">Latitude (GPS)</label>
                                 <input type="number" step="any" id="formLat" placeholder="e.g. 40.758" style="width:100%;">
                             </div>
                             <div style="flex:1;">
-                                <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LONGITUDE (GPS)</label>
+                                <label class="form-label">Longitude (GPS)</label>
                                 <input type="number" step="any" id="formLng" placeholder="e.g. -73.985" style="width:100%;">
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 20px;">
-                        <label
-                            style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                            <span><i class="fas fa-image" style="color:var(--gold);"></i> BANNER COVER IMAGE</span>
-                            <span style="font-size:0.75rem; color:var(--text-dim); font-weight:normal;">Live Preview &amp; Upload from Device</span>
+                    <!-- Banner Cover Image Panel -->
+                    <div class="form-panel-box">
+                        <label class="form-label" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <span><i class="fas fa-image" style="color:var(--gold); margin-right:6px;"></i> Banner Cover Image</span>
+                            <span style="font-size:0.75rem; color:var(--text-dim); font-weight:normal; text-transform:none;">Live Preview &amp; Upload from Device</span>
                         </label>
-                        <div id="adminBannerPreviewWrap" style="height:140px; border-radius:10px; overflow:hidden; background:#0b0f19; border:1px solid var(--border); margin-bottom:10px; display:flex; align-items:center; justify-content:center;">
+                        <div id="adminBannerPreviewWrap" style="height:150px; border-radius:10px; overflow:hidden; background:#0b0f19; border:1px solid var(--border); margin-bottom:14px; display:flex; align-items:center; justify-content:center;">
                             <img id="adminBannerPreviewImg" src="" alt="Banner Preview" style="width:100%; height:100%; object-fit:cover; display:none;" onerror="this.style.display='none'; document.getElementById('adminBannerPlaceholder').style.display='block';">
                             <span id="adminBannerPlaceholder" style="color:var(--text-dim); font-size:0.85rem;"><i class="fas fa-image" style="margin-right:6px;"></i> No banner image selected</span>
                         </div>
-                        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
                             <input type="url" id="formBanner" placeholder="Paste banner image URL here (https://...)"
                                 style="flex:1; min-width:240px;" oninput="updateAdminBannerPreview(this.value)">
                             <button type="button" class="btn-gold" style="white-space:nowrap; padding:10px 18px; cursor:pointer;" onclick="document.getElementById('formBannerFileInput').click()">
@@ -376,17 +451,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group"
-                        style="margin-bottom: 24px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
-                        <div
-                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px; flex-wrap:wrap; gap:10px;">
+                    <!-- Direct Menu Cards & Gallery Panel -->
+                    <div class="form-panel-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px; flex-wrap:wrap; gap:10px;">
                             <div>
-                                <label
-                                    style="font-size:0.92rem; color:var(--text); font-weight:700; display:block; margin-bottom:4px;">
+                                <label class="form-label" style="margin:0; font-size:0.92rem; color:var(--text);">
                                     <i class="fas fa-camera-retro" style="color:var(--gold); margin-right:6px;"></i>
-                                    DIRECT MENU CARDS &amp; SHOWCASE GALLERY
+                                    Direct Menu Cards &amp; Showcase Gallery
                                 </label>
-                                <small style="color:var(--text-muted); font-size:0.8rem;">
+                                <small style="color:var(--text-muted); font-size:0.8rem; text-transform:none;">
                                     Visual dish presentation &amp; menu card photos displayed prominently above the About section.
                                 </small>
                             </div>
@@ -427,19 +500,17 @@
                         <textarea id="formMenuImages" style="display:none;"></textarea>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <label
-                            style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">ABOUT
-                            RESTAURANT</label>
+                    <!-- About Caterer Panel -->
+                    <div class="form-group">
+                        <label class="form-label">About Caterer &amp; Services</label>
                         <textarea id="formAbout" rows="4"
-                            placeholder="Describe the restaurant experience, specialties, chef details..."
+                            placeholder="Describe the catering experience, specialties, chef details, package options..."
                             style="width:100%;"></textarea>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <label
-                            style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LOCATIONS
-                            (Separate multiple branches with |)</label>
+                    <!-- Locations Panel -->
+                    <div class="form-group">
+                        <label class="form-label">Service Locations &amp; Branches (Separate multiple branches with |)</label>
                         <input type="text" id="formLocations"
                             placeholder="e.g. 742 Evergreen Ave, Downtown | 158 Oak Street, Midtown"
                             style="width:100%;">
@@ -448,32 +519,29 @@
                     <!-- ═══════════════════════════════════════════════
                          DIRECT MENU TEXT & VISUAL BUILDER
                          ═══════════════════════════════════════════════ -->
-                    <div class="card glass-card"
-                        style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); padding:18px; margin-bottom:20px; border-radius:10px;">
-                        <div
-                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                    <div class="form-panel-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
                             <div>
-                                <h4 style="color:var(--gold); font-size:1rem; margin:0;"><i
-                                        class="fas fa-book-open"></i> Restaurant Menu & Pricing</h4>
-                                <small style="color:var(--text-muted);">Visual interactive builder ya direct text mode
-                                    me edit karein.</small>
+                                <h4 style="color:var(--gold); font-size:1.05rem; margin:0;"><i
+                                        class="fas fa-book-open"></i> Caterer Menu &amp; Event Pricing</h4>
+                                <small style="color:var(--text-muted);">Visual interactive builder ya direct text mode me edit karein.</small>
                             </div>
-                            <div style="display:flex; gap:8px;">
+                            <div style="display:flex; gap:10px;">
                                 <button type="button" class="btn-sm" onclick="toggleMenuMode()"
-                                    style="background:var(--gold); color:#0a0a1a; font-weight:700; border:none; padding:6px 14px; border-radius:6px; cursor:pointer;">
+                                    style="background:var(--gold); color:#0a0a1a; font-weight:700; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">
                                     <i class="fas fa-exchange-alt"></i> Switch Mode (Visual / Text)
                                 </button>
                                 <button type="button" id="insertTemplateBtn" class="btn-sm"
                                     onclick="insertMenuTemplate()"
-                                    style="background:transparent; border:1px solid var(--gold); color:var(--gold); padding:6px 14px; border-radius:6px; cursor:pointer; display:none;">
+                                    style="background:transparent; border:1px solid var(--gold); color:var(--gold); padding:8px 16px; border-radius:6px; cursor:pointer; display:none; font-weight:600;">
                                     <i class="fas fa-file-alt"></i> Insert Template
                                 </button>
                             </div>
                         </div>
 
                         <!-- Textarea for Text Mode -->
-                        <textarea id="formMenuText" rows="10"
-                            style="width:100%; font-family:monospace; font-size:13px; line-height:1.6; display:none;"
+                        <textarea id="formMenuText" rows="12"
+                            style="display:none;"
                             placeholder="Enter menu text..."></textarea>
 
                         <!-- Container for Visual Builder -->
@@ -483,17 +551,15 @@
                     <!-- ═══════════════════════════════════════════════
                          DAY-WISE OPENING HOURS
                          ═══════════════════════════════════════════════ -->
-                    <div class="card glass-card"
-                        style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); padding:18px; margin-bottom:24px; border-radius:10px;">
-                        <div
-                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+                    <div class="form-panel-box">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
                             <div>
-                                <h4 style="color:var(--gold); font-size:1rem; margin:0;"><i class="fas fa-clock"></i>
-                                    Day-wise Opening Hours</h4>
-                                <small style="color:var(--text-muted);">(Leave blank for Closed)</small>
+                                <h4 style="color:var(--gold); font-size:1.05rem; margin:0;"><i class="fas fa-clock"></i>
+                                    Day-wise Operating / Booking Hours</h4>
+                                <small style="color:var(--text-muted);">(Leave blank for Closed / Unavailable)</small>
                             </div>
                             <button type="button" onclick="applyMondayToAll()" class="btn-sm"
-                                style="background:var(--gold); color:#0a0a1a; font-weight:700; border:none; padding:6px 14px; border-radius:6px; cursor:pointer;">
+                                style="background:var(--gold); color:#0a0a1a; font-weight:700; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">
                                 <i class="fas fa-copy"></i> Apply Monday to All
                             </button>
                         </div>
@@ -503,21 +569,21 @@
                         </div>
                     </div>
 
-                    <div
-                        style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.08); padding-top:18px;">
+                    <!-- Form Action Footer Buttons -->
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.1); padding-top:22px; margin-top:10px;">
                         <button type="button" id="deleteRestBtn" class="btn-sm"
-                            style="background:rgba(244,67,54,0.15); color:#f44336; border:1px solid rgba(244,67,54,0.3); padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:600;"
+                            style="background:rgba(244,67,54,0.15); color:#f44336; border:1px solid rgba(244,67,54,0.3); padding:10px 22px; border-radius:6px; cursor:pointer; font-weight:600;"
                             onclick="deleteCurrentRestaurant()">
-                            <i class="fas fa-trash"></i> Delete Restaurant
+                            <i class="fas fa-trash"></i> Delete Caterer
                         </button>
-                        <div style="display:flex; gap:10px;">
+                        <div style="display:flex; gap:12px;">
                             <button type="button" class="btn-sm"
-                                style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); padding:10px 20px; border-radius:6px; cursor:pointer;"
+                                style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); padding:10px 22px; border-radius:6px; cursor:pointer; font-weight:600;"
                                 onclick="showListView()">
                                 Cancel
                             </button>
                             <button type="submit" class="btn-gold">
-                                <i class="fas fa-save"></i> Save Restaurant
+                                <i class="fas fa-save"></i> Save Caterer
                             </button>
                         </div>
                     </div>
@@ -527,8 +593,8 @@
                      CUSTOMER REVIEWS SECTION (EDIT MODE ONLY)
                      ═══════════════════════════════════════════════ -->
                 <div id="reviewsSection"
-                    style="margin-top:30px; border-top:1px solid rgba(255,255,255,0.1); padding-top:24px;">
-                    <h3 style="color:var(--gold); font-size:1.15rem; margin-bottom:16px;">
+                    style="margin-top:32px; border-top:1px solid rgba(255,255,255,0.1); padding-top:28px;">
+                    <h3 style="color:var(--gold); font-size:1.15rem; margin-bottom:18px;">
                         <i class="fas fa-star"></i> Customer Reviews (<span id="reviewsCountLabel">0</span>)
                     </h3>
 
@@ -536,8 +602,7 @@
                         <!-- Rendered dynamically -->
                     </div>
 
-                    <div class="card glass-card"
-                        style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); padding:18px; border-radius:10px;">
+                    <div class="form-panel-box">
                         <h4 style="color:var(--gold); font-size:0.95rem; margin-bottom:14px;"><i
                                 class="fas fa-plus-circle"></i> Add Customer Review</h4>
                         <div style="display:grid; grid-template-columns: 2fr 1fr; gap:14px; margin-bottom:12px;">
@@ -1215,26 +1280,37 @@
         }
 
         function insertMenuTemplate() {
-            const template = `================================
-                                    YOUR RESTAURANT MENU
-                                ================================
-
-                                --- STARTERS ---
-
-                                Garlic Bread ............... $6
-                                Cheese Sticks ............. $8
-                                Stuffed Mushrooms ....... $10
-
-                                --- MAIN COURSE ---
-
-                                Grilled Salmon ............ $24
-                                Filet Mignon .............. $32
-                                Vegetable Pasta .......... $18
-
-                                --- DESSERTS ---
-
-                                Crème Brûlée ............... $12
-                                Chocolate Lava Cake .... $10`;
+            const template = [
+                '==================================================',
+                '              CATERING EVENT MENU',
+                '==================================================',
+                '',
+                '--- APPETIZERS & CANAPÉS ---',
+                '',
+                'Crispy Vegetable Spring Rolls ............... $8',
+                'Truffle Mushroom Bruschetta ................. $10',
+                'Smoked Salmon & Dill Crostini ............... $12',
+                'Mini Chicken Tikka Skewers .................. $11',
+                '',
+                '--- MAIN COURSE & BUFFET ---',
+                '',
+                'Slow-Roasted Prime Rib ...................... $28',
+                'Grilled Atlantic Herb Salmon ................ $24',
+                'Tuscan Garlic Herb Chicken .................. $20',
+                'Wild Mushroom Truffle Risotto (V) ........... $18',
+                '',
+                '--- SIDES & SALADS ---',
+                '',
+                'Classic Caesar Salad ........................ $6',
+                'Roasted Seasonal Market Vegetables .......... $6',
+                'Garlic Herb Roasted Baby Potatoes ........... $5',
+                '',
+                '--- DESSERTS & SWEETS ---',
+                '',
+                'Mini French Pastry Assortment ............... $8',
+                'Classic Tiramisu Cups ....................... $7',
+                'Artisan Fruit & Cheese Platter .............. $9'
+            ].join('\n');
 
             const textarea = document.getElementById('formMenuText');
             if (!textarea.value.trim() || confirm('Overwrite current menu with standard template?')) {
@@ -1338,7 +1414,7 @@
         }
 
         function syncMenuToTextarea() {
-            let out = `================================\n      RESTAURANT MENU\n================================\n\n`;
+            let out = '==================================================\n              CATERING EVENT MENU\n==================================================\n\n';
             menuBuilderData.forEach(cat => {
                 if (!cat.title.trim() && cat.items.length === 0) return;
                 out += `--- ${cat.title.toUpperCase()} ---\n\n`;
@@ -1346,13 +1422,13 @@
                     const name = item.name.trim();
                     const price = item.price.trim();
                     if (name || price) {
-                        const dots = '.'.repeat(Math.max(3, 40 - name.length - price.length));
+                        const dots = '.'.repeat(Math.max(3, 42 - name.length - price.length));
                         out += `${name} ${dots} ${price}\n`;
                     }
                 });
                 out += '\n';
             });
-            document.getElementById('formMenuText').value = out;
+            document.getElementById('formMenuText').value = out.trim() + '\n';
         }
 
         // ═══════════════════════════════════════════════════════

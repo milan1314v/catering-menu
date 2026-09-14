@@ -349,13 +349,34 @@
                             style="width:100%;">
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 16px;">
-                        <label
-                            style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">DIRECT MENU IMAGES &amp; SHOWCASE GALLERY (URLs separated by comma or new line)</label>
-                        <textarea id="formMenuImages" rows="3"
-                            placeholder="https://images.unsplash.com/photo-1..., https://images.unsplash.com/photo-2..."
-                            style="width:100%; font-family:monospace; font-size:0.85rem;"></textarea>
-                        <small style="color:var(--text-dim); font-size:0.75rem;">Direct visual menu cards and culinary photos displayed prominently above the About section.</small>
+                    <div class="form-group" style="margin-bottom: 24px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px; flex-wrap:wrap; gap:10px;">
+                            <div>
+                                <label style="font-size:0.92rem; color:var(--text); font-weight:700; display:block; margin-bottom:4px;">
+                                    <i class="fas fa-camera-retro" style="color:var(--gold); margin-right:6px;"></i> DIRECT MENU CARDS &amp; SHOWCASE GALLERY
+                                </label>
+                                <small style="color:var(--text-muted); font-size:0.8rem;">
+                                    Visual dish presentation &amp; menu card photos displayed prominently above the About section.
+                                </small>
+                            </div>
+                            <button type="button" class="btn-sm" style="background:rgba(200,169,126,0.15); color:var(--gold); border:1px solid var(--gold); border-radius:6px; padding:6px 12px; cursor:pointer; font-weight:600;" onclick="loadSampleGalleryPhotos()">
+                                <i class="fas fa-magic"></i> Load Sample Photos
+                            </button>
+                        </div>
+
+                        <!-- LIVE PREVIEW GRID OF CURRENT IMAGES -->
+                        <div id="galleryPreviewContainer" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 16px;">
+                            <!-- Dynamically populated with preview thumbnails & replace/delete controls -->
+                        </div>
+
+                        <!-- ADD NEW IMAGE INPUT -->
+                        <div style="display:flex; gap: 10px; align-items: center;">
+                            <input type="url" id="newGalleryImageUrl" placeholder="Paste image URL here (e.g. https://images.unsplash.com/...)" style="flex:1; padding: 10px 14px; font-size:0.88rem; background:rgba(0,0,0,0.25); border:1px solid var(--border); border-radius:6px; color:#fff;">
+                            <button type="button" class="btn-gold" style="white-space:nowrap; padding: 10px 18px; cursor:pointer;" onclick="addGalleryImage()">
+                                <i class="fas fa-plus"></i> Add Image
+                            </button>
+                        </div>
+                        <textarea id="formMenuImages" style="display:none;"></textarea>
                     </div>
 
                     <div class="form-group" style="margin-bottom: 16px;">
@@ -622,6 +643,119 @@
         }
 
         // ═══════════════════════════════════════════════════════
+        // VISUAL GALLERY MANAGER LOGIC
+        // ═══════════════════════════════════════════════════════
+        let currentMenuImages = [];
+
+        function renderGalleryManager() {
+            const container = document.getElementById('galleryPreviewContainer');
+            if (!container) return;
+
+            if (!currentMenuImages || currentMenuImages.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; padding: 24px; text-align: center; border: 1.5px dashed rgba(255,255,255,0.15); border-radius: 8px; color: var(--text-dim); background: rgba(0,0,0,0.15);">
+                        <i class="fas fa-images" style="font-size: 1.8rem; margin-bottom: 8px; opacity: 0.5; display:block;"></i>
+                        <p style="font-size: 0.88rem; margin: 0 0 4px; color: #fff;">No custom menu cards added yet</p>
+                        <small style="color: var(--gold);">Default cuisine showcase photos will display on the public site until you add custom URLs below.</small>
+                    </div>
+                `;
+                document.getElementById('formMenuImages').value = '';
+                return;
+            }
+
+            container.innerHTML = currentMenuImages.map((url, idx) => `
+                <div style="position:relative; background:#111827; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+                    <div style="height: 110px; overflow: hidden; background: #0b0f19; display: flex; align-items: center; justify-content: center;">
+                        <img src="${escapeHtml(url)}" alt="Menu Card #${idx + 1}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555244162-803834f70033?w=400';">
+                    </div>
+                    <div style="padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,0.95); border-top: 1px solid rgba(255,255,255,0.06);">
+                        <span style="font-size: 0.75rem; color: var(--gold); font-weight: 700;">#${idx + 1} Photo</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button type="button" title="Replace Image URL" onclick="promptReplaceGalleryImage(${idx})" style="background: rgba(200,169,126,0.18); color: var(--gold); border: 1px solid rgba(200,169,126,0.4); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
+                                <i class="fas fa-sync-alt"></i> Replace
+                            </button>
+                            <button type="button" title="Delete Image" onclick="removeGalleryImage(${idx})" style="background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.4); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('formMenuImages').value = currentMenuImages.join('\n');
+        }
+
+        function addGalleryImage() {
+            const input = document.getElementById('newGalleryImageUrl');
+            const url = (input.value || '').trim();
+            if (!url) {
+                alert('Please enter or paste an image URL');
+                return;
+            }
+            currentMenuImages.push(url);
+            input.value = '';
+            renderGalleryManager();
+        }
+
+        function removeGalleryImage(idx) {
+            if (confirm(`Remove Image #${idx + 1}?`)) {
+                currentMenuImages.splice(idx, 1);
+                renderGalleryManager();
+            }
+        }
+
+        function promptReplaceGalleryImage(idx) {
+            const oldUrl = currentMenuImages[idx] || '';
+            const newUrl = prompt('Enter replacement image URL:', oldUrl);
+            if (newUrl && newUrl.trim() && newUrl.trim() !== oldUrl) {
+                currentMenuImages[idx] = newUrl.trim();
+                renderGalleryManager();
+            }
+        }
+
+        function loadSampleGalleryPhotos() {
+            const cuisine = (document.getElementById('formCuisine').value || '').toLowerCase();
+            const name = (document.getElementById('formName').value || '').toLowerCase();
+            if (cuisine.includes('sushi') || cuisine.includes('japanese') || name.includes('sakura')) {
+                currentMenuImages = [
+                    'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=1000',
+                    'https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=1000',
+                    'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=1000',
+                    'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=1000'
+                ];
+            } else if (cuisine.includes('bbq') || cuisine.includes('grill') || name.includes('copper')) {
+                currentMenuImages = [
+                    'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=1000',
+                    'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000',
+                    'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=1000',
+                    'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1000'
+                ];
+            } else if (cuisine.includes('italian') || cuisine.includes('pizza') || name.includes('verde')) {
+                currentMenuImages = [
+                    'https://images.unsplash.com/photo-1541529086526-db283c563270?w=1000',
+                    'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1000',
+                    'https://images.unsplash.com/photo-1621996346565-e3d5d6281699?w=1000',
+                    'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=1000'
+                ];
+            } else if (cuisine.includes('indian') || cuisine.includes('asian') || name.includes('spice')) {
+                currentMenuImages = [
+                    'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=1000',
+                    'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1000',
+                    'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=1000',
+                    'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=1000'
+                ];
+            } else {
+                currentMenuImages = [
+                    'https://images.unsplash.com/photo-1555244162-803834f70033?w=1000',
+                    'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000',
+                    'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1000',
+                    'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1000'
+                ];
+            }
+            renderGalleryManager();
+        }
+
+        // ═══════════════════════════════════════════════════════
         // 2. FORM VIEW MANAGEMENT (ADD & EDIT)
         // ═══════════════════════════════════════════════════════
         function showListView() {
@@ -652,10 +786,10 @@
             }
         }
 
-        function openAddRestaurantForm() {
+        function openCreateRestaurant() {
             currentEditingRestaurant = null;
-            document.getElementById('formHeading').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Caterer';
-            document.getElementById('formSubheading').textContent = 'Create a new catering business profile with menus, packages, hours, and location.';
+            document.getElementById('formHeading').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Caterer Profile';
+            document.getElementById('formSubheading').textContent = 'Enter catering business details, upload menus, and publish.';
             document.getElementById('deleteRestBtn').style.display = 'none';
             document.getElementById('reviewsSection').style.display = 'none';
 
@@ -669,7 +803,9 @@
             document.getElementById('formLat').value = '';
             document.getElementById('formLng').value = '';
             document.getElementById('formBanner').value = '';
-            document.getElementById('formMenuImages').value = '';
+            document.getElementById('newGalleryImageUrl').value = '';
+            currentMenuImages = [];
+            renderGalleryManager();
             document.getElementById('formAbout').value = '';
             document.getElementById('formLocations').value = '';
             document.getElementById('formMenuText').value = '';
@@ -677,6 +813,10 @@
             renderOpeningHoursInputs({});
             initMenuBuilder('');
             showFormView();
+        }
+
+        function openAddRestaurantForm() {
+            openCreateRestaurant();
         }
 
         function openEditRestaurant(id) {
@@ -699,8 +839,19 @@
             document.getElementById('formLat').value = r.lat || '';
             document.getElementById('formLng').value = r.lng || '';
             document.getElementById('formBanner').value = r.banner_url || '';
+            
+            // Populate menu images
             const mImgs = r.menu_images || [];
-            document.getElementById('formMenuImages').value = Array.isArray(mImgs) ? mImgs.join('\n') : (mImgs || '');
+            if (Array.isArray(mImgs)) {
+                currentMenuImages = [...mImgs];
+            } else if (typeof mImgs === 'string' && mImgs.trim()) {
+                currentMenuImages = mImgs.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+            } else {
+                currentMenuImages = [];
+            }
+            document.getElementById('newGalleryImageUrl').value = '';
+            renderGalleryManager();
+
             document.getElementById('formAbout').value = r.about_text || '';
             document.getElementById('formLocations').value = r.locations || '';
 
@@ -749,7 +900,7 @@
                 lat: parseFloat(document.getElementById('formLat').value) || 0,
                 lng: parseFloat(document.getElementById('formLng').value) || 0,
                 banner_url: document.getElementById('formBanner').value.trim(),
-                menu_images: document.getElementById('formMenuImages').value.split(/[\n,]+/).map(s => s.trim()).filter(Boolean),
+                menu_images: [...currentMenuImages],
                 about_text: document.getElementById('formAbout').value.trim(),
                 locations: document.getElementById('formLocations').value.trim(),
                 direct_menu_text: menuText,

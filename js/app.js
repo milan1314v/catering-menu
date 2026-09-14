@@ -18,29 +18,35 @@ const DEFAULT_GLOBAL = {
   },
   footer: {
     about_heading: "About Catering Menu",
-    about_text: "Catering Menu is the premier discovery directory for exceptional catering services and culinary experiences. We connect event planners and hosts with top-rated caterers, verified menus, genuine reviews, and seamless booking inquiries.",
+    about_text: "Catering Menu is the premier discovery directory connecting event planners and hosts with top-rated caterers, verified menus, genuine reviews, and seamless booking inquiries for unforgettable celebrations.",
     quick_heading: "Quick Links",
     quick_links: [
       { label: "Home", url: "/" },
       { label: "Caterers", url: "/listings" },
       { label: "About Us", url: "/about" },
+      { label: "How It Works", url: "/about#how-it-works" },
       { label: "List Your Business", url: "/get-listed" },
       { label: "FAQs", url: "/faqs" },
-      { label: "Contact", url: "/contact" }
+      { label: "Contact Us", url: "/contact" }
     ],
-    legal_heading: "Legal",
+    cuisines_heading: "Popular Catering",
+    cuisine_links: [
+      { label: "Wedding Catering", url: "/listings?q=wedding" },
+      { label: "Corporate Galas", url: "/listings?q=corporate" },
+      { label: "Live BBQ & Grill Stations", url: "/listings?q=bbq" },
+      { label: "Italian & Wood-Fired", url: "/listings?q=italian" },
+      { label: "Royal Indian & Asian", url: "/listings?q=asian" },
+      { label: "Cocktails & Canapés", url: "/listings?q=cocktail" }
+    ],
+    legal_heading: "Legal & Policy",
     legal_links: [
       { label: "Privacy Policy", url: "/privacy" },
       { label: "Terms of Service", url: "/terms" },
-      { label: "Disclaimer", url: "/disclaimer" }
+      { label: "Allergen & Disclaimer", url: "/disclaimer" },
+      { label: "Food Safety Standards", url: "/disclaimer" }
     ],
-    social_heading: "Follow Us",
-    socials: [
-      { icon: "fab fa-facebook-f", url: "#", label: "Facebook" },
-      { icon: "fab fa-twitter", url: "#", label: "Twitter" },
-      { icon: "fab fa-instagram", url: "#", label: "Instagram" },
-      { icon: "fab fa-youtube", url: "#", label: "YouTube" }
-    ],
+    show_socials: false,
+    socials: [],
     copyright: "© 2026 Catering Menu. All rights reserved."
   }
 };
@@ -193,14 +199,12 @@ function renderFooter(footerData) {
   const hostParts = window.location.hostname.split('.');
   const isSubdomain = hostParts.length >= 3 && hostParts[0] !== 'www' && hostParts[0] !== 'admin';
   const mainOrigin = isSubdomain && window.location.hostname.includes('catering-menu.com') ? 'https://www.catering-menu.com' : '';
+  const logoHref = mainOrigin ? `${mainOrigin}/` : '/';
 
-  let socialsHtml = '';
-  (data.socials || []).forEach(s => {
-    socialsHtml += `<a href="${s.url}" class="social-icon" aria-label="${escapeHtml(s.label)}"><i class="${escapeHtml(s.icon)}"></i></a>`;
-  });
-
+  // Quick Links
+  const quickLinks = (data.quick_links && data.quick_links.length > 0) ? data.quick_links : DEFAULT_GLOBAL.footer.quick_links;
   let quickHtml = '';
-  (data.quick_links || []).forEach(l => {
+  quickLinks.forEach(l => {
     let label = (l.label || '').trim();
     if (label.toLowerCase() === 'restaurants' || label.toLowerCase() === 'restaurant' || label.toLowerCase() === 'all restaurants') {
       label = 'Caterers';
@@ -208,21 +212,44 @@ function renderFooter(footerData) {
     let clean = l.url.replace(/\.html$/, '');
     if (clean === '/index' || clean === 'index' || clean === '') clean = '/';
     const href = mainOrigin ? (clean === '/' ? `${mainOrigin}/` : `${mainOrigin}${clean}`) : clean;
-    quickHtml += `<li><a href="${href}">${escapeHtml(label)}</a></li>`;
+    quickHtml += `<li><a href="${href}"><i class="fas fa-angle-right"></i> ${escapeHtml(label)}</a></li>`;
   });
 
+  // Cuisines / Specialties
+  const cuisineLinks = (data.cuisine_links && data.cuisine_links.length > 0) ? data.cuisine_links : [
+    { label: "Wedding Catering", url: "/listings?q=wedding" },
+    { label: "Corporate Galas", url: "/listings?q=corporate" },
+    { label: "Live BBQ & Grill Stations", url: "/listings?q=bbq" },
+    { label: "Italian & Wood-Fired", url: "/listings?q=italian" },
+    { label: "Royal Indian & Asian", url: "/listings?q=asian" },
+    { label: "Cocktails & Canapés", url: "/listings?q=cocktail" }
+  ];
+  let cuisineHtml = '';
+  cuisineLinks.forEach(l => {
+    let clean = l.url.replace(/\.html$/, '');
+    if (clean === '/index' || clean === 'index' || clean === '') clean = '/';
+    const href = mainOrigin ? (clean === '/' ? `${mainOrigin}/` : `${mainOrigin}${clean}`) : clean;
+    cuisineHtml += `<li><a href="${href}"><i class="fas fa-angle-right"></i> ${escapeHtml(l.label)}</a></li>`;
+  });
+
+  // Legal Links
+  const legalLinks = (data.legal_links && data.legal_links.length > 0) ? data.legal_links : DEFAULT_GLOBAL.footer.legal_links;
   let legalHtml = '';
-  (data.legal_links || []).forEach(l => {
+  legalLinks.forEach(l => {
     let clean = l.url.replace(/\.html$/, '');
     if (clean === '/index' || clean === 'index') clean = '/';
     const href = mainOrigin ? (clean === '/' ? `${mainOrigin}/` : `${mainOrigin}${clean}`) : clean;
-    legalHtml += `<li><a href="${href}">${escapeHtml(l.label)}</a></li>`;
+    legalHtml += `<li><a href="${href}"><i class="fas fa-shield-alt"></i> ${escapeHtml(l.label)}</a></li>`;
   });
 
-  let socialListHtml = '';
-  (data.socials || []).forEach(s => {
-    socialListHtml += `<li><a href="${s.url}"><i class="${escapeHtml(s.icon)}"></i> ${escapeHtml(s.label)}</a></li>`;
-  });
+  // Socials handling: Only show if explicitly enabled AND non-empty non-hash URLs exist
+  const hasValidSocials = data.show_socials === true && (data.socials || []).some(s => s.url && s.url !== '#' && s.url.startsWith('http'));
+  let socialsHtml = '';
+  if (hasValidSocials) {
+    (data.socials || []).filter(s => s.url && s.url !== '#' && s.url.startsWith('http')).forEach(s => {
+      socialsHtml += `<a href="${s.url}" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(s.label)}"><i class="${escapeHtml(s.icon)}"></i></a>`;
+    });
+  }
 
   let aboutHeading = (data.about_heading || '').trim();
   if (!aboutHeading || aboutHeading.toLowerCase().includes('dinevault') || aboutHeading.toLowerCase().includes('restaurant')) {
@@ -240,25 +267,55 @@ function renderFooter(footerData) {
   footerContainer.innerHTML = `
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-col">
-          <h4>${escapeHtml(aboutHeading)}</h4>
+        <!-- 1. Brand & Trust -->
+        <div class="footer-col footer-brand">
+          <a href="${logoHref}" class="footer-logo-link" aria-label="Catering Menu Home">
+            <img src="/assets/img/catering-menu-logo.png" alt="Catering Menu" class="footer-logo-img">
+          </a>
           <p>${escapeHtml(aboutText)}</p>
-          <div class="footer-socials">${socialsHtml}</div>
+          <div class="footer-trust-pills">
+            <span class="footer-trust-pill"><i class="fas fa-check-circle"></i> Verified Menus</span>
+            <span class="footer-trust-pill"><i class="fas fa-gem"></i> Premier Caterers</span>
+            <span class="footer-trust-pill"><i class="fas fa-bolt"></i> Direct Connect</span>
+          </div>
+          ${hasValidSocials ? `<div class="footer-socials" style="margin-top:12px;">${socialsHtml}</div>` : ''}
         </div>
+
+        <!-- 2. Quick Navigation -->
         <div class="footer-col">
           <h4>${escapeHtml(data.quick_heading || 'Quick Links')}</h4>
           <ul>${quickHtml}</ul>
         </div>
+
+        <!-- 3. Catering Specialities -->
         <div class="footer-col">
-          <h4>${escapeHtml(data.legal_heading || 'Legal')}</h4>
+          <h4>${escapeHtml(data.cuisines_heading || 'Popular Catering')}</h4>
+          <ul>${cuisineHtml}</ul>
+        </div>
+
+        <!-- 4. Legal & Trust -->
+        <div class="footer-col">
+          <h4>${escapeHtml(data.legal_heading || 'Legal & Policy')}</h4>
           <ul>${legalHtml}</ul>
         </div>
-        <div class="footer-col">
-          <h4>${escapeHtml(data.social_heading || 'Follow Us')}</h4>
-          <ul>${socialListHtml}</ul>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom">
+        <div class="footer-bottom-flex">
+          <div>${escapeHtml(copyrightText)}</div>
+          <div class="footer-bottom-tagline">Crafted for unforgettable celebrations & luxury feasts</div>
+          <div class="footer-bottom-links">
+            <a href="${mainOrigin ? `${mainOrigin}/privacy` : '/privacy'}">Privacy Policy</a>
+            <span style="opacity:0.3;">•</span>
+            <a href="${mainOrigin ? `${mainOrigin}/terms` : '/terms'}">Terms</a>
+            <span style="opacity:0.3;">•</span>
+            <a href="${mainOrigin ? `${mainOrigin}/disclaimer` : '/disclaimer'}">Disclaimer</a>
+            <span style="opacity:0.3;">•</span>
+            <a href="${mainOrigin ? `${mainOrigin}/contact` : '/contact'}">Contact</a>
+          </div>
         </div>
       </div>
-      <div class="footer-bottom">${escapeHtml(copyrightText)}</div>
     </div>
   `;
 

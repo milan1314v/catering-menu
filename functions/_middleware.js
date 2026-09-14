@@ -55,20 +55,29 @@ export async function onRequest(context) {
 
         if (!catererExists) {
           // Serve branded 404 page with 404 HTTP status
-          const notFoundUrl = new URL('/404.html', request.url);
-          const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl, request));
-          return new Response(notFoundRes.body, {
-            status: 404,
-            statusText: 'Not Found',
-            headers: notFoundRes.headers
-          });
+          try {
+            const notFoundUrl = new URL('/404.html', request.url);
+            const notFoundRes = await env.ASSETS.fetch(notFoundUrl);
+            if (notFoundRes && notFoundRes.ok) {
+              const notFoundHtml = await notFoundRes.text();
+              return new Response(notFoundHtml, {
+                status: 404,
+                statusText: 'Not Found',
+                headers: {
+                  'Content-Type': 'text/html; charset=utf-8',
+                  'X-Robots-Tag': 'noindex, follow'
+                }
+              });
+            }
+          } catch(e) {}
+          return new Response('Page Not Found', { status: 404 });
         }
 
         const rewriteUrl = new URL('/restaurant.html', request.url);
         rewriteUrl.searchParams.set('slug', subdomain);
 
         // Fetch the restaurant.html page internally
-        let response = await env.ASSETS.fetch(new Request(rewriteUrl, request));
+        let response = await env.ASSETS.fetch(rewriteUrl);
         return applyRobotsHeader(response, env, request);
       }
     }
@@ -86,7 +95,7 @@ export async function onRequest(context) {
     if (rawCategory) {
       const rewriteUrl = new URL('/listings.html', request.url);
       rewriteUrl.searchParams.set('q', decodeURIComponent(rawCategory));
-      let response = await env.ASSETS.fetch(new Request(rewriteUrl, request));
+      let response = await env.ASSETS.fetch(rewriteUrl);
       return applyRobotsHeader(response, env, request);
     }
   }
@@ -107,16 +116,21 @@ export async function onRequest(context) {
   if (response.status === 404 && !url.pathname.startsWith('/api/')) {
     try {
       const notFoundUrl = new URL('/404.html', request.url);
-      const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl, request));
-      return new Response(notFoundRes.body, {
-        status: 404,
-        statusText: 'Not Found',
-        headers: {
-          'Content-Type': 'text/html; charset=utf-8',
-          'X-Robots-Tag': 'noindex, follow'
-        }
-      });
-    } catch(e) {}
+      const notFoundRes = await env.ASSETS.fetch(notFoundUrl);
+      if (notFoundRes && notFoundRes.ok) {
+        const notFoundHtml = await notFoundRes.text();
+        return new Response(notFoundHtml, {
+          status: 404,
+          statusText: 'Not Found',
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'X-Robots-Tag': 'noindex, follow'
+          }
+        });
+      }
+    } catch(e) {
+      console.error('Error serving branded 404 page:', e);
+    }
   }
 
   return applyRobotsHeader(response, env, request);

@@ -6,6 +6,14 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const hostname = url.hostname.toLowerCase();
 
+  // 0. Force canonical domain: redirect *.pages.dev and apex domain to www.catering-menu.com
+  if (hostname.endsWith('.pages.dev')) {
+    return Response.redirect(`https://www.catering-menu.com${url.pathname}${url.search}`, 301);
+  }
+  if (hostname === 'catering-menu.com') {
+    return Response.redirect(`https://www.catering-menu.com${url.pathname}${url.search}`, 301);
+  }
+
   // 1. Caterer Subdomain Routing (e.g. spice-route.catering-menu.com)
   const isCateringDomain = hostname.endsWith('catering-menu.com');
   const parts = hostname.split('.');

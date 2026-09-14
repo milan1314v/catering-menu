@@ -10,7 +10,7 @@ export async function onRequestGet(context) {
   const headers = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
-    'Cache-Control': 'public, max-age=60, s-maxage=120'
+    'Cache-Control': 'no-cache, must-revalidate'
   };
 
   if (!env.DB) {

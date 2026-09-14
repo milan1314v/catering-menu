@@ -351,6 +351,15 @@
 
                     <div class="form-group" style="margin-bottom: 16px;">
                         <label
+                            style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">DIRECT MENU IMAGES &amp; SHOWCASE GALLERY (URLs separated by comma or new line)</label>
+                        <textarea id="formMenuImages" rows="3"
+                            placeholder="https://images.unsplash.com/photo-1..., https://images.unsplash.com/photo-2..."
+                            style="width:100%; font-family:monospace; font-size:0.85rem;"></textarea>
+                        <small style="color:var(--text-dim); font-size:0.75rem;">Direct visual menu cards and culinary photos displayed prominently above the About section.</small>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label
                             style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">ABOUT
                             RESTAURANT</label>
                         <textarea id="formAbout" rows="4"
@@ -660,6 +669,7 @@
             document.getElementById('formLat').value = '';
             document.getElementById('formLng').value = '';
             document.getElementById('formBanner').value = '';
+            document.getElementById('formMenuImages').value = '';
             document.getElementById('formAbout').value = '';
             document.getElementById('formLocations').value = '';
             document.getElementById('formMenuText').value = '';
@@ -689,6 +699,8 @@
             document.getElementById('formLat').value = r.lat || '';
             document.getElementById('formLng').value = r.lng || '';
             document.getElementById('formBanner').value = r.banner_url || '';
+            const mImgs = r.menu_images || [];
+            document.getElementById('formMenuImages').value = Array.isArray(mImgs) ? mImgs.join('\n') : (mImgs || '');
             document.getElementById('formAbout').value = r.about_text || '';
             document.getElementById('formLocations').value = r.locations || '';
 
@@ -737,6 +749,7 @@
                 lat: parseFloat(document.getElementById('formLat').value) || 0,
                 lng: parseFloat(document.getElementById('formLng').value) || 0,
                 banner_url: document.getElementById('formBanner').value.trim(),
+                menu_images: document.getElementById('formMenuImages').value.split(/[\n,]+/).map(s => s.trim()).filter(Boolean),
                 about_text: document.getElementById('formAbout').value.trim(),
                 locations: document.getElementById('formLocations').value.trim(),
                 direct_menu_text: menuText,

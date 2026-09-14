@@ -105,23 +105,29 @@ function renderHeader(navData) {
   const hostParts = window.location.hostname.split('.');
   const isSubdomain = hostParts.length >= 3 && hostParts[0] !== 'www' && hostParts[0] !== 'admin';
   const mainOrigin = isSubdomain && window.location.hostname.includes('catering-menu.com') ? 'https://www.catering-menu.com' : '';
-
   let linksHtml = '';
   (data.links || []).forEach(link => {
     let label = (link.label || '').trim();
-    if (label.toLowerCase() === 'restaurants' || label.toLowerCase() === 'restaurant') {
+    if (label.toLowerCase() === 'restaurants' || label.toLowerCase() === 'restaurant' || label.toLowerCase() === 'all restaurants') {
       label = 'Caterers';
     }
-    const linkClean = (link.url.replace(/\/$/, '') || '/').replace(/\.html$/, '');
-    const href = mainOrigin ? `${mainOrigin}${linkClean}` : linkClean;
+    let linkClean = (link.url.replace(/\/$/, '') || '/').replace(/\.html$/, '');
+    if (linkClean === '' || linkClean === 'index' || linkClean === '/index') {
+      linkClean = '/';
+    }
+    if (linkClean === '/listings' && (label.toLowerCase().includes('restaurant') || label === 'Listings')) {
+      label = 'Caterers';
+    }
+    const href = mainOrigin ? (linkClean === '/' ? `${mainOrigin}/` : `${mainOrigin}${linkClean}`) : linkClean;
     const isActive = !isSubdomain && ((currentPath === linkClean) || 
       (linkClean === '/' && (currentPath === '' || currentPath === '/' || currentPath === '/index')));
     linksHtml += `<a href="${href}" class="${isActive ? 'active' : ''}">${escapeHtml(label)}</a>`;
   });
 
   if (data.cta_btn) {
-    const ctaClean = data.cta_btn.url.replace(/\.html$/, '');
-    const ctaHref = mainOrigin ? `${mainOrigin}${ctaClean}` : ctaClean;
+    let ctaClean = data.cta_btn.url.replace(/\.html$/, '');
+    if (ctaClean === '/index' || ctaClean === 'index') ctaClean = '/';
+    const ctaHref = mainOrigin ? (ctaClean === '/' ? `${mainOrigin}/` : `${mainOrigin}${ctaClean}`) : ctaClean;
     linksHtml += `<a href="${ctaHref}" class="nav-cta">${escapeHtml(data.cta_btn.label)}</a>`;
   }
 
@@ -158,15 +164,17 @@ function renderHeader(navData) {
     enhanceLogoForDarkBackground(navLogoImg);
   }
 
-  // Attach hamburger handler
+  // Hamburger Toggle
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
   if (hamburger && navLinks) {
     hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
       hamburger.classList.toggle('active');
-      navLinks.classList.toggle('active');
     });
   }
+
+  fixSubdomainLinks();
 }
 
 function enhanceLogoForDarkBackground(imgElement) {
@@ -188,24 +196,26 @@ function renderFooter(footerData) {
 
   let socialsHtml = '';
   (data.socials || []).forEach(s => {
-    socialsHtml += `<a href="${s.url}" aria-label="${escapeHtml(s.label)}"><i class="${escapeHtml(s.icon)}"></i></a>`;
+    socialsHtml += `<a href="${s.url}" class="social-icon" aria-label="${escapeHtml(s.label)}"><i class="${escapeHtml(s.icon)}"></i></a>`;
   });
 
   let quickHtml = '';
   (data.quick_links || []).forEach(l => {
     let label = (l.label || '').trim();
-    if (label.toLowerCase() === 'restaurants' || label.toLowerCase() === 'restaurant') {
+    if (label.toLowerCase() === 'restaurants' || label.toLowerCase() === 'restaurant' || label.toLowerCase() === 'all restaurants') {
       label = 'Caterers';
     }
-    const clean = l.url.replace(/\.html$/, '');
-    const href = mainOrigin ? `${mainOrigin}${clean}` : clean;
+    let clean = l.url.replace(/\.html$/, '');
+    if (clean === '/index' || clean === 'index' || clean === '') clean = '/';
+    const href = mainOrigin ? (clean === '/' ? `${mainOrigin}/` : `${mainOrigin}${clean}`) : clean;
     quickHtml += `<li><a href="${href}">${escapeHtml(label)}</a></li>`;
   });
 
   let legalHtml = '';
   (data.legal_links || []).forEach(l => {
-    const clean = l.url.replace(/\.html$/, '');
-    const href = mainOrigin ? `${mainOrigin}${clean}` : clean;
+    let clean = l.url.replace(/\.html$/, '');
+    if (clean === '/index' || clean === 'index') clean = '/';
+    const href = mainOrigin ? (clean === '/' ? `${mainOrigin}/` : `${mainOrigin}${clean}`) : clean;
     legalHtml += `<li><a href="${href}">${escapeHtml(l.label)}</a></li>`;
   });
 
@@ -259,22 +269,43 @@ function fixSubdomainLinks() {
   const host = window.location.hostname.toLowerCase();
   const hostParts = host.split('.');
   const isSubdomain = hostParts.length >= 3 && hostParts[0] !== 'www' && hostParts[0] !== 'admin' && hostParts[0] !== 'api';
-  if (!isSubdomain) return;
 
-  const mainOrigin = host.includes('catering-menu.com') ? 'https://www.catering-menu.com' : '';
-  if (!mainOrigin) return;
-
+  // Sanitize any legacy links across all pages
   document.querySelectorAll('a').forEach(a => {
-    const rawHref = a.getAttribute('href');
+    let rawHref = a.getAttribute('href');
     if (!rawHref) return;
 
-    if (rawHref.startsWith('/') && !rawHref.startsWith('//')) {
-      a.href = mainOrigin + rawHref.replace(/\.html$/, '');
-    } else if (rawHref.includes(window.location.hostname)) {
-      const parsed = new URL(rawHref, window.location.origin);
-      if (parsed.pathname && parsed.pathname !== '/' && parsed.pathname !== '') {
-        a.href = 'https://www.catering-menu.com' + parsed.pathname.replace(/\.html$/, '') + parsed.search;
+    // Direct /index or /index.html sanitization
+    if (rawHref === '/index' || rawHref === '/index.html' || rawHref === 'index.html' || rawHref === 'index') {
+      a.setAttribute('href', isSubdomain ? 'https://www.catering-menu.com/' : '/');
+      return;
+    }
+
+    if (isSubdomain) {
+      const mainOrigin = host.includes('catering-menu.com') ? 'https://www.catering-menu.com' : '';
+      if (!mainOrigin) return;
+
+      if (rawHref.startsWith('/') && !rawHref.startsWith('//')) {
+        let clean = rawHref.replace(/\.html$/, '');
+        if (clean === '/index' || clean === '') clean = '/';
+        a.href = clean === '/' ? `${mainOrigin}/` : `${mainOrigin}${clean}`;
+      } else if (rawHref.includes(window.location.hostname)) {
+        try {
+          const parsed = new URL(rawHref, window.location.origin);
+          let path = (parsed.pathname || '').replace(/\.html$/, '');
+          if (path === '/index' || path === '') path = '/';
+          if (path && path !== '/') {
+            a.href = `${mainOrigin}${path}${parsed.search}`;
+          } else {
+            a.href = `${mainOrigin}/`;
+          }
+        } catch(e) {}
       }
+    }
+
+    // Always sanitize text if it says "Restaurants"
+    if (a.closest('#navLinks') && a.textContent.trim().toLowerCase() === 'restaurants') {
+      a.textContent = 'Caterers';
     }
   });
 }

@@ -25,12 +25,13 @@ export async function onRequest(context) {
 
       // Redirect any main portal pages requested on a subdomain to the main domain
       if (mainPortalPages.includes(currentPath)) {
-        const cleanPath = currentPath.replace(/\.html$/, '').replace(/^\/index$/, '/');
-        return Response.redirect(`https://www.catering-menu.com${cleanPath}${url.search}`, 301);
+        const cleanPath = currentPath.replace(/\.html$/, '').replace(/^\/index$/, '');
+        const targetUrl = cleanPath ? `https://www.catering-menu.com${cleanPath}${url.search}` : `https://www.catering-menu.com/${url.search}`;
+        return Response.redirect(targetUrl, 301);
       }
 
       // If visiting root of subdomain (e.g. https://spice-route.catering-menu.com/)
-      if (url.pathname === '/' || url.pathname === '/index.html' || url.pathname === '') {
+      if (url.pathname === '/' || url.pathname === '/index.html' || url.pathname === '/index' || url.pathname === '') {
         const rewriteUrl = new URL('/restaurant.html', request.url);
         rewriteUrl.searchParams.set('slug', subdomain);
 
@@ -39,6 +40,12 @@ export async function onRequest(context) {
         return applyRobotsHeader(response, env);
       }
     }
+  }
+
+  // 1.5. Clean URL redirect for /index or /index.html on main domain
+  if (url.pathname === '/index' || url.pathname === '/index.html') {
+    url.pathname = '/';
+    return Response.redirect(url.toString(), 301);
   }
 
   // 2. Normal Request

@@ -13,6 +13,171 @@
     <link rel="manifest" href="/assets/img/site.webmanifest">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .about-story-section {
+            padding: 80px 0;
+        }
+        .about-story-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 56px;
+            align-items: center;
+        }
+        .story-text h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 20px;
+            line-height: 1.25;
+            letter-spacing: -0.5px;
+        }
+        .story-text p {
+            color: #475569;
+            font-size: 1.05rem;
+            line-height: 1.85;
+            margin-bottom: 20px;
+        }
+        .story-badge-card {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .story-badge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+        .story-badge-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--gold-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .story-badge-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+        .story-badge-card p {
+            color: #64748b;
+            font-size: 0.98rem;
+            line-height: 1.75;
+            margin-bottom: 0;
+        }
+
+        /* Pillars / Values Grid */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+            margin-top: 48px;
+        }
+        .pillar-card {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: var(--radius);
+            padding: 32px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 36px rgba(217, 119, 6, 0.1);
+            border-color: #fde68a;
+        }
+        .pillar-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.2));
+            color: #b45309;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+        .pillar-card h4 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+        .pillar-card p {
+            color: #64748b;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* How it works */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+        .step-card {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: var(--radius);
+            padding: 36px 28px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+        }
+        .step-num {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+        }
+        .step-card h4 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+        .step-card p {
+            color: #64748b;
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        @media (max-width: 900px) {
+            .about-story-grid {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -23,29 +188,109 @@
 
     <section class="page-hero">
         <div class="container">
-            <h1 id="aboutTitle">About Catering Menu</h1>
-            <p id="aboutSubtitle">Connecting event hosts, planners, and families with unforgettable catering experiences.</p>
+            <h1 id="aboutTitle">Crafting Unforgettable Culinary Celebrations</h1>
+            <p id="aboutSubtitle">Connecting event hosts, couples, and corporate organizers with premier catering artisans, verified banquet menus, and seamless quote requests.</p>
         </div>
     </section>
 
-    <section class="section">
+    <!-- STORY SECTION -->
+    <section class="about-story-section">
         <div class="container">
-            <div class="about-mission-grid">
-                <div class="about-block glass">
-                    <h3 id="missionTitle">Our Mission</h3>
-                    <p id="missionText">To empower event planners and food lovers with the tools, verified menus, and transparent host reviews needed to book exceptional catering services with total confidence. We believe every celebration deserves remarkable food and hospitality.</p>
+            <div class="about-story-grid">
+                <div class="story-text">
+                    <div class="overline" style="color:var(--gold-dark);font-weight:700;letter-spacing:1px;text-transform:uppercase;font-size:0.85rem;margin-bottom:10px;">Our Journey</div>
+                    <h2>Reinventing How Events Discover Extraordinary Food</h2>
+                    <p>At <strong>Catering Menu</strong>, we believe food is the beating heart of every milestone celebration. Whether it is an intimate wedding banquet, an annual corporate summit, a festival live counter, or a milestone family reunion, the culinary experience creates memories that last for years.</p>
+                    <p>Yet for decades, finding the right caterer has been stressful: opaque menus, hidden broker commissions, uncertainty about dietary capabilities, and endless telephone follow-ups. We created Catering Menu to change all of that — building a transparent, community-driven platform with verified caterer subdomains, complete menus, and authentic client reviews.</p>
                 </div>
-                <div class="about-block glass">
-                    <h3 id="visionTitle">Our Vision</h3>
-                    <p id="visionText">To become the world's most trusted catering discovery and booking platform, where quality craftsmanship, verified client reviews, and culinary passion bring unforgettable feasts to life for every occasion.</p>
+                <div>
+                    <div class="story-badge-card">
+                        <div class="story-badge-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h3>The Gold Standard in Catering Discovery</h3>
+                        <p>We work directly with independent catering businesses across 120+ cities — showcasing authentic chefs, food trucks, and full-service banquet caterers with custom branded subdomains and zero broker markups.</p>
+                        <div style="margin-top:24px;padding-top:20px;border-top:1px solid #f1f5f9;display:flex;gap:24px;">
+                            <div>
+                                <strong style="font-size:1.5rem;color:var(--gold-dark);display:block;">100%</strong>
+                                <span style="font-size:0.8rem;color:#64748b;">Free for Event Hosts</span>
+                            </div>
+                            <div>
+                                <strong style="font-size:1.5rem;color:var(--gold-dark);display:block;">24/7</strong>
+                                <span style="font-size:0.8rem;color:#64748b;">Instant Menu Access</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section">
+    <!-- CORE PILLARS SECTION -->
+    <section class="section" style="padding: 60px 0; background: rgba(255, 255, 255, 0.6);">
         <div class="container">
-            <div class="section-header">
+            <div class="section-header" style="text-align:center;">
+                <div class="overline">Our Commitments</div>
+                <h2>The Values That Drive Us</h2>
+                <p>Everything we build is designed to make event catering effortless, transparent, and delicious.</p>
+            </div>
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <div class="pillar-icon"><i class="fas fa-utensils"></i></div>
+                    <h4>Artisanal Culinary Craft</h4>
+                    <p>From slow-smoked Texas BBQ and authentic Southern Italian trattorias to royal Mughlai banquets and French canapés, we celebrate true culinary passion.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon"><i class="fas fa-file-invoice"></i></div>
+                    <h4>Radical Menu Transparency</h4>
+                    <p>No more guessing games. Explore full dish descriptions, seasonal packages, live counters, and downloadable brochures before you request a quote.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon"><i class="fas fa-globe"></i></div>
+                    <h4>Branded Subdomains</h4>
+                    <p>Every caterer receives a dedicated subdomain (e.g., <code>spice-route.catering-menu.com</code>) providing a professional showcase for their brand.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon"><i class="fas fa-leaf"></i></div>
+                    <h4>Dietary Inclusivity</h4>
+                    <p>Easily filter caterers by celiac-safe gluten-free, vegan, vegetarian, and Halal preparation protocols to ensure all your event guests are welcomed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="section" style="padding: 80px 0;">
+        <div class="container">
+            <div class="section-header" style="text-align:center;">
+                <div class="overline">Simple & Seamless</div>
+                <h2>How Catering Menu Works</h2>
+                <p>From inspiration to your event banquet in three simple steps.</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h4>Explore & Filter</h4>
+                    <p>Browse top-rated caterers filtered by your event type (Weddings, Corporate, Private Parties, Buffets), preferred cuisine, and star ratings.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h4>Inspect Menus & Reviews</h4>
+                    <p>Review signature packages, custom chef offerings, verified customer ratings, and kitchen service radius on the caterer's dedicated subdomain.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h4>Connect Directly</h4>
+                    <p>Send direct inquiry messages and booking requests with zero intermediary commissions or unexpected fees.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BY THE NUMBERS -->
+    <section class="section" style="padding: 60px 0; background: rgba(255, 255, 255, 0.6);">
+        <div class="container">
+            <div class="section-header" style="text-align:center;">
                 <div class="overline">Our Impact</div>
                 <h2>By the Numbers</h2>
                 <p>Connecting thousands of event organizers with top culinary professionals.</p>
@@ -71,12 +316,13 @@
         </div>
     </section>
 
+    <!-- CTA BANNER -->
     <section class="cta-banner">
         <div class="container">
-            <div class="glass-medium" style="padding:60px 40px;border-radius:var(--radius-lg);">
+            <div class="glass-medium" style="padding:60px 40px;border-radius:var(--radius-lg);text-align:center;">
                 <h2 id="ctaTitle">Own a Catering Business?</h2>
-                <p id="ctaText">Join Catering Menu and reach thousands of event planners, wedding hosts, and corporate clients.</p>
-                <a href="/get-listed" class="btn-primary" id="ctaBtn">List Your Business Today <i class="fas fa-arrow-right"></i></a>
+                <p id="ctaText" style="color:var(--text-muted);font-size:1.05rem;max-width:620px;margin:14px auto 28px;">Join Catering Menu today to showcase your culinary artistry, receive your own branded subdomain, and connect with high-intent event organizers.</p>
+                <a href="/get-listed" class="btn-primary" id="ctaBtn">List Your Catering Business <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
@@ -97,28 +343,14 @@
             if (cms) {
                 if (cms.nav) renderHeader(cms.nav);
                 if (cms.footer) renderFooter(cms.footer);
-                if (cms.hero) {
-                    if (cms.hero.title) document.getElementById('aboutTitle').textContent = cms.hero.title;
+
+                // Sanitize any legacy DineVault or restaurant strings from D1
+                if (cms.hero && cms.hero.title && !cms.hero.title.toLowerCase().includes('dinevault')) {
+                    document.getElementById('aboutTitle').textContent = cms.hero.title;
                     if (cms.hero.subtitle) document.getElementById('aboutSubtitle').textContent = cms.hero.subtitle;
                 }
-                if (cms.mission) {
-                    if (cms.mission.title) document.getElementById('missionTitle').textContent = cms.mission.title;
-                    if (cms.mission.text) document.getElementById('missionText').textContent = cms.mission.text;
-                }
-                if (cms.vision) {
-                    if (cms.vision.title) document.getElementById('visionTitle').textContent = cms.vision.title;
-                    if (cms.vision.text) document.getElementById('visionText').textContent = cms.vision.text;
-                }
-                if (Array.isArray(cms.stats)) {
-                    document.getElementById('statsGrid').innerHTML = cms.stats.map(s => `
-                        <div class="stat-card glass">
-                            <div class="stat-number">${escapeHtml(s.number)}</div>
-                            <div class="stat-label">${escapeHtml(s.label)}</div>
-                        </div>
-                    `).join('');
-                }
-                if (cms.cta) {
-                    if (cms.cta.title) document.getElementById('ctaTitle').textContent = cms.cta.title;
+                if (cms.cta && cms.cta.title && !cms.cta.title.toLowerCase().includes('dinevault') && !cms.cta.title.toLowerCase().includes('restaurant')) {
+                    document.getElementById('ctaTitle').textContent = cms.cta.title;
                     if (cms.cta.text) document.getElementById('ctaText').textContent = cms.cta.text;
                 }
             } else {

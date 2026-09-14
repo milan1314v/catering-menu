@@ -47,12 +47,33 @@
     </section>
 
     <!-- DETAIL -->
+    <!-- DETAIL -->
     <div class="container">
         <div class="rest-detail-grid">
             <div class="rest-main">
+                <!-- DIRECT MENU IMAGES GALLERY (ABOVE ABOUT SECTION) -->
+                <section class="menu-images-section" id="menuImagesSection" style="padding-top:40px;">
+                    <div class="menu-header" style="margin-bottom:18px;">
+                        <div class="menu-header-icon" style="background:linear-gradient(135deg, #d97706, #f59e0b);color:#fff;">
+                            <i class="fas fa-camera-retro"></i>
+                        </div>
+                        <div>
+                            <h2 class="stylish-title" style="font-size:1.65rem;font-weight:800;color:var(--text);margin-bottom:4px;">
+                                Direct Menu &amp; Visual Showcase
+                            </h2>
+                            <p style="font-size:0.92rem;color:var(--text-muted);margin:0;">
+                                High-resolution menu cards, culinary displays, and banquet presentations
+                            </p>
+                        </div>
+                    </div>
+                    <div class="menu-images-grid" id="menuImagesGrid">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </section>
+
                 <!-- ABOUT -->
-                <section style="padding:60px 0 0;">
-                    <h2 style="font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:8px;" id="welcomeTitle">
+                <section style="padding:24px 0 0;">
+                    <h2 class="stylish-title" style="font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:8px;" id="welcomeTitle">
                         About Catering Service
                     </h2>
                     <p style="font-size:1.02rem;color:var(--text-muted);line-height:1.9;margin-top:16px;white-space:pre-line;"
@@ -65,7 +86,7 @@
                 <section class="menu-section">
                     <div class="menu-header">
                         <div class="menu-header-icon"><i class="fas fa-utensils"></i></div>
-                        <h2>Our Catering Menu</h2>
+                        <h2 class="stylish-title">Our Catering Menu</h2>
                     </div>
                     <div id="menuToggleBar" class="menu-toggle" style="display:none;">
                         <button class="menu-toggle-btn active" id="menuTextBtn" onclick="showMenu('text')">
@@ -95,12 +116,12 @@
                 <section class="location-section">
                     <div class="menu-header">
                         <div class="menu-header-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <h2>Location</h2>
+                        <h2 class="stylish-title">Location &amp; Service Areas</h2>
                     </div>
                     <div class="location-grid">
                         <div class="location-map" id="locationMap"></div>
                         <div class="location-info glass" id="locationInfoCard">
-                            <h3 id="locCardName">Catering Service</h3>
+                            <h3 class="stylish-title" id="locCardName">Catering Service</h3>
                             <div id="locationsList"></div>
                             <div class="location-item" id="locHoursItem">
                                 <div class="location-item-icon"><i class="fas fa-clock"></i></div>
@@ -122,7 +143,7 @@
 
                 <!-- REVIEWS -->
                 <section style="padding:0 0 60px;">
-                    <h2 style="font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:24px;">Customer Reviews</h2>
+                    <h2 class="stylish-title" style="font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:24px;">Client Reviews &amp; Experiences</h2>
                     <div id="reviewSuccessMsg" class="success-message" style="display:none;">
                         Your review has been submitted successfully!
                     </div>
@@ -132,7 +153,7 @@
 
                     <!-- REVIEW FORM -->
                     <div style="margin-top:40px;">
-                        <h3 style="font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:20px;">Leave a Review</h3>
+                        <h3 class="stylish-title" style="font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:20px;">Share Your Experience</h3>
                         <form id="reviewForm" class="get-listed-form glass" style="max-width:100%;">
                             <div class="form-row">
                                 <div class="form-group">
@@ -166,26 +187,26 @@
             <!-- SIDEBAR -->
             <div class="rest-sidebar">
                 <div class="sidebar-card glass">
-                    <h3><i class="fas fa-info-circle"></i> Caterer Info</h3>
-                    <div style="margin-top:12px;">
+                    <h3 class="stylish-title" style="font-size:1.2rem;font-weight:700;"><i class="fas fa-info-circle"></i> Caterer Info</h3>
+                    <div style="margin-top:16px;">
                         <h4
-                            style="font-size:0.82rem;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+                            style="font-size:0.82rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;">
                             Opening Days &amp; Hours
                         </h4>
                         <div id="sidebarHoursList">
                             <!-- Dynamic days -->
                         </div>
                     </div>
-                    <div style="margin-top:20px;">
+                    <div style="margin-top:24px;">
                         <h4
-                            style="font-size:0.82rem;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
-                            Location(s)
+                            style="font-size:0.82rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;">
+                            Service Locations &amp; Kitchens
                         </h4>
-                        <p id="sidebarLocationsText"></p>
+                        <p id="sidebarLocationsText" style="line-height:1.6;color:var(--text-muted);font-size:0.95rem;"></p>
                     </div>
                 </div>
                 <div class="sidebar-card glass">
-                    <h3><i class="fas fa-star" style="color:#f4c150;"></i> Overall Rating</h3>
+                    <h3 class="stylish-title" style="font-size:1.2rem;font-weight:700;"><i class="fas fa-star" style="color:#f4c150;"></i> Overall Rating</h3>
                     <div style="text-align:center;padding:16px 0;">
                         <div style="font-size:3rem;font-weight:800;color:var(--gold);" id="sidebarRatingScore">0.0</div>
                         <div style="color:#f4c150;font-size:1.1rem;margin:8px 0;" id="sidebarRatingStars">
@@ -205,6 +226,17 @@
         <!-- Rendered by js/app.js -->
     </footer>
 
+    <!-- LIGHTBOX MODAL FOR DIRECT MENU IMAGES -->
+    <div id="imageLightbox" class="image-lightbox" onclick="closeImageLightbox(event)">
+        <div class="lightbox-content-wrapper" onclick="event.stopPropagation()">
+            <button class="lightbox-close-btn" onclick="closeImageLightbox(event)" aria-label="Close image preview">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="lightboxImg" class="lightbox-img" src="" alt="Menu Image Preview">
+            <div id="lightboxCaption" class="lightbox-caption"></div>
+        </div>
+    </div>
+
     <button id="moveToTop" class="move-to-top" aria-label="Move to top">
         <i class="fas fa-arrow-up"></i>
     </button>
@@ -213,6 +245,109 @@
     <script>
         let currentRestaurant = null;
         let map = null;
+
+        function renderMenuImages(rest) {
+            const container = document.getElementById('menuImagesGrid');
+            if (!container) return;
+
+            let images = [];
+            if (Array.isArray(rest.menu_images) && rest.menu_images.length > 0) {
+                images = rest.menu_images.filter(Boolean);
+            } else if (typeof rest.menu_images === 'string' && rest.menu_images.trim()) {
+                images = rest.menu_images.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+            }
+
+            // High-resolution fallback curated gallery matched with cuisine
+            if (images.length === 0) {
+                const c = (rest.cuisine || '').toLowerCase();
+                const n = (rest.name || '').toLowerCase();
+                if (c.includes('french') || n.includes('dorée') || n.includes('maison')) {
+                    images = [
+                        { url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000', title: 'Plated Duck Confit & Foie Gras' },
+                        { url: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=1000', title: 'Passed Hors D\'oeuvres Canapés' },
+                        { url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1000', title: 'Artisanal Dessert Flambé Counter' },
+                        { url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1000', title: 'Grand Banquet Table Styling' }
+                    ];
+                } else if (c.includes('japanese') || c.includes('sushi') || n.includes('sakura')) {
+                    images = [
+                        { url: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=1000', title: 'Live Nigiri & Sushi Bar Platter' },
+                        { url: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=1000', title: 'Wagyu Beef Teppanyaki Skewers' },
+                        { url: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=1000', title: 'Chef\'s Special Sashimi Arrangement' },
+                        { url: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=1000', title: 'Matcha Tiramisu Dessert Station' }
+                    ];
+                } else if (c.includes('bbq') || c.includes('grill') || n.includes('copper')) {
+                    images = [
+                        { url: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=1000', title: '14-Hour Smoked Prime Brisket' },
+                        { url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000', title: 'Live Carving BBQ Station' },
+                        { url: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=1000', title: 'Truffle Macaroni & Skillet Cornbread' },
+                        { url: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1000', title: 'Flame-Grilled Chicken & Ribs' }
+                    ];
+                } else if (c.includes('italian') || c.includes('pizza') || n.includes('trattoria')) {
+                    images = [
+                        { url: 'https://images.unsplash.com/photo-1541529086526-db283c563270?w=1000', title: 'Antipasti Grazing Table & Burrata' },
+                        { url: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1000', title: 'Wood-Fired Neapolitan Pizza Live' },
+                        { url: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281699?w=1000', title: 'Handmade Parmigiano Pasta Wheel' },
+                        { url: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=1000', title: 'Rustic Tiramisu & Pastry Display' }
+                    ];
+                } else if (c.includes('indian') || c.includes('asian') || n.includes('spice')) {
+                    images = [
+                        { url: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=1000', title: 'Awadhi Dum Biryani & Kebabs' },
+                        { url: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1000', title: 'Live Chatpati Chaat & Pani Puri' },
+                        { url: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=1000', title: 'Royal Butter Chicken & Naan' },
+                        { url: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=1000', title: 'Dessert Royale - Gulab Jamun & Kulfi' }
+                    ];
+                } else {
+                    images = [
+                        { url: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=1000', title: 'Gourmet Catering Buffet Spread' },
+                        { url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000', title: 'Chef Passed Canapés & Starters' },
+                        { url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1000', title: 'Banquet Main Course Delicacies' },
+                        { url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1000', title: 'Artisanal Dessert Presentation' }
+                    ];
+                }
+            }
+
+            container.innerHTML = images.map((item, idx) => {
+                const imgUrl = typeof item === 'string' ? item : item.url;
+                const title = typeof item === 'string' ? `Menu Showcase Dish #${idx + 1}` : item.title;
+                return `
+                    <div class="menu-image-card" onclick="openImageLightbox('${escapeHtml(imgUrl)}', '${escapeHtml(title)}')">
+                        <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(title)}" loading="lazy">
+                        <div class="menu-image-zoom-icon">
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                        <div class="menu-image-overlay">
+                            <span class="menu-image-caption">
+                                <i class="fas fa-camera"></i> ${escapeHtml(title)}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openImageLightbox(imgUrl, caption) {
+            const modal = document.getElementById('imageLightbox');
+            const img = document.getElementById('lightboxImg');
+            const cap = document.getElementById('lightboxCaption');
+            if (modal && img) {
+                img.src = imgUrl;
+                if (cap) cap.textContent = caption || 'Menu Preview';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeImageLightbox(e) {
+            const modal = document.getElementById('imageLightbox');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeImageLightbox();
+        });
 
         function showMenu(type) {
             document.getElementById('menuTextView').style.display = type === 'text' ? 'block' : 'none';
@@ -352,6 +487,9 @@
             for (let i = 0; i < Math.round(avg); i++) starIcons += '<i class="fas fa-star"></i>';
             for (let i = Math.round(avg); i < 5; i++) starIcons += '<i class="far fa-star"></i>';
             document.getElementById('sidebarRatingStars').innerHTML = starIcons;
+
+            // Direct Menu Images Gallery
+            renderMenuImages(rest);
 
             // Menu Rendering
             const parsedHtml = parseMenuText(rest.direct_menu_text);

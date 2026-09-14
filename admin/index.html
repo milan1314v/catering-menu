@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="admin_style.css?v=2.9">
+    <link rel="stylesheet" href="admin_style.css?v=3.0">
     
     <style>
         :root {
@@ -28,7 +28,7 @@
             --login-dark: #070b14;
             --login-card-bg: rgba(15, 23, 42, 0.82);
             --login-input-bg: rgba(10, 15, 29, 0.88);
-            --login-border: rgba(255, 255, 255, 0.12);
+            --login-border: rgba(255, 255, 255, 0.14);
         }
 
         * {
@@ -68,7 +68,7 @@
 
         .login-wrapper {
             width: 100%;
-            max-width: 480px; /* Enhanced wide luxury form */
+            max-width: 480px; /* Wide Luxury Card */
             position: relative;
             z-index: 2;
             animation: cardFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -223,54 +223,67 @@
             font-size: 0.9rem;
         }
 
+        /* ── Zero-Overlap Flexbox Input Container ── */
         .input-wrap-v2 {
             position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-wrap-v2 .field-icon {
-            position: absolute;
-            left: 16px;
-            color: #64748b;
-            font-size: 1.05rem;
-            transition: color 0.2s;
-            pointer-events: none;
-        }
-
-        .input-field-v2 {
+            display: flex !important;
+            align-items: center !important;
             width: 100%;
-            height: 52px;
+            height: 54px;
             background: var(--login-input-bg);
             border: 1.5px solid var(--login-border);
             border-radius: 14px;
-            padding: 0 16px 0 46px;
-            font-size: 0.98rem;
-            font-family: inherit;
-            color: #ffffff;
+            padding: 0 12px 0 16px;
             transition: all 0.25s ease;
-            outline: none;
+            overflow: hidden;
         }
 
-        .input-field-v2::placeholder {
-            color: #475569;
-            font-size: 0.92rem;
-        }
-
-        .input-field-v2:focus {
+        .input-wrap-v2:focus-within {
             border-color: var(--login-gold);
             background: rgba(13, 20, 38, 0.95);
             box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18), 0 4px 18px rgba(0, 0, 0, 0.4);
         }
 
-        .input-wrap-v2:focus-within .field-icon {
+        .input-icon-prefix {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            color: #64748b;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+            margin-right: 14px; /* Guaranteed space between icon and text */
+            transition: color 0.2s;
+            pointer-events: none;
+        }
+
+        .input-wrap-v2:focus-within .input-icon-prefix {
             color: var(--login-gold);
+        }
+
+        .input-field-v2 {
+            flex: 1 1 auto;
+            width: 100%;
+            height: 100%;
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            padding: 0 !important; /* Zero padding inside input because wrapper handles padding */
+            margin: 0 !important;
+            font-size: 0.98rem;
+            font-family: inherit;
+            color: #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        .input-field-v2::placeholder {
+            color: #64748b;
+            font-size: 0.92rem;
+            opacity: 1;
         }
 
         /* Password Toggle Button */
         .btn-toggle-pass {
-            position: absolute;
-            right: 12px;
             background: transparent;
             border: none;
             color: #64748b;
@@ -283,11 +296,13 @@
             border-radius: 8px;
             transition: color 0.2s, background 0.2s;
             font-size: 1.05rem;
+            flex-shrink: 0;
+            margin-left: 8px;
         }
 
         .btn-toggle-pass:hover {
             color: var(--login-gold-light);
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         /* Remember / Security Row */
@@ -429,13 +444,15 @@
                     <i class="fas fa-envelope"></i> Administrator Email / Username
                 </label>
                 <div class="input-wrap-v2">
-                    <i class="fas fa-user-tie field-icon"></i>
+                    <span class="input-icon-prefix">
+                        <i class="fas fa-user-tie"></i>
+                    </span>
                     <input 
                         type="text" 
                         id="username" 
                         class="input-field-v2" 
                         required 
-                        placeholder="catering@admin.com" 
+                        placeholder="admin@example.com" 
                         autocomplete="username"
                         spellcheck="false"
                         autofocus>
@@ -447,12 +464,13 @@
                     <i class="fas fa-key"></i> Secret Security Password
                 </label>
                 <div class="input-wrap-v2">
-                    <i class="fas fa-lock field-icon"></i>
+                    <span class="input-icon-prefix">
+                        <i class="fas fa-lock"></i>
+                    </span>
                     <input 
                         type="password" 
                         id="password" 
                         class="input-field-v2" 
-                        style="padding-right: 50px;"
                         required 
                         placeholder="Enter your security password" 
                         autocomplete="current-password">
@@ -484,19 +502,21 @@
     </div>
 </div>
 
-<script src="admin.js?v=2.9"></script>
+<script src="admin.js?v=3.0"></script>
 <script>
     // 1. Auto-redirect if session is active
     if (getAuthToken()) {
         window.location.href = '/admin/dashboard.html';
     }
 
-    // 2. Prefill saved username if Remember Me was selected
-    const savedUsername = localStorage.getItem('cm_admin_saved_user');
-    if (savedUsername) {
-        document.getElementById('username').value = savedUsername;
+    // 2. Clear any accidental credential prefill from old version
+    const savedUser = localStorage.getItem('cm_admin_saved_user');
+    if (savedUser && savedUser !== 'catering@admin.com') {
+        document.getElementById('username').value = savedUser;
         document.getElementById('rememberMe').checked = true;
-        document.getElementById('password').focus();
+    } else {
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
     }
 
     // 3. Toggle Password Visibility

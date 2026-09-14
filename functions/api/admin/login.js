@@ -24,16 +24,14 @@ export async function onRequestPost(context) {
     const cleanUser = (username || '').trim().toLowerCase();
     const cleanPass = (password || '').trim();
 
-    // Check credentials:
-    // Requested Credentials: catering@admin.com / CateringAdmin@1324$
-    const isPrimaryAdmin = (cleanUser === 'catering@admin.com' && cleanPass === 'CateringAdmin@1324$');
-    const isLegacyAdmin = (cleanUser === 'admin' && (cleanPass === 'CateringAdmin@1324$' || cleanPass === 'admin123'));
+    // STRICT CREDENTIAL CHECK: ONLY admin@cateringmenu.com / CateringAdmin@1324$
+    const isStrictUser = (cleanUser === 'admin@cateringmenu.com');
+    const isStrictPass = (cleanPass === 'CateringAdmin@1324$');
 
-    if (isPrimaryAdmin || isLegacyAdmin) {
-      const activeUser = isPrimaryAdmin ? 'catering@admin.com' : 'admin';
+    if (isStrictUser && isStrictPass) {
       // Generate a signed session token
       const token = btoa(JSON.stringify({
-        user: activeUser,
+        user: 'admin@cateringmenu.com',
         time: Date.now(),
         secret: 'dinevault_admin_secret_key'
       }));
@@ -41,19 +39,19 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({
         success: true,
         token: token,
-        username: activeUser
+        username: 'admin@cateringmenu.com'
       }), { status: 200, headers });
     }
 
-    // Also check if admin exists in D1 admin_settings if custom username was saved
-    if (env.DB) {
+    // Check D1 only for admin@cateringmenu.com with custom hashed password
+    if (env.DB && isStrictUser) {
       const row = await env.DB.prepare(
         'SELECT * FROM admin_settings WHERE LOWER(username) = ?'
-      ).bind(cleanUser).first();
+      ).bind('admin@cateringmenu.com').first();
 
-      if (row && (cleanPass === 'CateringAdmin@1324$' || cleanPass === 'admin123')) {
+      if (row && (cleanPass === row.password_hash || isStrictPass)) {
         const token = btoa(JSON.stringify({
-          user: row.username,
+          user: 'admin@cateringmenu.com',
           time: Date.now(),
           secret: 'dinevault_admin_secret_key'
         }));
@@ -61,7 +59,7 @@ export async function onRequestPost(context) {
         return new Response(JSON.stringify({
           success: true,
           token: token,
-          username: row.username
+          username: 'admin@cateringmenu.com'
         }), { status: 200, headers });
       }
     }

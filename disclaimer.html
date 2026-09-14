@@ -13,6 +13,101 @@
     <link rel="manifest" href="/assets/img/site.webmanifest">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .legal-wrapper {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 40px 0 80px;
+        }
+        .legal-card {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            margin-bottom: 32px;
+        }
+        .legal-header-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .legal-badge {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--gold-dark);
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .legal-sec {
+            margin-bottom: 36px;
+        }
+        .legal-sec:last-child {
+            margin-bottom: 0;
+        }
+        .legal-sec h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .legal-sec h2 i {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+        .legal-sec p {
+            color: #475569;
+            font-size: 0.98rem;
+            line-height: 1.85;
+            margin-bottom: 14px;
+        }
+        .legal-sec ul {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 16px;
+        }
+        .legal-sec ul li {
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 10px;
+            color: #475569;
+            font-size: 0.96rem;
+            line-height: 1.75;
+        }
+        .legal-sec ul li::before {
+            content: '⚠️';
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 0.85rem;
+        }
+        .alert-box {
+            background: #fff7ed;
+            border: 1.5px solid #ffedd5;
+            border-left: 4px solid #f97316;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .alert-box p {
+            color: #9a3412;
+            font-size: 0.93rem;
+            line-height: 1.75;
+            margin-bottom: 0;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,14 +116,67 @@
         <!-- Rendered by js/app.js -->
     </nav>
 
-    <section class="page-hero" style="min-height:280px;">
-        <div class="container"><h1 id="legalTitle">Disclaimer</h1></div>
+    <section class="page-hero" style="min-height:260px;">
+        <div class="container">
+            <h1 id="legalTitle">Legal Disclaimer</h1>
+            <p>Important information regarding catering directory listings, food safety, and independent catering agreements.</p>
+        </div>
     </section>
 
-    <section class="section">
+    <section class="section" style="padding: 20px 0 80px;">
         <div class="container">
-            <div class="legal-content" id="legalContent">
-                <!-- Dynamically loaded -->
+            <div class="legal-wrapper">
+                <div class="legal-card" id="legalContent">
+                    <div class="legal-header-meta">
+                        <span class="legal-badge"><i class="fas fa-exclamation-triangle"></i> Legal Notice</span>
+                        <span><i class="far fa-calendar-alt"></i> Last Updated: September 2026</span>
+                        <span><i class="far fa-clock"></i> 4 min read</span>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-info-circle"></i> 1. Directory Platform Role</h2>
+                        <p><strong>Catering Menu</strong> (<code>catering-menu.com</code>) is an online discovery directory and information aggregation platform. We connect prospective event hosts, wedding couples, and corporate organizers with independent catering businesses, food trucks, and culinary providers.</p>
+                        <p>Catering Menu is <strong>not a food preparation facility, kitchen, or direct catering provider</strong>. We do not prepare, cook, transport, or serve food items listed on this website.</p>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-utensils"></i> 2. Menu Accuracy, Ingredients & Pricing</h2>
+                        <p>All menus, package details, item descriptions, and service hours displayed on catering profile pages and subdomains are provided directly by the independent catering businesses or gathered from public resources.</p>
+                        <div class="alert-box">
+                            <p><strong>Note on Seasonal Menus & Availability:</strong> Catering menus, market ingredient prices, and package inclusions are subject to change without prior notice by the respective caterer. We strongly advise clients to confirm all final menus, written estimates, and minimum guest count requirements directly with the caterer before signing booking contracts.</p>
+                        </div>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-allergies"></i> 3. Food Allergies & Dietary Disclaimers</h2>
+                        <p>Clients with food allergies, celiac disease, strict religious dietary restrictions (Halal, Kosher), or medical requirements must communicate these directly in writing to the caterer:</p>
+                        <ul>
+                            <li>Catering Menu cannot guarantee that food prepared by listed caterers is free from allergens including nuts, gluten, dairy, shellfish, eggs, or soy.</li>
+                            <li>Cross-contamination risk in commercial catering kitchens is the sole responsibility of the individual catering provider.</li>
+                            <li>Always request an allergen guarantee and ingredient disclosure directly from your selected caterer for any catered event.</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-handshake"></i> 4. Independent Caterer Contracts & Transactions</h2>
+                        <p>Any contract, booking agreement, payment, deposit, or cancellation policy entered into is strictly a <strong>direct bilateral agreement between you (the client) and the independent catering business</strong>.</p>
+                        <ul>
+                            <li>Catering Menu is not a party to any catering agreement and holds no liability for disputes, cancellations, delays, or service dissatisfaction.</li>
+                            <li>We do not collect deposits or processing fees on behalf of caterers.</li>
+                            <li>Clients are encouraged to verify that their chosen caterer holds appropriate commercial liability insurance, health permits, and local business licenses.</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-star"></i> 5. Reviews & Ratings Disclaimer</h2>
+                        <p>Customer reviews and ratings published on Catering Menu represent the individual opinions and experiences of community users and event hosts. They do not constitute an endorsement, recommendation, or warranty by Catering Menu.</p>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-envelope"></i> 6. Questions Regarding Our Disclaimer</h2>
+                        <p>For inquiries regarding this disclaimer or to report an inaccurate listing, please reach out to our team at <a href="mailto:support@catering-menu.com" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">support@catering-menu.com</a>.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -50,10 +198,6 @@
                 if (cms.nav) renderHeader(cms.nav);
                 if (cms.footer) renderFooter(cms.footer);
                 if (cms.hero && cms.hero.title) document.getElementById('legalTitle').textContent = cms.hero.title;
-                if (cms.content) {
-                    const paragraphs = cms.content.split('\n').filter(p => p.trim() !== '');
-                    document.getElementById('legalContent').innerHTML = paragraphs.map(p => `<p>${escapeHtml(p.trim())}</p>`).join('');
-                }
             } else {
                 renderHeader();
                 renderFooter();

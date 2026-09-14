@@ -102,17 +102,27 @@ function renderHeader(navData) {
   const data = navData || DEFAULT_GLOBAL.nav;
   const currentPath = (window.location.pathname.replace(/\/$/, '') || '/').replace(/\.html$/, '');
 
+  const hostParts = window.location.hostname.split('.');
+  const isSubdomain = hostParts.length >= 3 && hostParts[0] !== 'www' && hostParts[0] !== 'admin';
+  const mainOrigin = isSubdomain && window.location.hostname.includes('catering-menu.com') ? 'https://www.catering-menu.com' : '';
+
   let linksHtml = '';
   (data.links || []).forEach(link => {
+    let label = (link.label || '').trim();
+    if (label.toLowerCase() === 'restaurants' || label.toLowerCase() === 'restaurant') {
+      label = 'Caterers';
+    }
     const linkClean = (link.url.replace(/\/$/, '') || '/').replace(/\.html$/, '');
-    const isActive = (currentPath === linkClean) || 
-      (linkClean === '/' && (currentPath === '' || currentPath === '/' || currentPath === '/index'));
-    linksHtml += `<a href="${linkClean}" class="${isActive ? 'active' : ''}">${escapeHtml(link.label)}</a>`;
+    const href = mainOrigin ? `${mainOrigin}${linkClean}` : linkClean;
+    const isActive = !isSubdomain && ((currentPath === linkClean) || 
+      (linkClean === '/' && (currentPath === '' || currentPath === '/' || currentPath === '/index')));
+    linksHtml += `<a href="${href}" class="${isActive ? 'active' : ''}">${escapeHtml(label)}</a>`;
   });
 
   if (data.cta_btn) {
     const ctaClean = data.cta_btn.url.replace(/\.html$/, '');
-    linksHtml += `<a href="${ctaClean}" class="nav-cta">${escapeHtml(data.cta_btn.label)}</a>`;
+    const ctaHref = mainOrigin ? `${mainOrigin}${ctaClean}` : ctaClean;
+    linksHtml += `<a href="${ctaHref}" class="nav-cta">${escapeHtml(data.cta_btn.label)}</a>`;
   }
 
   const logoImgSrc = (data.logo_image !== undefined) ? data.logo_image : '/assets/img/catering-menu-logo.png';
@@ -126,9 +136,11 @@ function renderHeader(navData) {
     logoInnerHtml = `<i class="${escapeHtml(logoIcon)}"></i> <span>${escapeHtml(logoText)}</span>`;
   }
 
+  const logoHref = mainOrigin ? `${mainOrigin}/` : '/';
+
   navContainer.innerHTML = `
     <div class="container">
-      <a href="/" class="nav-logo" aria-label="${escapeHtml(logoText)}">
+      <a href="${logoHref}" class="nav-logo" aria-label="${escapeHtml(logoText)}">
         ${logoInnerHtml}
       </a>
       <div class="nav-links" id="navLinks">
@@ -170,6 +182,10 @@ function renderFooter(footerData) {
 
   const data = footerData || DEFAULT_GLOBAL.footer;
 
+  const hostParts = window.location.hostname.split('.');
+  const isSubdomain = hostParts.length >= 3 && hostParts[0] !== 'www' && hostParts[0] !== 'admin';
+  const mainOrigin = isSubdomain && window.location.hostname.includes('catering-menu.com') ? 'https://www.catering-menu.com' : '';
+
   let socialsHtml = '';
   (data.socials || []).forEach(s => {
     socialsHtml += `<a href="${s.url}" aria-label="${escapeHtml(s.label)}"><i class="${escapeHtml(s.icon)}"></i></a>`;
@@ -177,14 +193,20 @@ function renderFooter(footerData) {
 
   let quickHtml = '';
   (data.quick_links || []).forEach(l => {
+    let label = (l.label || '').trim();
+    if (label.toLowerCase() === 'restaurants' || label.toLowerCase() === 'restaurant') {
+      label = 'Caterers';
+    }
     const clean = l.url.replace(/\.html$/, '');
-    quickHtml += `<li><a href="${clean}">${escapeHtml(l.label)}</a></li>`;
+    const href = mainOrigin ? `${mainOrigin}${clean}` : clean;
+    quickHtml += `<li><a href="${href}">${escapeHtml(label)}</a></li>`;
   });
 
   let legalHtml = '';
   (data.legal_links || []).forEach(l => {
     const clean = l.url.replace(/\.html$/, '');
-    legalHtml += `<li><a href="${clean}">${escapeHtml(l.label)}</a></li>`;
+    const href = mainOrigin ? `${mainOrigin}${clean}` : clean;
+    legalHtml += `<li><a href="${href}">${escapeHtml(l.label)}</a></li>`;
   });
 
   let socialListHtml = '';
@@ -192,12 +214,25 @@ function renderFooter(footerData) {
     socialListHtml += `<li><a href="${s.url}"><i class="${escapeHtml(s.icon)}"></i> ${escapeHtml(s.label)}</a></li>`;
   });
 
+  let aboutHeading = (data.about_heading || '').trim();
+  if (!aboutHeading || aboutHeading.toLowerCase().includes('dinevault') || aboutHeading.toLowerCase().includes('restaurant')) {
+    aboutHeading = 'About Catering Menu';
+  }
+  let aboutText = (data.about_text || '').trim();
+  if (!aboutText || aboutText.toLowerCase().includes('dinevault') || aboutText.toLowerCase().includes('dining')) {
+    aboutText = DEFAULT_GLOBAL.footer.about_text;
+  }
+  let copyrightText = (data.copyright || '').trim();
+  if (!copyrightText || copyrightText.toLowerCase().includes('dinevault')) {
+    copyrightText = '© 2026 Catering Menu. All rights reserved.';
+  }
+
   footerContainer.innerHTML = `
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h4>${escapeHtml(data.about_heading || 'About Catering Menu')}</h4>
-          <p>${escapeHtml(data.about_text || '')}</p>
+          <h4>${escapeHtml(aboutHeading)}</h4>
+          <p>${escapeHtml(aboutText)}</p>
           <div class="footer-socials">${socialsHtml}</div>
         </div>
         <div class="footer-col">
@@ -213,14 +248,42 @@ function renderFooter(footerData) {
           <ul>${socialListHtml}</ul>
         </div>
       </div>
-      <div class="footer-bottom">${escapeHtml(data.copyright || '© 2026 Catering Menu. All rights reserved.')}</div>
+      <div class="footer-bottom">${escapeHtml(copyrightText)}</div>
     </div>
   `;
+
+  fixSubdomainLinks();
+}
+
+function fixSubdomainLinks() {
+  const host = window.location.hostname.toLowerCase();
+  const hostParts = host.split('.');
+  const isSubdomain = hostParts.length >= 3 && hostParts[0] !== 'www' && hostParts[0] !== 'admin' && hostParts[0] !== 'api';
+  if (!isSubdomain) return;
+
+  const mainOrigin = host.includes('catering-menu.com') ? 'https://www.catering-menu.com' : '';
+  if (!mainOrigin) return;
+
+  document.querySelectorAll('a').forEach(a => {
+    const rawHref = a.getAttribute('href');
+    if (!rawHref) return;
+
+    if (rawHref.startsWith('/') && !rawHref.startsWith('//')) {
+      a.href = mainOrigin + rawHref.replace(/\.html$/, '');
+    } else if (rawHref.includes(window.location.hostname)) {
+      const parsed = new URL(rawHref, window.location.origin);
+      if (parsed.pathname && parsed.pathname !== '/' && parsed.pathname !== '') {
+        a.href = 'https://www.catering-menu.com' + parsed.pathname.replace(/\.html$/, '') + parsed.search;
+      }
+    }
+  });
 }
 
 function setupScrollBehaviors() {
   const navbar = document.getElementById('navbar');
   const moveToTopBtn = document.getElementById('moveToTop');
+
+  fixSubdomainLinks();
 
   window.addEventListener('scroll', () => {
     if (navbar) {

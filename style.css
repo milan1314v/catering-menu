@@ -1682,13 +1682,13 @@ ul {
 .form-group select {
     width: 100%;
     padding: 14px 18px;
-    border: 1px solid var(--glass-border-light);
+    border: 1.5px solid #e2e8f0;
     border-radius: var(--radius-sm);
     font-size: 0.95rem;
     font-family: var(--font);
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(8px);
+    color: #0f172a;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     transition: var(--transition);
 }
 
@@ -1696,7 +1696,7 @@ ul {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 1em;
@@ -1709,13 +1709,13 @@ ul {
 .form-group select:focus {
     outline: none;
     border-color: var(--gold);
-    background-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 3px rgba(200, 169, 126, 0.15);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-    color: var(--text-dim);
+    color: #94a3b8;
 }
 
 .form-group textarea {
@@ -1724,8 +1724,8 @@ ul {
 }
 
 .form-group select option {
-    background: var(--dark);
-    color: #fff;
+    background: #ffffff;
+    color: #0f172a;
 }
 
 .contact-info-card {
@@ -1826,14 +1826,6 @@ ul {
     gap: 20px;
     position: sticky;
     top: 100px;
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-.rest-sidebar::-webkit-scrollbar {
-    display: none;
 }
 
 .sidebar-card {
@@ -1912,8 +1904,8 @@ ul {
 }
 
 .menu-content pre {
-    font-family: 'Courier New', monospace;
-    font-size: 0.88rem;
+    font-family: var(--font);
+    font-size: 0.95rem;
     line-height: 1.9;
     white-space: pre-wrap;
     color: #1e293b;
@@ -1931,7 +1923,7 @@ ul {
 
 .menu-parsed {
     padding: 36px 40px;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: var(--font);
     color: #1e293b;
 }
 .menu-spacer {
@@ -1949,8 +1941,9 @@ ul {
 }
 .menu-section-header {
     color: var(--gold);
-    font-size: 1rem;
-    margin: 32px 0 16px 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 28px 0 16px 0;
     text-transform: uppercase;
     display: flex;
     align-items: center;
@@ -1964,19 +1957,22 @@ ul {
 .menu-item-row {
     display: flex;
     align-items: baseline;
-    margin-bottom: 10px;
-    font-size: 0.95rem;
+    margin-bottom: 14px;
+    font-size: 1rem;
 }
 .menu-item-name {
-    font-weight: 500;
+    font-weight: 600;
+    color: #0f172a;
 }
 .menu-item-dots {
     flex: 1;
-    border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
+    border-bottom: 2px dotted #e2e8f0;
     margin: 0 16px;
 }
 .menu-item-price {
     font-weight: 700;
+    color: var(--gold-dark);
+    font-size: 1.05rem;
 }
 
 .menu-file-view {

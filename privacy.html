@@ -13,6 +13,107 @@
     <link rel="manifest" href="/assets/img/site.webmanifest">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .legal-wrapper {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 40px 0 80px;
+        }
+        .legal-card {
+            background: #ffffff;
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: var(--radius-lg);
+            padding: 48px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            margin-bottom: 32px;
+        }
+        .legal-header-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .legal-badge {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--gold-dark);
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .legal-sec {
+            margin-bottom: 36px;
+        }
+        .legal-sec:last-child {
+            margin-bottom: 0;
+        }
+        .legal-sec h2 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .legal-sec h2 i {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+        .legal-sec p {
+            color: #475569;
+            font-size: 0.98rem;
+            line-height: 1.85;
+            margin-bottom: 14px;
+        }
+        .legal-sec ul {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 16px;
+        }
+        .legal-sec ul li {
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 10px;
+            color: #475569;
+            font-size: 0.96rem;
+            line-height: 1.75;
+        }
+        .legal-sec ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--gold);
+            font-weight: 800;
+            font-size: 0.95rem;
+        }
+        .contact-box {
+            background: #fffbeb;
+            border: 1.5px solid #fde68a;
+            border-radius: 14px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+        .contact-box h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+        .contact-box p {
+            color: #78350f;
+            margin-bottom: 0;
+            font-size: 0.92rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -21,14 +122,93 @@
         <!-- Rendered by js/app.js -->
     </nav>
 
-    <section class="page-hero" style="min-height:280px;">
-        <div class="container"><h1 id="legalTitle">Privacy Policy</h1></div>
+    <section class="page-hero" style="min-height:260px;">
+        <div class="container">
+            <h1 id="legalTitle">Privacy Policy</h1>
+            <p>Learn how Catering Menu protects, collects, and respects your personal and catering business data.</p>
+        </div>
     </section>
 
-    <section class="section">
+    <section class="section" style="padding: 20px 0 80px;">
         <div class="container">
-            <div class="legal-content" id="legalContent">
-                <!-- Dynamically loaded -->
+            <div class="legal-wrapper">
+                <div class="legal-card" id="legalContent">
+                    <div class="legal-header-meta">
+                        <span class="legal-badge"><i class="fas fa-shield-alt"></i> Official Policy</span>
+                        <span><i class="far fa-calendar-alt"></i> Last Updated: September 2026</span>
+                        <span><i class="far fa-clock"></i> 5 min read</span>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-info-circle"></i> 1. Introduction & Scope</h2>
+                        <p>Welcome to <strong>Catering Menu</strong> ("we," "our," or "us"). We operate <strong>catering-menu.com</strong> and its catering partner subdomains (e.g., <code>*.catering-menu.com</code>) as a premier discovery directory for catering businesses, event menus, and customer inquiries.</p>
+                        <p>This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, explore caterer menus, leave customer reviews, or submit catering business listings.</p>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-database"></i> 2. Information We Collect</h2>
+                        <p>We only collect information necessary to provide seamless catering discovery and booking inquiry facilitation:</p>
+                        <ul>
+                            <li><strong>Catering Business Profiles:</strong> Caterer name, culinary specialties, kitchen locations, operating hours, package descriptions, menus, and business contact information submitted via our "List Your Business" portal.</li>
+                            <li><strong>Customer Inquiries & Communications:</strong> Name, email address, event date, guest count, and message details when submitting inquiries or contact requests.</li>
+                            <li><strong>Customer Reviews & Ratings:</strong> Reviewer name, star rating, feedback text, and submission timestamp to ensure authentic community ratings.</li>
+                            <li><strong>Usage & Device Information:</strong> Browser type, operating system, IP address, referral URLs, and interactions with search filters and live suggestions for service optimization and security.</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-cogs"></i> 3. How We Use Your Information</h2>
+                        <p>Your data is used strictly for legitimate platform purposes:</p>
+                        <ul>
+                            <li>To display catering services, menus, and verified locations accurately across main listings and individual caterer subdomains.</li>
+                            <li>To forward direct catering quote requests and booking inquiries from event planners to listed caterers.</li>
+                            <li>To facilitate search filtering by cuisine, event type (weddings, corporate, parties), and ratings.</li>
+                            <li>To prevent fraudulent reviews, spam submissions, and unauthorized automated crawling.</li>
+                            <li>To maintain and improve platform speed, security, and edge delivery via Cloudflare Pages and Workers.</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-cookie-bite"></i> 4. Cookies & Analytical Technologies</h2>
+                        <p>We use minimal, privacy-focused cookies to enhance user experience:</p>
+                        <ul>
+                            <li><strong>Essential Cookies:</strong> Required for secure navigation, session security, and admin authentication.</li>
+                            <li><strong>Preference Cookies:</strong> Temporarily save your filter selections and search states during active browsing.</li>
+                            <li>We do <strong>not</strong> sell, rent, or trade your personal information or client inquiry details to third-party data brokers or advertising networks.</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-share-alt"></i> 5. Information Sharing & Third Parties</h2>
+                        <p>We only share information under strict, transparent conditions:</p>
+                        <ul>
+                            <li><strong>With Caterers:</strong> When you send a booking inquiry or review, relevant details are delivered to the selected caterer so they can respond to your event request.</li>
+                            <li><strong>Service Providers:</strong> Secure infrastructure partners including Cloudflare (edge hosting, SSL encryption, and serverless compute).</li>
+                            <li><strong>Legal Compliance:</strong> When required by lawful judicial orders, subpoenas, or to protect the safety and rights of our users.</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-user-shield"></i> 6. Your Rights & Data Control</h2>
+                        <p>You have full control over your data. Depending on your jurisdiction (GDPR, CCPA, or local data protection laws), you have the right to:</p>
+                        <ul>
+                            <li>Request a copy of the personal information we hold about you.</li>
+                            <li>Request immediate correction of inaccurate catering listings, menu pricing, or contact information.</li>
+                            <li>Request deletion of your business listing, submitted reviews, or inquiry history from our database.</li>
+                            <li>Opt out of any marketing or platform updates at any time.</li>
+                        </ul>
+                    </div>
+
+                    <div class="legal-sec">
+                        <h2><i class="fas fa-envelope"></i> 7. Contact Us Regarding Privacy</h2>
+                        <p>If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please contact our Privacy Team:</p>
+                        <div class="contact-box">
+                            <h3><i class="fas fa-headset"></i> Catering Menu Privacy Team</h3>
+                            <p>Email: <a href="mailto:privacy@catering-menu.com" style="color:#92400e;font-weight:700;text-decoration:underline;">privacy@catering-menu.com</a></p>
+                            <p style="margin-top:4px;">Website: <a href="https://www.catering-menu.com" style="color:#92400e;font-weight:700;text-decoration:underline;">https://www.catering-menu.com</a></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -50,10 +230,6 @@
                 if (cms.nav) renderHeader(cms.nav);
                 if (cms.footer) renderFooter(cms.footer);
                 if (cms.hero && cms.hero.title) document.getElementById('legalTitle').textContent = cms.hero.title;
-                if (cms.content) {
-                    const paragraphs = cms.content.split('\n').filter(p => p.trim() !== '');
-                    document.getElementById('legalContent').innerHTML = paragraphs.map(p => `<p>${escapeHtml(p.trim())}</p>`).join('');
-                }
             } else {
                 renderHeader();
                 renderFooter();

@@ -14,6 +14,21 @@ export async function onRequest(context) {
     const subdomain = parts[0];
     // Ignore main domains, reserved subdomains, and api/admin
     if (subdomain !== 'www' && subdomain !== 'admin' && subdomain !== 'api') {
+      const currentPath = url.pathname.toLowerCase().replace(/\/$/, '');
+      const mainPortalPages = [
+        '/index', '/index.html', '/listings', '/listings.html',
+        '/about', '/about.html', '/contact', '/contact.html',
+        '/faqs', '/faqs.html', '/get-listed', '/get-listed.html',
+        '/privacy', '/privacy.html', '/terms', '/terms.html',
+        '/disclaimer', '/disclaimer.html'
+      ];
+
+      // Redirect any main portal pages requested on a subdomain to the main domain
+      if (mainPortalPages.includes(currentPath)) {
+        const cleanPath = currentPath.replace(/\.html$/, '').replace(/^\/index$/, '/');
+        return Response.redirect(`https://www.catering-menu.com${cleanPath}${url.search}`, 301);
+      }
+
       // If visiting root of subdomain (e.g. https://spice-route.catering-menu.com/)
       if (url.pathname === '/' || url.pathname === '/index.html' || url.pathname === '') {
         const rewriteUrl = new URL('/restaurant.html', request.url);

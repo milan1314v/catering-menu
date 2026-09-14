@@ -32,9 +32,9 @@
         <div class="rest-hero-overlay">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/">Home</a>
+                    <a href="https://www.catering-menu.com/">Home</a>
                     <span>/</span>
-                    <a href="/listings">Caterers</a>
+                    <a href="https://www.catering-menu.com/listings">Caterers</a>
                     <span>/</span>
                     <strong id="breadcrumbName">Loading...</strong>
                 </div>
@@ -82,7 +82,7 @@
                     </div>
                     <div id="menuFileView" class="menu-file-view" style="display:none;">
                         <i class="fas fa-file-pdf"></i>
-                        <p style="font-size:1.05rem;font-weight:600;color:#fff;margin-bottom:12px;">Menu Document
+                        <p style="font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:12px;">Menu Document
                             Available</p>
                         <a href="#" id="menuFileDownloadLink" target="_blank" class="btn-primary"
                             style="margin-top:8px;">
@@ -100,7 +100,7 @@
                     <div class="location-grid">
                         <div class="location-map" id="locationMap"></div>
                         <div class="location-info glass" id="locationInfoCard">
-                            <h3 id="locCardName">Restaurant</h3>
+                            <h3 id="locCardName">Catering Service</h3>
                             <div id="locationsList"></div>
                             <div class="location-item" id="locHoursItem">
                                 <div class="location-item-icon"><i class="fas fa-clock"></i></div>
@@ -113,7 +113,7 @@
                                 <div class="location-item-icon"><i class="fas fa-phone"></i></div>
                                 <div>
                                     <p class="location-label">Contact</p>
-                                    <p class="location-hours">Inquire at restaurant</p>
+                                    <p class="location-hours">Inquire for booking & packages</p>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,7 @@
 
                 <!-- REVIEWS -->
                 <section style="padding:0 0 60px;">
-                    <h2 style="font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:24px;">Customer Reviews</h2>
+                    <h2 style="font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:24px;">Customer Reviews</h2>
                     <div id="reviewSuccessMsg" class="success-message" style="display:none;">
                         Your review has been submitted successfully!
                     </div>
@@ -132,7 +132,7 @@
 
                     <!-- REVIEW FORM -->
                     <div style="margin-top:40px;">
-                        <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:20px;">Leave a Review</h3>
+                        <h3 style="font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:20px;">Leave a Review</h3>
                         <form id="reviewForm" class="get-listed-form glass" style="max-width:100%;">
                             <div class="form-row">
                                 <div class="form-group">
@@ -166,7 +166,7 @@
             <!-- SIDEBAR -->
             <div class="rest-sidebar">
                 <div class="sidebar-card glass">
-                    <h3><i class="fas fa-info-circle"></i> Restaurant Info</h3>
+                    <h3><i class="fas fa-info-circle"></i> Caterer Info</h3>
                     <div style="margin-top:12px;">
                         <h4
                             style="font-size:0.82rem;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
@@ -231,8 +231,8 @@
                 const line = l.trim();
                 if (!line) {
                     html += '<div class="menu-spacer"></div>';
-                } else if (/^(.*?)\s*\.{2,}\s*(\$?.*)$/.test(line)) {
-                    const match = line.match(/^(.*?)\s*\.{2,}\s*(\$?.*)$/);
+                } else if (/^(.*?)\s*(?:\.{2,}|\t|\s{2,})\s*(\$?[0-9].*)$/i.test(line)) {
+                    const match = line.match(/^(.*?)\s*(?:\.{2,}|\t|\s{2,})\s*(\$?[0-9].*)$/i);
                     html += `
                         <div class="menu-item-row">
                             <span class="menu-item-name">${escapeHtml(match[1].trim())}</span>
@@ -240,13 +240,22 @@
                             <span class="menu-item-price">${escapeHtml(match[2].trim())}</span>
                         </div>
                     `;
-                } else if (/^──\s*(.*?)\s*─*$/.test(line)) {
-                    const heading = line.replace(/─/g, '').trim();
+                } else if (/^(.*?)\s+(\$?[0-9]+(?:\.[0-9]{2})?)$/i.test(line)) {
+                    const match = line.match(/^(.*?)\s+(\$?[0-9]+(?:\.[0-9]{2})?)$/i);
+                    html += `
+                        <div class="menu-item-row">
+                            <span class="menu-item-name">${escapeHtml(match[1].trim())}</span>
+                            <span class="menu-item-dots"></span>
+                            <span class="menu-item-price">${escapeHtml(match[2].trim())}</span>
+                        </div>
+                    `;
+                } else if (/^──\s*(.*?)\s*─*$/.test(line) || /^--\s*(.*?)\s*-*$/.test(line)) {
+                    const heading = line.replace(/─|-/g, '').trim();
                     if (heading) html += `<h3 class="menu-section-header">${escapeHtml(heading)}</h3>`;
-                } else if (line.includes('═')) {
+                } else if (line.includes('═') || line.includes('===')) {
                     // skip border line
                 } else {
-                    html += `<h2 class="menu-main-title">${escapeHtml(line)}</h2>`;
+                    html += `<h3 class="menu-section-header">${escapeHtml(line)}</h3>`;
                 }
             });
             return html;

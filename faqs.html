@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>FAQs - Catering Menu</title>
+    <title>Frequently Asked Questions - Catering Menu</title>
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
@@ -13,6 +13,54 @@
     <link rel="manifest" href="/assets/img/site.webmanifest">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .faq-filter-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 36px;
+        }
+        .faq-tab-btn {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            padding: 9px 20px;
+            border-radius: 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .faq-tab-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-dark);
+            background: #fffbeb;
+        }
+        .faq-tab-btn.active {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #ffffff;
+            border-color: #d97706;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
+        }
+        .faq-category-header {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 36px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .faq-category-header:first-of-type {
+            margin-top: 0;
+        }
+        .faq-category-header i {
+            color: var(--gold);
+            font-size: 1.1rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -24,24 +72,187 @@
     <section class="page-hero">
         <div class="container">
             <h1 id="faqsHeroTitle">Frequently Asked Questions</h1>
-            <p id="faqsHeroSubtitle">Everything you need to know about using Catering Menu.</p>
+            <p id="faqsHeroSubtitle">Everything you need to know about discovering caterers, event menus, and listing your catering service.</p>
         </div>
     </section>
 
-    <section class="section">
+    <section class="section" style="padding: 40px 0 80px;">
         <div class="container">
+            <div class="faq-filter-tabs">
+                <button class="faq-tab-btn active" onclick="filterFaqCategory('all', this)">All Questions</button>
+                <button class="faq-tab-btn" onclick="filterFaqCategory('general', this)">General & Planning</button>
+                <button class="faq-tab-btn" onclick="filterFaqCategory('dietary', this)">Dietary & Menus</button>
+                <button class="faq-tab-btn" onclick="filterFaqCategory('booking', this)">Booking & Quotes</button>
+                <button class="faq-tab-btn" onclick="filterFaqCategory('caterers', this)">For Catering Businesses</button>
+            </div>
+
             <div class="faqs-list" id="faqsContainer">
-                <!-- Dynamically loaded -->
+                <!-- Comprehensive Catering FAQs -->
+                <div class="faq-group" data-category="general">
+                    <h3 class="faq-category-header"><i class="fas fa-calendar-check"></i> Event Planning & General</h3>
+                    
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            How does Catering Menu help me find the right caterer?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Catering Menu is a curated discovery directory connecting event organizers, couples, and corporate managers with verified independent catering services. You can filter by cuisine (Italian, French, BBQ, Indian, Japanese), event type (Weddings, Corporate, Buffets, Live Counters), read genuine client reviews, and inspect full menus before requesting direct quotes.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            How far in advance should I book catering for my event?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>For large events such as weddings, galas, and holiday banquets, we recommend reaching out <strong>6 to 9 months in advance</strong>, especially during peak seasons (May through October and December). For corporate luncheons, office meetings, and intimate gatherings, <strong>2 to 4 weeks notice</strong> is generally sufficient.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            What is the difference between drop-off catering and full-service catering?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p><strong>Drop-off Catering:</strong> The caterer prepares and delivers ready-to-serve food in disposable platters or warmers without on-site staffing. Ideal for office lunches and casual parties.<br><br><strong>Full-Service Catering:</strong> Includes on-site chefs, waitstaff, bartenders, setup, live cooking stations (e.g., carving tables, pasta bars), table clearing, and cleanup throughout your event.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-group" data-category="dietary">
+                    <h3 class="faq-category-header"><i class="fas fa-utensils"></i> Menus & Dietary Requirements</h3>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Can caterers accommodate vegetarian, vegan, gluten-free, or Halal diets?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes! Most premier caterers on our platform offer dedicated vegetarian, vegan, celiac-safe gluten-free, kosher-style, and Halal menus. When exploring caterer profiles, check their cuisine tags or ask about custom dietary options during your initial inquiry.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            How are severe food allergies handled by catering kitchens?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Professional catering kitchens follow strict cross-contamination protocols for severe allergies (nuts, shellfish, dairy, soy). We strongly recommend providing your caterer with a written guest allergy list at least 14 days prior to your event so custom individual meals can be safely prepped and sealed.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Can I customize the menu packages shown on a caterer's profile?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Absolutely. The menus displayed on our caterer subdomains represent signature packages and popular offerings. Most chefs are delighted to customize appetizers, main entrees, seasonal sides, and desserts to match your event theme, budget, and cultural preferences.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-group" data-category="booking">
+                    <h3 class="faq-category-header"><i class="fas fa-file-invoice-dollar"></i> Booking, Quotes & Tastings</h3>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Do caterers offer menu tastings before signing a contract?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, for weddings and large corporate banquets, most caterers provide private tasting sessions for the hosts (typically 2 to 4 guests). Some caterers offer complimentary tastings upon contract signing, while others charge a nominal fee that is credited toward your final event invoice.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            How is headcount handled if guest numbers change?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>When requesting an initial quote, provide an estimated guest count. Caterers typically require a guaranteed "final guest count" <strong>7 to 14 days before the event</strong>. Your final invoice is based on this guaranteed minimum headcount.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Does Catering Menu charge clients any booking or referral fees?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>No! Catering Menu is <strong>100% free for event hosts and planners</strong>. We do not charge booking fees, hidden markups, or commission surcharges. You communicate and contract directly with your chosen caterer.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            What staffing ratio is typically recommended for seated dinners vs buffets?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>For a formal plated dinner, caterers typically recommend <strong>1 server for every 10 to 12 guests</strong>. For buffet-style catering or family-style service, a ratio of <strong>1 server for every 20 to 25 guests</strong> ensures smooth plate clearance, water refills, and buffet replenishment.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-group" data-category="caterers">
+                    <h3 class="faq-category-header"><i class="fas fa-store"></i> For Catering Businesses</h3>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            How can my catering business get listed on Catering Menu?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Getting listed is quick and simple! Visit our <a href="/get-listed" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">List Your Business</a> page, submit your company name, culinary specialties, kitchen locations, operating hours, and sample menu. Our editorial team reviews submissions within 24-48 hours.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            What is the dedicated caterer subdomain feature?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Every approved caterer receives their own custom subdomain URL (for example, <code>https://spice-route.catering-menu.com</code>). You can use this branded link on your business cards, Instagram bio, marketing brochures, and email signatures to showcase your verified menus and client reviews!</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            How do I update my catering menu, seasonal packages, or pricing?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>You can update your menu at any time by contacting our support team or accessing your verified caterer account. We also support direct PDF menu downloads for caterers who prefer uploading graphic banquet brochures.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFaq(this)">
+                            Are client reviews verified before publishing?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes. All customer reviews undergo automated screening and moderation to filter spam, inappropriate language, and fraudulent commercial competitor submissions, ensuring authentic feedback for both hosts and caterers.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="cta-banner">
         <div class="container">
-            <div class="glass-medium" style="padding:60px 40px;border-radius:var(--radius-lg);">
+            <div class="glass-medium" style="padding:60px 40px;border-radius:var(--radius-lg);text-align:center;">
                 <h2 id="ctaTitle">Own a Catering Business?</h2>
-                <p id="ctaText">Join Catering Menu and reach thousands of event planners and hosts.</p>
-                <a href="/get-listed" class="btn-primary" id="ctaBtn">List Your Business Today <i class="fas fa-arrow-right"></i></a>
+                <p id="ctaText" style="color:var(--text-muted);font-size:1.05rem;max-width:600px;margin:12px auto 28px;">Join Catering Menu today to showcase your culinary creations, get your own branded subdomain, and receive inquiries from thousands of event organizers.</p>
+                <a href="/get-listed" class="btn-primary" id="ctaBtn">List Your Catering Business <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
@@ -68,6 +279,20 @@
             }
         }
 
+        function filterFaqCategory(cat, btn) {
+            document.querySelectorAll('.faq-tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const groups = document.querySelectorAll('.faq-group');
+            groups.forEach(group => {
+                if (cat === 'all' || group.getAttribute('data-category') === cat) {
+                    group.style.display = 'block';
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', async () => {
             const cms = await fetchCMSContent('faqs');
             if (cms) {
@@ -76,23 +301,6 @@
                 if (cms.hero) {
                     if (cms.hero.title) document.getElementById('faqsHeroTitle').textContent = cms.hero.title;
                     if (cms.hero.subtitle) document.getElementById('faqsHeroSubtitle').textContent = cms.hero.subtitle;
-                }
-                if (Array.isArray(cms.items)) {
-                    document.getElementById('faqsContainer').innerHTML = cms.items.map(faq => `
-                        <div class="faq-item">
-                            <button class="faq-question" onclick="toggleFaq(this)">
-                                ${escapeHtml(faq.question)}
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="faq-answer">
-                                <p>${escapeHtml(faq.answer)}</p>
-                            </div>
-                        </div>
-                    `).join('');
-                }
-                if (cms.cta) {
-                    if (cms.cta.title) document.getElementById('ctaTitle').textContent = cms.cta.title;
-                    if (cms.cta.text) document.getElementById('ctaText').textContent = cms.cta.text;
                 }
             } else {
                 renderHeader();

@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/assets/img/site.webmanifest">
-    <link rel="stylesheet" href="/style.css?v=2.6">
+    <link rel="stylesheet" href="/style.css?v=2.8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -21,34 +21,29 @@
         <!-- Rendered by js/app.js -->
     </nav>
 
-    <!-- PAGE HERO -->
-    <section class="page-hero">
+    <!-- INTEGRATED LUXURY PAGE HERO -->
+    <section class="page-hero listings-hero">
         <div class="container">
-            <div class="page-hero-badge" id="heroBadge">
-                <i class="fas fa-award"></i> Verified Catering Partners
-            </div>
-            <h1 id="pageTitle">Explore Catering Services</h1>
-            <p id="pageSubtitle">Discover top-rated wedding caterers, corporate banquets, live counter specialists, and bespoke menus tailored for your events.</p>
-            <div class="page-hero-trust-row">
-                <span class="trust-pill"><i class="fas fa-star" style="color:#f59e0b;"></i> Top Rated Caterers</span>
-                <span class="trust-pill"><i class="fas fa-utensils" style="color:var(--gold-dark);"></i> Bespoke Event Menus</span>
-                <span class="trust-pill"><i class="fas fa-map-marker-alt" style="color:#10b981;"></i> Multi-Location Service</span>
+            <h1 id="pageTitle" class="hero-clean-title">Explore Catering Services</h1>
+            <p id="pageSubtitle" class="hero-clean-subtitle">Find and book premier caterers, banquet chefs, and custom menus for your event.</p>
+
+            <!-- INTEGRATED SEARCH BAR -->
+            <div class="hero-search-container">
+                <div class="hero-search-box">
+                    <i class="fas fa-search hero-search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search caterers, cuisines, or locations..." autocomplete="off">
+                    <button type="button" class="hero-search-btn" id="heroSearchBtn">
+                        <span>Search</span> <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- LISTINGS -->
-    <section class="section">
+    <!-- LISTINGS CONTENT -->
+    <section class="section" style="padding-top: 32px;">
         <div class="container">
-            <!-- SEARCH BAR WITH LIVE SUGGESTIONS -->
-            <div class="listings-search glass">
-                <div class="search-input-wrap">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search caterers, cuisines, or specialities..." autocomplete="off">
-                    <div class="search-suggestions" id="searchSuggestions"></div>
-                </div>
-            </div>
-
             <div class="listings-layout">
                 <!-- REDESIGNED LUXURY FILTERS SIDEBAR -->
                 <aside class="listings-filters glass" id="filtersSidebar">
@@ -62,77 +57,85 @@
                             <button class="filter-clear" id="clearFilters">
                                 <i class="fas fa-rotate-left"></i> Reset
                             </button>
-                            <button class="filter-close" id="closeFilters"><i class="fas fa-times"></i></button>
+                            <button class="filter-close" id="closeFilters" aria-label="Close filters"><i class="fas fa-times"></i></button>
                         </div>
                     </div>
 
-                    <!-- CUISINE FILTER -->
-                    <div class="filter-section">
-                        <div class="filter-title">
-                            <span><i class="fas fa-utensils"></i> Cuisines</span>
+                    <div class="filter-body">
+                        <!-- CUISINE FILTER -->
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                <span><i class="fas fa-utensils"></i> Cuisines</span>
+                            </div>
+                            <div class="filter-chips-grid" id="cuisineFilterContainer">
+                                <!-- Dynamic Cuisines -->
+                            </div>
                         </div>
-                        <div class="filter-chips-grid" id="cuisineFilterContainer">
-                            <!-- Dynamic Cuisines -->
+
+                        <!-- SERVICE / EVENT TYPE FILTER -->
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                <span><i class="fas fa-champagne-glasses"></i> Event & Service</span>
+                            </div>
+                            <div class="filter-chips-grid">
+                                <label class="filter-chip">
+                                    <input type="checkbox" name="service" value="wedding">
+                                    <span>💍 Wedding & Reception</span>
+                                </label>
+                                <label class="filter-chip">
+                                    <input type="checkbox" name="service" value="corporate">
+                                    <span>💼 Corporate & Gala</span>
+                                </label>
+                                <label class="filter-chip">
+                                    <input type="checkbox" name="service" value="party">
+                                    <span>🎂 Birthdays & Parties</span>
+                                </label>
+                                <label class="filter-chip">
+                                    <input type="checkbox" name="service" value="buffet">
+                                    <span>🍽️ Grand Buffet</span>
+                                </label>
+                                <label class="filter-chip">
+                                    <input type="checkbox" name="service" value="live">
+                                    <span>🔥 Live Cooking Counters</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- RATING FILTER -->
+                        <div class="filter-section">
+                            <div class="filter-title">
+                                <span><i class="fas fa-star"></i> Host Rating</span>
+                            </div>
+                            <div class="filter-rating-list">
+                                <label class="filter-rating-item">
+                                    <input type="checkbox" name="rating" value="4.8">
+                                    <div class="filter-rating-stars">
+                                        <i class="fas fa-star"></i> 4.8 & Above
+                                    </div>
+                                    <span class="filter-rating-label">Top Rated</span>
+                                </label>
+                                <label class="filter-rating-item">
+                                    <input type="checkbox" name="rating" value="4.5">
+                                    <div class="filter-rating-stars">
+                                        <i class="fas fa-star"></i> 4.5 & Above
+                                    </div>
+                                    <span class="filter-rating-label">Outstanding</span>
+                                </label>
+                                <label class="filter-rating-item">
+                                    <input type="checkbox" name="rating" value="4.0">
+                                    <div class="filter-rating-stars">
+                                        <i class="fas fa-star"></i> 4.0 & Above
+                                    </div>
+                                    <span class="filter-rating-label">Recommended</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- SERVICE / EVENT TYPE FILTER -->
-                    <div class="filter-section">
-                        <div class="filter-title">
-                            <span><i class="fas fa-champagne-glasses"></i> Event & Service</span>
-                        </div>
-                        <div class="filter-chips-grid">
-                            <label class="filter-chip">
-                                <input type="checkbox" name="service" value="wedding">
-                                <span>💍 Wedding & Reception</span>
-                            </label>
-                            <label class="filter-chip">
-                                <input type="checkbox" name="service" value="corporate">
-                                <span>💼 Corporate & Gala</span>
-                            </label>
-                            <label class="filter-chip">
-                                <input type="checkbox" name="service" value="party">
-                                <span>🎂 Birthdays & Parties</span>
-                            </label>
-                            <label class="filter-chip">
-                                <input type="checkbox" name="service" value="buffet">
-                                <span>🍽️ Grand Buffet</span>
-                            </label>
-                            <label class="filter-chip">
-                                <input type="checkbox" name="service" value="live">
-                                <span>🔥 Live Cooking Counters</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- RATING FILTER -->
-                    <div class="filter-section">
-                        <div class="filter-title">
-                            <span><i class="fas fa-star"></i> Host Rating</span>
-                        </div>
-                        <div class="filter-rating-list">
-                            <label class="filter-rating-item">
-                                <input type="checkbox" name="rating" value="4.8">
-                                <div class="filter-rating-stars">
-                                    <i class="fas fa-star"></i> 4.8 & Above
-                                </div>
-                                <span class="filter-rating-label">Top Rated</span>
-                            </label>
-                            <label class="filter-rating-item">
-                                <input type="checkbox" name="rating" value="4.5">
-                                <div class="filter-rating-stars">
-                                    <i class="fas fa-star"></i> 4.5 & Above
-                                </div>
-                                <span class="filter-rating-label">Outstanding</span>
-                            </label>
-                            <label class="filter-rating-item">
-                                <input type="checkbox" name="rating" value="4.0">
-                                <div class="filter-rating-stars">
-                                    <i class="fas fa-star"></i> 4.0 & Above
-                                </div>
-                                <span class="filter-rating-label">Recommended</span>
-                            </label>
-                        </div>
+                    <div class="filter-mobile-footer">
+                        <button type="button" class="btn-primary filter-mobile-apply" id="applyFiltersMobile">
+                            <span>Show Results</span> <i class="fas fa-check"></i>
+                        </button>
                     </div>
                 </aside>
 
@@ -175,7 +178,7 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script src="/js/app.js?v=2.5"></script>
+    <script src="/js/app.js?v=2.6"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             const searchInput = document.getElementById('searchInput');
@@ -199,8 +202,9 @@
                 if (cms.nav) renderHeader(cms.nav);
                 if (cms.footer) renderFooter(cms.footer);
                 if (cms.hero) {
-                    if (cms.hero.badge) {
-                        document.getElementById('heroBadge').innerHTML = `<i class="fas fa-award"></i> ${escapeHtml(cms.hero.badge)}`;
+                    const hb = document.getElementById('heroBadge');
+                    if (hb && cms.hero.badge) {
+                        hb.innerHTML = `<i class="fas fa-award"></i> ${escapeHtml(cms.hero.badge)}`;
                     }
                     if (cms.hero.title) {
                         let titleText = cms.hero.title;
@@ -432,6 +436,15 @@
                 applyFilters();
             });
 
+            const heroSearchBtn = document.getElementById('heroSearchBtn');
+            if (heroSearchBtn) {
+                heroSearchBtn.addEventListener('click', () => {
+                    applyFilters();
+                    const layout = document.querySelector('.listings-layout');
+                    if (layout) layout.scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+
             document.querySelectorAll('.listings-filters').forEach(f => {
                 f.addEventListener('change', applyFilters);
             });
@@ -442,12 +455,36 @@
                 applyFilters();
             });
 
-            if (filterToggle && sidebar) {
-                filterToggle.addEventListener('click', () => sidebar.classList.add('open'));
+            function openFiltersDrawer() {
+                if (sidebar) {
+                    sidebar.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                }
             }
-            if (closeFilters && sidebar) {
-                closeFilters.addEventListener('click', () => sidebar.classList.remove('open'));
+
+            function closeFiltersDrawer() {
+                if (sidebar) {
+                    sidebar.classList.remove('open');
+                    document.body.style.overflow = '';
+                }
             }
+
+            if (filterToggle) {
+                filterToggle.addEventListener('click', openFiltersDrawer);
+            }
+            if (closeFilters) {
+                closeFilters.addEventListener('click', closeFiltersDrawer);
+            }
+            const applyMobileBtn = document.getElementById('applyFiltersMobile');
+            if (applyMobileBtn) {
+                applyMobileBtn.addEventListener('click', closeFiltersDrawer);
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && sidebar && sidebar.classList.contains('open')) {
+                    closeFiltersDrawer();
+                }
+            });
 
             if (queryParam) applyFilters();
         });

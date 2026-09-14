@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Caterer Approvals & Submissions - Catering Menu Admin</title>
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="/assets/img/site.webmanifest">
+    <link rel="stylesheet" href="admin_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .filter-tab-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-tab-btn:hover {
+            color: #fff;
+            border-color: var(--gold);
+            background: rgba(200, 169, 126, 0.12);
+        }
+
+        .filter-tab-btn.active {
+            background: var(--gold);
+            color: #0a0a1a;
+            border-color: var(--gold);
+            font-weight: 700;
+            box-shadow: 0 4px 16px rgba(200, 169, 126, 0.35);
+        }
+
+        .tab-badge {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+        }
+
+        .filter-tab-btn.active .tab-badge {
+            background: #0a0a1a;
+            color: var(--gold-light);
+        }
+
+        .approval-card {
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 20px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .approval-card:hover {
+            border-color: rgba(200, 169, 126, 0.4);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .approval-card.pending-highlight {
+            border-left: 4px solid var(--warning);
+        }
+
+        .approval-card.approved-highlight {
+            border-left: 4px solid var(--success);
+        }
+
+        .approval-card.rejected-highlight {
+            border-left: 4px solid var(--danger);
+        }
+
+        .card-top-row {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .caterer-banner-thumb {
+            width: 130px;
+            height: 90px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid var(--glass-border);
+            background: #000;
+            flex-shrink: 0;
+        }
+
+        .caterer-info-col {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .caterer-title-line {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+
+        .caterer-name-h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .meta-tags-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .meta-tag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .meta-tag-pill strong {
+            color: var(--gold);
+        }
+
+        .caterer-summary-text {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            line-height: 1.5;
+            margin: 0 0 14px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .approval-actions-bar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 14px;
+            margin-top: 6px;
+        }
+
+        .btn-action-approve {
+            background: #16a34a;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-approve:hover {
+            background: #15803d;
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+        }
+
+        .btn-action-edit {
+            background: rgba(200, 169, 126, 0.15);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-edit:hover {
+            background: var(--gold);
+            color: #0a0a1a;
+        }
+
+        .btn-action-reject {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-reject:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .btn-action-delete {
+            background: transparent;
+            color: var(--text-dim);
+            border: none;
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            margin-left: auto;
+            transition: color 0.2s ease;
+        }
+
+        .btn-action-delete:hover {
+            color: #ef4444;
+        }
+
+        /* Modal styling */
+        .admin-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 26, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .admin-modal-container {
+            background: #111424;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 960px;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+        }
+
+        .admin-modal-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .admin-modal-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-modal-body {
+            padding: 24px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .admin-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            flex-wrap: wrap;
+        }
+
+        .modal-section-box {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .modal-sec-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin: 0 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .custom-select-box select {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--glass-border);
+            padding: 10px 38px 10px 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .custom-select-box {
+            position: relative;
+        }
+
+        .custom-select-box .custom-arrow {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold);
+            pointer-events: none;
+            font-size: 0.8rem;
+        }
+
+        .modal-gallery-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .modal-gallery-card {
+            background: #0b0f19;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .modal-gallery-card img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-gallery-card .card-bar {
+            padding: 6px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.9);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-layout">
+        <aside class="sidebar glass-sidebar">
+            <div class="sidebar-header">
+                <img src="/assets/img/catering-menu-logo.png" alt="Catering Menu" style="max-height: 38px; border-radius: 6px;">
+                <span style="font-size: 1.05rem;">Catering Menu</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="approvals.html" class="active">
+                    <i class="fas fa-user-check"></i> Pending Approvals
+                    <span class="badge badge-warning" id="sidebarPendingBadge" style="margin-left:auto; display:none; font-size:0.75rem; padding:2px 7px;">0</span>
+                </a>
+                <a href="manage_content.html"><i class="fas fa-edit"></i> Manage Content</a>
+                <a href="manage_restaurants.html"><i class="fas fa-store"></i> Manage Caterers</a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a>
+                <a href="#" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="topbar glass-topbar">
+                <div>
+                    <h2 style="margin:0 0 4px;font-size:1.4rem;"><i class="fas fa-clipboard-check" style="color:var(--gold);margin-right:8px;"></i> Caterer Listing Approvals</h2>
+                    <span style="color:var(--text-muted);font-size:0.88rem;">Review submitted catering businesses from the Get Listed form, edit values, and publish live.</span>
+                </div>
+                <div style="display:flex;gap:10px;align-items:center;">
+                    <a href="manage_restaurants.html?action=new" class="btn-gold" style="padding:8px 16px;font-size:0.88rem;border-radius:8px;">
+                        <i class="fas fa-plus"></i> Add Manually
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="stats-row" style="margin-bottom:24px;">
+                <div class="stat-card-admin glass-card" onclick="filterByStatus('pending')" style="cursor:pointer;">
+                    <div class="stat-icon" style="background:rgba(255,152,0,0.18);color:#ff9800;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <div class="stat-number-admin" id="countPending">0</div>
+                        <div class="stat-label-admin">Pending Review</div>
+                    </div>
+                </div>
+                <div class="stat-card-admin glass-card" onclick="filterByStatus('approved')" style="cursor:pointer;">
+                    <div class="stat-icon" style="background:rgba(76,175,80,0.18);color:#4caf50;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <div class="stat-number-admin" id="countApproved">0</div>
+                        <div class="stat-label-admin">Live &amp; Approved</div>
+                    </div>
+                </div>
+                <div class="stat-card-admin glass-card" onclick="filterByStatus('rejected')" style="cursor:pointer;">
+                    <div class="stat-icon" style="background:rgba(244,67,54,0.18);color:#f44336;">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <div>
+                        <div class="stat-number-admin" id="countRejected">0</div>
+                        <div class="stat-label-admin">Rejected</div>
+                    </div>
+                </div>
+                <div class="stat-card-admin glass-card" onclick="filterByStatus('all')" style="cursor:pointer;">
+                    <div class="stat-icon" style="background:rgba(33,150,243,0.18);color:#2196f3;">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <div>
+                        <div class="stat-number-admin" id="countTotal">0</div>
+                        <div class="stat-label-admin">Total Submissions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Filters -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:14px;">
+                <div class="filter-tab-bar" style="margin-bottom:0;">
+                    <button type="button" class="filter-tab-btn active" id="tabPending" onclick="filterByStatus('pending')">
+                        <i class="fas fa-hourglass-half"></i> Pending Review <span class="tab-badge" id="tabBadgePending">0</span>
+                    </button>
+                    <button type="button" class="filter-tab-btn" id="tabApproved" onclick="filterByStatus('approved')">
+                        <i class="fas fa-check"></i> Approved <span class="tab-badge" id="tabBadgeApproved">0</span>
+                    </button>
+                    <button type="button" class="filter-tab-btn" id="tabRejected" onclick="filterByStatus('rejected')">
+                        <i class="fas fa-ban"></i> Rejected <span class="tab-badge" id="tabBadgeRejected">0</span>
+                    </button>
+                    <button type="button" class="filter-tab-btn" id="tabAll" onclick="filterByStatus('all')">
+                        <i class="fas fa-layer-group"></i> All Submissions <span class="tab-badge" id="tabBadgeAll">0</span>
+                    </button>
+                </div>
+
+                <div style="position:relative;width:280px;">
+                    <i class="fas fa-search" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-dim);"></i>
+                    <input type="text" id="searchFilterInput" placeholder="Search by name, cuisine, city..." style="width:100%;padding:10px 14px 10px 38px;background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:24px;color:#fff;font-size:0.88rem;" oninput="applyFilters()">
+                </div>
+            </div>
+
+            <!-- Listings Container -->
+            <div id="approvalsListContainer">
+                <div style="text-align:center;padding:40px;color:var(--text-dim);">
+                    <i class="fas fa-spinner fa-spin" style="font-size:1.8rem;color:var(--gold);margin-bottom:12px;display:block;"></i>
+                    Loading caterer submissions...
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════
+         REVIEW & EDIT FULL MODAL
+         ══════════════════════════════════════════════════════════ -->
+    <div id="editReviewModal" class="admin-modal-overlay" style="display:none;">
+        <div class="admin-modal-container">
+            <div class="admin-modal-header">
+                <h3>
+                    <i class="fas fa-edit" style="color:var(--gold);"></i>
+                    <span id="modalHeaderTitle">Review Caterer Submission</span>
+                </h3>
+                <button type="button" onclick="closeEditModal()" style="background:transparent;border:none;color:var(--text-muted);font-size:1.3rem;cursor:pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="admin-modal-body">
+                <input type="hidden" id="modalRestId">
+                <input type="hidden" id="modalRestSlug">
+
+                <!-- 1. Basic Info -->
+                <div class="modal-section-box">
+                    <div class="modal-sec-title"><i class="fas fa-store"></i> 1. Caterer Business Details</div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px;margin-bottom:14px;">
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;">Catering Business Name *</label>
+                            <input type="text" id="m_name" style="width:100%;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;font-weight:600;">
+                        </div>
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;">Primary Cuisine / Specialties</label>
+                            <input type="text" id="m_cuisine" style="width:100%;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;">
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:14px;margin-bottom:14px;">
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;">Pricing Tier (1, 2, 3, 4 or Custom)</label>
+                            <div style="display:flex;gap:8px;">
+                                <div class="custom-select-box" style="flex:1;">
+                                    <select id="m_price_select" onchange="handleModalPriceChange(this.value)">
+                                        <option value="1">1 - Budget Friendly (Under $25 / guest)</option>
+                                        <option value="2">2 - Moderate ($25 – $50 / guest)</option>
+                                        <option value="3">3 - Upscale &amp; Premium ($50 – $100 / guest)</option>
+                                        <option value="4">4 - Luxury &amp; Bespoke ($100+ / guest)</option>
+                                        <option value="custom">Custom Pricing...</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down custom-arrow"></i>
+                                </div>
+                                <input type="text" id="m_price_custom" placeholder="e.g. $45/plate" style="display:none;width:130px;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--gold);border-radius:8px;color:#fff;">
+                            </div>
+                        </div>
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;">Approval Status</label>
+                            <div class="custom-select-box">
+                                <select id="m_status">
+                                    <option value="pending">PENDING REVIEW</option>
+                                    <option value="approved">APPROVED &amp; LIVE</option>
+                                    <option value="rejected">REJECTED</option>
+                                </select>
+                                <i class="fas fa-chevron-down custom-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;">Kitchen &amp; Service Locations</label>
+                        <input type="text" id="m_locations" placeholder="e.g. 742 Gourmet Ave, Downtown | Serves Metro Area" style="width:100%;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;">
+                    </div>
+                </div>
+
+                <!-- 2. Cover Banner Media with Upload & URL -->
+                <div class="modal-section-box">
+                    <div class="modal-sec-title" style="justify-content:space-between;">
+                        <span><i class="fas fa-image"></i> 2. Cover Banner Photo</span>
+                        <span style="font-size:0.78rem;color:var(--text-muted);font-weight:normal;">Shown at top of live profile</span>
+                    </div>
+
+                    <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+                        <div style="width:160px;height:95px;border-radius:10px;overflow:hidden;background:#000;border:1px solid var(--glass-border);flex-shrink:0;">
+                            <img id="m_banner_preview" src="https://images.unsplash.com/photo-1555244162-803834f70033?w=600" alt="Banner Preview" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1555244162-803834f70033?w=600'">
+                        </div>
+                        <div style="flex:1;min-width:240px;">
+                            <div style="display:flex;gap:8px;margin-bottom:8px;">
+                                <input type="url" id="m_banner" placeholder="Paste image URL (https://...)" style="flex:1;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;" oninput="document.getElementById('m_banner_preview').src = this.value || 'https://images.unsplash.com/photo-1555244162-803834f70033?w=600'">
+                                <button type="button" class="btn-gold" style="white-space:nowrap;padding:10px 16px;cursor:pointer;" onclick="document.getElementById('m_banner_file').click()">
+                                    <i class="fas fa-upload"></i> Upload Photo
+                                </button>
+                                <input type="file" id="m_banner_file" accept="image/*" style="display:none;" onchange="handleModalBannerUpload(this)">
+                            </div>
+                            <small style="color:var(--text-dim);font-size:0.75rem;">Supports direct image upload from phone/computer or pasting any high-res image link.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Showcase Gallery Photos with Upload & URL -->
+                <div class="modal-section-box">
+                    <div class="modal-sec-title" style="justify-content:space-between;">
+                        <span><i class="fas fa-images"></i> 3. Showcase &amp; Setup Photos Gallery</span>
+                        <span id="m_gallery_count_badge" style="font-size:0.78rem;background:rgba(200,169,126,0.2);color:var(--gold);padding:2px 8px;border-radius:12px;">0 photos</span>
+                    </div>
+
+                    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+                        <button type="button" class="btn-gold" style="padding:9px 16px;cursor:pointer;" onclick="document.getElementById('m_gallery_file').click()">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload Photos
+                        </button>
+                        <input type="file" id="m_gallery_file" accept="image/*" multiple style="display:none;" onchange="handleModalGalleryUpload(this)">
+
+                        <div style="display:flex;gap:8px;flex:1;min-width:240px;">
+                            <input type="url" id="m_new_gallery_url" placeholder="Or paste image URL (https://...)" style="flex:1;padding:9px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;font-size:0.88rem;">
+                            <button type="button" class="btn-sm" style="background:rgba(200,169,126,0.2);color:var(--gold);border:1px solid var(--gold);padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600;" onclick="addModalGalleryFromUrl()">
+                                <i class="fas fa-plus"></i> Add
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="m_gallery_container" class="modal-gallery-preview-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- 4. Catering Story & About -->
+                <div class="modal-section-box">
+                    <div class="modal-sec-title"><i class="fas fa-pen-nib"></i> 4. Catering Story &amp; Experience</div>
+                    <textarea id="m_about" rows="4" placeholder="Catering philosophy, specialties, staff capacity..." style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;line-height:1.6;"></textarea>
+                </div>
+
+                <!-- 5. Direct Menu Text -->
+                <div class="modal-section-box">
+                    <div class="modal-sec-title"><i class="fas fa-book-open"></i> 5. Direct Catering Menu &amp; Courses</div>
+                    <textarea id="m_direct_menu" rows="6" placeholder="--- COURSE NAME ---\nItem Name ..... $Price" style="width:100%;padding:12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;font-family:monospace;font-size:0.88rem;line-height:1.5;"></textarea>
+                </div>
+            </div>
+
+            <div class="admin-modal-footer">
+                <button type="button" class="btn-action-reject" onclick="modalRejectListing()" id="modalRejectBtn">
+                    <i class="fas fa-times-circle"></i> Reject Submission
+                </button>
+                <button type="button" style="background:transparent;color:var(--text-muted);border:1px solid var(--glass-border);padding:8px 16px;border-radius:8px;cursor:pointer;" onclick="closeEditModal()">
+                    Cancel
+                </button>
+                <button type="button" class="btn-action-edit" onclick="saveModalChanges(false)" id="modalSaveDraftBtn">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <button type="button" class="btn-action-approve" onclick="saveModalChanges(true)" id="modalSaveApproveBtn">
+                    <i class="fas fa-check-double"></i> Save &amp; Publish Live
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        if (!requireAuth()) { }
+
+        let allSubmissions = [];
+        let currentStatusFilter = 'pending';
+        let currentModalGallery = [];
+        let editingSubmission = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSubmissions();
+        });
+
+        async function loadSubmissions() {
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    headers: authHeaders()
+                });
+                if (res.status === 401) {
+                    adminLogout();
+                    return;
+                }
+                const data = await res.json();
+                allSubmissions = Array.isArray(data) ? data : [];
+                updateCounts();
+                renderSubmissions();
+            } catch (err) {
+                document.getElementById('approvalsListContainer').innerHTML = `
+                    <div style="text-align:center;padding:40px;color:#f87171;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:1.8rem;margin-bottom:10px;"></i>
+                        <p>Failed to load caterer submissions. Please check network connection.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function updateCounts() {
+            const pending = allSubmissions.filter(r => (r.status || 'pending').toLowerCase() === 'pending').length;
+            const approved = allSubmissions.filter(r => (r.status || '').toLowerCase() === 'approved').length;
+            const rejected = allSubmissions.filter(r => (r.status || '').toLowerCase() === 'rejected').length;
+            const total = allSubmissions.length;
+
+            document.getElementById('countPending').textContent = pending;
+            document.getElementById('countApproved').textContent = approved;
+            document.getElementById('countRejected').textContent = rejected;
+            document.getElementById('countTotal').textContent = total;
+
+            document.getElementById('tabBadgePending').textContent = pending;
+            document.getElementById('tabBadgeApproved').textContent = approved;
+            document.getElementById('tabBadgeRejected').textContent = rejected;
+            document.getElementById('tabBadgeAll').textContent = total;
+
+            // Update sidebar badge
+            const sbBadge = document.getElementById('sidebarPendingBadge');
+            if (sbBadge) {
+                if (pending > 0) {
+                    sbBadge.textContent = pending;
+                    sbBadge.style.display = 'inline-block';
+                } else {
+                    sbBadge.style.display = 'none';
+                }
+            }
+        }
+
+        function filterByStatus(status) {
+            currentStatusFilter = status;
+            ['Pending', 'Approved', 'Rejected', 'All'].forEach(tab => {
+                const btn = document.getElementById(`tab${tab}`);
+                if (btn) btn.classList.remove('active');
+            });
+            const activeTab = document.getElementById(`tab${status.charAt(0).toUpperCase() + status.slice(1)}`);
+            if (activeTab) activeTab.classList.add('active');
+            renderSubmissions();
+        }
+
+        function applyFilters() {
+            renderSubmissions();
+        }
+
+        function renderSubmissions() {
+            const container = document.getElementById('approvalsListContainer');
+            const search = (document.getElementById('searchFilterInput').value || '').toLowerCase().trim();
+
+            let list = allSubmissions;
+            if (currentStatusFilter !== 'all') {
+                list = list.filter(r => (r.status || 'pending').toLowerCase() === currentStatusFilter);
+            }
+
+            if (search) {
+                list = list.filter(r => {
+                    const name = (r.name || '').toLowerCase();
+                    const cuisine = (r.cuisine || '').toLowerCase();
+                    const loc = (r.locations || '').toLowerCase();
+                    return name.includes(search) || cuisine.includes(search) || loc.includes(search);
+                });
+            }
+
+            if (list.length === 0) {
+                let emptyMsg = 'No pending caterer applications awaiting approval.';
+                if (currentStatusFilter === 'approved') emptyMsg = 'No approved caterers found.';
+                if (currentStatusFilter === 'rejected') emptyMsg = 'No rejected submissions found.';
+                if (search) emptyMsg = `No submissions matching "${search}".`;
+
+                container.innerHTML = `
+                    <div style="text-align:center;padding:50px 20px;background:var(--glass-bg);border:1px dashed var(--glass-border);border-radius:16px;">
+                        <i class="fas fa-check-circle" style="font-size:2.4rem;color:var(--gold);opacity:0.6;margin-bottom:12px;display:block;"></i>
+                        <h3 style="color:#fff;margin:0 0 6px;font-size:1.15rem;">All Caught Up!</h3>
+                        <p style="color:var(--text-muted);font-size:0.9rem;margin:0;">${emptyMsg}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = list.map(r => {
+                const status = (r.status || 'pending').toLowerCase();
+                const statusClass = status === 'approved' ? 'approved-highlight' : (status === 'rejected' ? 'rejected-highlight' : 'pending-highlight');
+                const statusBadge = status === 'approved' 
+                    ? '<span class="badge badge-approved"><i class="fas fa-check"></i> APPROVED (LIVE)</span>' 
+                    : (status === 'rejected' 
+                        ? '<span class="badge badge-rejected"><i class="fas fa-ban"></i> REJECTED</span>' 
+                        : '<span class="badge badge-pending"><i class="fas fa-clock"></i> PENDING APPROVAL</span>');
+
+                // Price display tier
+                let priceLabel = 'Tier 2 ($25-$50)';
+                const p = String(r.price_range || '2');
+                if (p === '1' || p === '$') priceLabel = 'Tier 1 (Under $25)';
+                else if (p === '2' || p === '$$') priceLabel = 'Tier 2 ($25–$50)';
+                else if (p === '3' || p === '$$$') priceLabel = 'Tier 3 ($50–$100)';
+                else if (p === '4' || p === '$$$$') priceLabel = 'Tier 4 ($100+)';
+                else if (p) priceLabel = p;
+
+                // Media count
+                const galleryImgs = Array.isArray(r.menu_images) ? r.menu_images : (r.menu_images ? String(r.menu_images).split(/[\n,]+/).filter(Boolean) : []);
+                const banner = r.banner_url || 'https://images.unsplash.com/photo-1555244162-803834f70033?w=600';
+
+                return `
+                    <div class="approval-card ${statusClass}">
+                        <div class="card-top-row">
+                            <img src="${escapeHtml(banner)}" alt="${escapeHtml(r.name || 'Caterer')}" class="caterer-banner-thumb" onerror="this.src='https://images.unsplash.com/photo-1555244162-803834f70033?w=600'">
+                            
+                            <div class="caterer-info-col">
+                                <div class="caterer-title-line">
+                                    <h3 class="caterer-name-h3">${escapeHtml(r.name || 'Untitled Caterer')}</h3>
+                                    ${statusBadge}
+                                    <span style="color:var(--text-dim);font-size:0.75rem;margin-left:auto;">ID #${r.id}</span>
+                                </div>
+
+                                <div class="meta-tags-row">
+                                    <span class="meta-tag-pill"><i class="fas fa-utensils" style="color:var(--gold);"></i> ${escapeHtml(r.cuisine || 'Catering Specialties')}</span>
+                                    <span class="meta-tag-pill"><i class="fas fa-tags" style="color:var(--gold);"></i> ${escapeHtml(priceLabel)}</span>
+                                    <span class="meta-tag-pill"><i class="fas fa-map-marker-alt" style="color:var(--gold);"></i> ${escapeHtml(r.locations || 'Service Location')}</span>
+                                    <span class="meta-tag-pill"><i class="fas fa-images" style="color:var(--gold);"></i> <strong>${galleryImgs.length}</strong> photos</span>
+                                </div>
+
+                                <p class="caterer-summary-text">${escapeHtml(r.about_text || 'No catering philosophy or story provided yet.')}</p>
+                            </div>
+                        </div>
+
+                        <div class="approval-actions-bar">
+                            ${status !== 'approved' ? `
+                                <button type="button" class="btn-action-approve" onclick="quickSetStatus(${r.id}, 'approved')">
+                                    <i class="fas fa-check-circle"></i> Approve &amp; Go Live
+                                </button>
+                            ` : `
+                                <a href="../restaurant.html?id=${r.id}" target="_blank" class="btn-action-approve" style="background:#2563eb;">
+                                    <i class="fas fa-external-link-alt"></i> View Live Page
+                                </a>
+                            `}
+
+                            <button type="button" class="btn-action-edit" onclick="openReviewModal(${r.id})">
+                                <i class="fas fa-edit"></i> Review &amp; Edit Details
+                            </button>
+
+                            ${status !== 'rejected' ? `
+                                <button type="button" class="btn-action-reject" onclick="quickSetStatus(${r.id}, 'rejected')">
+                                    <i class="fas fa-times-circle"></i> Reject
+                                </button>
+                            ` : `
+                                <button type="button" class="btn-action-edit" onclick="quickSetStatus(${r.id}, 'pending')">
+                                    <i class="fas fa-undo"></i> Restore to Pending
+                                </button>
+                            `}
+
+                            <button type="button" class="btn-action-delete" title="Delete Caterer Submission" onclick="deleteSubmission(${r.id}, '${escapeHtml(r.name || 'Caterer')}')">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function quickSetStatus(id, newStatus) {
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: JSON.stringify({
+                        action: 'set_status',
+                        id: id,
+                        status: newStatus
+                    })
+                });
+                if (res.ok) {
+                    const item = allSubmissions.find(x => x.id === id);
+                    if (item) item.status = newStatus;
+                    updateCounts();
+                    renderSubmissions();
+                } else {
+                    alert('Failed to update status');
+                }
+            } catch (err) {
+                alert('Network error updating status');
+            }
+        }
+
+        async function deleteSubmission(id, name) {
+            if (!confirm(`Are you sure you want to completely delete "${name}" (ID #${id})?`)) return;
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: JSON.stringify({
+                        action: 'delete',
+                        id: id
+                    })
+                });
+                if (res.ok) {
+                    allSubmissions = allSubmissions.filter(x => x.id !== id);
+                    updateCounts();
+                    renderSubmissions();
+                } else {
+                    alert('Failed to delete caterer submission');
+                }
+            } catch (e) {
+                alert('Network error deleting submission');
+            }
+        }
+
+        // ══════════════════════════════════════════════════════════
+        // MODAL REVIEW & FULL EDIT LOGIC
+        // ══════════════════════════════════════════════════════════
+        function openReviewModal(id) {
+            const r = allSubmissions.find(x => x.id === id);
+            if (!r) return;
+            editingSubmission = r;
+
+            document.getElementById('modalHeaderTitle').textContent = `Review: ${r.name || 'Caterer Submission'} (#${r.id})`;
+            document.getElementById('modalRestId').value = r.id;
+            document.getElementById('modalRestSlug').value = r.slug || '';
+
+            document.getElementById('m_name').value = r.name || '';
+            document.getElementById('m_cuisine').value = r.cuisine || '';
+            document.getElementById('m_status').value = r.status || 'pending';
+            document.getElementById('m_locations').value = r.locations || '';
+            document.getElementById('m_about').value = r.about_text || '';
+            document.getElementById('m_direct_menu').value = r.direct_menu_text || '';
+
+            // Pricing dropdown
+            const priceVal = String(r.price_range || '2');
+            const select = document.getElementById('m_price_select');
+            const customInput = document.getElementById('m_price_custom');
+            if (['1', '2', '3', '4'].includes(priceVal)) {
+                select.value = priceVal;
+                customInput.style.display = 'none';
+                customInput.value = '';
+            } else if (['$', '$$', '$$$', '$$$$'].includes(priceVal)) {
+                const map = { '$': '1', '$$': '2', '$$$': '3', '$$$$': '4' };
+                select.value = map[priceVal] || '2';
+                customInput.style.display = 'none';
+                customInput.value = '';
+            } else {
+                select.value = 'custom';
+                customInput.style.display = 'block';
+                customInput.value = priceVal;
+            }
+
+            // Cover Banner
+            const bannerUrl = r.banner_url || 'https://images.unsplash.com/photo-1555244162-803834f70033?w=600';
+            document.getElementById('m_banner').value = bannerUrl;
+            document.getElementById('m_banner_preview').src = bannerUrl;
+
+            // Gallery
+            const rawGallery = r.menu_images || [];
+            if (Array.isArray(rawGallery)) {
+                currentModalGallery = [...rawGallery];
+            } else if (typeof rawGallery === 'string' && rawGallery.trim()) {
+                currentModalGallery = rawGallery.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+            } else {
+                currentModalGallery = [];
+            }
+            renderModalGallery();
+
+            document.getElementById('editReviewModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editReviewModal').style.display = 'none';
+            editingSubmission = null;
+        }
+
+        function handleModalPriceChange(val) {
+            const customInput = document.getElementById('m_price_custom');
+            if (val === 'custom') {
+                customInput.style.display = 'block';
+                customInput.focus();
+            } else {
+                customInput.style.display = 'none';
+            }
+        }
+
+        // Banner upload
+        async function handleModalBannerUpload(input) {
+            if (!input.files || input.files.length === 0) return;
+            try {
+                const compressed = await compressImageFile(input.files[0], 1400, 0.82);
+                document.getElementById('m_banner').value = compressed;
+                document.getElementById('m_banner_preview').src = compressed;
+            } catch (e) {
+                alert('Error processing banner image.');
+            }
+            input.value = '';
+        }
+
+        // Gallery render & upload
+        function renderModalGallery() {
+            const container = document.getElementById('m_gallery_container');
+            const badge = document.getElementById('m_gallery_count_badge');
+            badge.textContent = `${currentModalGallery.length} photos`;
+
+            if (currentModalGallery.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-dim);font-size:0.85rem;grid-column:1/-1;">No showcase photos uploaded yet.</p>';
+                return;
+            }
+
+            container.innerHTML = currentModalGallery.map((item, idx) => {
+                const url = typeof item === 'string' ? item : item.url;
+                return `
+                    <div class="modal-gallery-card">
+                        <img src="${escapeHtml(url)}" alt="Showcase Photo #${idx + 1}" onerror="this.src='https://images.unsplash.com/photo-1555244162-803834f70033?w=400'">
+                        <div class="card-bar">
+                            <span>#${idx + 1}</span>
+                            <button type="button" onclick="removeModalGalleryItem(${idx})" style="background:transparent;border:none;color:#f87171;cursor:pointer;font-size:0.8rem;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function handleModalGalleryUpload(input) {
+            if (!input.files || input.files.length === 0) return;
+            for (let i = 0; i < input.files.length; i++) {
+                try {
+                    const compressed = await compressImageFile(input.files[i], 1200, 0.8);
+                    currentModalGallery.push(compressed);
+                } catch (e) {}
+            }
+            input.value = '';
+            renderModalGallery();
+        }
+
+        function addModalGalleryFromUrl() {
+            const input = document.getElementById('m_new_gallery_url');
+            const url = input.value.trim();
+            if (!url) return;
+            currentModalGallery.push(url);
+            input.value = '';
+            renderModalGallery();
+        }
+
+        function removeModalGalleryItem(idx) {
+            currentModalGallery.splice(idx, 1);
+            renderModalGallery();
+        }
+
+        async function saveModalChanges(approveLive) {
+            if (!editingSubmission) return;
+
+            const id = document.getElementById('modalRestId').value;
+            const name = document.getElementById('m_name').value.trim();
+            if (!name) {
+                alert('Please enter a catering business name.');
+                return;
+            }
+
+            const priceSelect = document.getElementById('m_price_select').value;
+            let priceVal = priceSelect;
+            if (priceSelect === 'custom') {
+                priceVal = document.getElementById('m_price_custom').value.trim() || 'Custom';
+            }
+
+            const newStatus = approveLive ? 'approved' : document.getElementById('m_status').value;
+
+            const updatedData = {
+                ...editingSubmission,
+                name: name,
+                cuisine: document.getElementById('m_cuisine').value.trim(),
+                price_range: priceVal,
+                locations: document.getElementById('m_locations').value.trim(),
+                banner_url: document.getElementById('m_banner').value.trim(),
+                menu_images: [...currentModalGallery],
+                about_text: document.getElementById('m_about').value.trim(),
+                direct_menu_text: document.getElementById('m_direct_menu').value.trim(),
+            };
+
+            const saveBtn = approveLive ? document.getElementById('modalSaveApproveBtn') : document.getElementById('modalSaveDraftBtn');
+            const origHtml = saveBtn.innerHTML;
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+            try {
+                const res = await fetch('/api/admin/restaurants', {
+                    method: 'POST',
+                    headers: authHeaders(),
+                    body: JSON.stringify({
+                        action: 'update_restaurant',
+                        id: id,
+                        restaurant_data: updatedData,
+                        status: newStatus
+                    })
+                });
+
+                if (res.ok) {
+                    // Update in-memory list
+                    const idx = allSubmissions.findIndex(x => x.id == id);
+                    if (idx !== -1) {
+                        allSubmissions[idx] = { ...updatedData, id: parseInt(id, 10), status: newStatus };
+                    }
+                    updateCounts();
+                    renderSubmissions();
+                    closeEditModal();
+                } else {
+                    alert('Failed to save caterer profile changes.');
+                }
+            } catch (err) {
+                alert('Network error saving caterer changes.');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = origHtml;
+            }
+        }
+
+        function modalRejectListing() {
+            if (!editingSubmission) return;
+            document.getElementById('m_status').value = 'rejected';
+            saveModalChanges(false);
+        }
+    </script>
+</body>
+
+</html>

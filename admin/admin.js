@@ -70,3 +70,62 @@ function adminLogout() {
   clearAuthToken();
   window.location.href = '/admin/index.html';
 }
+
+// Client-side image compression for device uploads
+function compressImageFile(file, maxWidth = 1200, quality = 0.8) {
+  return new Promise((resolve, reject) => {
+    if (!file || !file.type.startsWith('image/')) {
+      return reject(new Error('Invalid image file'));
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(dataUrl);
+      };
+      img.onerror = () => reject(new Error('Image decode error'));
+      img.src = e.target.result;
+    };
+    reader.onerror = () => reject(new Error('File read error'));
+    reader.readAsDataURL(file);
+  });
+}
+
+// Auto-fetch pending caterer count for sidebar notification badge
+async function updateSidebarPendingCount() {
+  const badge = document.getElementById('sidebarPendingBadge');
+  if (!badge) return;
+  try {
+    const res = await fetch('/api/admin/stats', { headers: authHeaders() });
+    if (res.ok) {
+      const data = await res.json();
+      const count = (data.stats && data.stats.pending_restaurants) || 0;
+      if (count > 0) {
+        badge.textContent = count;
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+  } catch (e) {
+    // silent fail
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (getAuthToken()) {
+    updateSidebarPendingCount();
+  }
+});

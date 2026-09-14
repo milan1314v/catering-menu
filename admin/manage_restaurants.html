@@ -189,6 +189,7 @@
             </div>
             <nav class="sidebar-nav">
                 <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="approvals.html"><i class="fas fa-user-check"></i> Pending Approvals <span class="badge badge-warning" id="sidebarPendingBadge" style="margin-left:auto; display:none; font-size:0.75rem; padding:2px 7px;">0</span></a>
                 <a href="manage_content.html"><i class="fas fa-edit"></i> Manage Content & SEO</a>
                 <a href="manage_restaurants.html" class="active"><i class="fas fa-store"></i> Manage Caterers</a>
             </nav>
@@ -283,7 +284,6 @@
                 <form id="restaurantForm" onsubmit="event.preventDefault(); saveRestaurantForm();"
                     style="padding: 10px 0;">
                     <input type="hidden" id="formRestId">
-                    <input type="hidden" id="formPrice" value="$$">
 
                     <!-- Basic Info Row -->
                     <div
@@ -326,56 +326,104 @@
                         </div>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 16px;">
                         <div class="form-group">
-                            <label
-                                style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LATITUDE
-                                (GPS)</label>
-                            <input type="number" step="any" id="formLat" placeholder="e.g. 40.758" style="width:100%;">
+                            <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">PRICING TIER (1, 2, 3, 4 OR CUSTOM)</label>
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <div style="position:relative; flex:1;">
+                                    <select id="formPriceSelect" style="width:100%; appearance:none; -webkit-appearance:none; background:rgba(0,0,0,0.3); border:1px solid var(--border); padding:10px 34px 10px 14px; border-radius:6px; color:#fff; cursor:pointer;" onchange="handleAdminPriceSelectChange(this.value)">
+                                        <option value="1">1 - Budget Friendly (Under $25 / guest)</option>
+                                        <option value="2" selected>2 - Moderate ($25 – $50 / guest)</option>
+                                        <option value="3">3 - Upscale &amp; Premium ($50 – $100 / guest)</option>
+                                        <option value="4">4 - Luxury &amp; Bespoke ($100+ / guest)</option>
+                                        <option value="custom">Custom Pricing...</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--gold); pointer-events:none; font-size:0.75rem;"></i>
+                                </div>
+                                <input type="text" id="formPriceCustom" placeholder="e.g. $45/plate" style="display:none; flex:1; padding:10px 14px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); border-radius:6px; color:#fff;" oninput="document.getElementById('formPrice').value = this.value.trim() || 'Custom'">
+                            </div>
+                            <input type="hidden" id="formPrice" value="2">
                         </div>
-                        <div class="form-group">
-                            <label
-                                style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LONGITUDE
-                                (GPS)</label>
-                            <input type="number" step="any" id="formLng" placeholder="e.g. -73.985" style="width:100%;">
+                        <div class="form-group" style="display:flex; gap:12px;">
+                            <div style="flex:1;">
+                                <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LATITUDE (GPS)</label>
+                                <input type="number" step="any" id="formLat" placeholder="e.g. 40.758" style="width:100%;">
+                            </div>
+                            <div style="flex:1;">
+                                <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">LONGITUDE (GPS)</label>
+                                <input type="number" step="any" id="formLng" placeholder="e.g. -73.985" style="width:100%;">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 16px;">
+                    <div class="form-group" style="margin-bottom: 20px;">
                         <label
-                            style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:block; margin-bottom:6px;">BANNER
-                            IMAGE URL</label>
-                        <input type="url" id="formBanner" placeholder="https://images.unsplash.com/..."
-                            style="width:100%;">
+                            style="font-size:0.85rem; color:var(--text-muted); font-weight:600; display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <span><i class="fas fa-image" style="color:var(--gold);"></i> BANNER COVER IMAGE</span>
+                            <span style="font-size:0.75rem; color:var(--text-dim); font-weight:normal;">Live Preview &amp; Upload from Device</span>
+                        </label>
+                        <div id="adminBannerPreviewWrap" style="height:140px; border-radius:10px; overflow:hidden; background:#0b0f19; border:1px solid var(--border); margin-bottom:10px; display:flex; align-items:center; justify-content:center;">
+                            <img id="adminBannerPreviewImg" src="" alt="Banner Preview" style="width:100%; height:100%; object-fit:cover; display:none;" onerror="this.style.display='none'; document.getElementById('adminBannerPlaceholder').style.display='block';">
+                            <span id="adminBannerPlaceholder" style="color:var(--text-dim); font-size:0.85rem;"><i class="fas fa-image" style="margin-right:6px;"></i> No banner image selected</span>
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                            <input type="url" id="formBanner" placeholder="Paste banner image URL here (https://...)"
+                                style="flex:1; min-width:240px;" oninput="updateAdminBannerPreview(this.value)">
+                            <button type="button" class="btn-gold" style="white-space:nowrap; padding:10px 18px; cursor:pointer;" onclick="document.getElementById('formBannerFileInput').click()">
+                                <i class="fas fa-upload"></i> Upload from Device
+                            </button>
+                            <input type="file" id="formBannerFileInput" accept="image/*" style="display:none;" onchange="handleAdminBannerUpload(this)">
+                        </div>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 24px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px; flex-wrap:wrap; gap:10px;">
+                    <div class="form-group"
+                        style="margin-bottom: 24px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; padding: 20px;">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 14px; flex-wrap:wrap; gap:10px;">
                             <div>
-                                <label style="font-size:0.92rem; color:var(--text); font-weight:700; display:block; margin-bottom:4px;">
-                                    <i class="fas fa-camera-retro" style="color:var(--gold); margin-right:6px;"></i> DIRECT MENU CARDS &amp; SHOWCASE GALLERY
+                                <label
+                                    style="font-size:0.92rem; color:var(--text); font-weight:700; display:block; margin-bottom:4px;">
+                                    <i class="fas fa-camera-retro" style="color:var(--gold); margin-right:6px;"></i>
+                                    DIRECT MENU CARDS &amp; SHOWCASE GALLERY
                                 </label>
                                 <small style="color:var(--text-muted); font-size:0.8rem;">
                                     Visual dish presentation &amp; menu card photos displayed prominently above the About section.
                                 </small>
                             </div>
-                            <button type="button" class="btn-sm" style="background:rgba(200,169,126,0.15); color:var(--gold); border:1px solid var(--gold); border-radius:6px; padding:6px 12px; cursor:pointer; font-weight:600;" onclick="loadSampleGalleryPhotos()">
-                                <i class="fas fa-magic"></i> Load Sample Photos
-                            </button>
+                            <div style="display:flex; gap:8px;">
+                                <button type="button" class="btn-gold" style="padding:6px 14px; font-size:0.82rem; cursor:pointer;" onclick="document.getElementById('adminGalleryUploadInput').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i> Upload Photos
+                                </button>
+                                <input type="file" id="adminGalleryUploadInput" accept="image/*" multiple style="display:none;" onchange="handleAdminGalleryUpload(this)">
+                                <button type="button" class="btn-sm"
+                                    style="background:rgba(200,169,126,0.15); color:var(--gold); border:1px solid var(--gold); border-radius:6px; padding:6px 12px; cursor:pointer; font-weight:600;"
+                                    onclick="loadSampleGalleryPhotos()">
+                                    <i class="fas fa-magic"></i> Load Sample Photos
+                                </button>
+                            </div>
                         </div>
 
                         <!-- LIVE PREVIEW GRID OF CURRENT IMAGES -->
-                        <div id="galleryPreviewContainer" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 16px;">
+                        <div id="galleryPreviewContainer"
+                            style="display:grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin-bottom: 16px;">
                             <!-- Dynamically populated with preview thumbnails & replace/delete controls -->
                         </div>
 
                         <!-- ADD NEW IMAGE INPUT -->
-                        <div style="display:flex; gap: 10px; align-items: center;">
-                            <input type="url" id="newGalleryImageUrl" placeholder="Paste image URL here (e.g. https://images.unsplash.com/...)" style="flex:1; padding: 10px 14px; font-size:0.88rem; background:rgba(0,0,0,0.25); border:1px solid var(--border); border-radius:6px; color:#fff;">
-                            <button type="button" class="btn-gold" style="white-space:nowrap; padding: 10px 18px; cursor:pointer;" onclick="addGalleryImage()">
-                                <i class="fas fa-plus"></i> Add Image
+                        <div style="display:flex; gap: 10px; align-items: center; flex-wrap:wrap;">
+                            <input type="url" id="newGalleryImageUrl"
+                                placeholder="Paste image URL here (e.g. https://images.unsplash.com/...)"
+                                style="flex:1; min-width:240px; padding: 10px 14px; font-size:0.88rem; background:rgba(0,0,0,0.25); border:1px solid var(--border); border-radius:6px; color:#fff;">
+                            <button type="button" class="btn-gold"
+                                style="white-space:nowrap; padding: 10px 18px; cursor:pointer;"
+                                onclick="addGalleryImage()">
+                                <i class="fas fa-plus"></i> Add Image URL
+                            </button>
+                            <button type="button" class="btn-sm" style="background:#2563eb; color:#fff; border:none; padding:10px 16px; border-radius:6px; font-weight:600; cursor:pointer; white-space:nowrap;" onclick="document.getElementById('adminGalleryUploadInput').click()">
+                                <i class="fas fa-upload"></i> Upload from Device
                             </button>
                         </div>
+                        <input type="file" id="replaceGalleryFileInput" accept="image/*" style="display:none;" onchange="handleReplaceGalleryFileInput(this)">
                         <textarea id="formMenuImages" style="display:none;"></textarea>
                     </div>
 
@@ -668,13 +716,16 @@
                     <div style="height: 110px; overflow: hidden; background: #0b0f19; display: flex; align-items: center; justify-content: center;">
                         <img src="${escapeHtml(url)}" alt="Menu Card #${idx + 1}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555244162-803834f70033?w=400';">
                     </div>
-                    <div style="padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,0.95); border-top: 1px solid rgba(255,255,255,0.06);">
+                    <div style="padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,0.95); border-top: 1px solid rgba(255,255,255,0.06); flex-wrap:wrap; gap:4px;">
                         <span style="font-size: 0.75rem; color: var(--gold); font-weight: 700;">#${idx + 1} Photo</span>
-                        <div style="display: flex; gap: 6px;">
-                            <button type="button" title="Replace Image URL" onclick="promptReplaceGalleryImage(${idx})" style="background: rgba(200,169,126,0.18); color: var(--gold); border: 1px solid rgba(200,169,126,0.4); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
-                                <i class="fas fa-sync-alt"></i> Replace
+                        <div style="display: flex; gap: 4px;">
+                            <button type="button" title="Upload Replacement from Device" onclick="triggerReplaceGalleryUpload(${idx})" style="background: rgba(37,99,235,0.25); color: #60a5fa; border: 1px solid rgba(37,99,235,0.45); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.72rem;">
+                                <i class="fas fa-upload"></i>
                             </button>
-                            <button type="button" title="Delete Image" onclick="removeGalleryImage(${idx})" style="background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.4); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
+                            <button type="button" title="Replace with Image URL" onclick="promptReplaceGalleryImage(${idx})" style="background: rgba(200,169,126,0.18); color: var(--gold); border: 1px solid rgba(200,169,126,0.4); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.72rem;">
+                                <i class="fas fa-link"></i>
+                            </button>
+                            <button type="button" title="Delete Image" onclick="removeGalleryImage(${idx})" style="background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.4); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.72rem;">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
@@ -683,6 +734,77 @@
             `).join('');
 
             document.getElementById('formMenuImages').value = currentMenuImages.join('\n');
+        }
+
+        let currentReplacingGalleryIndex = -1;
+
+        function triggerReplaceGalleryUpload(idx) {
+            currentReplacingGalleryIndex = idx;
+            const fileInput = document.getElementById('replaceGalleryFileInput');
+            if (fileInput) fileInput.click();
+        }
+
+        async function handleReplaceGalleryFileInput(input) {
+            if (!input.files || input.files.length === 0 || currentReplacingGalleryIndex < 0) return;
+            try {
+                const compressed = await compressImageFile(input.files[0], 1200, 0.8);
+                currentMenuImages[currentReplacingGalleryIndex] = compressed;
+                renderGalleryManager();
+            } catch (e) {
+                alert('Error uploading replacement photo.');
+            }
+            input.value = '';
+            currentReplacingGalleryIndex = -1;
+        }
+
+        async function handleAdminGalleryUpload(input) {
+            if (!input.files || input.files.length === 0) return;
+            for (let i = 0; i < input.files.length; i++) {
+                try {
+                    const compressed = await compressImageFile(input.files[i], 1200, 0.8);
+                    currentMenuImages.push(compressed);
+                } catch (e) {}
+            }
+            input.value = '';
+            renderGalleryManager();
+        }
+
+        function updateAdminBannerPreview(url) {
+            const img = document.getElementById('adminBannerPreviewImg');
+            const placeholder = document.getElementById('adminBannerPlaceholder');
+            if (url && url.trim()) {
+                img.src = url.trim();
+                img.style.display = 'block';
+                if (placeholder) placeholder.style.display = 'none';
+            } else {
+                img.style.display = 'none';
+                if (placeholder) placeholder.style.display = 'block';
+            }
+        }
+
+        async function handleAdminBannerUpload(input) {
+            if (!input.files || input.files.length === 0) return;
+            try {
+                const compressed = await compressImageFile(input.files[0], 1400, 0.82);
+                document.getElementById('formBanner').value = compressed;
+                updateAdminBannerPreview(compressed);
+            } catch (e) {
+                alert('Error processing banner image.');
+            }
+            input.value = '';
+        }
+
+        function handleAdminPriceSelectChange(val) {
+            const customInput = document.getElementById('formPriceCustom');
+            const hiddenInput = document.getElementById('formPrice');
+            if (val === 'custom') {
+                customInput.style.display = 'block';
+                customInput.focus();
+                hiddenInput.value = customInput.value.trim() || 'Custom';
+            } else {
+                customInput.style.display = 'none';
+                hiddenInput.value = val;
+            }
         }
 
         function addGalleryImage() {
@@ -799,10 +921,18 @@
             document.getElementById('formSlug').value = '';
             document.getElementById('formStatus').value = 'approved';
             document.getElementById('formCuisine').value = '';
-            document.getElementById('formPrice').value = '$$';
+            document.getElementById('formPrice').value = '2';
+            const priceSel = document.getElementById('formPriceSelect');
+            if (priceSel) priceSel.value = '2';
+            const priceCust = document.getElementById('formPriceCustom');
+            if (priceCust) {
+                priceCust.style.display = 'none';
+                priceCust.value = '';
+            }
             document.getElementById('formLat').value = '';
             document.getElementById('formLng').value = '';
             document.getElementById('formBanner').value = '';
+            updateAdminBannerPreview('');
             document.getElementById('newGalleryImageUrl').value = '';
             currentMenuImages = [];
             renderGalleryManager();
@@ -835,11 +965,32 @@
             document.getElementById('formSlug').value = r.slug || generateSlug(r.name);
             document.getElementById('formStatus').value = r.status || 'approved';
             document.getElementById('formCuisine').value = r.cuisine || '';
-            document.getElementById('formPrice').value = r.price_range || '$$';
+
+            // Populate pricing tier
+            const pVal = String(r.price_range || '2');
+            const selectEl = document.getElementById('formPriceSelect');
+            const customEl = document.getElementById('formPriceCustom');
+            const hiddenPriceEl = document.getElementById('formPrice');
+            hiddenPriceEl.value = pVal;
+            if (['1', '2', '3', '4'].includes(pVal)) {
+                if (selectEl) selectEl.value = pVal;
+                if (customEl) { customEl.style.display = 'none'; customEl.value = ''; }
+            } else if (['$', '$$', '$$$', '$$$$'].includes(pVal)) {
+                const map = { '$': '1', '$$': '2', '$$$': '3', '$$$$': '4' };
+                const mapped = map[pVal] || '2';
+                if (selectEl) selectEl.value = mapped;
+                hiddenPriceEl.value = mapped;
+                if (customEl) { customEl.style.display = 'none'; customEl.value = ''; }
+            } else {
+                if (selectEl) selectEl.value = 'custom';
+                if (customEl) { customEl.style.display = 'block'; customEl.value = pVal; }
+            }
+
             document.getElementById('formLat').value = r.lat || '';
             document.getElementById('formLng').value = r.lng || '';
             document.getElementById('formBanner').value = r.banner_url || '';
-            
+            updateAdminBannerPreview(r.banner_url || '');
+
             // Populate menu images
             const mImgs = r.menu_images || [];
             if (Array.isArray(mImgs)) {
@@ -886,17 +1037,23 @@
                 if (!open || !close) {
                     opening_hours[d] = 'Closed';
                 } else {
-                    opening_hours[d] = `${formatTimeAmPm(open)} – ${formatTimeAmPm(close)}`;
+                    opening_hours[d] = `${formatTimeAmPm(open)} - ${formatTimeAmPm(close)}`;
                 }
             });
 
             const slug = generateSlug(document.getElementById('formSlug').value.trim() || name);
 
+            let price_range = document.getElementById('formPrice').value;
+            const priceSelect = document.getElementById('formPriceSelect');
+            if (priceSelect && priceSelect.value === 'custom') {
+                price_range = document.getElementById('formPriceCustom').value.trim() || 'Custom';
+            }
+
             const restData = {
                 name: name,
                 slug: slug,
                 cuisine: document.getElementById('formCuisine').value.trim(),
-                price_range: document.getElementById('formPrice').value,
+                price_range: price_range,
                 lat: parseFloat(document.getElementById('formLat').value) || 0,
                 lng: parseFloat(document.getElementById('formLng').value) || 0,
                 banner_url: document.getElementById('formBanner').value.trim(),
@@ -972,7 +1129,7 @@
             // Handle fallback if legacy text exists
             let defaultTimes = {};
             if (legacyOpeningDays && Object.keys(oh).length === 0) {
-                const parts = legacyOpeningDays.split(/[:\–\-]/);
+                const parts = legacyOpeningDays.split(/[:\-\-]/);
                 // default to 11:00 to 22:00 if exists
             }
 
@@ -995,7 +1152,7 @@
 
         function parseTimeStr(str) {
             if (!str || str.toLowerCase() === 'closed') return ['', ''];
-            const parts = str.split(/[–\-]/);
+            const parts = str.split(/[-\-]/);
             if (parts.length === 2) {
                 return [convertAmPmTo24(parts[0].trim()), convertAmPmTo24(parts[1].trim())];
             }

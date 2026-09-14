@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/assets/img/site.webmanifest">
-    <link rel="stylesheet" href="/style.css?v=2.5">
+    <link rel="stylesheet" href="/style.css?v=2.6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -24,7 +24,16 @@
     <!-- PAGE HERO -->
     <section class="page-hero">
         <div class="container">
+            <div class="page-hero-badge" id="heroBadge">
+                <i class="fas fa-award"></i> Verified Catering Partners
+            </div>
             <h1 id="pageTitle">Explore Catering Services</h1>
+            <p id="pageSubtitle">Discover top-rated wedding caterers, corporate banquets, live counter specialists, and bespoke menus tailored for your events.</p>
+            <div class="page-hero-trust-row">
+                <span class="trust-pill"><i class="fas fa-star" style="color:#f59e0b;"></i> Top Rated Caterers</span>
+                <span class="trust-pill"><i class="fas fa-utensils" style="color:var(--gold-dark);"></i> Bespoke Event Menus</span>
+                <span class="trust-pill"><i class="fas fa-map-marker-alt" style="color:#10b981;"></i> Multi-Location Service</span>
+            </div>
         </div>
     </section>
 
@@ -189,8 +198,28 @@
             if (cms) {
                 if (cms.nav) renderHeader(cms.nav);
                 if (cms.footer) renderFooter(cms.footer);
-                if (cms.hero && cms.hero.title) document.getElementById('pageTitle').textContent = cms.hero.title;
-                if (cms.search_placeholder) searchInput.placeholder = cms.search_placeholder;
+                if (cms.hero) {
+                    if (cms.hero.badge) {
+                        document.getElementById('heroBadge').innerHTML = `<i class="fas fa-award"></i> ${escapeHtml(cms.hero.badge)}`;
+                    }
+                    if (cms.hero.title) {
+                        let titleText = cms.hero.title;
+                        if (titleText.toLowerCase() === 'all restaurants' || titleText.toLowerCase() === 'restaurants') {
+                            titleText = 'Explore Catering Services';
+                        }
+                        document.getElementById('pageTitle').textContent = titleText;
+                    }
+                    if (cms.hero.subtitle) {
+                        document.getElementById('pageSubtitle').textContent = cms.hero.subtitle;
+                    }
+                }
+                if (cms.search_placeholder) {
+                    let sp = cms.search_placeholder;
+                    if (sp.toLowerCase().includes('restaurant')) {
+                        sp = sp.replace(/restaurants?/gi, 'caterers');
+                    }
+                    searchInput.placeholder = sp;
+                }
             } else {
                 renderHeader();
                 renderFooter();

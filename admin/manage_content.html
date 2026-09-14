@@ -488,6 +488,7 @@
             </div>
             <nav class="sidebar-nav">
                 <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="approvals.html"><i class="fas fa-user-check"></i> Pending Approvals <span class="badge badge-warning" id="sidebarPendingBadge" style="margin-left:auto; display:none; font-size:0.75rem; padding:2px 7px;">0</span></a>
                 <a href="manage_content.html" class="active"><i class="fas fa-edit"></i> Manage Content & SEO</a>
                 <a href="manage_restaurants.html"><i class="fas fa-store"></i> Manage Caterers</a>
             </nav>
@@ -600,7 +601,8 @@
                                             class="fas fa-file-contract"></i> Terms of Service</div>
                                     <div class="custom-dropdown-item"
                                         onclick="selectSeoPage('disclaimer', 'Disclaimer', 'fas fa-exclamation-circle')">
-                                        <i class="fas fa-exclamation-circle"></i> Disclaimer</div>
+                                        <i class="fas fa-exclamation-circle"></i> Disclaimer
+                                    </div>
                                 </div>
                                 <input type="hidden" id="seoPageSelect" value="home">
                             </div>
@@ -873,14 +875,18 @@
 
                     <!-- Social Links -->
                     <div class="section-box">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
                             <h4 style="margin:0;"><i class="fas fa-share-alt"></i> Social Media Links</h4>
-                            <label style="font-size: 0.85rem; color: var(--gold); font-weight:600; cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(200,169,126,0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(200,169,126,0.25);">
-                                <input type="checkbox" id="showSocialsToggle" style="accent-color:var(--gold); cursor:pointer;">
+                            <label
+                                style="font-size: 0.85rem; color: var(--gold); font-weight:600; cursor: pointer; display: flex; align-items: center; gap: 8px; background: rgba(200,169,126,0.1); padding: 4px 10px; border-radius: 6px; border: 1px solid rgba(200,169,126,0.25);">
+                                <input type="checkbox" id="showSocialsToggle"
+                                    style="accent-color:var(--gold); cursor:pointer;">
                                 <span>Show Social Icons in Footer</span>
                             </label>
                         </div>
-                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">Leave unchecked to hide all social media icons from the website footer while accounts are pending.</p>
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:14px;">Leave unchecked to
+                            hide all social media icons from the website footer while accounts are pending.</p>
                         <div class="form-row">
                             <div>
                                 <label
@@ -953,7 +959,8 @@
                                             class="fas fa-info-circle"></i> About Us</div>
                                     <div class="custom-dropdown-item"
                                         onclick="selectContentPage('listings', 'Listings Directory', 'fas fa-utensils')">
-                                        <i class="fas fa-utensils"></i> Listings Directory</div>
+                                        <i class="fas fa-utensils"></i> Listings Directory
+                                    </div>
                                     <div class="custom-dropdown-item"
                                         onclick="selectContentPage('contact', 'Contact Us', 'fas fa-envelope')"><i
                                             class="fas fa-envelope"></i> Contact Us</div>
@@ -965,16 +972,19 @@
                                             class="fas fa-plus-circle"></i> Get Listed</div>
                                     <div class="custom-dropdown-item"
                                         onclick="selectContentPage('restaurant', 'Restaurant Details', 'fas fa-store')">
-                                        <i class="fas fa-store"></i> Restaurant Details</div>
+                                        <i class="fas fa-store"></i> Restaurant Details
+                                    </div>
                                     <div class="custom-dropdown-item"
                                         onclick="selectContentPage('privacy', 'Privacy Policy', 'fas fa-shield-alt')"><i
                                             class="fas fa-shield-alt"></i> Privacy Policy</div>
                                     <div class="custom-dropdown-item"
                                         onclick="selectContentPage('terms', 'Terms of Service', 'fas fa-file-contract')">
-                                        <i class="fas fa-file-contract"></i> Terms of Service</div>
+                                        <i class="fas fa-file-contract"></i> Terms of Service
+                                    </div>
                                     <div class="custom-dropdown-item"
                                         onclick="selectContentPage('disclaimer', 'Disclaimer', 'fas fa-exclamation-circle')">
-                                        <i class="fas fa-exclamation-circle"></i> Disclaimer</div>
+                                        <i class="fas fa-exclamation-circle"></i> Disclaimer
+                                    </div>
                                 </div>
                                 <input type="hidden" id="contentPageSelect" value="home">
                             </div>
@@ -1516,9 +1526,9 @@
                 },
                 featured: {
                     overline: "Our Selection",
-                    title: "Featured Restaurants",
-                    subtitle: "Handpicked dining destinations that our community loves the most.",
-                    view_all_btn: { label: "View All Restaurants", url: "/listings.html" }
+                    title: "Featured Caterers",
+                    subtitle: "Handpicked catering partners and chefs that our event hosts love the most.",
+                    view_all_btn: { label: "Explore All Caterers", url: "/listings.html" }
                 },
                 split_1: {
                     overline: "Why Choose Us",
@@ -1607,7 +1617,7 @@
                         { icon: "fas fa-map-marker-alt", label: "Address", value: "123 Gourmet Avenue, Culinary District, NY 10001" },
                         { icon: "fas fa-phone-alt", label: "Phone", value: "+1 (555) 987-6543" },
                         { icon: "fas fa-envelope", label: "Email", value: "hello@catering-menu.com" },
-                        { icon: "fas fa-clock", label: "Hours", value: "Mon – Fri: 9:00 AM – 6:00 PM" }
+                        { icon: "fas fa-clock", label: "Hours", value: "Mon - Fri: 9:00 AM - 6:00 PM" }
                     ]
                 }
             },
@@ -1647,11 +1657,15 @@
                 }
             },
             listings: {
-                hero: { title: "All Restaurants" },
-                search_placeholder: "Search restaurants, cuisines, or locations...",
-                filters: { cuisine_label: "Cuisine", price_label: "Price Range", rating_label: "Rating", clear_btn: "Clear All" },
-                empty_state: { icon: "fas fa-search", title: "No restaurants found", text: "Try adjusting your filters or search term." },
-                results_text: "restaurants found"
+                hero: {
+                    badge: "VERIFIED CATERING DIRECTORY",
+                    title: "Explore Catering Services",
+                    subtitle: "Discover top-rated wedding caterers, corporate banquets, live counter specialists, and bespoke menus tailored for your celebrations."
+                },
+                search_placeholder: "Search caterers, cuisines, or locations...",
+                filters: { cuisine_label: "Cuisine", price_label: "Price Range", rating_label: "Rating", clear_btn: "Reset" },
+                empty_state: { icon: "fas fa-search", title: "No caterers found", text: "Try adjusting your filters or search term." },
+                results_text: "catering services found"
             },
             privacy: {
                 hero: { title: "Privacy Policy" },

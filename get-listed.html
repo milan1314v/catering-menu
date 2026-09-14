@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/assets/img/site.webmanifest">
-    <link rel="stylesheet" href="/style.css?v=2.5">
+    <link rel="stylesheet" href="/style.css?v=2.6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -31,107 +31,273 @@
 
     <section class="section">
         <div class="container">
-            <div id="submitSuccessMsg" class="success-message" style="display:none;max-width:720px;margin:0 auto 32px;">
-                <i class="fas fa-check-circle"></i> Thank you! Your catering business has been submitted for review. Our team will approve it shortly.
+            <div id="submitSuccessMsg" class="success-message" style="display:none;max-width:1040px;margin:0 auto 32px;">
+                <i class="fas fa-check-circle" style="font-size:1.4rem;"></i>
+                <div>
+                    <h4 style="margin:0 0 4px;font-size:1.05rem;">Submission Received!</h4>
+                    <p style="margin:0;font-size:0.9rem;opacity:0.9;">Thank you! Your catering business listing has been submitted for review. Our culinary curation team will review and approve it shortly.</p>
+                </div>
             </div>
 
-            <div class="get-listed-form glass">
+            <div class="get-listed-form">
                 <h2 id="formTitle">Submit Your Catering Business</h2>
                 <form id="getListedForm">
-                    <div class="form-group">
-                        <label id="nameLabel">Catering Business Name</label>
-                        <input type="text" id="rest_name" required placeholder="Enter catering business name">
-                    </div>
-                    <div class="form-group">
-                        <label>Primary Cuisine &amp; Specialities</label>
-                        <input type="text" id="rest_cuisine" placeholder="e.g. Multi-Cuisine, North Indian, Italian, Live Counters">
-                        <input type="hidden" id="rest_price" value="$$">
-                    </div>
-                    <div class="form-group">
-                        <label id="bannerLabel">Banner Image URL</label>
-                        <input type="url" id="rest_banner" placeholder="https://images.unsplash.com/photo-1555244162-803834f70033?w=1400">
-                    </div>
-                    <div class="form-group">
-                        <label id="aboutLabel">About Your Catering Business</label>
-                        <textarea id="rest_about" required placeholder="Tell event hosts about your culinary experience, service styles, team, and specialties..."></textarea>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 24px;">
-                        <label style="display:flex; justify-content:space-between; align-items:center;">
-                            Direct Menu Text
-                            <div>
-                                <button type="button" onclick="toggleMenuMode('get_listed_menu_text')" style="font-size:0.8rem; padding:4px 12px; background:var(--gold); border:none; color:var(--dark); border-radius:4px; cursor:pointer; font-weight:600; margin-right:8px; transition:0.2s;">
-                                    <i class="fas fa-exchange-alt"></i> Switch Mode
-                                </button>
-                                <button type="button" class="insert-template-btn" onclick="insertMenuTemplate('get_listed_menu_text')" style="font-size:0.8rem; padding:4px 12px; background:transparent; border:1px solid var(--gold); color:var(--gold); border-radius:4px; cursor:pointer; transition:0.2s; display:none;">
-                                    <i class="fas fa-file-alt"></i> Insert Template
-                                </button>
+
+                    <!-- SECTION 1: BUSINESS ESSENTIALS -->
+                    <div class="form-section-block">
+                        <div class="form-section-header">
+                            <div class="form-section-badge"><i class="fas fa-store"></i></div>
+                            <div class="form-section-title-wrap">
+                                <h3>1. Caterer Profile & Essentials</h3>
+                                <p>Basic identification and culinary specialties of your catering service.</p>
                             </div>
-                        </label>
-                        <textarea id="get_listed_menu_text" style="min-height:200px;" placeholder="Paste your menu text here..."></textarea>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 24px;">
-                        <label style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
-                            <span>Opening Hours <small style="color:var(--text-dim); font-weight:normal; margin-left:8px;">(Leave blank for Closed)</small></span>
-                            <button type="button" onclick="applyMondayToAll()" style="font-size:0.8rem; padding:6px 16px; background:var(--gold); border:none; color:var(--dark); border-radius:4px; cursor:pointer; font-weight:600; transition:0.2s;">
-                                <i class="fas fa-copy"></i> Apply Monday to All
-                            </button>
-                        </label>
-                        <div style="display:flex; flex-direction:column; gap:8px;">
-                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
-                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Monday</label>
-                                <input type="time" id="oh_monday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
-                                <input type="time" id="oh_monday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label id="nameLabel"><i class="fas fa-signature"></i> Catering Business Name *</label>
+                                <input type="text" id="rest_name" required placeholder="e.g. Royal Feast Catering Co.">
                             </div>
-                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
-                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Tuesday</label>
-                                <input type="time" id="oh_tuesday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
-                                <input type="time" id="oh_tuesday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                            <div class="form-group">
+                                <label><i class="fas fa-utensils"></i> Primary Cuisine &amp; Specialities</label>
+                                <input type="text" id="rest_cuisine" placeholder="e.g. Wedding Catering, North Indian, Live BBQ, Italian">
                             </div>
-                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
-                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Wednesday</label>
-                                <input type="time" id="oh_wednesday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
-                                <input type="time" id="oh_wednesday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                        </div>
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label><i class="fas fa-tags"></i> Pricing Range</label>
+                                <select id="rest_price" style="width:100%;padding:11px 14px;border:1px solid #cbd5e1;border-radius:8px;background:#ffffff;font-size:0.95rem;">
+                                    <option value="$">$ - Budget Friendly (Under $25 / guest)</option>
+                                    <option value="$$" selected>$$ - Moderate ($25 – $50 / guest)</option>
+                                    <option value="$$$">$$$ - Upscale &amp; Premium ($50 – $100 / guest)</option>
+                                    <option value="$$$$">$$$$ - Luxury &amp; Bespoke ($100+ / guest)</option>
+                                </select>
                             </div>
-                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
-                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Thursday</label>
-                                <input type="time" id="oh_thursday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
-                                <input type="time" id="oh_thursday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                            </div>
-                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
-                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Friday</label>
-                                <input type="time" id="oh_friday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
-                                <input type="time" id="oh_friday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                            </div>
-                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
-                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Saturday</label>
-                                <input type="time" id="oh_saturday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
-                                <input type="time" id="oh_saturday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                            </div>
-                            <div style="display:flex; align-items:center; background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--glass-border-light); gap: 12px;">
-                                <label style="width: 120px; font-size:0.9rem; margin:0; color:var(--text); text-transform:capitalize; font-weight: 500;">Sunday</label>
-                                <input type="time" id="oh_sunday_open" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
-                                <span style="color:var(--text-muted); font-size:0.9rem;">to</span>
-                                <input type="time" id="oh_sunday_close" style="flex:1; margin:0; padding: 10px; cursor:pointer;">
+                            <div class="form-group">
+                                <label id="locationsLabel"><i class="fas fa-map-marker-alt"></i> Kitchen &amp; Service Locations *</label>
+                                <input type="text" id="rest_locations" required placeholder="e.g. 742 Gourmet Ave, Downtown | Serves Metro Area &amp; Tri-State">
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label id="locationsLabel">Location(s)</label>
-                        <input type="text" id="rest_locations" placeholder="742 Evergreen Ave, Downtown | 158 Oak Street, Midtown">
+
+                    <!-- SECTION 2: VISUAL MEDIA & SHOWCASE GALLERY -->
+                    <div class="form-section-block">
+                        <div class="form-section-header">
+                            <div class="form-section-badge"><i class="fas fa-camera-retro"></i></div>
+                            <div class="form-section-title-wrap">
+                                <h3>2. Visual Media &amp; Showcase Gallery</h3>
+                                <p>High-resolution cover banner and photos of your catering setups, live counters, and banquets.</p>
+                            </div>
+                        </div>
+
+                        <!-- Cover Banner -->
+                        <div class="form-group banner-upload-container">
+                            <label id="bannerLabel" style="display:flex;justify-content:space-between;align-items:center;">
+                                <span><i class="fas fa-image"></i> Main Cover Banner Image</span>
+                                <span style="font-size:0.8rem;color:#64748b;font-weight:normal;">Recommended 1400×600px</span>
+                            </label>
+                            <div class="banner-preview-card" id="bannerPreviewContainer">
+                                <img id="bannerPreviewImg" src="https://images.unsplash.com/photo-1555244162-803834f70033?w=1400" alt="Banner Preview">
+                            </div>
+                            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                                <input type="url" id="rest_banner" value="https://images.unsplash.com/photo-1555244162-803834f70033?w=1400" placeholder="https://images.unsplash.com/photo-..." style="flex:1;min-width:260px;" oninput="updateBannerPreview(this.value)">
+                                <button type="button" class="btn-upload-file" onclick="document.getElementById('bannerFileInput').click()">
+                                    <i class="fas fa-upload"></i> Upload from Device
+                                </button>
+                                <input type="file" id="bannerFileInput" accept="image/*" style="display:none;" onchange="handleBannerUpload(this)">
+                            </div>
+                        </div>
+
+                        <!-- Restaurant / Caterer Showcase Photos -->
+                        <div class="form-group" style="margin-top:28px;">
+                            <label style="display:flex;justify-content:space-between;align-items:center;">
+                                <span><i class="fas fa-images"></i> Catering &amp; Setup Showcase Photos <small style="color:#64748b;font-weight:normal;">(Live Counters, Banquets, Buffets)</small></span>
+                                <span id="galleryCountBadge" style="font-size:0.8rem;background:#e2e8f0;padding:2px 8px;border-radius:12px;color:#475569;font-weight:600;">0 photos</span>
+                            </label>
+                            
+                            <div class="gallery-manager-wrap">
+                                <div class="gallery-action-bar">
+                                    <button type="button" class="btn-upload-file" onclick="document.getElementById('galleryFileInput').click()">
+                                        <i class="fas fa-cloud-upload-alt"></i> Upload Photos
+                                    </button>
+                                    <input type="file" id="galleryFileInput" accept="image/*" multiple style="display:none;" onchange="handleGalleryUpload(this)">
+                                    
+                                    <div class="gallery-url-input-group">
+                                        <input type="url" id="newGalleryUrl" placeholder="Or paste image URL (https://...)">
+                                        <button type="button" class="btn-upload-file" style="background:var(--gold-dark);" onclick="addGalleryPhotoFromUrl()">
+                                            <i class="fas fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div id="galleryCardsContainer" class="gallery-cards-grid">
+                                    <!-- Rendered dynamically -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button type="submit" id="submitListingBtn" class="btn-primary" style="width:100%;justify-content:center;">
-                        Submit for Review <i class="fas fa-arrow-right"></i>
-                    </button>
+
+                    <!-- SECTION 3: CULINARY STORY & ABOUT -->
+                    <div class="form-section-block">
+                        <div class="form-section-header">
+                            <div class="form-section-badge"><i class="fas fa-book-open"></i></div>
+                            <div class="form-section-title-wrap">
+                                <h3>3. About Your Catering Experience</h3>
+                                <p>Tell event hosts, wedding planners, and corporate clients about your culinary craft, chef expertise, and service style.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="aboutLabel"><i class="fas fa-pen-nib"></i> Detailed Catering Story &amp; Services *</label>
+                            <textarea id="rest_about" required style="min-height:130px;line-height:1.6;" placeholder="Describe your kitchen philosophy, custom menu offerings, guest capacity, awards, and event highlights..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 4: INTERACTIVE MENU BUILDER WITH DISH PHOTOS -->
+                    <div class="form-section-block">
+                        <div class="form-section-header">
+                            <div class="form-section-badge"><i class="fas fa-clipboard-list"></i></div>
+                            <div class="form-section-title-wrap">
+                                <h3>4. Catering Menu Builder (with Dish Photos)</h3>
+                                <p>Organize your banquet courses, buffet stations, and dish items with prices and appetizing photos.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+                                <span style="font-weight:600;color:#1e293b;"><i class="fas fa-list"></i> Menu Courses &amp; Items</span>
+                                <div>
+                                    <button type="button" onclick="toggleMenuMode('get_listed_menu_text')" style="font-size:0.82rem;padding:6px 14px;background:#0f172a;border:none;color:#ffffff;border-radius:6px;cursor:pointer;font-weight:600;margin-right:8px;transition:0.2s;">
+                                        <i class="fas fa-exchange-alt"></i> Switch Mode
+                                    </button>
+                                    <button type="button" class="insert-template-btn" onclick="insertMenuTemplate('get_listed_menu_text')" style="font-size:0.82rem;padding:6px 14px;background:transparent;border:1px solid var(--gold-dark);color:var(--gold-dark);border-radius:6px;cursor:pointer;transition:0.2s;display:none;">
+                                        <i class="fas fa-file-alt"></i> Insert Template
+                                    </button>
+                                </div>
+                            </div>
+                            <textarea id="get_listed_menu_text" style="min-height:220px;" placeholder="Paste or edit your menu text here..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 5: OPERATING HOURS & AVAILABILITY -->
+                    <div class="form-section-block">
+                        <div class="form-section-header">
+                            <div class="form-section-badge"><i class="fas fa-clock"></i></div>
+                            <div class="form-section-title-wrap">
+                                <h3>5. Operating &amp; Consultation Hours</h3>
+                                <p>Times when your catering team is available for phone consultations, tastings, and bookings.</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+                                <span style="color:#64748b;font-size:0.88rem;">Leave hours blank for days your office/kitchen is closed for consultations.</span>
+                                <button type="button" onclick="applyMondayToAll()" style="font-size:0.82rem;padding:6px 16px;background:var(--gold-dark);border:none;color:#ffffff;border-radius:6px;cursor:pointer;font-weight:600;transition:0.2s;display:inline-flex;align-items:center;gap:6px;">
+                                    <i class="fas fa-copy"></i> Apply Monday to All Days
+                                </button>
+                            </div>
+                            <div class="hours-grid-wrapper">
+                                <div class="hours-row-item">
+                                    <label class="hours-day-label">Monday</label>
+                                    <input type="time" id="oh_monday_open" class="hours-input-time" value="09:00">
+                                    <span style="color:#94a3b8;font-size:0.8rem;">to</span>
+                                    <input type="time" id="oh_monday_close" class="hours-input-time" value="21:00">
+                                </div>
+                                <div class="hours-row-item">
+                                    <label class="hours-day-label">Tuesday</label>
+                                    <input type="time" id="oh_tuesday_open" class="hours-input-time" value="09:00">
+                                    <span style="color:#94a3b8;font-size:0.8rem;">to</span>
+                                    <input type="time" id="oh_tuesday_close" class="hours-input-time" value="21:00">
+                                </div>
+                                <div class="hours-row-item">
+                                    <label class="hours-day-label">Wednesday</label>
+                                    <input type="time" id="oh_wednesday_open" class="hours-input-time" value="09:00">
+                                    <span style="color:#94a3b8;font-size:0.8rem;">to</span>
+                                    <input type="time" id="oh_wednesday_close" class="hours-input-time" value="21:00">
+                                </div>
+                                <div class="hours-row-item">
+                                    <label class="hours-day-label">Thursday</label>
+                                    <input type="time" id="oh_thursday_open" class="hours-input-time" value="09:00">
+                                    <span style="color:#94a3b8;font-size:0.8rem;">to</span>
+                                    <input type="time" id="oh_thursday_close" class="hours-input-time" value="21:00">
+                                </div>
+                                <div class="hours-row-item">
+                                    <label class="hours-day-label">Friday</label>
+                                    <input type="time" id="oh_friday_open" class="hours-input-time" value="09:00">
+                                    <span style="color:#94a3b8;font-size:0.8rem;">to</span>
+                                    <input type="time" id="oh_friday_close" class="hours-input-time" value="22:00">
+                                </div>
+                                <div class="hours-row-item">
+                                    <label class="hours-day-label">Saturday</label>
+                                    <input type="time" id="oh_saturday_open" class="hours-input-time" value="09:00">
+                                    <span style="color:#94a3b8;font-size:0.8rem;">to</span>
+                                    <input type="time" id="oh_saturday_close" class="hours-input-time" value="22:00">
+                                </div>
+                                <div class="hours-row-item" style="grid-column: 1 / -1;">
+                                    <label class="hours-day-label">Sunday</label>
+                                    <input type="time" id="oh_sunday_open" class="hours-input-time" value="10:00">
+                                    <span style="color:#94a3b8;font-size:0.8rem;">to</span>
+                                    <input type="time" id="oh_sunday_close" class="hours-input-time" value="20:00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT BUTTON -->
+                    <div style="margin-top:36px;text-align:center;">
+                        <button type="submit" id="submitListingBtn" class="btn-primary" style="width:100%;max-width:440px;margin:0 auto;justify-content:center;padding:16px 32px;font-size:1.1rem;box-shadow:0 8px 24px rgba(217, 119, 6, 0.3);">
+                            Submit Catering Listing <i class="fas fa-arrow-right" style="margin-left:8px;"></i>
+                        </button>
+                        <p style="color:#64748b;font-size:0.84rem;margin-top:12px;">By submitting, you confirm that you are an authorized representative of this catering business.</p>
+                    </div>
                 </form>
             </div>
         </div>
     </section>
+
+    <!-- DISH PHOTO PICKER MODAL -->
+    <div id="dishPhotoModal" class="image-lightbox" style="display:none;align-items:center;justify-content:center;z-index:9999;" onclick="closeDishPhotoModal(event)">
+        <div style="background:#ffffff;color:#0f172a;padding:28px 32px;border-radius:18px;width:92%;max-width:460px;box-shadow:0 24px 60px rgba(0,0,0,0.3);position:relative;" onclick="event.stopPropagation()">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;border-bottom:1px solid #e2e8f0;padding-bottom:12px;">
+                <h3 style="margin:0;font-size:1.15rem;font-weight:700;display:flex;align-items:center;gap:8px;">
+                    <i class="fas fa-camera" style="color:var(--gold-dark);"></i> Dish Item Photo
+                </h3>
+                <button type="button" onclick="closeDishPhotoModal()" style="background:transparent;border:none;font-size:1.2rem;cursor:pointer;color:#64748b;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Preview box in modal -->
+            <div style="width:100%;height:140px;background:#f8fafc;border:2px dashed #cbd5e1;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:16px;" id="modalDishPreviewBox">
+                <img id="modalDishPreviewImg" src="" alt="Dish Preview" style="width:100%;height:100%;object-fit:cover;display:none;">
+                <div id="modalDishPlaceholder" style="color:#94a3b8;font-size:0.85rem;text-align:center;">
+                    <i class="fas fa-utensils" style="font-size:1.8rem;margin-bottom:6px;display:block;"></i>
+                    No photo selected yet
+                </div>
+            </div>
+
+            <!-- Upload / URL choices -->
+            <div style="display:flex;flex-direction:column;gap:12px;">
+                <button type="button" class="btn-upload-file" style="justify-content:center;" onclick="document.getElementById('modalDishFileInput').click()">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload Photo from Device
+                </button>
+                <input type="file" id="modalDishFileInput" accept="image/*" style="display:none;" onchange="handleDishFileUpload(this)">
+
+                <div style="display:flex;align-items:center;gap:10px;margin:2px 0;">
+                    <span style="flex:1;height:1px;background:#e2e8f0;"></span>
+                    <span style="font-size:0.78rem;color:#94a3b8;text-transform:uppercase;font-weight:600;">or use image url</span>
+                    <span style="flex:1;height:1px;background:#e2e8f0;"></span>
+                </div>
+
+                <input type="url" id="modalDishUrlInput" placeholder="Paste image URL (https://...)" style="padding:10px 14px;border:1px solid #cbd5e1;border-radius:8px;font-size:0.9rem;" oninput="updateDishModalPreview(this.value)">
+
+                <div style="display:flex;gap:10px;margin-top:10px;">
+                    <button type="button" onclick="saveDishPhoto()" class="btn-primary" style="flex:1;justify-content:center;padding:10px;">
+                        <i class="fas fa-check"></i> Apply Photo
+                    </button>
+                    <button type="button" onclick="clearDishPhoto()" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.2);padding:10px 14px;border-radius:8px;cursor:pointer;font-weight:600;">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- FOOTER -->
     <footer class="footer" id="footer">
@@ -142,8 +308,215 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <script src="/js/app.js?v=2.5"></script>
+    <script src="/js/app.js?v=2.6"></script>
     <script>
+        // Gallery state
+        let uploadedGallery = [
+            { url: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=800', title: 'Luxury Banquet Buffet' },
+            { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800', title: 'Grand Celebration Dinner' },
+            { url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800', title: 'Artisanal Dessert Station' }
+        ];
+
+        // Active dish editing modal target: { cIndex, iIndex }
+        let currentDishTarget = null;
+
+        // Canvas image compression helper
+        function compressImageFile(file, maxWidth = 1200, quality = 0.8) {
+            return new Promise((resolve, reject) => {
+                if (!file || !file.type.startsWith('image/')) {
+                    return reject(new Error('Invalid image file'));
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = () => reject(new Error('Could not load image'));
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => reject(new Error('Error reading file'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ── Cover Banner Helpers ──
+        function updateBannerPreview(url) {
+            const img = document.getElementById('bannerPreviewImg');
+            if (url && url.trim()) {
+                img.src = url.trim();
+                img.style.display = 'block';
+            }
+        }
+
+        async function handleBannerUpload(input) {
+            if (!input.files || !input.files[0]) return;
+            try {
+                const compressed = await compressImageFile(input.files[0], 1400, 0.82);
+                document.getElementById('rest_banner').value = compressed;
+                updateBannerPreview(compressed);
+            } catch (e) {
+                alert('Failed to process banner image: ' + e.message);
+            }
+        }
+
+        // ── Catering Showcase Gallery Helpers ──
+        function renderGalleryManager() {
+            const container = document.getElementById('galleryCardsContainer');
+            const countBadge = document.getElementById('galleryCountBadge');
+            if (!container) return;
+
+            countBadge.textContent = `${uploadedGallery.length} photo${uploadedGallery.length === 1 ? '' : 's'}`;
+            container.innerHTML = '';
+
+            if (uploadedGallery.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; padding: 24px; text-align: center; color: #94a3b8; font-size: 0.88rem; background: #ffffff; border-radius: 10px; border: 1px dashed #cbd5e1;">
+                        <i class="fas fa-images" style="font-size: 1.8rem; color: #cbd5e1; margin-bottom: 6px; display: block;"></i>
+                        No gallery photos added yet. Upload setups, live counters, or banquet buffet photos!
+                    </div>
+                `;
+                return;
+            }
+
+            uploadedGallery.forEach((item, idx) => {
+                const url = typeof item === 'string' ? item : item.url;
+                const title = (typeof item === 'object' && item.title) ? item.title : `Showcase Photo ${idx + 1}`;
+                
+                const card = document.createElement('div');
+                card.className = 'gallery-card-item';
+                card.innerHTML = `
+                    <img src="${url}" alt="${escapeHtml(title)}" class="gallery-card-thumb">
+                    <div class="gallery-card-footer">
+                        <span class="gallery-card-caption" title="${escapeHtml(title)}">${escapeHtml(title)}</span>
+                        <button type="button" class="gallery-card-del" onclick="removeGalleryPhoto(${idx})" title="Remove photo">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        async function handleGalleryUpload(input) {
+            if (!input.files || input.files.length === 0) return;
+            for (let i = 0; i < input.files.length; i++) {
+                try {
+                    const compressed = await compressImageFile(input.files[i], 1200, 0.8);
+                    const name = input.files[i].name.replace(/\.[^/.]+$/, '');
+                    uploadedGallery.push({ url: compressed, title: name || 'Catering Showcase' });
+                } catch (e) {}
+            }
+            input.value = '';
+            renderGalleryManager();
+        }
+
+        function addGalleryPhotoFromUrl() {
+            const input = document.getElementById('newGalleryUrl');
+            const url = input.value.trim();
+            if (!url) return;
+            uploadedGallery.push({ url: url, title: 'Catering Showcase' });
+            input.value = '';
+            renderGalleryManager();
+        }
+
+        function removeGalleryPhoto(idx) {
+            uploadedGallery.splice(idx, 1);
+            renderGalleryManager();
+        }
+
+        // ── Dish Photo Modal Logic ──
+        function openDishPhotoModal(cIndex, iIndex) {
+            currentDishTarget = { cIndex, iIndex };
+            const item = window.menuBuilderData['get_listed_menu_text'][cIndex].items[iIndex];
+            const currentImg = item.img || '';
+
+            const previewImg = document.getElementById('modalDishPreviewImg');
+            const placeholder = document.getElementById('modalDishPlaceholder');
+            const urlInput = document.getElementById('modalDishUrlInput');
+
+            urlInput.value = currentImg.startsWith('data:') ? '' : currentImg;
+
+            if (currentImg) {
+                previewImg.src = currentImg;
+                previewImg.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                previewImg.src = '';
+                previewImg.style.display = 'none';
+                placeholder.style.display = 'block';
+            }
+
+            document.getElementById('dishPhotoModal').style.display = 'flex';
+        }
+
+        function closeDishPhotoModal(e) {
+            if (e && e.target !== e.currentTarget && !e.target.closest('button')) return;
+            document.getElementById('dishPhotoModal').style.display = 'none';
+            currentDishTarget = null;
+        }
+
+        function updateDishModalPreview(url) {
+            const previewImg = document.getElementById('modalDishPreviewImg');
+            const placeholder = document.getElementById('modalDishPlaceholder');
+            if (url && url.trim()) {
+                previewImg.src = url.trim();
+                previewImg.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                previewImg.style.display = 'none';
+                placeholder.style.display = 'block';
+            }
+        }
+
+        async function handleDishFileUpload(input) {
+            if (!input.files || !input.files[0]) return;
+            try {
+                const compressed = await compressImageFile(input.files[0], 600, 0.8);
+                const previewImg = document.getElementById('modalDishPreviewImg');
+                const placeholder = document.getElementById('modalDishPlaceholder');
+                previewImg.src = compressed;
+                previewImg.style.display = 'block';
+                placeholder.style.display = 'none';
+                document.getElementById('modalDishUrlInput').value = compressed;
+            } catch (e) {
+                alert('Image upload failed: ' + e.message);
+            }
+        }
+
+        function saveDishPhoto() {
+            if (!currentDishTarget) return;
+            const previewImg = document.getElementById('modalDishPreviewImg');
+            const imgUrl = (previewImg && previewImg.style.display !== 'none') ? previewImg.src : document.getElementById('modalDishUrlInput').value.trim();
+
+            const { cIndex, iIndex } = currentDishTarget;
+            window.menuBuilderData['get_listed_menu_text'][cIndex].items[iIndex].img = imgUrl;
+
+            // Re-render visual builder and sync text
+            window.renderMenuBuilder('get_listed_menu_text');
+            closeDishPhotoModal();
+        }
+
+        function clearDishPhoto() {
+            if (!currentDishTarget) return;
+            const { cIndex, iIndex } = currentDishTarget;
+            window.menuBuilderData['get_listed_menu_text'][cIndex].items[iIndex].img = '';
+            window.renderMenuBuilder('get_listed_menu_text');
+            closeDishPhotoModal();
+        }
+
+        // ── Operating Hours ──
         function applyMondayToAll() {
             const openVal = document.getElementById('oh_monday_open').value;
             const closeVal = document.getElementById('oh_monday_close').value;
@@ -154,11 +527,13 @@
             });
         }
 
+        // ── Interactive Menu Builder ──
         function insertMenuTemplate(elementId) {
-            const template = `================================\n      YOUR RESTAURANT NAME\n================================\n\n--- STARTERS ---\n\nGarlic Bread ............... $5\nCheese Sticks ............. $7\nStuffed Mushrooms ....... $9\n\n--- MAIN COURSE ---\n\nGrilled Salmon ............ $22\nSteak Frites ............... $25\nVegetable Pasta .......... $16\n\n--- DESSERTS ---\n\nCheesecake ................ $8\nChocolate Lava Cake .... $10`;
+            const template = `================================\n      YOUR CATERING BANQUET MENU\n================================\n\n--- PASSED HORS D'OEUVRES ---\n\nGarlic Crostini with Brie [img:https://images.unsplash.com/photo-1544025162-d76694265947?w=600] ............... $8\nTruffle Stuffed Mushrooms ............. $12\nCrispy Tempura Prawns ................ $15\n\n--- PLATED ENTREES ---\n\nPan-Seared Chilean Sea Bass [img:https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600] ............ $36\nPrime Herb-Crusted Filet Mignon ............... $42\nWild Mushroom Risotto ................ $28\n\n--- DESSERT & FLAMBÉ STATIONS ---\n\nCrème Brûlée Flambé Bites ................ $14\nArtisanal Cheese & Fruit Display ........ $18`;
             const textarea = document.getElementById(elementId);
             if (textarea.value.trim() === '' || confirm('This will overwrite your current menu text. Are you sure?')) {
                 textarea.value = template;
+                initMenuBuilder(elementId);
             }
         }
 
@@ -207,14 +582,35 @@
                     } else if (currentCategory && line.includes('.')) {
                         const parts = line.split(/\.{2,}/);
                         if (parts.length >= 2) {
-                            currentCategory.items.push({ name: parts[0].trim(), price: parts[parts.length - 1].trim() });
+                            let namePart = parts[0].trim();
+                            let pricePart = parts[parts.length - 1].trim();
+                            let imgPart = '';
+                            const imgMatch = namePart.match(/\[img:(.+?)\]/);
+                            if (imgMatch) {
+                                imgPart = imgMatch[1];
+                                namePart = namePart.replace(/\[img:(.+?)\]/, '').trim();
+                            }
+                            currentCategory.items.push({ name: namePart, price: pricePart, img: imgPart });
                         }
                     }
                 });
             }
 
             if (data.length === 0) {
-                data.push({ title: 'Starters', items: [{ name: '', price: '' }] });
+                data.push({
+                    title: 'Starters & Hors D\'oeuvres',
+                    items: [
+                        { name: 'Garlic Butter Crostini', price: '$8', img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600' },
+                        { name: 'Truffle Mushroom Canapés', price: '$12', img: '' }
+                    ]
+                });
+                data.push({
+                    title: 'Main Course Banquets',
+                    items: [
+                        { name: 'Pan-Seared Salmon Fillet', price: '$28', img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600' },
+                        { name: 'Prime Herb-Crusted Tenderloin', price: '$38', img: '' }
+                    ]
+                });
             }
 
             if (!window.menuBuilderData) window.menuBuilderData = {};
@@ -222,35 +618,49 @@
 
             window.updateCategory = function(tid, cIndex, val) { window.menuBuilderData[tid][cIndex].title = val; syncToTextarea(tid); };
             window.updateItem = function(tid, cIndex, iIndex, field, val) { window.menuBuilderData[tid][cIndex].items[iIndex][field] = val; syncToTextarea(tid); };
-            window.addItem = function(tid, cIndex) { window.menuBuilderData[tid][cIndex].items.push({ name: '', price: '' }); render(tid); };
-            window.removeItem = function(tid, cIndex, iIndex) { window.menuBuilderData[tid][cIndex].items.splice(iIndex, 1); render(tid); };
-            window.addCategory = function(tid) { window.menuBuilderData[tid].push({ title: 'New Category', items: [{ name: '', price: '' }] }); render(tid); };
-            window.removeCategory = function(tid, cIndex) { window.menuBuilderData[tid].splice(cIndex, 1); render(tid); };
+            window.addItem = function(tid, cIndex) { window.menuBuilderData[tid][cIndex].items.push({ name: '', price: '', img: '' }); window.renderMenuBuilder(tid); };
+            window.removeItem = function(tid, cIndex, iIndex) { window.menuBuilderData[tid][cIndex].items.splice(iIndex, 1); window.renderMenuBuilder(tid); };
+            window.addCategory = function(tid) { window.menuBuilderData[tid].push({ title: 'New Course', items: [{ name: '', price: '', img: '' }] }); window.renderMenuBuilder(tid); };
+            window.removeCategory = function(tid, cIndex) { window.menuBuilderData[tid].splice(cIndex, 1); window.renderMenuBuilder(tid); };
 
-            function render(tid) {
+            window.renderMenuBuilder = function(tid) {
                 const d = window.menuBuilderData[tid];
                 container.innerHTML = '';
                 d.forEach((cat, cIndex) => {
                     const card = document.createElement('div');
                     card.className = 'menu-category-card';
+                    card.style.background = '#ffffff';
+                    card.style.border = '1px solid #cbd5e1';
+                    card.style.borderRadius = '12px';
+                    card.style.padding = '20px';
+                    card.style.marginBottom = '18px';
+                    card.style.boxShadow = '0 2px 8px rgba(0,0,0,0.03)';
+
                     let itemsHtml = '';
                     cat.items.forEach((item, iIndex) => {
+                        const hasImg = !!item.img;
                         itemsHtml += `
-                            <div class="menu-item-row">
-                                <input type="text" class="menu-item-name" placeholder="Item Name (e.g. Garlic Bread)" value="${item.name.replace(/"/g, '&quot;')}" oninput="updateItem('${tid}', ${cIndex}, ${iIndex}, 'name', this.value)">
-                                <input type="text" class="menu-item-price" placeholder="Price (e.g. $5)" value="${item.price.replace(/"/g, '&quot;')}" oninput="updateItem('${tid}', ${cIndex}, ${iIndex}, 'price', this.value)">
-                                <button type="button" class="btn-remove" onclick="removeItem('${tid}', ${cIndex}, ${iIndex})"><i class="fas fa-times"></i></button>
+                            <div class="menu-item-row" style="margin-bottom:8px;">
+                                <button type="button" class="menu-item-thumb-btn" onclick="openDishPhotoModal(${cIndex}, ${iIndex})" title="${hasImg ? 'Change Dish Photo' : 'Add Dish Photo'}">
+                                    ${hasImg ? `<img src="${item.img}" alt="Dish"><span class="thumb-badge">Photo</span>` : '<i class="fas fa-camera"></i><span style="font-size:0.58rem;margin-top:2px;">Photo</span>'}
+                                </button>
+                                <input type="text" class="menu-item-name" placeholder="Item Name (e.g. Garlic Bread)" value="${escapeHtml(item.name || '')}" oninput="updateItem('${tid}', ${cIndex}, ${iIndex}, 'name', this.value)" style="flex:2;">
+                                <input type="text" class="menu-item-price" placeholder="Price (e.g. $15)" value="${escapeHtml(item.price || '')}" oninput="updateItem('${tid}', ${cIndex}, ${iIndex}, 'price', this.value)" style="flex:1;">
+                                <button type="button" class="btn-remove" onclick="removeItem('${tid}', ${cIndex}, ${iIndex})" title="Remove item"><i class="fas fa-times"></i></button>
                             </div>
                         `;
                     });
 
                     card.innerHTML = `
-                        <div class="menu-category-header">
-                            <input type="text" placeholder="Category Title" value="${cat.title.replace(/"/g, '&quot;')}" oninput="updateCategory('${tid}', ${cIndex}, this.value)">
-                            <button type="button" class="btn-remove" onclick="removeCategory('${tid}', ${cIndex})" style="background:transparent; border:none; color:var(--text-muted);"><i class="fas fa-trash"></i></button>
+                        <div class="menu-category-header" style="display:flex;gap:12px;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f1f5f9;">
+                            <i class="fas fa-layer-group" style="color:var(--gold-dark);font-size:1.1rem;"></i>
+                            <input type="text" placeholder="Course Title (e.g. Starters, Main Course)" value="${escapeHtml(cat.title || '')}" oninput="updateCategory('${tid}', ${cIndex}, this.value)" style="flex:1;font-weight:700;font-size:1.05rem;border:none;border-bottom:2px solid #e2e8f0;border-radius:0;padding:6px 4px;">
+                            <button type="button" class="btn-remove" onclick="removeCategory('${tid}', ${cIndex})" style="background:transparent;border:none;color:#94a3b8;" title="Delete course"><i class="fas fa-trash"></i></button>
                         </div>
                         <div class="menu-items-list">${itemsHtml}</div>
-                        <button type="button" class="btn-add-item" onclick="addItem('${tid}', ${cIndex})"><i class="fas fa-plus"></i> Add Item</button>
+                        <button type="button" class="btn-add-item" onclick="addItem('${tid}', ${cIndex})" style="display:inline-flex;align-items:center;gap:6px;justify-content:center;background:#f8fafc;border:1px dashed var(--gold-dark);color:var(--gold-dark);padding:9px;border-radius:8px;font-weight:600;margin-top:10px;width:100%;cursor:pointer;">
+                            <i class="fas fa-plus"></i> Add Dish to this Course
+                        </button>
                     `;
                     container.appendChild(card);
                 });
@@ -258,12 +668,24 @@
                 const addCatBtn = document.createElement('button');
                 addCatBtn.type = 'button';
                 addCatBtn.className = 'btn-add-category';
-                addCatBtn.innerHTML = '<i class="fas fa-plus"></i> Add Category';
+                addCatBtn.style.display = 'inline-flex';
+                addCatBtn.style.alignItems = 'center';
+                addCatBtn.style.justifyContent = 'center';
+                addCatBtn.style.gap = '8px';
+                addCatBtn.style.padding = '12px';
+                addCatBtn.style.background = '#0f172a';
+                addCatBtn.style.color = '#ffffff';
+                addCatBtn.style.border = 'none';
+                addCatBtn.style.borderRadius = '8px';
+                addCatBtn.style.fontWeight = '600';
+                addCatBtn.style.width = '100%';
+                addCatBtn.style.cursor = 'pointer';
+                addCatBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Add New Menu Category / Course';
                 addCatBtn.onclick = () => window.addCategory(tid);
                 container.appendChild(addCatBtn);
 
                 syncToTextarea(tid);
-            }
+            };
 
             function syncToTextarea(tid) {
                 const d = window.menuBuilderData[tid];
@@ -275,8 +697,10 @@
                         if (item.name.trim() !== '' || item.price.trim() !== '') {
                             const name = item.name.trim();
                             const price = item.price.trim();
-                            const dots = '.'.repeat(Math.max(3, 40 - name.length - price.length));
-                            out += `${name} ${dots} ${price}\n`;
+                            const imgTag = item.img ? ` [img:${item.img.trim()}]` : '';
+                            const fullName = name + imgTag;
+                            const dots = '.'.repeat(Math.max(3, 40 - fullName.length - price.length));
+                            out += `${fullName} ${dots} ${price}\n`;
                         }
                     });
                     out += '\n';
@@ -284,11 +708,12 @@
                 document.getElementById(tid).value = out;
             }
 
-            render(textareaId);
+            window.renderMenuBuilder(textareaId);
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
             initMenuBuilder('get_listed_menu_text');
+            renderGalleryManager();
 
             const cms = await fetchCMSContent('get-listed');
             if (cms) {
@@ -300,11 +725,10 @@
                 }
                 if (cms.form) {
                     if (cms.form.title) document.getElementById('formTitle').textContent = cms.form.title;
-                    if (cms.form.name_label) document.getElementById('nameLabel').textContent = cms.form.name_label;
-                    if (cms.form.banner_label) document.getElementById('bannerLabel').textContent = cms.form.banner_label;
-                    if (cms.form.about_label) document.getElementById('aboutLabel').textContent = cms.form.about_label;
-                    if (cms.form.locations_label) document.getElementById('locationsLabel').textContent = cms.form.locations_label;
-                    if (cms.form.submit_btn) document.getElementById('submitListingBtn').innerHTML = `${escapeHtml(cms.form.submit_btn.label)} <i class="fas fa-arrow-right"></i>`;
+                    if (cms.form.name_label) document.getElementById('nameLabel').innerHTML = `<i class="fas fa-signature"></i> ${escapeHtml(cms.form.name_label)} *`;
+                    if (cms.form.about_label) document.getElementById('aboutLabel').innerHTML = `<i class="fas fa-pen-nib"></i> ${escapeHtml(cms.form.about_label)} *`;
+                    if (cms.form.locations_label) document.getElementById('locationsLabel').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${escapeHtml(cms.form.locations_label)} *`;
+                    if (cms.form.submit_btn) document.getElementById('submitListingBtn').innerHTML = `${escapeHtml(cms.form.submit_btn.label)} <i class="fas fa-arrow-right" style="margin-left:8px;"></i>`;
                 }
             } else {
                 renderHeader();
@@ -316,7 +740,7 @@
                 e.preventDefault();
                 const btn = document.getElementById('submitListingBtn');
                 btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting Your Listing...';
 
                 const name = document.getElementById('rest_name').value.trim();
                 const cuisine = document.getElementById('rest_cuisine').value.trim();
@@ -347,9 +771,11 @@
                             cuisine,
                             price_range,
                             banner_url,
+                            menu_images: [...uploadedGallery],
                             about_text,
                             direct_menu_text,
-                            opening_days: 'See hours schedule',
+                            opening_hours,
+                            opening_days: 'See schedule',
                             locations,
                             lat: 40.7128,
                             lng: -74.0060
@@ -357,17 +783,17 @@
                     });
                     const resData = await res.json();
                     if (resData.success) {
-                        document.getElementById('submitSuccessMsg').style.display = 'block';
+                        document.getElementById('submitSuccessMsg').style.display = 'flex';
                         form.reset();
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     } else {
                         alert(resData.error || 'Submission failed');
                     }
                 } catch (err) {
-                    alert('Network error submitting restaurant.');
+                    alert('Network error submitting catering business.');
                 } finally {
                     btn.disabled = false;
-                    btn.innerHTML = 'Submit for Review <i class="fas fa-arrow-right"></i>';
+                    btn.innerHTML = 'Submit Catering Listing <i class="fas fa-arrow-right" style="margin-left:8px;"></i>';
                 }
             });
         });

@@ -28,8 +28,11 @@ export async function onRequestPost(context) {
       cuisine,
       price_range,
       banner_url,
+      gallery_images,
+      menu_images,
       about_text,
       direct_menu_text,
+      opening_hours,
       opening_days,
       locations,
       lat,
@@ -50,6 +53,14 @@ export async function onRequestPost(context) {
         .replace(/-+/g, '-');
     }
 
+    // Unify gallery images
+    let finalGallery = [];
+    if (Array.isArray(menu_images) && menu_images.length > 0) {
+      finalGallery = menu_images;
+    } else if (Array.isArray(gallery_images) && gallery_images.length > 0) {
+      finalGallery = gallery_images;
+    }
+
     const restaurantObj = {
       name: name.trim(),
       slug: slugify(name),
@@ -58,9 +69,11 @@ export async function onRequestPost(context) {
       lat: lat ? parseFloat(lat) : 40.7128,
       lng: lng ? parseFloat(lng) : -74.0060,
       banner_url: (banner_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400').trim(),
+      menu_images: finalGallery,
       about_text: about_text.trim(),
       direct_menu_text: (direct_menu_text || '').trim(),
       menu_file_path: '',
+      opening_hours: opening_hours || null,
       opening_days: (opening_days || 'Mon-Sun: 11:00 AM - 10:00 PM').trim(),
       locations: (locations || '').trim(),
       reviews: []

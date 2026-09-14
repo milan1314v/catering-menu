@@ -12,7 +12,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/assets/img/site.webmanifest">
-    <link rel="stylesheet" href="/style.css?v=2.5">
+    <link rel="stylesheet" href="/style.css?v=2.6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -366,22 +366,25 @@
                 const line = l.trim();
                 if (!line) {
                     html += '<div class="menu-spacer"></div>';
-                } else if (/^(.*?)\s*(?:\.{2,}|\t|\s{2,})\s*(\$?[0-9].*)$/i.test(line)) {
-                    const match = line.match(/^(.*?)\s*(?:\.{2,}|\t|\s{2,})\s*(\$?[0-9].*)$/i);
+                } else if (/^(.*?)\s*(?:\.{2,}|\t|\s{2,})\s*(\$?[0-9].*)$/i.test(line) || /^(.*?)\s+(\$?[0-9]+(?:\.[0-9]{2})?)$/i.test(line)) {
+                    const match = line.match(/^(.*?)\s*(?:\.{2,}|\t|\s{2,})\s*(\$?[0-9].*)$/i) || line.match(/^(.*?)\s+(\$?[0-9]+(?:\.[0-9]{2})?)$/i);
+                    let name = match[1].trim();
+                    let price = match[2].trim();
+                    let imgHtml = '';
+                    const imgMatch = name.match(/\[img:(.+?)\]/);
+                    if (imgMatch) {
+                        const imgUrl = imgMatch[1];
+                        name = name.replace(/\[img:(.+?)\]/, '').trim();
+                        imgHtml = `<img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(name)}" class="menu-item-dish-thumb" onclick="openImageLightbox('${escapeHtml(imgUrl)}', '${escapeHtml(name)}')">`;
+                    }
                     html += `
-                        <div class="menu-item-row">
-                            <span class="menu-item-name">${escapeHtml(match[1].trim())}</span>
-                            <span class="menu-item-dots"></span>
-                            <span class="menu-item-price">${escapeHtml(match[2].trim())}</span>
-                        </div>
-                    `;
-                } else if (/^(.*?)\s+(\$?[0-9]+(?:\.[0-9]{2})?)$/i.test(line)) {
-                    const match = line.match(/^(.*?)\s+(\$?[0-9]+(?:\.[0-9]{2})?)$/i);
-                    html += `
-                        <div class="menu-item-row">
-                            <span class="menu-item-name">${escapeHtml(match[1].trim())}</span>
-                            <span class="menu-item-dots"></span>
-                            <span class="menu-item-price">${escapeHtml(match[2].trim())}</span>
+                        <div class="menu-item-row ${imgHtml ? 'with-dish-thumb' : ''}">
+                            ${imgHtml}
+                            <div class="menu-item-text-group">
+                                <span class="menu-item-name">${escapeHtml(name)}</span>
+                                <span class="menu-item-dots"></span>
+                                <span class="menu-item-price">${escapeHtml(price)}</span>
+                            </div>
                         </div>
                     `;
                 } else if (/^──\s*(.*?)\s*─*$/.test(line) || /^--\s*(.*?)\s*-*$/.test(line)) {

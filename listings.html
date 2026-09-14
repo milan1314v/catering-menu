@@ -115,7 +115,7 @@
                         <!-- CUISINE FILTER -->
                         <div class="filter-section">
                             <div class="filter-title">
-                                <span><i class="fas fa-utensils"></i> Cuisines</span>
+                                <span id="cuisineFilterTitle"><i class="fas fa-utensils"></i> Cuisines</span>
                             </div>
                             <div class="filter-chips-grid" id="cuisineFilterContainer">
                                 <!-- Dynamic Cuisines -->
@@ -125,20 +125,20 @@
                         <!-- SERVICE / EVENT TYPE FILTER -->
                         <div class="filter-section">
                             <div class="filter-title">
-                                <span><i class="fas fa-champagne-glasses"></i> Event & Service</span>
+                                <span id="serviceFilterTitle"><i class="fas fa-champagne-glasses"></i> Event &amp; Service</span>
                             </div>
                             <div class="filter-chips-grid">
                                 <label class="filter-chip">
                                     <input type="checkbox" name="service" value="wedding">
-                                    <span>💍 Wedding & Reception</span>
+                                    <span>💍 Wedding &amp; Reception</span>
                                 </label>
                                 <label class="filter-chip">
                                     <input type="checkbox" name="service" value="corporate">
-                                    <span>💼 Corporate & Gala</span>
+                                    <span>💼 Corporate &amp; Gala</span>
                                 </label>
                                 <label class="filter-chip">
                                     <input type="checkbox" name="service" value="party">
-                                    <span>🎂 Birthdays & Parties</span>
+                                    <span>🎂 Birthdays &amp; Parties</span>
                                 </label>
                                 <label class="filter-chip">
                                     <input type="checkbox" name="service" value="buffet">
@@ -146,7 +146,7 @@
                                 </label>
                                 <label class="filter-chip">
                                     <input type="checkbox" name="service" value="live">
-                                    <span>🔥 Live Cooking Counters</span>
+                                    <span>🔥 Live Food Counters</span>
                                 </label>
                             </div>
                         </div>
@@ -154,7 +154,7 @@
                         <!-- RATING FILTER -->
                         <div class="filter-section">
                             <div class="filter-title">
-                                <span><i class="fas fa-star"></i> Host Rating</span>
+                                <span id="ratingFilterTitle"><i class="fas fa-star"></i> Host Rating</span>
                             </div>
                             <div class="filter-rating-list">
                                 <label class="filter-rating-item">
@@ -273,6 +273,31 @@
                         sp = sp.replace(/restaurants?/gi, 'caterers');
                     }
                     searchInput.placeholder = sp;
+                }
+                if (cms.results_text) {
+                    const rt = document.getElementById('resultsText');
+                    if (rt) rt.textContent = cms.results_text;
+                }
+                if (cms.filters) {
+                    if (cms.filters.cuisine_label && document.getElementById('cuisineFilterTitle')) {
+                        document.getElementById('cuisineFilterTitle').innerHTML = `<i class="fas fa-utensils"></i> ${escapeHtml(cms.filters.cuisine_label)}`;
+                    }
+                    if (cms.filters.service_label && document.getElementById('serviceFilterTitle')) {
+                        document.getElementById('serviceFilterTitle').innerHTML = `<i class="fas fa-champagne-glasses"></i> ${escapeHtml(cms.filters.service_label)}`;
+                    }
+                    if (cms.filters.rating_label && document.getElementById('ratingFilterTitle')) {
+                        document.getElementById('ratingFilterTitle').innerHTML = `<i class="fas fa-star"></i> ${escapeHtml(cms.filters.rating_label)}`;
+                    }
+                    if (cms.filters.clear_btn && document.getElementById('clearFilters')) {
+                        document.getElementById('clearFilters').innerHTML = `<i class="fas fa-rotate-left"></i> ${escapeHtml(cms.filters.clear_btn)}`;
+                    }
+                }
+                if (cms.empty_state && emptyState) {
+                    emptyState.innerHTML = `
+                        <i class="${escapeHtml(cms.empty_state.icon || 'fas fa-search')}"></i>
+                        <h3>${escapeHtml(cms.empty_state.title || 'No catering services found')}</h3>
+                        <p>${escapeHtml(cms.empty_state.text || 'Try adjusting your search or resetting filters to explore all available caterers.')}</p>
+                    `;
                 }
             } else {
                 renderHeader();

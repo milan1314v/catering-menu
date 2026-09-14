@@ -65,26 +65,54 @@ async function fetchCMSContent(pageName) {
   return null;
 }
 
+function setMetaTag(selector, attrName, attrValue, content) {
+  if (!content) return;
+  let el = document.querySelector(selector);
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute(attrName, attrValue);
+    document.head.appendChild(el);
+  }
+  el.setAttribute('content', content);
+}
+
 function applySEOMetadata(cms) {
   if (!cms) return;
 
+  const seo = cms.seo || {};
+  const currentUrl = window.location.href;
+  const siteName = (cms.seo_global && cms.seo_global.site_name) || 'Catering Menu';
+  const defaultOg = (cms.seo_global && cms.seo_global.default_og_image) || 'https://www.catering-menu.com/assets/img/catering-menu-logo.png';
+  const ogImg = seo.og_image || defaultOg;
+
   // 1. Dynamic Meta Title
-  if (cms.seo && cms.seo.title) {
-    document.title = cms.seo.title;
+  if (seo.title) {
+    document.title = seo.title;
   }
 
-  // 2. Dynamic Meta Description
-  if (cms.seo && cms.seo.description) {
-    let descMeta = document.querySelector('meta[name="description"]');
-    if (!descMeta) {
-      descMeta = document.createElement('meta');
-      descMeta.name = 'description';
-      document.head.appendChild(descMeta);
-    }
-    descMeta.content = cms.seo.description;
+  // 2. Dynamic Meta Description & Keywords
+  if (seo.description) {
+    setMetaTag('meta[name="description"]', 'name', 'description', seo.description);
+  }
+  if (seo.keywords) {
+    setMetaTag('meta[name="keywords"]', 'name', 'keywords', seo.keywords);
   }
 
-  // 3. Dynamic Robots Meta (Global Switch from D1)
+  // 3. Dynamic Open Graph (WhatsApp, Facebook, LinkedIn)
+  setMetaTag('meta[property="og:type"]', 'property', 'og:type', 'website');
+  setMetaTag('meta[property="og:site_name"]', 'property', 'og:site_name', siteName);
+  setMetaTag('meta[property="og:title"]', 'property', 'og:title', seo.title || document.title);
+  setMetaTag('meta[property="og:description"]', 'property', 'og:description', seo.description || '');
+  setMetaTag('meta[property="og:url"]', 'property', 'og:url', currentUrl);
+  setMetaTag('meta[property="og:image"]', 'property', 'og:image', ogImg);
+
+  // 4. Dynamic Twitter Cards
+  setMetaTag('meta[name="twitter:card"]', 'name', 'twitter:card', 'summary_large_image');
+  setMetaTag('meta[name="twitter:title"]', 'name', 'twitter:title', seo.title || document.title);
+  setMetaTag('meta[name="twitter:description"]', 'name', 'twitter:description', seo.description || '');
+  setMetaTag('meta[name="twitter:image"]', 'name', 'twitter:image', ogImg);
+
+  // 5. Dynamic Robots Meta (Global Switch from D1)
   let robotsMeta = document.querySelector('meta[name="robots"]');
   if (!robotsMeta) {
     robotsMeta = document.createElement('meta');
@@ -93,14 +121,62 @@ function applySEOMetadata(cms) {
   }
 
   if (cms.seo_global && cms.seo_global.indexing_enabled === true) {
-    if (cms.seo && cms.seo.robots) {
-      robotsMeta.content = cms.seo.robots;
+    if (seo.robots) {
+      robotsMeta.content = seo.robots;
     } else {
       robotsMeta.content = 'index, follow';
     }
   } else {
     robotsMeta.content = 'noindex, nofollow';
   }
+
+  // 6. Dynamic Schema.org Structured Data
+  applyDynamicSchema(cms);
+}
+
+function applyDynamicSchema(cms) {
+  if (!cms) return;
+  let scriptEl = document.getElementById('dynamic-schema');
+  if (!scriptEl) {
+    scriptEl = document.createElement('script');
+    scriptEl.type = 'application/ld+json';
+    scriptEl.id = 'dynamic-schema';
+    document.head.appendChild(scriptEl);
+  }
+
+  // If FAQ page with faq_items
+  if (Array.isArray(cms.faq_items) && cms.faq_items.length > 0) {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": cms.faq_items.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    };
+    scriptEl.textContent = JSON.stringify(faqSchema, null, 2);
+    return;
+  }
+
+  // Default WebSite & Organization Schema
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": (cms.seo && cms.seo.title) || document.title,
+    "description": (cms.seo && cms.seo.description) || "",
+    "url": window.location.href,
+    "publisher": {
+      "@type": "Organization",
+      "name": "Catering Menu",
+      "url": "https://www.catering-menu.com",
+      "logo": "https://www.catering-menu.com/assets/img/catering-menu-logo.png"
+    }
+  };
+  scriptEl.textContent = JSON.stringify(schema, null, 2);
 }
 
 function renderHeader(navData) {
@@ -627,6 +703,50 @@ function updateSelectedSuggestItem(items, selectedIndex) {
       item.classList.remove('selected');
     }
   });
+}
+
+function renderStatsGrid(containerId, statsArray) {
+  const container = document.getElementById(containerId);
+  if (!container || !Array.isArray(statsArray)) return;
+  container.innerHTML = statsArray.map(s => `
+    <div class="stat-card glass">
+      <div class="stat-number">${escapeHtml(s.number)}</div>
+      <div class="stat-label">${escapeHtml(s.label)}</div>
+    </div>
+  `).join('');
+}
+
+function renderLegalDocument(cms) {
+  if (!cms) return;
+  if (cms.hero) {
+    const titleEl = document.getElementById('legalTitle');
+    if (titleEl && cms.hero.title) titleEl.textContent = cms.hero.title;
+    const subEl = document.getElementById('legalSubtitle');
+    if (subEl && cms.hero.subtitle) subEl.textContent = cms.hero.subtitle;
+  }
+  if (cms.last_updated) {
+    const badge = document.getElementById('legalLastUpdated');
+    if (badge) badge.textContent = cms.last_updated;
+  }
+  const secContainer = document.getElementById('legalSectionsContainer');
+  if (secContainer && Array.isArray(cms.sections)) {
+    secContainer.innerHTML = cms.sections.map(sec => `
+      <div class="legal-sec">
+        <h2>${escapeHtml(sec.title)}</h2>
+        <p>${escapeHtml(sec.content).replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>')}</p>
+      </div>
+    `).join('');
+  }
+  if (cms.contact_box) {
+    const box = document.getElementById('legalContactBox');
+    if (box) {
+      box.innerHTML = `
+        <h3><i class="fas fa-headset"></i> ${escapeHtml(cms.contact_box.title || 'Catering Menu Legal Team')}</h3>
+        ${cms.contact_box.email ? `<p>Email: <a href="mailto:${escapeHtml(cms.contact_box.email)}" style="color:#92400e;font-weight:700;text-decoration:underline;">${escapeHtml(cms.contact_box.email)}</a></p>` : ''}
+        ${cms.contact_box.website ? `<p style="margin-top:4px;">Website: <a href="${escapeHtml(cms.contact_box.website)}" target="_blank" style="color:#92400e;font-weight:700;text-decoration:underline;">${escapeHtml(cms.contact_box.website)}</a></p>` : ''}
+      `;
+    }
+  }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

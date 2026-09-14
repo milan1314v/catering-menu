@@ -65,6 +65,35 @@
         </div>
     </section>
 
+    <!-- BENEFITS SECTION (DYNAMIC CMS) -->
+    <section class="section" id="benefitsSection" style="padding: 40px 0 0;">
+        <div class="container">
+            <div class="benefits-grid" id="benefitsGrid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px;">
+                <div class="benefit-card glass" style="padding:28px; border-radius:16px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02); text-align:center;">
+                    <div style="width:54px; height:54px; border-radius:50%; background:rgba(200,169,126,0.12); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.35rem; margin:0 auto 16px;">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 style="color:#fff; font-size:1.15rem; margin-bottom:10px; font-weight:700;">Free Lifetime Listing</h3>
+                    <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.65; margin:0;">Get discovered by corporate planners, wedding organizers, and private event hosts with zero listing fees or hidden commissions.</p>
+                </div>
+                <div class="benefit-card glass" style="padding:28px; border-radius:16px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02); text-align:center;">
+                    <div style="width:54px; height:54px; border-radius:50%; background:rgba(200,169,126,0.12); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.35rem; margin:0 auto 16px;">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 style="color:#fff; font-size:1.15rem; margin-bottom:10px; font-weight:700;">Dedicated Branded Subdomain</h3>
+                    <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.65; margin:0;">Receive your unique URL (e.g. your-name.catering-menu.com) to share on social media, business cards, and marketing brochures.</p>
+                </div>
+                <div class="benefit-card glass" style="padding:28px; border-radius:16px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02); text-align:center;">
+                    <div style="width:54px; height:54px; border-radius:50%; background:rgba(200,169,126,0.12); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.35rem; margin:0 auto 16px;">
+                        <i class="fas fa-camera-retro"></i>
+                    </div>
+                    <h3 style="color:#fff; font-size:1.15rem; margin-bottom:10px; font-weight:700;">Direct Menu &amp; Gallery Cards</h3>
+                    <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.65; margin:0;">Showcase visual menu cards, dish presentation photos, and multi-course buffet options directly above your profile description.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="section">
         <div class="container">
             <div id="submitSuccessMsg" class="success-message"
@@ -835,6 +864,20 @@
                 if (cms.hero) {
                     if (cms.hero.title) document.getElementById('heroTitle').textContent = cms.hero.title;
                     if (cms.hero.subtitle) document.getElementById('heroSubtitle').textContent = cms.hero.subtitle;
+                }
+                if (Array.isArray(cms.benefits) && cms.benefits.length > 0) {
+                    const bg = document.getElementById('benefitsGrid');
+                    if (bg) {
+                        bg.innerHTML = cms.benefits.map(b => `
+                            <div class="benefit-card glass" style="padding:28px; border-radius:16px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.02); text-align:center;">
+                                <div style="width:54px; height:54px; border-radius:50%; background:rgba(200,169,126,0.12); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:1.35rem; margin:0 auto 16px;">
+                                    <i class="${escapeHtml(b.icon || 'fas fa-star')}"></i>
+                                </div>
+                                <h3 style="color:#fff; font-size:1.15rem; margin-bottom:10px; font-weight:700;">${escapeHtml(b.title)}</h3>
+                                <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.65; margin:0;">${escapeHtml(b.text)}</p>
+                            </div>
+                        `).join('');
+                    }
                 }
                 if (cms.form) {
                     if (cms.form.title) document.getElementById('formTitle').textContent = cms.form.title;

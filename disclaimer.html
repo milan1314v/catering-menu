@@ -130,7 +130,7 @@
     <section class="page-hero" style="min-height:260px;">
         <div class="container">
             <h1 id="legalTitle">Legal Disclaimer</h1>
-            <p>Important information regarding catering directory listings, food safety, and independent catering agreements.</p>
+            <p id="legalSubtitle">Important information regarding catering directory listings, food safety, and independent catering agreements.</p>
         </div>
     </section>
 
@@ -140,12 +140,13 @@
                 <div class="legal-card" id="legalContent">
                     <div class="legal-header-meta">
                         <span class="legal-badge"><i class="fas fa-exclamation-triangle"></i> Legal Notice</span>
-                        <span><i class="far fa-calendar-alt"></i> Last Updated: September 2026</span>
+                        <span><i class="far fa-calendar-alt"></i> Last Updated: <span id="legalLastUpdated">September 2026</span></span>
                         <span><i class="far fa-clock"></i> 4 min read</span>
                     </div>
 
-                    <div class="legal-sec">
-                        <h2><i class="fas fa-info-circle"></i> 1. Directory Platform Role</h2>
+                    <div id="legalSectionsContainer">
+                        <div class="legal-sec">
+                            <h2><i class="fas fa-info-circle"></i> 1. Directory Platform Role</h2>
                         <p><strong>Catering Menu</strong> (<code>catering-menu.com</code>) is an online discovery directory and information aggregation platform. We connect prospective event hosts, wedding couples, and corporate organizers with independent catering businesses, food trucks, and culinary providers.</p>
                         <p>Catering Menu is <strong>not a food preparation facility, kitchen, or direct catering provider</strong>. We do not prepare, cook, transport, or serve food items listed on this website.</p>
                     </div>
@@ -185,7 +186,12 @@
 
                     <div class="legal-sec">
                         <h2><i class="fas fa-envelope"></i> 6. Questions Regarding Our Disclaimer</h2>
-                        <p>For inquiries regarding this disclaimer or to report an inaccurate listing, please reach out to our team at <a href="mailto:support@catering-menu.com" style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">support@catering-menu.com</a>.</p>
+                        <p>For inquiries regarding this disclaimer or food safety standards, please reach out to our team:</p>
+                        <div class="contact-box" id="legalContactBox">
+                            <h3><i class="fas fa-headset"></i> Food Safety &amp; Legal Inquiries</h3>
+                            <p>Email: <a href="mailto:support@catering-menu.com" style="color:#92400e;font-weight:700;text-decoration:underline;">support@catering-menu.com</a></p>
+                            <p style="margin-top:4px;">Website: <a href="https://www.catering-menu.com" target="_blank" style="color:#92400e;font-weight:700;text-decoration:underline;">https://www.catering-menu.com</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -208,7 +214,7 @@
             if (cms) {
                 if (cms.nav) renderHeader(cms.nav);
                 if (cms.footer) renderFooter(cms.footer);
-                if (cms.hero && cms.hero.title) document.getElementById('legalTitle').textContent = cms.hero.title;
+                renderLegalDocument(cms);
             } else {
                 renderHeader();
                 renderFooter();

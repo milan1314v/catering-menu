@@ -622,7 +622,7 @@
                                         chars</span>
                                 </div>
                                 <input type="text" id="seoTitleInput" class="input-text"
-                                    placeholder="e.g. Best Catering Menus & Dining | DineVault" style="width: 100%;"
+                                    placeholder="e.g. Best Catering Menus & Services | Catering Menu" style="width: 100%;"
                                     oninput="updateGoogleSnippet()">
                                 <small
                                     style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 4px;">Browser
@@ -636,12 +636,37 @@
                                     <span id="metaDescCount" style="color: var(--text-dim); font-size: 0.75rem;">0 / 160
                                         chars</span>
                                 </div>
-                                <textarea id="seoDescInput" class="input-textarea" rows="4"
-                                    placeholder="e.g. Explore handpicked restaurants, top catering menus, and authentic reviews across the city."
+                                <textarea id="seoDescInput" class="input-textarea" rows="3"
+                                    placeholder="e.g. Discover top-rated catering services, browse curated event food menus, verified reviews, and book premier caterers."
                                     style="width: 100%;" oninput="updateGoogleSnippet()"></textarea>
                                 <small
                                     style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 4px;">Google
                                     snippet me link ke neeche aane wala description.</small>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 18px;">
+                                <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 6px; display: block;">META KEYWORDS</label>
+                                <input type="text" id="seoKeywordsInput" class="input-text"
+                                    placeholder="e.g. catering, wedding catering, event food menus, corporate banquets" style="width: 100%;">
+                                <small
+                                    style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 4px;">Search tags / comma-separated keywords.</small>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom: 18px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                    <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;"><i class="fas fa-image" style="color:var(--gold);"></i> SOCIAL SHARE IMAGE (OG:IMAGE)</label>
+                                    <button type="button" class="cms-upload-btn" onclick="document.getElementById('seoOgFileInput').click()" style="padding:4px 10px; font-size:0.75rem;">
+                                        <i class="fas fa-upload"></i> Upload Image
+                                    </button>
+                                    <input type="file" id="seoOgFileInput" accept="image/*" style="display:none;" onchange="handleSeoOgFileUpload(this)">
+                                </div>
+                                <div style="display:flex; gap:12px; align-items:center;">
+                                    <div style="width:68px; height:44px; border-radius:6px; overflow:hidden; border:1px solid var(--gold); background:#0a0a1a; flex-shrink:0;">
+                                        <img id="seoOgImagePreview" src="https://www.catering-menu.com/assets/img/catering-menu-logo.png" style="width:100%; height:100%; object-fit:cover;">
+                                    </div>
+                                    <input type="text" id="seoOgImageInput" class="input-text" placeholder="https://..." style="flex:1;" oninput="updateSocialPreview()">
+                                </div>
+                                <small style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 4px;">WhatsApp, Facebook, Twitter &amp; LinkedIn par link share karne par aane wali visual photo.</small>
                             </div>
                         </div>
 
@@ -652,7 +677,7 @@
                                 Search Result Preview
                             </div>
                             <div
-                                style="background: #ffffff; color: #4d5156; padding: 18px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); font-family: Arial, sans-serif;">
+                                style="background: #ffffff; color: #4d5156; padding: 18px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); font-family: Arial, sans-serif; margin-bottom: 20px;">
                                 <div
                                     style="font-size: 12px; color: #202124; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
                                     <span
@@ -666,6 +691,22 @@
                                 <div id="previewDesc"
                                     style="color: #4d5156; font-size: 13px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                     This is how your page description will appear in Google search results.
+                                </div>
+                            </div>
+
+                            <div
+                                style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 8px;">
+                                <i class="fab fa-whatsapp" style="color: #25D366; margin-right: 4px;"></i> Live Social Share Card (WhatsApp / Facebook)
+                            </div>
+                            <div
+                                style="background: #1e293b; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 8px 24px rgba(0,0,0,0.35);">
+                                <div style="width: 100%; height: 160px; background: #0f172a; overflow: hidden;">
+                                    <img id="socialCardImg" src="https://www.catering-menu.com/assets/img/catering-menu-logo.png" style="width:100%; height:100%; object-fit:cover;">
+                                </div>
+                                <div style="padding: 12px 14px;">
+                                    <div style="font-size: 11px; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.5px;" id="socialCardDomain">CATERING-MENU.COM</div>
+                                    <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin: 4px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="socialCardTitle">Page Title Preview</div>
+                                    <div style="font-size: 12px; color: #cbd5e1; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;" id="socialCardDesc">Description preview</div>
                                 </div>
                             </div>
                         </div>
@@ -1146,7 +1187,10 @@
                     const seo = currentSeoPageData.seo || {};
                     document.getElementById('seoTitleInput').value = seo.title || '';
                     document.getElementById('seoDescInput').value = seo.description || '';
+                    document.getElementById('seoKeywordsInput').value = seo.keywords || '';
+                    document.getElementById('seoOgImageInput').value = seo.og_image || '';
                     updateGoogleSnippet();
+                    updateSocialPreview();
                 }
             } catch (e) {
                 console.error('Failed to load SEO for ' + pageName, e);
@@ -1203,25 +1247,60 @@
             const titleInput = document.getElementById('seoTitleInput');
             const descInput = document.getElementById('seoDescInput');
 
-            const titleVal = titleInput.value.trim() || `${pageOptionText} - DineVault`;
-            const descVal = descInput.value.trim() || 'Discover exceptional dining experiences, catering menus, authentic reviews, and chef specials across the city.';
+            const titleVal = titleInput.value.trim() || `${pageOptionText} - Catering Menu`;
+            const descVal = descInput.value.trim() || 'Discover exceptional catering services, bespoke event menus, verified reviews, and premier culinary artisans.';
 
             document.getElementById('previewTitle').textContent = titleVal;
             document.getElementById('previewDesc').textContent = descVal;
-            document.getElementById('previewUrl').textContent = `https://www.catering-menu.com${pageName === 'home' ? '' : '/' + pageName + '.html'}`;
+            document.getElementById('previewUrl').textContent = `https://www.catering-menu.com${pageName === 'home' ? '' : '/' + pageName}`;
 
             document.getElementById('metaTitleCount').textContent = `${titleInput.value.length} / 60 chars`;
             document.getElementById('metaTitleCount').style.color = titleInput.value.length > 60 ? '#f44336' : 'var(--text-dim)';
 
             document.getElementById('metaDescCount').textContent = `${descInput.value.length} / 160 chars`;
             document.getElementById('metaDescCount').style.color = descInput.value.length > 160 ? '#f44336' : 'var(--text-dim)';
+
+            updateSocialPreview();
+        }
+
+        function updateSocialPreview() {
+            const ogImgInput = document.getElementById('seoOgImageInput');
+            const ogImgPreview = document.getElementById('seoOgImagePreview');
+            const cardImg = document.getElementById('socialCardImg');
+            const cardTitle = document.getElementById('socialCardTitle');
+            const cardDesc = document.getElementById('socialCardDesc');
+            const titleInput = document.getElementById('seoTitleInput');
+            const descInput = document.getElementById('seoDescInput');
+
+            const defaultImg = 'https://www.catering-menu.com/assets/img/catering-menu-logo.png';
+            const imgUrl = (ogImgInput.value || '').trim() || defaultImg;
+
+            ogImgPreview.src = imgUrl;
+            if (cardImg) cardImg.src = imgUrl;
+            if (cardTitle) cardTitle.textContent = (titleInput.value || '').trim() || 'Catering Menu - Premier Event Catering';
+            if (cardDesc) cardDesc.textContent = (descInput.value || '').trim() || 'Discover handpicked caterers, verified menus, and direct host reviews.';
+        }
+
+        function handleSeoOgFileUpload(input) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const dataUrl = e.target.result;
+                document.getElementById('seoOgImageInput').value = dataUrl;
+                updateSocialPreview();
+                showNotification('Social OG image updated from your device!');
+            };
+            reader.readAsDataURL(file);
         }
 
         async function savePageSEO() {
             const pageName = document.getElementById('seoPageSelect').value;
             currentSeoPageData.seo = currentSeoPageData.seo || {};
-            currentSeoPageData.seo.title = document.getElementById('seoTitleInput').value;
-            currentSeoPageData.seo.description = document.getElementById('seoDescInput').value;
+            currentSeoPageData.seo.title = document.getElementById('seoTitleInput').value.trim();
+            currentSeoPageData.seo.description = document.getElementById('seoDescInput').value.trim();
+            currentSeoPageData.seo.keywords = document.getElementById('seoKeywordsInput').value.trim();
+            currentSeoPageData.seo.og_image = document.getElementById('seoOgImageInput').value.trim();
 
             try {
                 const res = await fetch('/api/admin/content', {
@@ -1513,90 +1592,116 @@
         const DEFAULT_PAGE_CONTENTS = {
             home: {
                 hero: {
-                    badge: "Premium Dining Directory",
-                    title: "Discover Extraordinary Dining Experiences",
-                    subtitle: "Explore handpicked restaurants, read authentic reviews, and find your next favorite meal - all in one place.",
-                    search_placeholder: "Search restaurants by name or cuisine...",
+                    badge: "Premier Catering Directory",
+                    title: "Discover Extraordinary Catering Experiences",
+                    subtitle: "Explore handpicked caterers, browse exquisite event menus, and find the perfect culinary service for your wedding, corporate event, or private party.",
+                    search_placeholder: "Search caterers by name, cuisine, or occasion...",
                     search_btn: { label: "Explore Now", url: "#restaurants" },
                     stats: [
-                        { number: "2,500+", label: "Restaurants" },
-                        { number: "15,000+", label: "Reviews" },
-                        { number: "50,000+", label: "Happy Diners" }
+                        { number: "2,500+", label: "Caterers Listed" },
+                        { number: "15,000+", label: "Curated Menus" },
+                        { number: "50,000+", label: "Happy Guests Served" }
                     ]
-                },
-                featured: {
-                    overline: "Our Selection",
-                    title: "Featured Caterers",
-                    subtitle: "Handpicked catering partners and chefs that our event hosts love the most.",
-                    view_all_btn: { label: "Explore All Caterers", url: "/listings.html" }
-                },
-                split_1: {
-                    overline: "Why Choose Us",
-                    title: "Curated by Experts, Loved by Diners",
-                    text: "Every restaurant on Catering Menu is handpicked by our culinary experts. We visit, taste, and verify each establishment before it appears on our platform. Our rigorous selection process ensures that when you choose a restaurant from Catering Menu, you are choosing excellence.",
-                    bullets: [
-                        { icon: "fas fa-check-circle", text: "Expert-curated restaurant selections" },
-                        { icon: "fas fa-check-circle", text: "Authentic verified customer reviews" },
-                        { icon: "fas fa-check-circle", text: "Real-time menu and pricing updates" },
-                        { icon: "fas fa-check-circle", text: "Exclusive partnership perks and offers" }
-                    ],
-                    image_url: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800",
-                    image_alt: "Premium steak dining experience",
-                    btn: { label: "Learn More", url: "/about.html" }
-                },
-                split_2: {
-                    overline: "Community Driven",
-                    title: "Real Reviews from Real Food Lovers",
-                    text: "Our community of over 50,000 passionate diners shares their honest experiences every day. From hidden neighborhood gems to celebrated fine dining destinations, our reviews help you make confident choices. Every review is verified, every rating is genuine, and every recommendation comes from someone who has truly dined there.",
-                    bullets: [
-                        { icon: "fas fa-shield-alt", text: "100% verified diner reviews" },
-                        { icon: "fas fa-users", text: "50,000+ active community members" },
-                        { icon: "fas fa-camera", text: "Photo reviews and food stories" },
-                        { icon: "fas fa-trophy", text: "Top reviewer recognition program" }
-                    ],
-                    image_url: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800",
-                    image_alt: "Friends enjoying dinner together",
-                    btn: { label: "Read Reviews", url: "/listings.html" }
                 },
                 how_it_works: {
                     overline: "Simple Process",
                     title: "How Catering Menu Works",
-                    subtitle: "Finding the perfect restaurant is just three simple steps away.",
+                    subtitle: "Booking the ideal catering for your event is effortless in three simple steps.",
                     steps: [
-                        { icon: "fas fa-search", title: "Browse & Discover", text: "Explore our curated collection of top-rated restaurants. Filter by cuisine, location, or rating to find exactly what you crave." },
-                        { icon: "fas fa-star", title: "Read Real Reviews", text: "Dive into authentic reviews from verified diners. See ratings, photos, and detailed experiences before making your choice." },
-                        { icon: "fas fa-book-open", title: "Reserve & Enjoy", text: "Connect directly with your chosen restaurant. Get directions, view menus, and plan your perfect dining experience." }
+                        { icon: "fas fa-search", title: "Browse & Discover", text: "Explore top-rated caterers. Filter by cuisine, event type, or guest capacity to find your ideal match." },
+                        { icon: "fas fa-book-open", title: "Explore Menus & Reviews", text: "Browse detailed food menus, buffet items, and verified reviews from past event hosts." },
+                        { icon: "fas fa-phone-volume", title: "Connect & Plan", text: "Get in touch directly with the caterer, customize your menu, and create unforgettable moments." }
                     ]
                 },
+                featured: {
+                    overline: "Top Rated",
+                    title: "Featured Catering Services",
+                    subtitle: "Handpicked catering partners for weddings, corporate galas, and special celebrations.",
+                    view_all_btn: { label: "View All Caterers", url: "/listings" }
+                },
+                split_1: {
+                    overline: "Why Choose Us",
+                    title: "Curated Catering Teams for Every Occasion",
+                    text: "Every catering service on Catering Menu is handpicked by our culinary experts. We visit, taste, and verify kitchen standards and event execution before feature approval. Our rigorous selection process ensures your guests enjoy nothing short of culinary perfection.",
+                    bullets: [
+                        { icon: "fas fa-check-circle", text: "Handpicked & verified catering partners" },
+                        { icon: "fas fa-check-circle", text: "Customizable multi-course event menus" },
+                        { icon: "fas fa-check-circle", text: "Live food counters & buffet setups" },
+                        { icon: "fas fa-check-circle", text: "Authentic verified host reviews & photos" }
+                    ],
+                    image_url: "https://images.unsplash.com/photo-1555244162-803834f70033?w=800",
+                    image_alt: "Luxury catering buffet setup",
+                    btn: { label: "Learn More", url: "/about" }
+                },
+                split_2: {
+                    overline: "Community Driven",
+                    title: "Real Reviews from Real Event Hosts",
+                    text: "From weddings to corporate conferences, over 50,000 event hosts share authentic experiences, setup photos, and honest reviews. Make confident choices backed by genuine guest satisfaction scores.",
+                    bullets: [
+                        { icon: "fas fa-shield-alt", text: "100% verified host reviews" },
+                        { icon: "fas fa-users", text: "50,000+ active event planners" },
+                        { icon: "fas fa-camera", text: "Photos of real buffets & live counters" },
+                        { icon: "fas fa-trophy", text: "Top caterer excellence recognition" }
+                    ],
+                    image_url: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800",
+                    image_alt: "Guests enjoying catering at celebration",
+                    btn: { label: "Browse Reviews", url: "/listings" }
+                },
                 cta: {
-                    title: "Own a Restaurant?",
-                    text: "Join Catering Menu and reach thousands of food enthusiasts. List your restaurant for free and let diners discover your culinary excellence.",
-                    btn: { label: "Get Listed Today", url: "/get-listed.html" }
+                    title: "Own a Catering Business?",
+                    text: "Join Catering Menu and connect with thousands of event organizers, wedding planners, and corporate hosts looking for exceptional food services.",
+                    btn: { label: "List Your Business Today", url: "/get-listed" }
                 }
             },
             about: {
                 hero: {
                     title: "About Catering Menu",
-                    subtitle: "We are passionate about connecting people with unforgettable dining experiences."
+                    subtitle: "Connecting event hosts, wedding planners, and families with unforgettable catering experiences and verified food menus."
                 },
-                mission: {
-                    title: "Our Mission",
-                    text: "To empower every food lover with the tools, insights, and community they need to discover restaurants that truly delight. We believe every meal should be an experience worth remembering, and our platform is designed to make finding that perfect spot effortless and enjoyable."
+                story: {
+                    overline: "Our Story",
+                    title: "Born from a Passion for Unforgettable Celebrations",
+                    paragraphs: [
+                        "Planning an event is a labor of love, but finding reliable catering with clear pricing, genuine food photos, and authentic reviews used to be frustratingly opaque. In 2024, Catering Menu was founded with a singular purpose: to bring complete transparency, culinary artistry, and peace of mind to event hosts everywhere.",
+                        "Today, Catering Menu connects thousands of brides, event directors, family party hosts, and corporate organizers with handpicked, verified catering specialists. Whether you need a 5-course plated banquet for 500 guests or an artisanal food truck for an intimate backyard gathering, we make culinary discovery effortless and inspired."
+                    ],
+                    badge_card: {
+                        title: "Built for Caterers & Event Hosts",
+                        text: "Every catering profile features verified menus, direct high-resolution food presentation photos, transparent pricing tiers, and direct contact options — zero middleman commissions.",
+                        icon: "fas fa-award"
+                    }
                 },
-                vision: {
-                    title: "Our Vision",
-                    text: "To become the world's most trusted and comprehensive restaurant discovery platform, where authenticity, quality, and community come together to redefine how people explore food. We envision a future where no great restaurant goes unnoticed and no diner settles for less."
+                pillars: {
+                    overline: "Core Values",
+                    title: "What Drives Catering Menu",
+                    subtitle: "Our guiding principles ensure excellence at every banquet table and private celebration.",
+                    items: [
+                        { icon: "fas fa-award", title: "Curated Culinary Excellence", text: "We do not accept just anyone. Every caterer undergoes inspection for culinary standards, food safety hygiene, and verified event execution." },
+                        { icon: "fas fa-book-open", title: "Complete Menu Transparency", text: "Browse multi-course menus, dietary accommodations (halal, kosher, vegan, gluten-free), live counter options, and price ranges upfront." },
+                        { icon: "fas fa-shield-alt", title: "Authentic Host Feedback", text: "Every review is vetted to reflect real client experiences, helping you select a culinary partner you can trust implicitly." },
+                        { icon: "fas fa-handshake", title: "Bespoke Event Connections", text: "Directly communicate with caterers, schedule tastings, customize dishes, and secure your event dates with complete confidence." }
+                    ]
+                },
+                difference: {
+                    overline: "The Difference",
+                    title: "Why Hosts & Caterers Choose Us",
+                    rows: [
+                        { feature: "Verified Menus & Direct Pricing", catering_menu: "Transparent multi-course menus with dish photos", traditional: "Hidden pricing, generic contact forms only" },
+                        { feature: "Dedicated Branded Subdomain", catering_menu: "Every caterer gets a custom subdomain link", traditional: "Buried inside generic listing portals" },
+                        { feature: "Live Map & Service Areas", catering_menu: "GPS mapping with specific multi-branch radii", traditional: "Vague city-wide descriptions" },
+                        { feature: "Direct Host Inquiries", catering_menu: "Direct client connection with 0% commissions", traditional: "High intermediary booking fees" }
+                    ]
                 },
                 stats: [
-                    { number: "2,500+", label: "Restaurants Listed" },
-                    { number: "15,000+", label: "Reviews Submitted" },
-                    { number: "50,000+", label: "Happy Diners" },
+                    { number: "2,500+", label: "Caterers Listed" },
+                    { number: "15,000+", label: "Curated Menus" },
+                    { number: "50,000+", label: "Happy Event Guests" },
                     { number: "120+", label: "Cities Covered" }
                 ],
                 cta: {
-                    title: "Own a Restaurant?",
-                    text: "Join Catering Menu and reach thousands of food enthusiasts.",
-                    btn: { label: "Get Listed Today", url: "/get-listed.html" }
+                    title: "Own a Catering Business?",
+                    text: "Join Catering Menu today to showcase your culinary artistry, receive your own branded subdomain, and connect with high-intent event organizers.",
+                    btn: { label: "List Your Catering Business", url: "/get-listed" }
                 }
             },
             contact: {
@@ -1609,7 +1714,8 @@
                     email_placeholder: "Your Email Address",
                     subject_placeholder: "Subject",
                     message_placeholder: "Your Message",
-                    submit_btn: { label: "Send Message", url: "#" }
+                    submit_btn: { label: "Send Message", url: "#" },
+                    success_msg: "Thank you! Your message has been received."
                 },
                 info: {
                     title: "Contact Information",
@@ -1617,43 +1723,58 @@
                         { icon: "fas fa-map-marker-alt", label: "Address", value: "123 Gourmet Avenue, Culinary District, NY 10001" },
                         { icon: "fas fa-phone-alt", label: "Phone", value: "+1 (555) 987-6543" },
                         { icon: "fas fa-envelope", label: "Email", value: "hello@catering-menu.com" },
-                        { icon: "fas fa-clock", label: "Hours", value: "Mon - Fri: 9:00 AM - 6:00 PM" }
+                        { icon: "fas fa-clock", label: "Hours", value: "Mon – Fri: 9:00 AM – 6:00 PM" }
                     ]
                 }
             },
             faqs: {
                 hero: {
                     title: "Frequently Asked Questions",
-                    subtitle: "Everything you need to know about using Catering Menu."
+                    subtitle: "Everything you need to know about finding caterers, booking events, and listing your business on Catering Menu."
                 },
-                items: [
-                    { question: "How do I list my restaurant on Catering Menu?", answer: "Simply navigate to the Get Listed page and fill out the submission form with your restaurant details. Our team will review your submission and approve it within 24-48 hours." },
-                    { question: "Is it free to list my restaurant?", answer: "Yes! Listing your restaurant on Catering Menu is completely free. We believe in making restaurant discovery accessible to everyone." },
-                    { question: "How do reviews work on Catering Menu?", answer: "Anyone can leave a review for a restaurant they have visited. Reviews include a star rating and a written experience." },
-                    { question: "Can I edit my restaurant listing after submission?", answer: "Yes. After your listing is approved, you can contact our support team to request edits to your restaurant information, menu, photos, or other details." },
-                    { question: "How do I report an incorrect listing?", answer: "If you notice incorrect information about a restaurant, please use the Contact page to send us the details. Our team will investigate and update the listing promptly." }
+                categories: [
+                    { id: "all", label: "All Questions" },
+                    { id: "hosts", label: "Event Hosts & Planning" },
+                    { id: "menus", label: "Menu & Dietary Requirements" },
+                    { id: "caterers", label: "Caterer Listings & Subdomains" }
+                ],
+                faq_items: [
+                    { category: "hosts", question: "How do I find and choose the right caterer for my event?", answer: "Browse our Listings Directory to explore approved caterers. Filter by cuisine, guest capacity, and rating. Each caterer profile features their full multi-course menu, banquet setup photos, verified reviews, and service locations." },
+                    { category: "hosts", question: "How far in advance should I book my event catering?", answer: "For major events like weddings and corporate annual galas, we recommend booking 4 to 9 months in advance. For smaller celebrations or private dinners, 2 to 4 weeks is typically sufficient." },
+                    { category: "hosts", question: "Can I request a private food tasting before finalizing my booking?", answer: "Yes! Most premier caterers listed on Catering Menu offer menu tastings for weddings and large gatherings. You can coordinate tasting sessions directly with the caterer." },
+                    { category: "menus", question: "Do caterers accommodate special dietary requirements and food allergies?", answer: "Yes. Our catering partners cater to Vegetarian, Vegan, Gluten-Free, Halal, Kosher, Nut-Free, and Dairy-Free needs." },
+                    { category: "caterers", question: "How do I list my catering business on Catering Menu?", answer: "Navigate to the List Your Business page and fill out the submission form with your business name, specialty cuisines, banner photo, visual menu cards, and locations." },
+                    { category: "caterers", question: "Is it free to list my catering business?", answer: "Yes, listing your catering service on Catering Menu is completely free with zero broker commissions." }
                 ],
                 cta: {
-                    title: "Own a Restaurant?",
-                    text: "Join Catering Menu and reach thousands of food enthusiasts.",
-                    btn: { label: "Get Listed Today", url: "/get-listed.html" }
+                    title: "Own a Catering Business?",
+                    text: "Join Catering Menu today to showcase your culinary creations, get your own branded subdomain, and receive inquiries from thousands of event organizers.",
+                    btn: { label: "List Your Catering Business", url: "/get-listed" }
                 }
             },
             "get-listed": {
                 hero: {
-                    title: "List Your Restaurant",
-                    subtitle: "Join thousands of restaurants already on Catering Menu. Showcase your menu, gather reviews, and attract new customers."
+                    title: "List Your Catering Business",
+                    subtitle: "Join thousands of caterers already on Catering Menu. Showcase your event menus, gather host reviews, and attract bookings."
                 },
+                benefits: [
+                    { icon: "fas fa-bolt", title: "Free Lifetime Listing", text: "Get discovered by corporate planners, wedding organizers, and private event hosts with zero listing fees or hidden commissions." },
+                    { icon: "fas fa-globe", title: "Dedicated Branded Subdomain", text: "Receive your unique URL (e.g. your-name.catering-menu.com) to share on social media, business cards, and marketing brochures." },
+                    { icon: "fas fa-camera-retro", title: "Direct Menu & Gallery Cards", text: "Showcase visual menu cards, dish presentation photos, and multi-course buffet options directly above your profile description." }
+                ],
                 form: {
-                    title: "Submit Your Restaurant",
-                    name_label: "Restaurant Name",
-                    banner_label: "Banner Image URL",
-                    about_label: "About Your Restaurant",
-                    menu_label: "Direct Menu Text",
-                    days_label: "Opening Days & Hours",
-                    locations_label: "Location(s)",
-                    submit_btn: { label: "Submit for Review", url: "#" },
-                    success_msg: "Thank you! Your restaurant has been submitted for review. Our team will approve it shortly."
+                    title: "Submit Your Catering Business",
+                    name_label: "Catering Business Name *",
+                    cuisine_label: "Cuisine / Specialties *",
+                    price_label: "Pricing Tier",
+                    banner_label: "Banner Cover Image",
+                    gallery_label: "Direct Menu Cards & Showcase Gallery",
+                    about_label: "About Your Catering Business",
+                    menu_label: "Direct Menu Text & Visual Builder",
+                    days_label: "Day-wise Operating / Booking Hours",
+                    locations_label: "Service Locations & Branches",
+                    submit_btn: { label: "Submit Catering Listing", url: "#" },
+                    success_msg: "Thank you! Your catering business has been submitted for review. Our team will approve it shortly."
                 }
             },
             listings: {
@@ -1663,38 +1784,61 @@
                     subtitle: "Discover top-rated wedding caterers, corporate banquets, live counter specialists, and bespoke menus tailored for your celebrations."
                 },
                 search_placeholder: "Search caterers, cuisines, or locations...",
-                filters: { cuisine_label: "Cuisine", price_label: "Price Range", rating_label: "Rating", clear_btn: "Reset" },
-                empty_state: { icon: "fas fa-search", title: "No caterers found", text: "Try adjusting your filters or search term." },
-                results_text: "catering services found"
+                filters: { cuisine_label: "Cuisines", service_label: "Event & Service", rating_label: "Host Rating", clear_btn: "Reset" },
+                empty_state: { icon: "fas fa-search", title: "No Catering Services Found", text: "Try adjusting your search term, clearing selected filters, or exploring all cuisines." },
+                results_text: "caterers available"
             },
             privacy: {
-                hero: { title: "Privacy Policy" },
-                content: "At Catering Menu, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and use our services.\n\nWe collect personal information such as your name, email address, and dining preferences only when you voluntarily provide it. This information is used to personalize your experience, improve our platform, and communicate with you about restaurant recommendations, updates, and promotions.\n\nWe do not sell, trade, or rent your personal information to third parties. We implement appropriate security measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction.\n\nOur website uses cookies to enhance your browsing experience. You can choose to disable cookies through your browser settings. By using Catering Menu, you consent to our Privacy Policy."
+                hero: { title: "Privacy Policy", subtitle: "How we collect, protect, and handle your data with complete transparency." },
+                last_updated: "September 2026",
+                sections: [
+                    { title: "1. Introduction & Scope", content: "Catering Menu (\"we,\" \"us,\" or \"our\") is committed to protecting your privacy and personal data. This Privacy Policy explains our practices regarding the collection, use, and disclosure of information when you access or use https://www.catering-menu.com, its caterer subdomains, and related web services." },
+                    { title: "2. Information We Collect", content: "We collect information voluntarily provided when you submit contact inquiries, register a catering business, leave reviews, or search our directory. This may include your name, email address, phone number, event preferences, and business details." },
+                    { title: "3. How We Use Your Information", content: "We use your data strictly to connect you with relevant catering services, process vendor approvals, display authentic client reviews, deliver customer support, prevent fraud, and continuously enhance our platform usability." },
+                    { title: "4. Cookies and Web Analytics", content: "Catering Menu uses essential cookies and local browser storage to save your navigation preferences, filter states, and enhance security." },
+                    { title: "5. Data Security & Retention", content: "We employ industry-standard encryption, SSL protocols, and restricted cloud access controls to safeguard your data against unauthorized access." },
+                    { title: "6. Your Legal Rights (GDPR / CCPA)", content: "Depending on your jurisdiction, you have the right to access, rectify, or request the erasure of your personal information stored on Catering Menu." }
+                ],
+                contact_box: { title: "Catering Menu Privacy Team", email: "privacy@catering-menu.com", website: "https://www.catering-menu.com" }
             },
             terms: {
-                hero: { title: "Terms of Service" },
-                content: "Welcome to Catering Menu. By accessing or using our website and services, you agree to be bound by these Terms of Service.\n\nCatering Menu provides a platform for discovering restaurants, reading reviews, and sharing dining experiences. You may use our services only for lawful purposes and in accordance with these Terms.\n\nYou are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. Reviews submitted to Catering Menu must be based on genuine personal experiences. Fake, misleading, or defamatory reviews are strictly prohibited.\n\nRestaurant owners are responsible for the accuracy of their listed information. Catering Menu reserves the right to modify, suspend, or discontinue any part of the service at any time without prior notice."
+                hero: { title: "Terms of Service", subtitle: "Platform usage agreements, caterer guidelines, and user responsibilities." },
+                last_updated: "September 2026",
+                sections: [
+                    { title: "1. Acceptance of Terms", content: "By accessing or using Catering Menu (including all branded caterer subdomains), you agree to be bound by these Terms of Service." },
+                    { title: "2. Directory Services & Booking Disclaimers", content: "Catering Menu operates as a discovery directory and showcase platform connecting event organizers with third-party catering businesses. All contracts, menu agreements, deposits, and service commitments are established directly between the host and the caterer." },
+                    { title: "3. Caterer Listing Responsibilities", content: "Caterers registering on Catering Menu guarantee that all business details, licensing, food hygiene certifications, menu prices, and photo assets submitted are accurate and current." },
+                    { title: "4. Customer Reviews & Content Guidelines", content: "Reviews and ratings must represent genuine personal experiences from verified hosts or event guests." },
+                    { title: "5. Intellectual Property", content: "The Catering Menu name, brand assets, proprietary software, design styling, and code are the exclusive intellectual property of Catering Menu." }
+                ],
+                contact_box: { title: "Catering Menu Legal & Support", email: "legal@catering-menu.com", website: "https://www.catering-menu.com" }
             },
             disclaimer: {
-                hero: { title: "Disclaimer" },
-                content: "The information provided on Catering Menu is for general informational purposes only. While we strive to keep restaurant information accurate and up-to-date, we make no representations or warranties of any kind about the completeness, accuracy, reliability, or availability of the information contained on this platform.\n\nRestaurant listings, menus, pricing, and hours of operation are provided by the restaurants themselves and may change without notice. Catering Menu does not guarantee the quality of food, service, or dining experience at any listed restaurant.\n\nUser reviews reflect individual opinions and do not represent the views of Catering Menu. We encourage diners to verify all information directly with the restaurant before visiting. Catering Menu is not responsible for any loss or damage incurred as a result of relying on information presented on this website."
+                hero: { title: "Allergen & Service Disclaimer", subtitle: "Important food safety notices, dietary information, and liability guidelines." },
+                last_updated: "September 2026",
+                sections: [
+                    { title: "1. Food Safety & Allergen Notice", content: "Food menus, dish descriptions, and dietary labels (e.g., Gluten-Free, Nut-Free, Halal, Kosher, Vegan) displayed on Catering Menu are provided directly by listed caterers. Cross-contamination in commercial kitchens is possible. Event hosts and guests with severe food allergies must communicate directly with their selected caterer prior to ordering." },
+                    { title: "2. Pricing & Availability Disclaimers", content: "Prices, minimum guest headcounts, and seasonal menu offerings are subject to change without prior notice by individual catering businesses." },
+                    { title: "3. Independent Business Verification", content: "While Catering Menu inspects vendor submissions during initial review, hosts are strongly encouraged to verify local food handling permits, commercial insurance, and health department inspection grades independently." }
+                ],
+                contact_box: { title: "Food Safety Inquiries", email: "support@catering-menu.com", website: "https://www.catering-menu.com" }
             },
             restaurant: {
-                welcome_title: "Welcome to",
-                menu_title: "Our Menu",
+                welcome_title: "About",
+                menu_title: "Our Catering Menu",
                 menu_toggle_file: "View Uploaded Menu",
                 menu_toggle_text: "View Text Menu",
-                info_title: "Restaurant Info",
-                hours_label: "Opening Days & Hours",
-                location_label: "Location(s)",
-                reviews_title: "Customer Reviews",
-                review_form_title: "Leave a Review",
+                info_title: "Catering Info",
+                hours_label: "Operating Hours",
+                location_label: "Kitchen & Service Locations",
+                reviews_title: "Host Reviews & Ratings",
+                review_form_title: "Leave a Review for this Caterer",
                 review_form_name: "Your Name",
                 review_form_rating: "Your Rating",
                 review_form_text: "Your Review",
                 review_form_btn: { label: "Submit Review", url: "#" },
                 review_success: "Your review has been submitted successfully!",
-                no_reviews: "No reviews yet. Be the first to share your experience!"
+                no_reviews: "No reviews yet. Be the first to share your experience with this caterer!"
             }
         };
 
@@ -2083,17 +2227,18 @@
             return wrap;
         }
 
-        // ── FAQ MANAGER ──
+        // ── FAQ MANAGER WITH CATEGORY SELECTOR ──
         function buildFaqManager(faqArray, onUpdate) {
             const wrap = document.createElement('div');
             wrap.className = 'cms-field-block';
             wrap.innerHTML = `
             <div class="cms-field-label">
-                <i class="fas fa-question-circle" style="color:var(--gold);"></i> Frequently Asked Questions
+                <i class="fas fa-question-circle" style="color:var(--gold);"></i> Frequently Asked Questions &amp; Answers
+                <span class="cms-field-hint">Manage questions, answers, and assign to category tabs</span>
             </div>
             <div class="faq-list-container"></div>
             <button type="button" class="btn-outline-gold add-faq-btn" style="margin-top:8px;">
-                <i class="fas fa-plus"></i> Add New FAQ
+                <i class="fas fa-plus"></i> Add New FAQ Item
             </button>
         `;
 
@@ -2104,22 +2249,35 @@
                 faqArray.forEach((item, idx) => {
                     const box = document.createElement('div');
                     box.className = 'cms-sub-box';
-                    box.style.marginBottom = '12px';
+                    box.style.marginBottom = '14px';
                     box.innerHTML = `
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                        <span style="color:var(--gold);font-weight:600;font-size:0.85rem;">Q${idx + 1}</span>
-                        <button type="button" class="btn-danger-sm del-faq-btn" title="Delete FAQ"><i class="fas fa-trash"></i></button>
+                        <span style="color:var(--gold);font-weight:700;font-size:0.88rem;">
+                            <i class="fas fa-question"></i> Question #${idx + 1}
+                        </span>
+                        <button type="button" class="btn-danger-sm del-faq-btn" title="Delete FAQ"><i class="fas fa-trash"></i> Delete</button>
                     </div>
-                    <div style="margin-bottom:8px;">
-                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Question</span>
-                        <input type="text" class="input-text faq-q" value="${escapeHtml(item.question || '')}" style="width:100%;">
+                    <div class="form-row" style="margin-bottom:10px;">
+                        <div style="max-width:220px;">
+                            <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Category ID</span>
+                            <input type="text" class="input-text faq-cat" value="${escapeHtml(item.category || 'hosts')}" placeholder="hosts / menus / caterers" style="width:100%;">
+                        </div>
+                        <div style="flex:1;">
+                            <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Question Text</span>
+                            <input type="text" class="input-text faq-q" value="${escapeHtml(item.question || '')}" placeholder="Enter question..." style="width:100%;">
+                        </div>
                     </div>
                     <div>
-                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Answer</span>
-                        <textarea class="input-textarea faq-a" rows="3" style="width:100%;">${escapeHtml(item.answer || '')}</textarea>
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Answer Text</span>
+                        <textarea class="input-textarea faq-a" rows="3" style="width:100%;" placeholder="Enter detailed answer...">${escapeHtml(item.answer || '')}</textarea>
                     </div>
                 `;
 
+                    box.querySelector('.faq-cat').addEventListener('input', (e) => {
+                        item.category = e.target.value.trim().toLowerCase();
+                        onUpdate(faqArray);
+                        syncRawJsonTextarea();
+                    });
                     box.querySelector('.faq-q').addEventListener('input', (e) => {
                         item.question = e.target.value;
                         onUpdate(faqArray);
@@ -2142,9 +2300,241 @@
             }
 
             wrap.querySelector('.add-faq-btn').addEventListener('click', () => {
-                faqArray.push({ question: 'New Question?', answer: 'Detailed answer here.' });
+                faqArray.push({ category: 'hosts', question: 'New Question?', answer: 'Detailed answer here.' });
                 renderList();
                 onUpdate(faqArray);
+                syncRawJsonTextarea();
+            });
+
+            renderList();
+            return wrap;
+        }
+
+        // ── FAQ CATEGORIES MANAGER ──
+        function buildCategoriesManager(catArray, onUpdate) {
+            const wrap = document.createElement('div');
+            wrap.className = 'cms-field-block';
+            wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-folder-open" style="color:var(--gold);"></i> FAQ Category Filter Tabs
+                <span class="cms-field-hint">Tab filters shown on the FAQs page</span>
+            </div>
+            <div class="cat-list-container"></div>
+            <button type="button" class="btn-outline-gold add-cat-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add Category Tab
+            </button>
+        `;
+
+            const listContainer = wrap.querySelector('.cat-list-container');
+
+            function renderList() {
+                listContainer.innerHTML = '';
+                catArray.forEach((cat, idx) => {
+                    const row = document.createElement('div');
+                    row.className = 'cms-sub-box';
+                    row.style.display = 'flex';
+                    row.style.gap = '12px';
+                    row.style.alignItems = 'center';
+                    row.style.marginBottom = '8px';
+                    row.innerHTML = `
+                    <div style="width:160px;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Category ID</span>
+                        <input type="text" class="input-text cat-id" value="${escapeHtml(cat.id || '')}" placeholder="e.g. hosts" style="width:100%;">
+                    </div>
+                    <div style="flex:1;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Display Label</span>
+                        <input type="text" class="input-text cat-lbl" value="${escapeHtml(cat.label || '')}" placeholder="e.g. Event Hosts & Planning" style="width:100%;">
+                    </div>
+                    <button type="button" class="btn-danger-sm del-cat-btn" title="Remove Category" style="margin-top:18px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+
+                    row.querySelector('.cat-id').addEventListener('input', (e) => {
+                        cat.id = e.target.value.trim().toLowerCase();
+                        onUpdate(catArray);
+                        syncRawJsonTextarea();
+                    });
+                    row.querySelector('.cat-lbl').addEventListener('input', (e) => {
+                        cat.label = e.target.value;
+                        onUpdate(catArray);
+                        syncRawJsonTextarea();
+                    });
+                    row.querySelector('.del-cat-btn').addEventListener('click', () => {
+                        catArray.splice(idx, 1);
+                        renderList();
+                        onUpdate(catArray);
+                        syncRawJsonTextarea();
+                    });
+
+                    listContainer.appendChild(row);
+                });
+            }
+
+            wrap.querySelector('.add-cat-btn').addEventListener('click', () => {
+                catArray.push({ id: `cat_${catArray.length + 1}`, label: 'New Category' });
+                renderList();
+                onUpdate(catArray);
+                syncRawJsonTextarea();
+            });
+
+            renderList();
+            return wrap;
+        }
+
+        // ── THE DIFFERENCE COMPARISON TABLE ROWS MANAGER ──
+        function buildDifferenceManager(rowsArray, onUpdate) {
+            const wrap = document.createElement('div');
+            wrap.className = 'cms-field-block';
+            wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-balance-scale" style="color:var(--gold);"></i> Comparison Table Rows
+                <span class="cms-field-hint">Feature differences between Catering Menu vs Traditional sites</span>
+            </div>
+            <div class="diff-list-container"></div>
+            <button type="button" class="btn-outline-gold add-diff-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add Comparison Row
+            </button>
+        `;
+
+            const listContainer = wrap.querySelector('.diff-list-container');
+
+            function renderList() {
+                listContainer.innerHTML = '';
+                rowsArray.forEach((row, idx) => {
+                    const box = document.createElement('div');
+                    box.className = 'cms-sub-box';
+                    box.style.marginBottom = '12px';
+                    box.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <span style="color:var(--gold);font-weight:700;font-size:0.85rem;">Row #${idx + 1}</span>
+                        <button type="button" class="btn-danger-sm del-diff-btn" title="Delete Row"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Feature Name / Aspect</span>
+                        <input type="text" class="input-text diff-feat" value="${escapeHtml(row.feature || '')}" placeholder="e.g. Verified Menus & Direct Pricing" style="width:100%;">
+                    </div>
+                    <div class="form-row">
+                        <div style="flex:1;">
+                            <span style="font-size:0.75rem;color:var(--gold);display:block;margin-bottom:4px;">Catering Menu (Our Advantage)</span>
+                            <input type="text" class="input-text diff-cm" value="${escapeHtml(row.catering_menu || '')}" placeholder="e.g. Transparent multi-course menus" style="width:100%;">
+                        </div>
+                        <div style="flex:1;">
+                            <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Traditional Portals</span>
+                            <input type="text" class="input-text diff-trad" value="${escapeHtml(row.traditional || '')}" placeholder="e.g. Hidden pricing, generic forms" style="width:100%;">
+                        </div>
+                    </div>
+                `;
+
+                    box.querySelector('.diff-feat').addEventListener('input', (e) => {
+                        row.feature = e.target.value;
+                        onUpdate(rowsArray);
+                        syncRawJsonTextarea();
+                    });
+                    box.querySelector('.diff-cm').addEventListener('input', (e) => {
+                        row.catering_menu = e.target.value;
+                        onUpdate(rowsArray);
+                        syncRawJsonTextarea();
+                    });
+                    box.querySelector('.diff-trad').addEventListener('input', (e) => {
+                        row.traditional = e.target.value;
+                        onUpdate(rowsArray);
+                        syncRawJsonTextarea();
+                    });
+                    box.querySelector('.del-diff-btn').addEventListener('click', () => {
+                        rowsArray.splice(idx, 1);
+                        renderList();
+                        onUpdate(rowsArray);
+                        syncRawJsonTextarea();
+                    });
+
+                    listContainer.appendChild(box);
+                });
+            }
+
+            wrap.querySelector('.add-diff-btn').addEventListener('click', () => {
+                rowsArray.push({
+                    feature: 'New Comparison Feature',
+                    catering_menu: 'Our feature advantage',
+                    traditional: 'Competitor downside'
+                });
+                renderList();
+                onUpdate(rowsArray);
+                syncRawJsonTextarea();
+            });
+
+            renderList();
+            return wrap;
+        }
+
+        // ── LEGAL POLICY SECTIONS / CLAUSES MANAGER ──
+        function buildLegalSectionsManager(sectionsArray, onUpdate) {
+            const wrap = document.createElement('div');
+            wrap.className = 'cms-field-block';
+            wrap.innerHTML = `
+            <div class="cms-field-label">
+                <i class="fas fa-file-contract" style="color:var(--gold);"></i> Policy Clauses &amp; Sections
+                <span class="cms-field-hint">Add, edit, or remove clauses displayed in the document</span>
+            </div>
+            <div class="legal-list-container"></div>
+            <button type="button" class="btn-outline-gold add-clause-btn" style="margin-top:8px;">
+                <i class="fas fa-plus"></i> Add New Clause / Section
+            </button>
+        `;
+
+            const listContainer = wrap.querySelector('.legal-list-container');
+
+            function renderList() {
+                listContainer.innerHTML = '';
+                sectionsArray.forEach((clause, idx) => {
+                    const box = document.createElement('div');
+                    box.className = 'cms-sub-box';
+                    box.style.marginBottom = '14px';
+                    box.innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <span style="color:var(--gold);font-weight:700;font-size:0.88rem;">
+                            <i class="fas fa-paragraph"></i> Section ${idx + 1}
+                        </span>
+                        <button type="button" class="btn-danger-sm del-clause-btn" title="Delete Section"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                    <div style="margin-bottom:8px;">
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Section Heading</span>
+                        <input type="text" class="input-text clause-title" value="${escapeHtml(clause.title || '')}" placeholder="e.g. 1. Introduction & Scope" style="width:100%;">
+                    </div>
+                    <div>
+                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Clause Content</span>
+                        <textarea class="input-textarea clause-content" rows="4" style="width:100%;" placeholder="Enter clause text...">${escapeHtml(clause.content || '')}</textarea>
+                    </div>
+                `;
+
+                    box.querySelector('.clause-title').addEventListener('input', (e) => {
+                        clause.title = e.target.value;
+                        onUpdate(sectionsArray);
+                        syncRawJsonTextarea();
+                    });
+                    box.querySelector('.clause-content').addEventListener('input', (e) => {
+                        clause.content = e.target.value;
+                        onUpdate(sectionsArray);
+                        syncRawJsonTextarea();
+                    });
+                    box.querySelector('.del-clause-btn').addEventListener('click', () => {
+                        sectionsArray.splice(idx, 1);
+                        renderList();
+                        onUpdate(sectionsArray);
+                        syncRawJsonTextarea();
+                    });
+
+                    listContainer.appendChild(box);
+                });
+            }
+
+            wrap.querySelector('.add-clause-btn').addEventListener('click', () => {
+                sectionsArray.push({
+                    title: `${sectionsArray.length + 1}. New Policy Clause`,
+                    content: 'Detailed clause text here.'
+                });
+                renderList();
+                onUpdate(sectionsArray);
                 syncRawJsonTextarea();
             });
 
@@ -2377,6 +2767,15 @@
                 if ('number' in first && 'label' in first) {
                     return buildStatsManager(arr, onUpdate);
                 }
+                if ('feature' in first && 'catering_menu' in first) {
+                    return buildDifferenceManager(arr, onUpdate);
+                }
+                if ('title' in first && 'content' in first) {
+                    return buildLegalSectionsManager(arr, onUpdate);
+                }
+                if ('id' in first && 'label' in first && !('value' in first)) {
+                    return buildCategoriesManager(arr, onUpdate);
+                }
                 if (('icon' in first && 'label' in first && 'value' in first) || ('label' in first && 'value' in first)) {
                     return buildContactInfoManager(arr, onUpdate);
                 }
@@ -2413,38 +2812,43 @@
             // Section metadata & order matching live website
             const SECTION_META = {
                 hero: { title: "HERO BANNER & HEADER", badge: "Live Website Top", icon: "fas fa-compass" },
-                featured: { title: "FEATURED RESTAURANTS SECTION", badge: "Our Selection Grid", icon: "fas fa-star" },
-                split_1: { title: "SPLIT SECTION 1 (WHY CHOOSE US)", badge: "Steak Image Right", icon: "fas fa-award" },
-                split_2: { title: "SPLIT SECTION 2 (COMMUNITY DRIVEN)", badge: "Chef Image Left", icon: "fas fa-users" },
-                how_it_works: { title: "HOW DINEVAULT WORKS", badge: "3 Simple Steps", icon: "fas fa-tasks" },
-                cta: { title: "CALL TO ACTION BANNER", badge: "Own a Restaurant? Banner", icon: "fas fa-bullhorn" },
-                mission: { title: "OUR MISSION", badge: "About Us", icon: "fas fa-bullseye" },
-                vision: { title: "OUR VISION", badge: "About Us", icon: "fas fa-eye" },
-                stats: { title: "IMPACT METRICS (BY THE NUMBERS)", badge: "4 Stat Counters", icon: "fas fa-chart-line" },
+                how_it_works: { title: "HOW CATERING MENU WORKS", badge: "3 Simple Steps", icon: "fas fa-tasks" },
+                featured: { title: "FEATURED CATERERS SECTION", badge: "Our Selection Grid", icon: "fas fa-star" },
+                split_1: { title: "SPLIT SECTION 1 (WHY CHOOSE US)", badge: "Catering Spread Image Right", icon: "fas fa-award" },
+                split_2: { title: "SPLIT SECTION 2 (COMMUNITY DRIVEN)", badge: "Celebration Image Left", icon: "fas fa-users" },
+                cta: { title: "CALL TO ACTION BANNER", badge: "Own a Business? Banner", icon: "fas fa-bullhorn" },
+                story: { title: "OUR STORY & HERITAGE", badge: "About Us Story", icon: "fas fa-book-reader" },
+                pillars: { title: "CORE VALUES & PILLARS", badge: "4 Value Cards", icon: "fas fa-gem" },
+                difference: { title: "THE DIFFERENCE (COMPARISON TABLE)", badge: "Why Choose Us Table", icon: "fas fa-balance-scale" },
+                stats: { title: "IMPACT METRICS (BY THE NUMBERS)", badge: "Stat Counters", icon: "fas fa-chart-line" },
+                categories: { title: "FAQ CATEGORIES TABS", badge: "Category Filter Tabs", icon: "fas fa-folder-open" },
+                faq_items: { title: "FREQUENTLY ASKED QUESTIONS", badge: "Accordion Questions", icon: "fas fa-question-circle" },
+                benefits: { title: "CATERER BENEFITS HIGHLIGHTS", badge: "Get Listed 3 Cards", icon: "fas fa-gift" },
                 form: { title: "INTERACTIVE FORM LABELS", badge: "Submission Form", icon: "fas fa-envelope-open-text" },
                 info: { title: "CONTACT DETAILS & ADDRESS", badge: "Sidebar Info Card", icon: "fas fa-address-card" },
-                items: { title: "FREQUENTLY ASKED QUESTIONS", badge: "FAQs Accordion", icon: "fas fa-question-circle" },
                 filters: { title: "SEARCH & SIDEBAR FILTERS", badge: "Directory Filters", icon: "fas fa-sliders-h" },
                 empty_state: { title: "EMPTY SEARCH RESULTS MESSAGE", badge: "Search Feedback", icon: "fas fa-search" },
-                content: { title: "DOCUMENT BODY CONTENT", badge: "Full Document Text", icon: "fas fa-file-contract" }
+                last_updated: { title: "LAST UPDATED DATE", badge: "Legal Header", icon: "fas fa-calendar-alt" },
+                sections: { title: "POLICY CLAUSES & SECTIONS", badge: "Full Document Clauses", icon: "fas fa-file-contract" },
+                contact_box: { title: "LEGAL CONTACT INFO CARD", badge: "Policy Footer Card", icon: "fas fa-envelope" }
             };
 
             // Determine correct visual order per page
             let order = [];
             if (pageName === 'home') {
-                order = ['hero', 'featured', 'split_1', 'split_2', 'how_it_works', 'cta'];
+                order = ['hero', 'how_it_works', 'featured', 'split_1', 'split_2', 'cta'];
             } else if (pageName === 'about') {
-                order = ['hero', 'mission', 'vision', 'stats', 'cta'];
+                order = ['hero', 'story', 'pillars', 'difference', 'stats', 'cta'];
             } else if (pageName === 'contact') {
                 order = ['hero', 'form', 'info'];
             } else if (pageName === 'faqs') {
-                order = ['hero', 'items', 'cta'];
+                order = ['hero', 'categories', 'faq_items', 'cta'];
             } else if (pageName === 'get-listed') {
-                order = ['hero', 'form'];
+                order = ['hero', 'benefits', 'form'];
             } else if (pageName === 'listings') {
                 order = ['hero', 'search_placeholder', 'results_text', 'filters', 'empty_state'];
             } else if (pageName === 'privacy' || pageName === 'terms' || pageName === 'disclaimer') {
-                order = ['hero', 'content'];
+                order = ['hero', 'last_updated', 'sections', 'contact_box'];
             }
 
             // Special dedicated grouping for Restaurant Details page
@@ -2582,36 +2986,89 @@
                             );
                             bodyEl.appendChild(arrCtrl);
                         }
-                        // 3. Button object { label, url }
+                        // 3. Button object or nested structured object
                         else if (typeof subVal === 'object' && subVal !== null && !Array.isArray(subVal)) {
-                            const btnBlock = document.createElement('div');
-                            btnBlock.className = 'cms-field-block';
-                            btnBlock.innerHTML = `
-                            <div class="cms-field-label">
-                                <i class="fas fa-link" style="color:var(--gold);"></i> ${escapeHtml(subKey.replace(/_/g, ' ').toUpperCase())} BUTTON
-                            </div>
-                            <div class="form-row">
-                                <div style="flex:1;">
-                                    <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Button Label</span>
-                                    <input type="text" class="input-text btn-lbl" value="${escapeHtml(subVal.label || '')}" placeholder="Button Text" style="width:100%;">
+                            if ('label' in subVal && 'url' in subVal && Object.keys(subVal).length <= 3) {
+                                const btnBlock = document.createElement('div');
+                                btnBlock.className = 'cms-field-block';
+                                btnBlock.innerHTML = `
+                                <div class="cms-field-label">
+                                    <i class="fas fa-link" style="color:var(--gold);"></i> ${escapeHtml(subKey.replace(/_/g, ' ').toUpperCase())} BUTTON
                                 </div>
-                                <div style="flex:1.5;">
-                                    <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Button URL / Link</span>
-                                    <input type="text" class="input-text btn-url" value="${escapeHtml(subVal.url || '')}" placeholder="/page.html or #id" style="width:100%;">
+                                <div class="form-row">
+                                    <div style="flex:1;">
+                                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Button Label</span>
+                                        <input type="text" class="input-text btn-lbl" value="${escapeHtml(subVal.label || '')}" placeholder="Button Text" style="width:100%;">
+                                    </div>
+                                    <div style="flex:1.5;">
+                                        <span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">Button URL / Link</span>
+                                        <input type="text" class="input-text btn-url" value="${escapeHtml(subVal.url || '')}" placeholder="/page.html or #id" style="width:100%;">
+                                    </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
 
-                            btnBlock.querySelector('.btn-lbl').addEventListener('input', (e) => {
-                                subVal.label = e.target.value;
-                                syncRawJsonTextarea();
-                            });
-                            btnBlock.querySelector('.btn-url').addEventListener('input', (e) => {
-                                subVal.url = e.target.value;
-                                syncRawJsonTextarea();
-                            });
+                                btnBlock.querySelector('.btn-lbl').addEventListener('input', (e) => {
+                                    subVal.label = e.target.value;
+                                    syncRawJsonTextarea();
+                                });
+                                btnBlock.querySelector('.btn-url').addEventListener('input', (e) => {
+                                    subVal.url = e.target.value;
+                                    syncRawJsonTextarea();
+                                });
 
-                            bodyEl.appendChild(btnBlock);
+                                bodyEl.appendChild(btnBlock);
+                            } else {
+                                // Dedicated nested structured object card (e.g. badge_card, contact_box, filters)
+                                const subBox = document.createElement('div');
+                                subBox.className = 'cms-sub-box';
+                                subBox.style.marginBottom = '14px';
+                                subBox.innerHTML = `
+                                    <div style="font-weight:700;color:var(--gold);font-size:0.88rem;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;display:flex;align-items:center;gap:8px;">
+                                        <i class="fas fa-cube"></i> ${escapeHtml(subKey.replace(/_/g, ' '))}
+                                    </div>
+                                    <div class="nested-fields-wrap"></div>
+                                `;
+                                const nWrap = subBox.querySelector('.nested-fields-wrap');
+                                for (const nKey in subVal) {
+                                    const nVal = subVal[nKey];
+                                    const fDiv = document.createElement('div');
+                                    fDiv.style.marginBottom = '10px';
+                                    const isLong = String(nVal).length > 70 || nKey.includes('text') || nKey.includes('desc') || nKey.includes('paragraph');
+                                    fDiv.innerHTML = `<span style="font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:4px;">${escapeHtml(nKey.replace(/_/g, ' ').toUpperCase())}</span>`;
+
+                                    if (nKey === 'icon') {
+                                        const iconWrap = document.createElement('div');
+                                        iconWrap.style.display = 'flex';
+                                        iconWrap.style.alignItems = 'center';
+                                        iconWrap.style.gap = '8px';
+                                        iconWrap.innerHTML = `
+                                            <i class="${escapeHtml(nVal || 'fas fa-star')} n-icon-prev" style="color:var(--gold);font-size:1.1rem;width:24px;text-align:center;"></i>
+                                            <input type="text" class="input-text" value="${escapeHtml(nVal || '')}" placeholder="fas fa-star" style="flex:1;">
+                                        `;
+                                        const nInp = iconWrap.querySelector('input');
+                                        const nPrev = iconWrap.querySelector('.n-icon-prev');
+                                        nInp.addEventListener('input', (e) => {
+                                            subVal[nKey] = e.target.value.trim();
+                                            nPrev.className = (subVal[nKey] || 'fas fa-star') + ' n-icon-prev';
+                                            syncRawJsonTextarea();
+                                        });
+                                        fDiv.appendChild(iconWrap);
+                                    } else {
+                                        const nInp = isLong ? document.createElement('textarea') : document.createElement('input');
+                                        nInp.className = isLong ? 'input-textarea' : 'input-text';
+                                        nInp.style.width = '100%';
+                                        if (isLong) nInp.rows = 3;
+                                        nInp.value = nVal || '';
+                                        nInp.addEventListener('input', (e) => {
+                                            subVal[nKey] = e.target.value;
+                                            syncRawJsonTextarea();
+                                        });
+                                        fDiv.appendChild(nInp);
+                                    }
+                                    nWrap.appendChild(fDiv);
+                                }
+                                bodyEl.appendChild(subBox);
+                            }
                         }
                         // 4. Textarea fields (long text)
                         else if (String(subVal).length > 70 || subKey === 'text' || subKey === 'subtitle' || subKey.includes('message') || subKey.includes('desc')) {

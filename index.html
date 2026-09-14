@@ -328,19 +328,31 @@
                     }
                 }
 
-                if (cms.how_it_works && Array.isArray(cms.how_it_works.steps)) {
-                    document.getElementById('hiwGrid').innerHTML = cms.how_it_works.steps.map(s => `
-                        <div class="hiw-card glass">
-                            <div class="hiw-icon"><i class="${escapeHtml(s.icon)}"></i></div>
-                            <h3>${escapeHtml(s.title)}</h3>
-                            <p>${escapeHtml(s.text)}</p>
-                        </div>
-                    `).join('');
+                if (cms.how_it_works) {
+                    if (cms.how_it_works.overline) document.getElementById('hiwOverline').textContent = cms.how_it_works.overline;
+                    if (cms.how_it_works.title) document.getElementById('hiwTitle').textContent = cms.how_it_works.title;
+                    if (cms.how_it_works.subtitle) document.getElementById('hiwSubtitle').textContent = cms.how_it_works.subtitle;
+                    if (Array.isArray(cms.how_it_works.steps) && cms.how_it_works.steps.length > 0) {
+                        document.getElementById('hiwGrid').innerHTML = cms.how_it_works.steps.map(s => `
+                            <div class="hiw-card glass">
+                                <div class="hiw-icon"><i class="${escapeHtml(s.icon)}"></i></div>
+                                <h3>${escapeHtml(s.title)}</h3>
+                                <p>${escapeHtml(s.text)}</p>
+                            </div>
+                        `).join('');
+                    }
                 }
 
                 if (cms.cta) {
                     if (cms.cta.title) document.getElementById('ctaTitle').textContent = cms.cta.title;
                     if (cms.cta.text) document.getElementById('ctaText').textContent = cms.cta.text;
+                    if (cms.cta.btn) {
+                        const btn = document.getElementById('ctaBtn');
+                        if (btn) {
+                            btn.innerHTML = `${escapeHtml(cms.cta.btn.label || 'List Your Business Today')} <i class="fas fa-arrow-right"></i>`;
+                            if (cms.cta.btn.url) btn.href = cms.cta.btn.url.replace(/\.html$/, '');
+                        }
+                    }
                 }
             } else {
                 renderHeader();

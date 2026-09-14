@@ -137,12 +137,11 @@
 
     <section class="section" style="padding: 40px 0 80px;">
         <div class="container">
-            <div class="faq-filter-tabs">
+            <div class="faq-filter-tabs" id="faqFilterTabs">
                 <button class="faq-tab-btn active" onclick="filterFaqCategory('all', this)">All Questions</button>
-                <button class="faq-tab-btn" onclick="filterFaqCategory('general', this)">General & Planning</button>
-                <button class="faq-tab-btn" onclick="filterFaqCategory('dietary', this)">Dietary & Menus</button>
-                <button class="faq-tab-btn" onclick="filterFaqCategory('booking', this)">Booking & Quotes</button>
-                <button class="faq-tab-btn" onclick="filterFaqCategory('caterers', this)">For Catering Businesses</button>
+                <button class="faq-tab-btn" onclick="filterFaqCategory('hosts', this)">Event Hosts &amp; Planning</button>
+                <button class="faq-tab-btn" onclick="filterFaqCategory('menus', this)">Menu &amp; Dietary</button>
+                <button class="faq-tab-btn" onclick="filterFaqCategory('caterers', this)">Caterer Listings</button>
             </div>
 
             <div class="faqs-list" id="faqsContainer">
@@ -357,9 +356,70 @@
             if (cms) {
                 if (cms.nav) renderHeader(cms.nav);
                 if (cms.footer) renderFooter(cms.footer);
+
+                // 1. Hero
                 if (cms.hero) {
                     if (cms.hero.title) document.getElementById('faqsHeroTitle').textContent = cms.hero.title;
                     if (cms.hero.subtitle) document.getElementById('faqsHeroSubtitle').textContent = cms.hero.subtitle;
+                }
+
+                // 2. Categories Tabs
+                if (Array.isArray(cms.categories) && cms.categories.length > 0) {
+                    const tabsEl = document.getElementById('faqFilterTabs');
+                    tabsEl.innerHTML = cms.categories.map((c, idx) => `
+                        <button class="faq-tab-btn ${idx === 0 ? 'active' : ''}" onclick="filterFaqCategory('${escapeHtml(c.id)}', this)">${escapeHtml(c.label)}</button>
+                    `).join('');
+                }
+
+                // 3. FAQ Items Accordion
+                if (Array.isArray(cms.faq_items) && cms.faq_items.length > 0) {
+                    const catMap = {};
+                    if (Array.isArray(cms.categories)) {
+                        cms.categories.forEach(c => {
+                            if (c.id !== 'all') catMap[c.id] = c.label;
+                        });
+                    }
+
+                    // Order categories as defined in cms.categories or unique from items
+                    const orderedCatKeys = (Array.isArray(cms.categories) && cms.categories.length > 0)
+                        ? cms.categories.filter(c => c.id !== 'all').map(c => c.id)
+                        : [...new Set(cms.faq_items.map(item => item.category || 'general'))];
+
+                    const container = document.getElementById('faqsContainer');
+                    container.innerHTML = orderedCatKeys.map(catKey => {
+                        const catTitle = catMap[catKey] || catKey.charAt(0).toUpperCase() + catKey.slice(1);
+                        const itemsInCat = cms.faq_items.filter(item => (item.category || 'general') === catKey);
+                        if (itemsInCat.length === 0) return '';
+                        return `
+                            <div class="faq-group" data-category="${escapeHtml(catKey)}">
+                                <h3 class="faq-category-header"><i class="fas fa-question-circle"></i> ${escapeHtml(catTitle)}</h3>
+                                ${itemsInCat.map(item => `
+                                    <div class="faq-item">
+                                        <button class="faq-question" onclick="toggleFaq(this)">
+                                            ${escapeHtml(item.question)}
+                                            <i class="fas fa-chevron-down"></i>
+                                        </button>
+                                        <div class="faq-answer">
+                                            <p>${escapeHtml(item.answer)}</p>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                // 4. CTA Banner
+                if (cms.cta) {
+                    if (cms.cta.title) document.getElementById('ctaTitle').textContent = cms.cta.title;
+                    if (cms.cta.text) document.getElementById('ctaText').textContent = cms.cta.text;
+                    if (cms.cta.btn) {
+                        const btn = document.getElementById('ctaBtn');
+                        if (btn) {
+                            btn.innerHTML = `${escapeHtml(cms.cta.btn.label || 'List Your Catering Business')} <i class="fas fa-arrow-right"></i>`;
+                            if (cms.cta.btn.url) btn.href = cms.cta.btn.url.replace(/\.html$/, '');
+                        }
+                    }
                 }
             } else {
                 renderHeader();

@@ -133,7 +133,7 @@
     <section class="page-hero" style="min-height:260px;">
         <div class="container">
             <h1 id="legalTitle">Terms of Service</h1>
-            <p>User guidelines, caterer listing conditions, and platform rules for Catering Menu.</p>
+            <p id="legalSubtitle">User guidelines, caterer listing conditions, and platform rules for Catering Menu.</p>
         </div>
     </section>
 
@@ -143,12 +143,13 @@
                 <div class="legal-card" id="legalContent">
                     <div class="legal-header-meta">
                         <span class="legal-badge"><i class="fas fa-file-contract"></i> User Agreement</span>
-                        <span><i class="far fa-calendar-alt"></i> Last Updated: September 2026</span>
+                        <span><i class="far fa-calendar-alt"></i> Last Updated: <span id="legalLastUpdated">September 2026</span></span>
                         <span><i class="far fa-clock"></i> 6 min read</span>
                     </div>
 
-                    <div class="legal-sec">
-                        <h2><i class="fas fa-handshake"></i> 1. Acceptance of Terms</h2>
+                    <div id="legalSectionsContainer">
+                        <div class="legal-sec">
+                            <h2><i class="fas fa-handshake"></i> 1. Acceptance of Terms</h2>
                         <p>By accessing or using <strong>Catering Menu</strong> (<code>catering-menu.com</code>, partner
                             subdomains, or mobile interfaces), you agree to be bound by these Terms of Service. If you
                             do not agree with any part of these terms, you must refrain from using our services.</p>
@@ -216,10 +217,12 @@
 
                     <div class="legal-sec">
                         <h2><i class="fas fa-envelope"></i> 6. Contact Information</h2>
-                        <p>For questions or concerns regarding these Terms of Service, please contact our Legal Team at
-                            <a href="mailto:legal@catering-menu.com"
-                                style="color:var(--gold-dark);font-weight:700;text-decoration:underline;">legal@catering-menu.com</a>.
-                        </p>
+                        <p>For questions or concerns regarding these Terms of Service, please contact our Legal Team:</p>
+                        <div class="contact-box" id="legalContactBox">
+                            <h3><i class="fas fa-headset"></i> Catering Menu Legal &amp; Support</h3>
+                            <p>Email: <a href="mailto:legal@catering-menu.com" style="color:#92400e;font-weight:700;text-decoration:underline;">legal@catering-menu.com</a></p>
+                            <p style="margin-top:4px;">Website: <a href="https://www.catering-menu.com" target="_blank" style="color:#92400e;font-weight:700;text-decoration:underline;">https://www.catering-menu.com</a></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -242,7 +245,7 @@
             if (cms) {
                 if (cms.nav) renderHeader(cms.nav);
                 if (cms.footer) renderFooter(cms.footer);
-                if (cms.hero && cms.hero.title) document.getElementById('legalTitle').textContent = cms.hero.title;
+                renderLegalDocument(cms);
             } else {
                 renderHeader();
                 renderFooter();

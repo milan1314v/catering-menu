@@ -113,14 +113,14 @@
                 <section class="menu-section">
                     <div class="menu-header">
                         <div class="menu-header-icon"><i class="fas fa-utensils"></i></div>
-                        <h2 class="stylish-title">Our Catering Menu</h2>
+                        <h2 class="stylish-title" id="menuTitleHeading">Our Catering Menu</h2>
                     </div>
                     <div id="menuToggleBar" class="menu-toggle" style="display:none;">
                         <button class="menu-toggle-btn active" id="menuTextBtn" onclick="showMenu('text')">
-                            View Text Menu
+                            <span id="menuTextBtnText">View Text Menu</span>
                         </button>
                         <button class="menu-toggle-btn" id="menuFileBtn" onclick="showMenu('file')">
-                            View Uploaded Menu
+                            <span id="menuFileBtnText">View Uploaded Menu</span>
                         </button>
                     </div>
                     <div id="menuTextView" class="menu-content">
@@ -143,7 +143,7 @@
                 <section class="location-section">
                     <div class="menu-header">
                         <div class="menu-header-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <h2 class="stylish-title">Location &amp; Service Areas</h2>
+                        <h2 class="stylish-title" id="locationTitleHeading">Location &amp; Service Areas</h2>
                     </div>
                     <div class="location-grid">
                         <div class="location-map" id="locationMap"></div>
@@ -170,9 +170,9 @@
 
                 <!-- REVIEWS -->
                 <section style="padding:0 0 60px;">
-                    <h2 class="stylish-title" style="font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:24px;">Client Reviews &amp; Experiences</h2>
+                    <h2 class="stylish-title" id="reviewsTitleHeading" style="font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:24px;">Host Reviews &amp; Ratings</h2>
                     <div id="reviewSuccessMsg" class="success-message" style="display:none;">
-                        Your review has been submitted successfully!
+                        <span id="reviewSuccessText">Your review has been submitted successfully!</span>
                     </div>
                     <div class="reviews-list" id="reviewsList">
                         <!-- Reviews list -->
@@ -180,15 +180,15 @@
 
                     <!-- REVIEW FORM -->
                     <div style="margin-top:40px;">
-                        <h3 class="stylish-title" style="font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:20px;">Share Your Experience</h3>
+                        <h3 class="stylish-title" id="reviewFormHeading" style="font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:20px;">Leave a Review for this Caterer</h3>
                         <form id="reviewForm" class="get-listed-form glass" style="max-width:100%;">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Your Name</label>
+                                    <label id="reviewNameLabel">Your Name</label>
                                     <input type="text" id="reviewName" required placeholder="Your Name">
                                 </div>
                                 <div class="form-group">
-                                    <label>Your Rating</label>
+                                    <label id="reviewRatingLabel">Your Rating</label>
                                     <select id="reviewRating" required>
                                         <option value="5">5 Stars</option>
                                         <option value="4">4 Stars</option>
@@ -199,7 +199,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Your Review</label>
+                                <label id="reviewTextLabel">Your Review</label>
                                 <textarea id="reviewText" required
                                     placeholder="Write your honest review here..."></textarea>
                             </div>
@@ -214,20 +214,20 @@
             <!-- SIDEBAR -->
             <div class="rest-sidebar">
                 <div class="sidebar-card glass">
-                    <h3 class="stylish-title" style="font-size:1.2rem;font-weight:700;"><i class="fas fa-info-circle"></i> Caterer Info</h3>
+                    <h3 class="stylish-title" id="sidebarInfoTitle" style="font-size:1.2rem;font-weight:700;"><i class="fas fa-info-circle"></i> Caterer Info</h3>
                     <div style="margin-top:16px;">
-                        <h4
+                        <h4 id="sidebarHoursHeading"
                             style="font-size:0.82rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;">
-                            Opening Days &amp; Hours
+                            Operating Hours
                         </h4>
                         <div id="sidebarHoursList">
                             <!-- Dynamic days -->
                         </div>
                     </div>
                     <div style="margin-top:24px;">
-                        <h4
+                        <h4 id="sidebarLocHeading"
                             style="font-size:0.82rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;">
-                            Service Locations &amp; Kitchens
+                            Kitchen &amp; Service Locations
                         </h4>
                         <p id="sidebarLocationsText" style="line-height:1.6;color:var(--text-muted);font-size:0.95rem;"></p>
                     </div>
@@ -525,10 +525,56 @@
 
             document.getElementById('breadcrumbName').textContent = rest.name;
             document.getElementById('restName').textContent = rest.name;
-            document.getElementById('welcomeTitle').textContent = `About ${rest.name} Catering`;
+            const welcomePrefix = (cms && cms.welcome_title) ? cms.welcome_title : 'About';
+            document.getElementById('welcomeTitle').textContent = `${welcomePrefix} ${rest.name} Catering`;
             document.getElementById('locCardName').textContent = rest.name;
             document.getElementById('restAbout').textContent = rest.about_text || '';
             if (rest.banner_url) document.getElementById('restBanner').src = rest.banner_url;
+
+            // Apply dynamic CMS labels
+            if (cms) {
+                if (cms.menu_title && document.getElementById('menuTitleHeading')) {
+                    document.getElementById('menuTitleHeading').textContent = cms.menu_title;
+                }
+                if (cms.menu_toggle_text && document.getElementById('menuTextBtnText')) {
+                    document.getElementById('menuTextBtnText').textContent = cms.menu_toggle_text;
+                }
+                if (cms.menu_toggle_file && document.getElementById('menuFileBtnText')) {
+                    document.getElementById('menuFileBtnText').textContent = cms.menu_toggle_file;
+                }
+                if (cms.info_title && document.getElementById('sidebarInfoTitle')) {
+                    document.getElementById('sidebarInfoTitle').innerHTML = `<i class="fas fa-info-circle"></i> ${escapeHtml(cms.info_title)}`;
+                }
+                if (cms.hours_label && document.getElementById('sidebarHoursHeading')) {
+                    document.getElementById('sidebarHoursHeading').textContent = cms.hours_label;
+                }
+                if (cms.location_label && document.getElementById('sidebarLocHeading')) {
+                    document.getElementById('sidebarLocHeading').textContent = cms.location_label;
+                }
+                if (cms.reviews_title && document.getElementById('reviewsTitleHeading')) {
+                    document.getElementById('reviewsTitleHeading').textContent = cms.reviews_title;
+                }
+                if (cms.review_form_title && document.getElementById('reviewFormHeading')) {
+                    document.getElementById('reviewFormHeading').textContent = cms.review_form_title;
+                }
+                if (cms.review_form_name && document.getElementById('reviewNameLabel')) {
+                    document.getElementById('reviewNameLabel').textContent = cms.review_form_name;
+                    document.getElementById('reviewName').placeholder = cms.review_form_name;
+                }
+                if (cms.review_form_rating && document.getElementById('reviewRatingLabel')) {
+                    document.getElementById('reviewRatingLabel').textContent = cms.review_form_rating;
+                }
+                if (cms.review_form_text && document.getElementById('reviewTextLabel')) {
+                    document.getElementById('reviewTextLabel').textContent = cms.review_form_text;
+                    document.getElementById('reviewText').placeholder = cms.review_form_text;
+                }
+                if (cms.review_form_btn && cms.review_form_btn.label && document.getElementById('submitReviewBtn')) {
+                    document.getElementById('submitReviewBtn').innerHTML = `${escapeHtml(cms.review_form_btn.label)} <i class="fas fa-paper-plane"></i>`;
+                }
+                if (cms.review_success && document.getElementById('reviewSuccessText')) {
+                    document.getElementById('reviewSuccessText').textContent = cms.review_success;
+                }
+            }
 
             // Rating calculations
             const reviews = Array.isArray(rest.reviews) ? rest.reviews : [];

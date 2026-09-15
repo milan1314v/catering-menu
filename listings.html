@@ -340,7 +340,7 @@
                     const total = reviews.reduce((sum, rev) => sum + (Number(rev.rating) || 0), 0);
                     avg = (total / reviews.length).toFixed(1);
                 }
-                const firstLoc = (r.locations || '').split('|')[0].trim();
+                const firstLoc = [r.city, r.state].filter(Boolean).join(', ') || (r.locations || '').split('|')[0].trim();
                 const catererUrl = getCatererUrl(r);
 
                 return `
@@ -351,6 +351,9 @@
                        data-rating="${avg}"
                        data-name="${escapeHtml((r.name || '').toLowerCase())}"
                        data-location="${escapeHtml(firstLoc.toLowerCase())}"
+                       data-city="${escapeHtml((r.city || '').toLowerCase())}"
+                       data-state="${escapeHtml((r.state || '').toLowerCase())}"
+                       data-country="${escapeHtml((r.country || '').toLowerCase())}"
                        data-cuisine-lower="${escapeHtml((r.cuisine || '').toLowerCase())}"
                        data-about="${escapeHtml((r.about_text || '').toLowerCase())}">
                         <div class="rest-card-img">
@@ -440,11 +443,14 @@
                     const name = card.dataset.name;
                     const cuisine = card.dataset.cuisineLower;
                     const location = card.dataset.location;
+                    const city = card.dataset.city || '';
+                    const state = card.dataset.state || '';
+                    const country = card.dataset.country || '';
                     const about = card.dataset.about || '';
                     const rating = parseFloat(card.dataset.rating) || 0;
 
                     let show = true;
-                    if (q && !name.includes(q) && !cuisine.includes(q) && !location.includes(q) && !about.includes(q)) {
+                    if (q && !name.includes(q) && !cuisine.includes(q) && !location.includes(q) && !city.includes(q) && !state.includes(q) && !country.includes(q) && !about.includes(q)) {
                         show = false;
                     }
                     if (checkedCuisines.length && !checkedCuisines.includes(card.dataset.cuisine)) {

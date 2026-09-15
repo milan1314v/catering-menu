@@ -688,16 +688,22 @@
 
             const catererCanonical = `https://${rest.slug || 'caterer'}.catering-menu.com/`;
 
-            // Helper to resolve placeholders like {name}, {cuisine}, {location}, {rating}, {reviews_count}, {about}, {price}
+            // Helper to resolve placeholders like {name}, {cuisine}, {city}, {state}, {country}, {location}, {rating}, {reviews_count}, {about}, {price}
             function resolvePlaceholders(pattern, r, avgVal, revCount) {
                 if (!pattern) return '';
-                const primaryLoc = (r.locations || '').split('|')[0].trim() || 'Citywide';
+                const primaryLoc = (r.locations || '').split('|')[0].trim() || (r.city || 'Citywide');
+                const city = r.city || primaryLoc || '';
+                const state = r.state || '';
+                const country = r.country || 'United States';
                 const aboutSnippet = (r.about_text || `Explore ${r.name} catering packages, menus, and client reviews on Catering Menu.`).substring(0, 160).trim();
-                const priceTier = r.price_tier || 'Affordable & Premium';
+                const priceTier = r.price_tier || (r.price_range ? `Tier ${r.price_range}` : 'Affordable & Premium');
                 return pattern
                     .replace(/\{(?:name|caterer_name)\}/gi, r.name || '')
                     .replace(/\{cuisine\}/gi, r.cuisine || 'Catering Services')
-                    .replace(/\{(?:location|city)\}/gi, primaryLoc)
+                    .replace(/\{city\}/gi, city)
+                    .replace(/\{state\}/gi, state)
+                    .replace(/\{country\}/gi, country)
+                    .replace(/\{location\}/gi, primaryLoc)
                     .replace(/\{rating\}/gi, avgVal ? `${avgVal} / 5` : '5.0')
                     .replace(/\{(?:reviews_count|reviews)\}/gi, String(revCount || 0))
                     .replace(/\{about\}/gi, aboutSnippet)
@@ -816,7 +822,10 @@
                     "url": catererCanonical,
                     "address": {
                         "@type": "PostalAddress",
-                        "streetAddress": (rest.locations || 'Citywide').split('|')[0].trim()
+                        "streetAddress": (rest.locations || 'Citywide').split('|')[0].trim(),
+                        "addressLocality": rest.city || '',
+                        "addressRegion": rest.state || '',
+                        "addressCountry": rest.country || 'US'
                     }
                 };
                 if (reviews.length > 0) {
@@ -846,8 +855,11 @@
 
             // Locations List
             const locArray = (rest.locations || '').split('|').map(s => s.trim()).filter(Boolean);
-            document.getElementById('sidebarLocationsText').textContent = rest.locations || 'Inquire at restaurant';
-            document.getElementById('locationsList').innerHTML = locArray.map(loc => `
+            const fullLocText = locArray.length > 0 
+                ? rest.locations 
+                : [rest.city, rest.state, rest.country].filter(Boolean).join(', ') || 'Inquire at caterer';
+            document.getElementById('sidebarLocationsText').textContent = fullLocText;
+            document.getElementById('locationsList').innerHTML = (locArray.length > 0 ? locArray : [[rest.city, rest.state, rest.country].filter(Boolean).join(', ')]).filter(Boolean).map(loc => `
                 <div class="location-item">
                     <div class="location-item-icon"><i class="fas fa-map-pin"></i></div>
                     <div>
@@ -889,7 +901,7 @@
             const mapContainer = document.getElementById('locationMap');
             if (mapContainer) {
                 const primaryLoc = locArray[0] || (rest.locations || '').split('|')[0].trim();
-                const searchAddress = [rest.name, primaryLoc, rest.city, rest.state].filter(Boolean).join(', ');
+                const searchAddress = [rest.name, primaryLoc, rest.city, rest.state, rest.country].filter(Boolean).join(', ');
                 const mapQuery = searchAddress 
                     ? encodeURIComponent(searchAddress) 
                     : (lat && lng ? `${lat},${lng}` : encodeURIComponent(rest.name || 'Catering Services'));

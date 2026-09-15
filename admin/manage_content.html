@@ -624,8 +624,11 @@
                                 </div>
                                 <div style="display:flex;flex-wrap:wrap;gap:8px;">
                                     <button type="button" class="tab1-seo-chip" data-tag="{name}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{name} <span style="opacity:0.6;">(Caterer Name)</span></button>
+                                    <button type="button" class="tab1-seo-chip" data-tag="{city}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{city} <span style="opacity:0.6;">(City)</span></button>
+                                    <button type="button" class="tab1-seo-chip" data-tag="{state}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{state} <span style="opacity:0.6;">(State)</span></button>
+                                    <button type="button" class="tab1-seo-chip" data-tag="{country}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{country} <span style="opacity:0.6;">(Country)</span></button>
                                     <button type="button" class="tab1-seo-chip" data-tag="{cuisine}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{cuisine} <span style="opacity:0.6;">(Cuisine)</span></button>
-                                    <button type="button" class="tab1-seo-chip" data-tag="{location}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{location} <span style="opacity:0.6;">(Location)</span></button>
+                                    <button type="button" class="tab1-seo-chip" data-tag="{location}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{location} <span style="opacity:0.6;">(Address)</span></button>
                                     <button type="button" class="tab1-seo-chip" data-tag="{rating}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{rating} <span style="opacity:0.6;">(Stars)</span></button>
                                     <button type="button" class="tab1-seo-chip" data-tag="{reviews_count}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{reviews_count} <span style="opacity:0.6;">(Reviews)</span></button>
                                     <button type="button" class="tab1-seo-chip" data-tag="{about}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{about} <span style="opacity:0.6;">(Story)</span></button>
@@ -1300,15 +1303,21 @@
                 titleVal = (titleVal || '{name} - Catering Menu, Pricing & Reviews | Catering Menu')
                     .replace(/\{(?:name|caterer_name)\}/gi, 'Spice Route')
                     .replace(/\{cuisine\}/gi, 'Indian & Asian')
-                    .replace(/\{(?:location|city)\}/gi, 'New York')
+                    .replace(/\{city\}/gi, 'New York')
+                    .replace(/\{state\}/gi, 'NY')
+                    .replace(/\{country\}/gi, 'United States')
+                    .replace(/\{location\}/gi, 'New York')
                     .replace(/\{rating\}/gi, '5.0')
                     .replace(/\{(?:reviews_count|reviews)\}/gi, '12')
                     .replace(/\{about\}/gi, 'Authentic North and South Indian wedding catering and live chaat counters...');
 
-                descVal = (descVal || 'Explore {name} catering menus, event packages, photos, and verified host reviews in {location} on Catering Menu.')
+                descVal = (descVal || 'Explore {name} catering menus, event packages, photos, and verified host reviews in {city}, {state} on Catering Menu.')
                     .replace(/\{(?:name|caterer_name)\}/gi, 'Spice Route')
                     .replace(/\{cuisine\}/gi, 'Indian & Asian')
-                    .replace(/\{(?:location|city)\}/gi, 'New York')
+                    .replace(/\{city\}/gi, 'New York')
+                    .replace(/\{state\}/gi, 'NY')
+                    .replace(/\{country\}/gi, 'United States')
+                    .replace(/\{location\}/gi, 'New York')
                     .replace(/\{rating\}/gi, '5.0')
                     .replace(/\{(?:reviews_count|reviews)\}/gi, '12')
                     .replace(/\{about\}/gi, 'Authentic North and South Indian wedding catering and live chaat counters...');
@@ -2956,11 +2965,14 @@
                     </div>
                     <div style="display:flex;flex-wrap:wrap;gap:8px;" class="seo-tag-chips">
                         <button type="button" class="seo-chip" data-tag="{name}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{name} <span style="opacity:0.6;font-weight:400;">(Caterer Name)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{city}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{city} <span style="opacity:0.6;font-weight:400;">(City)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{state}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{state} <span style="opacity:0.6;font-weight:400;">(State)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{country}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{country} <span style="opacity:0.6;font-weight:400;">(Country)</span></button>
                         <button type="button" class="seo-chip" data-tag="{cuisine}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{cuisine} <span style="opacity:0.6;font-weight:400;">(Cuisine)</span></button>
-                        <button type="button" class="seo-chip" data-tag="{location}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{location} <span style="opacity:0.6;font-weight:400;">(City/Location)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{location}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{location} <span style="opacity:0.6;font-weight:400;">(Address)</span></button>
                         <button type="button" class="seo-chip" data-tag="{rating}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{rating} <span style="opacity:0.6;font-weight:400;">(e.g. 5.0 / 5)</span></button>
                         <button type="button" class="seo-chip" data-tag="{reviews_count}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{reviews_count} <span style="opacity:0.6;font-weight:400;">(Reviews Count)</span></button>
-                        <button type="button" class="seo-chip" data-tag="{about}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{about} <span style="opacity:0.6;font-weight:400;">(Caterer Story Snippet)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{about}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{about} <span style="opacity:0.6;font-weight:400;">(Story Snippet)</span></button>
                     </div>
                 </div>
                 ` : ''}

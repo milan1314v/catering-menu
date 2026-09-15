@@ -577,8 +577,11 @@ function initLiveSearchSuggestions({ inputId, suggestionsId, mode = 'navigate' }
       const name = (c.name || '').toLowerCase();
       const cuisine = (c.cuisine || '').toLowerCase();
       const loc = (c.locations || '').toLowerCase();
+      const city = (c.city || '').toLowerCase();
+      const state = (c.state || '').toLowerCase();
+      const country = (c.country || '').toLowerCase();
       const about = (c.about_text || '').toLowerCase();
-      return name.includes(q) || cuisine.includes(q) || loc.includes(q) || about.includes(q);
+      return name.includes(q) || cuisine.includes(q) || loc.includes(q) || city.includes(q) || state.includes(q) || country.includes(q) || about.includes(q);
     }).slice(0, 6);
 
     if (matches.length === 0) {
@@ -606,7 +609,7 @@ function initLiveSearchSuggestions({ inputId, suggestionsId, mode = 'navigate' }
         const total = reviews.reduce((sum, rev) => sum + (Number(rev.rating) || 0), 0);
         avg = (total / reviews.length).toFixed(1);
       }
-      const firstLoc = (c.locations || '').split('|')[0].trim();
+      const firstLoc = [c.city, c.state].filter(Boolean).join(', ') || (c.locations || '').split('|')[0].trim();
       const targetUrl = getCatererUrl(c);
 
       itemsHtml += `

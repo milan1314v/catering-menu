@@ -562,6 +562,21 @@
                         </div>
                     </div>
 
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;margin-bottom:12px;">
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;"><i class="fas fa-city" style="color:var(--gold);"></i> City</label>
+                            <input type="text" id="m_city" placeholder="e.g. New York" style="width:100%;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;">
+                        </div>
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;"><i class="fas fa-map" style="color:var(--gold);"></i> State / Region</label>
+                            <input type="text" id="m_state" placeholder="e.g. NY" style="width:100%;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;">
+                        </div>
+                        <div>
+                            <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;"><i class="fas fa-globe-americas" style="color:var(--gold);"></i> Country</label>
+                            <input type="text" id="m_country" placeholder="e.g. United States" style="width:100%;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;">
+                        </div>
+                    </div>
+
                     <div>
                         <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;">Kitchen &amp; Service Locations</label>
                         <input type="text" id="m_locations" placeholder="e.g. 742 Gourmet Ave, Downtown | Serves Metro Area" style="width:100%;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;">
@@ -798,7 +813,7 @@
                                 <div class="meta-tags-row">
                                     <span class="meta-tag-pill"><i class="fas fa-utensils" style="color:var(--gold);"></i> ${escapeHtml(r.cuisine || 'Catering Specialties')}</span>
                                     <span class="meta-tag-pill"><i class="fas fa-tags" style="color:var(--gold);"></i> ${escapeHtml(priceLabel)}</span>
-                                    <span class="meta-tag-pill"><i class="fas fa-map-marker-alt" style="color:var(--gold);"></i> ${escapeHtml(r.locations || 'Service Location')}</span>
+                                    <span class="meta-tag-pill"><i class="fas fa-map-marker-alt" style="color:var(--gold);"></i> ${escapeHtml([r.city, r.state, r.country].filter(Boolean).join(', ') || r.locations || 'Service Location')}</span>
                                     <span class="meta-tag-pill"><i class="fas fa-images" style="color:var(--gold);"></i> <strong>${galleryImgs.length}</strong> photos</span>
                                 </div>
 
@@ -902,6 +917,9 @@
             document.getElementById('m_name').value = r.name || '';
             document.getElementById('m_cuisine').value = r.cuisine || '';
             document.getElementById('m_status').value = r.status || 'pending';
+            document.getElementById('m_city').value = r.city || '';
+            document.getElementById('m_state').value = r.state || '';
+            document.getElementById('m_country').value = r.country || 'United States';
             document.getElementById('m_locations').value = r.locations || '';
             document.getElementById('m_about').value = r.about_text || '';
             document.getElementById('m_direct_menu').value = r.direct_menu_text || '';
@@ -1048,6 +1066,9 @@
                 name: name,
                 cuisine: document.getElementById('m_cuisine').value.trim(),
                 price_range: priceVal,
+                city: document.getElementById('m_city').value.trim(),
+                state: document.getElementById('m_state').value.trim(),
+                country: document.getElementById('m_country').value.trim() || 'United States',
                 locations: document.getElementById('m_locations').value.trim(),
                 banner_url: document.getElementById('m_banner').value.trim(),
                 menu_images: [...currentModalGallery],

@@ -151,6 +151,20 @@
                                 </div>
                                 <input type="hidden" id="rest_price" value="2">
                             </div>
+                            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:14px;margin-bottom:16px;">
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label><i class="fas fa-city"></i> City *</label>
+                                    <input type="text" id="rest_city" required placeholder="e.g. New York, Chicago">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label><i class="fas fa-map"></i> State / Region *</label>
+                                    <input type="text" id="rest_state" required placeholder="e.g. NY, California">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label><i class="fas fa-globe-americas"></i> Country</label>
+                                    <input type="text" id="rest_country" value="United States" placeholder="e.g. United States">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label id="locationsLabel"><i class="fas fa-map-marker-alt"></i> Kitchen &amp; Service
                                     Locations *</label>
@@ -922,6 +936,10 @@
                     }
                 });
 
+                const city = (document.getElementById('rest_city') ? document.getElementById('rest_city').value.trim() : '');
+                const state = (document.getElementById('rest_state') ? document.getElementById('rest_state').value.trim() : '');
+                const country = (document.getElementById('rest_country') ? document.getElementById('rest_country').value.trim() : '') || 'United States';
+
                 try {
                     const res = await fetch('/api/get-listed', {
                         method: 'POST',
@@ -930,6 +948,9 @@
                             name,
                             cuisine,
                             price_range,
+                            city,
+                            state,
+                            country,
                             banner_url,
                             menu_images: [...uploadedGallery],
                             about_text,

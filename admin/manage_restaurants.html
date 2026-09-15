@@ -559,7 +559,7 @@
                             <i class="fas fa-map-marked-alt" style="color:var(--gold); margin-right:6px;"></i>
                             Caterer City, State &amp; Service Locations
                         </label>
-                        <div class="form-row-grid" style="margin-bottom:14px;">
+                        <div class="form-row-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important; margin-bottom:14px;">
                             <div class="form-group">
                                 <label class="form-label"><i class="fas fa-city" style="color:var(--gold);"></i> City *</label>
                                 <input type="text" id="formCity" placeholder="e.g. New York, Los Angeles, Chicago" style="width:100%;">
@@ -568,6 +568,10 @@
                                 <label class="form-label"><i class="fas fa-map" style="color:var(--gold);"></i> State / Region *</label>
                                 <input type="text" id="formState" placeholder="e.g. NY, California, Illinois, Texas" style="width:100%;">
                             </div>
+                            <div class="form-group">
+                                <label class="form-label"><i class="fas fa-globe-americas" style="color:var(--gold);"></i> Country</label>
+                                <input type="text" id="formCountry" placeholder="e.g. United States, USA, India" style="width:100%;">
+                            </div>
                         </div>
                         <div class="form-group" style="margin-bottom:0;">
                             <label class="form-label"><i class="fas fa-map-marker-alt" style="color:var(--gold);"></i> Kitchen Addresses &amp; Service Areas (Separate multiple branches with |)</label>
@@ -575,7 +579,7 @@
                                 placeholder="e.g. 225 Spice Market Road, Downtown | Serves Tri-State Metro Area"
                                 style="width:100%;">
                             <small style="color:var(--text-dim); margin-top:4px; display:block;">
-                                Note: City &amp; State will be displayed on listings, search filters, and caterer profile.
+                                Note: City, State &amp; Country will be displayed on listings, search filters, and caterer profile.
                             </small>
                         </div>
                     </div>
@@ -785,7 +789,7 @@
                         : '<span class="badge badge-pending" style="background:rgba(255,152,0,0.2);color:#ff9800;border:1px solid #ff9800;padding:4px 10px;border-radius:12px;font-size:0.78rem;font-weight:700;">PENDING</span>');
 
                 const catererSlug = r.slug || generateSlug(r.name);
-                const locCityState = [r.city, r.state].filter(Boolean).join(', ');
+                const locCityState = [r.city, r.state, r.country].filter(Boolean).join(', ');
                 return `
                     <tr>
                         <td><strong>#${r.id}</strong></td>
@@ -834,6 +838,7 @@
                 (r.cuisine && r.cuisine.toLowerCase().includes(term)) ||
                 (r.city && r.city.toLowerCase().includes(term)) ||
                 (r.state && r.state.toLowerCase().includes(term)) ||
+                (r.country && r.country.toLowerCase().includes(term)) ||
                 (r.locations && r.locations.toLowerCase().includes(term))
             );
             renderTable(filtered);
@@ -1121,9 +1126,10 @@
             renderGalleryManager();
             document.getElementById('formAbout').value = '';
             
-            // City & State fields
+            // City, State & Country fields
             document.getElementById('formCity').value = '';
             document.getElementById('formState').value = '';
+            document.getElementById('formCountry').value = 'United States';
             document.getElementById('formLocations').value = '';
 
             // Default standard menu template inserted & visual tab open
@@ -1202,9 +1208,10 @@
 
             document.getElementById('formAbout').value = r.about_text || '';
 
-            // City & State fields with smart fallback
+            // City, State & Country fields with smart fallback
             document.getElementById('formCity').value = r.city || '';
             document.getElementById('formState').value = r.state || '';
+            document.getElementById('formCountry').value = r.country || 'United States';
             document.getElementById('formLocations').value = r.locations || '';
 
             // Menu: if empty, default to standard template
@@ -1267,6 +1274,7 @@
 
             const city = document.getElementById('formCity').value.trim();
             const state = document.getElementById('formState').value.trim();
+            const country = document.getElementById('formCountry').value.trim() || 'United States';
             const locations = document.getElementById('formLocations').value.trim();
 
             const restData = {
@@ -1281,6 +1289,7 @@
                 about_text: document.getElementById('formAbout').value.trim(),
                 city: city,
                 state: state,
+                country: country,
                 locations: locations,
                 direct_menu_text: menuText,
                 menu_file_path: '',

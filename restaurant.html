@@ -493,9 +493,39 @@
             }
 
             const rest = currentRestaurant;
+            const reviews = Array.isArray(rest.reviews) ? rest.reviews : [];
+            let avg = 0;
+            if (reviews.length > 0) {
+                const total = reviews.reduce((sum, rev) => sum + (Number(rev.rating) || 0), 0);
+                avg = (total / reviews.length).toFixed(1);
+            }
+
             const catererCanonical = `https://${rest.slug || 'caterer'}.catering-menu.com/`;
-            const seoPageTitle = `${rest.name} - Catering Menu, Pricing & Reviews | Catering Menu`;
-            const seoPageDesc = (rest.about_text || `Explore ${rest.name} catering packages, menus, and client reviews on Catering Menu.`).substring(0, 160).trim();
+
+            // Helper to resolve placeholders like {name}, {cuisine}, {location}, {rating}, {reviews_count}, {about}, {price}
+            function resolvePlaceholders(pattern, r, avgVal, revCount) {
+                if (!pattern) return '';
+                const primaryLoc = (r.locations || '').split('|')[0].trim() || 'Citywide';
+                const aboutSnippet = (r.about_text || `Explore ${r.name} catering packages, menus, and client reviews on Catering Menu.`).substring(0, 160).trim();
+                const priceTier = r.price_tier || 'Affordable & Premium';
+                return pattern
+                    .replace(/\{(?:name|caterer_name)\}/gi, r.name || '')
+                    .replace(/\{cuisine\}/gi, r.cuisine || 'Catering Services')
+                    .replace(/\{(?:location|city)\}/gi, primaryLoc)
+                    .replace(/\{rating\}/gi, avgVal ? `${avgVal} / 5` : '5.0')
+                    .replace(/\{(?:reviews_count|reviews)\}/gi, String(revCount || 0))
+                    .replace(/\{about\}/gi, aboutSnippet)
+                    .replace(/\{(?:price|price_tier)\}/gi, priceTier);
+            }
+
+            const defaultTitleTpl = '{name} - Catering Menu, Pricing & Reviews | Catering Menu';
+            const defaultDescTpl = 'Explore {name} catering menus, event packages, photos, and verified host reviews in {location} on Catering Menu.';
+
+            const titleTemplate = (cms && cms.seo && cms.seo.title && cms.seo.title.trim()) || defaultTitleTpl;
+            const descTemplate = (cms && cms.seo && cms.seo.description && cms.seo.description.trim()) || defaultDescTpl;
+
+            const seoPageTitle = resolvePlaceholders(titleTemplate, rest, avg, reviews.length);
+            const seoPageDesc = resolvePlaceholders(descTemplate, rest, avg, reviews.length);
 
             document.title = seoPageTitle;
             const metaTitleEl = document.getElementById('pageMetaTitle');
@@ -503,6 +533,8 @@
 
             const metaDescEl = document.getElementById('pageMetaDesc');
             if (metaDescEl) metaDescEl.setAttribute('content', seoPageDesc);
+            const stdMetaDesc = document.querySelector('meta[name="description"]');
+            if (stdMetaDesc) stdMetaDesc.setAttribute('content', seoPageDesc);
 
             const canonicalEl = document.getElementById('pageCanonical');
             if (canonicalEl) canonicalEl.setAttribute('href', catererCanonical);
@@ -574,14 +606,6 @@
                 if (cms.review_success && document.getElementById('reviewSuccessText')) {
                     document.getElementById('reviewSuccessText').textContent = cms.review_success;
                 }
-            }
-
-            // Rating calculations
-            const reviews = Array.isArray(rest.reviews) ? rest.reviews : [];
-            let avg = 0;
-            if (reviews.length > 0) {
-                const total = reviews.reduce((sum, rev) => sum + (Number(rev.rating) || 0), 0);
-                avg = (total / reviews.length).toFixed(1);
             }
 
             document.getElementById('restBadge').innerHTML = `<i class="fas fa-star"></i> ${avg} / 5 - ${reviews.length} reviews`;

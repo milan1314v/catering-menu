@@ -614,6 +614,24 @@
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
                         <div>
+                            <!-- Dynamic Placeholders Helper for Subdomains -->
+                            <div id="tab1SeoPlaceholders" style="display:none;margin-bottom:18px;padding:12px 16px;background:rgba(245, 158, 11, 0.08);border:1px dashed rgba(245, 158, 11, 0.35);border-radius:8px;">
+                                <div style="font-size:0.82rem;font-weight:700;color:var(--gold);margin-bottom:6px;">
+                                    <i class="fas fa-magic"></i> Dynamic Placeholders for Caterer Subdomains:
+                                </div>
+                                <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:8px;">
+                                    Click any token to insert into Title or Description:
+                                </div>
+                                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                                    <button type="button" class="tab1-seo-chip" data-tag="{name}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{name} <span style="opacity:0.6;">(Caterer Name)</span></button>
+                                    <button type="button" class="tab1-seo-chip" data-tag="{cuisine}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{cuisine} <span style="opacity:0.6;">(Cuisine)</span></button>
+                                    <button type="button" class="tab1-seo-chip" data-tag="{location}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{location} <span style="opacity:0.6;">(Location)</span></button>
+                                    <button type="button" class="tab1-seo-chip" data-tag="{rating}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{rating} <span style="opacity:0.6;">(Stars)</span></button>
+                                    <button type="button" class="tab1-seo-chip" data-tag="{reviews_count}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{reviews_count} <span style="opacity:0.6;">(Reviews)</span></button>
+                                    <button type="button" class="tab1-seo-chip" data-tag="{about}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:4px 10px;border-radius:4px;font-size:0.75rem;cursor:pointer;">{about} <span style="opacity:0.6;">(Story)</span></button>
+                                </div>
+                            </div>
+
                             <div class="form-group" style="margin-bottom: 18px;">
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
                                     <label style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">PAGE
@@ -689,7 +707,7 @@
                                     Page Title Preview
                                 </div>
                                 <div id="previewDesc"
-                                    style="color: #4d5156; font-size: 13px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    style="color: #4d5156; font-size: 13px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                     This is how your page description will appear in Google search results.
                                 </div>
                             </div>
@@ -706,7 +724,7 @@
                                 <div style="padding: 12px 14px;">
                                     <div style="font-size: 11px; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.5px;" id="socialCardDomain">CATERING-MENU.COM</div>
                                     <div style="font-size: 14px; font-weight: 700; color: #ffffff; margin: 4px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="socialCardTitle">Page Title Preview</div>
-                                    <div style="font-size: 12px; color: #cbd5e1; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;" id="socialCardDesc">Description preview</div>
+                                    <div style="font-size: 12px; color: #cbd5e1; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;" id="socialCardDesc">Description preview</div>
                                 </div>
                             </div>
                         </div>
@@ -1064,6 +1082,8 @@
         // Global State
         let globalData = {};
         let activePageData = {};
+        let currentSeoPageData = {};
+        let activeTab1Input = null;
         let isMasterIndexing = false;
         let isRawMode = false;
 
@@ -1076,6 +1096,11 @@
 
             const targetPane = document.getElementById(tabId);
             if (targetPane) targetPane.classList.add('active');
+
+            if (tabId === 'tab-seo') {
+                const curPage = document.getElementById('seoPageSelect') ? document.getElementById('seoPageSelect').value : 'home';
+                loadPageSEO(curPage);
+            }
         }
 
         function showNotification(msg) {
@@ -1177,24 +1202,46 @@
         // ═══════════════════════════════════════════════════════
         // 2. PAGE SEO METADATA LOGIC
         // ═══════════════════════════════════════════════════════
-        let currentSeoPageData = {};
-
         async function loadPageSEO(pageName) {
+            currentSeoPageData = {};
             try {
                 const res = await fetch(`/api/content?page=${encodeURIComponent(pageName)}&raw=true`);
                 if (res.ok) {
                     currentSeoPageData = await res.json();
-                    const seo = currentSeoPageData.seo || {};
-                    document.getElementById('seoTitleInput').value = seo.title || '';
-                    document.getElementById('seoDescInput').value = seo.description || '';
-                    document.getElementById('seoKeywordsInput').value = seo.keywords || '';
-                    document.getElementById('seoOgImageInput').value = seo.og_image || '';
-                    updateGoogleSnippet();
-                    updateSocialPreview();
                 }
             } catch (e) {
                 console.error('Failed to load SEO for ' + pageName, e);
             }
+
+            const pageDefaults = (typeof DEFAULT_PAGE_CONTENTS !== 'undefined' && DEFAULT_PAGE_CONTENTS[pageName]) ? DEFAULT_PAGE_CONTENTS[pageName] : {};
+            const defaultSeo = pageDefaults.seo || {};
+
+            currentSeoPageData.seo = currentSeoPageData.seo || {};
+            if (!currentSeoPageData.seo.title || !currentSeoPageData.seo.title.trim()) {
+                currentSeoPageData.seo.title = defaultSeo.title || '';
+            }
+            if (!currentSeoPageData.seo.description || !currentSeoPageData.seo.description.trim()) {
+                currentSeoPageData.seo.description = defaultSeo.description || '';
+            }
+
+            const seo = currentSeoPageData.seo;
+            const tInput = document.getElementById('seoTitleInput');
+            const dInput = document.getElementById('seoDescInput');
+            tInput.value = seo.title || '';
+            dInput.value = seo.description || '';
+            document.getElementById('seoKeywordsInput').value = seo.keywords || '';
+            document.getElementById('seoOgImageInput').value = seo.og_image || '';
+
+            tInput.onfocus = () => { activeTab1Input = tInput; };
+            dInput.onfocus = () => { activeTab1Input = dInput; };
+
+            const placeholderBox = document.getElementById('tab1SeoPlaceholders');
+            if (placeholderBox) {
+                placeholderBox.style.display = (pageName === 'restaurant') ? 'block' : 'none';
+            }
+
+            updateGoogleSnippet();
+            updateSocialPreview();
         }
 
         // ═══════════════════════════════════════════════════════
@@ -1243,16 +1290,39 @@
 
         function updateGoogleSnippet() {
             const pageName = document.getElementById('seoPageSelect').value;
-            const pageOptionText = document.getElementById('seoDropdownLabel') ? document.getElementById('seoDropdownLabel').textContent.trim() : pageName;
             const titleInput = document.getElementById('seoTitleInput');
             const descInput = document.getElementById('seoDescInput');
 
-            const titleVal = titleInput.value.trim() || `${pageOptionText} - Catering Menu`;
-            const descVal = descInput.value.trim() || 'Discover exceptional catering services, bespoke event menus, verified reviews, and premier culinary artisans.';
+            let titleVal = titleInput.value.trim();
+            let descVal = descInput.value.trim();
+
+            if (pageName === 'restaurant') {
+                titleVal = (titleVal || '{name} - Catering Menu, Pricing & Reviews | Catering Menu')
+                    .replace(/\{(?:name|caterer_name)\}/gi, 'Spice Route')
+                    .replace(/\{cuisine\}/gi, 'Indian & Asian')
+                    .replace(/\{(?:location|city)\}/gi, 'New York')
+                    .replace(/\{rating\}/gi, '5.0')
+                    .replace(/\{(?:reviews_count|reviews)\}/gi, '12')
+                    .replace(/\{about\}/gi, 'Authentic North and South Indian wedding catering and live chaat counters...');
+
+                descVal = (descVal || 'Explore {name} catering menus, event packages, photos, and verified host reviews in {location} on Catering Menu.')
+                    .replace(/\{(?:name|caterer_name)\}/gi, 'Spice Route')
+                    .replace(/\{cuisine\}/gi, 'Indian & Asian')
+                    .replace(/\{(?:location|city)\}/gi, 'New York')
+                    .replace(/\{rating\}/gi, '5.0')
+                    .replace(/\{(?:reviews_count|reviews)\}/gi, '12')
+                    .replace(/\{about\}/gi, 'Authentic North and South Indian wedding catering and live chaat counters...');
+
+                document.getElementById('previewUrl').textContent = 'https://spice-route.catering-menu.com';
+            } else {
+                const pageOptionText = document.getElementById('seoDropdownLabel') ? document.getElementById('seoDropdownLabel').textContent.trim() : pageName;
+                if (!titleVal) titleVal = `${pageOptionText} - Catering Menu`;
+                if (!descVal) descVal = 'Discover exceptional catering services, bespoke event menus, verified reviews, and premier culinary artisans.';
+                document.getElementById('previewUrl').textContent = `https://www.catering-menu.com${pageName === 'home' ? '' : '/' + pageName}`;
+            }
 
             document.getElementById('previewTitle').textContent = titleVal;
             document.getElementById('previewDesc').textContent = descVal;
-            document.getElementById('previewUrl').textContent = `https://www.catering-menu.com${pageName === 'home' ? '' : '/' + pageName}`;
 
             document.getElementById('metaTitleCount').textContent = `${titleInput.value.length} / 60 chars`;
             document.getElementById('metaTitleCount').style.color = titleInput.value.length > 60 ? '#f44336' : 'var(--text-dim)';
@@ -1591,6 +1661,10 @@
         // Authoritative default page contents matching live website exactly
         const DEFAULT_PAGE_CONTENTS = {
             home: {
+                seo: {
+                    title: "Catering Menu | Find Caterers & Event Menus",
+                    description: "Discover trusted caterers, explore catering menus, compare services, read reviews, and connect with catering teams for weddings, corporate events, and parties."
+                },
                 hero: {
                     badge: "Premier Catering Directory",
                     title: "Discover Extraordinary Catering Experiences",
@@ -1654,6 +1728,10 @@
                 }
             },
             about: {
+                seo: {
+                    title: "About Us - Catering Menu",
+                    description: "Learn about Catering Menu, our mission to connect event hosts with premier catering services, verified event food menus, and transparent client reviews."
+                },
                 hero: {
                     title: "About Catering Menu",
                     subtitle: "Connecting event hosts, wedding planners, and families with unforgettable catering experiences and verified food menus."
@@ -1705,6 +1783,10 @@
                 }
             },
             contact: {
+                seo: {
+                    title: "Contact Us - Catering Menu",
+                    description: "Get in touch with the Catering Menu support team for inquiries, caterer partnerships, booking support, or feedback."
+                },
                 hero: {
                     title: "Get In Touch",
                     subtitle: "Have a question, suggestion, or partnership inquiry? We would love to hear from you."
@@ -1728,6 +1810,10 @@
                 }
             },
             faqs: {
+                seo: {
+                    title: "Frequently Asked Questions - Catering Menu",
+                    description: "Find answers to common questions about booking caterers, listing your catering service, verified reviews, custom food menus, and pricing on Catering Menu."
+                },
                 hero: {
                     title: "Frequently Asked Questions",
                     subtitle: "Everything you need to know about finding caterers, booking events, and listing your business on Catering Menu."
@@ -1753,6 +1839,10 @@
                 }
             },
             "get-listed": {
+                seo: {
+                    title: "List Your Catering Business - Catering Menu",
+                    description: "List your catering business on Catering Menu for free. Showcase your event menus, food photos, service areas, and connect with thousands of event planners."
+                },
                 hero: {
                     title: "List Your Catering Business",
                     subtitle: "Join thousands of caterers already on Catering Menu. Showcase your event menus, gather host reviews, and attract bookings."
@@ -1778,6 +1868,10 @@
                 }
             },
             listings: {
+                seo: {
+                    title: "Explore Catering Services - Catering Menu",
+                    description: "Browse and compare top-rated local catering services. Filter by cuisine, event type (weddings, corporate, parties), host ratings, and curated event food menus."
+                },
                 hero: {
                     badge: "VERIFIED CATERING DIRECTORY",
                     title: "Explore Catering Services",
@@ -1789,6 +1883,10 @@
                 results_text: "caterers available"
             },
             privacy: {
+                seo: {
+                    title: "Privacy Policy - Catering Menu",
+                    description: "Read the Privacy Policy for Catering Menu. Learn how we collect, safeguard, and respect your information when browsing caterers and event menus."
+                },
                 hero: { title: "Privacy Policy", subtitle: "How we collect, protect, and handle your data with complete transparency." },
                 last_updated: "September 2026",
                 sections: [
@@ -1802,6 +1900,10 @@
                 contact_box: { title: "Catering Menu Privacy Team", email: "privacy@catering-menu.com", website: "https://www.catering-menu.com" }
             },
             terms: {
+                seo: {
+                    title: "Terms of Service - Catering Menu",
+                    description: "Read the Terms of Service for Catering Menu. Platform usage agreements, caterer guidelines, and user responsibilities."
+                },
                 hero: { title: "Terms of Service", subtitle: "Platform usage agreements, caterer guidelines, and user responsibilities." },
                 last_updated: "September 2026",
                 sections: [
@@ -1814,6 +1916,10 @@
                 contact_box: { title: "Catering Menu Legal & Support", email: "legal@catering-menu.com", website: "https://www.catering-menu.com" }
             },
             disclaimer: {
+                seo: {
+                    title: "Allergen & Service Disclaimer - Catering Menu",
+                    description: "Food safety, dietary allergen advisories, and platform liability disclaimer for Catering Menu."
+                },
                 hero: { title: "Allergen & Service Disclaimer", subtitle: "Important food safety notices, dietary information, and liability guidelines." },
                 last_updated: "September 2026",
                 sections: [
@@ -1824,6 +1930,10 @@
                 contact_box: { title: "Food Safety Inquiries", email: "support@catering-menu.com", website: "https://www.catering-menu.com" }
             },
             restaurant: {
+                seo: {
+                    title: "{name} - Catering Menu, Pricing & Reviews | Catering Menu",
+                    description: "Explore {name} catering menus, event packages, photos, and verified host reviews in {location} on Catering Menu."
+                },
                 welcome_title: "About",
                 menu_title: "Our Catering Menu",
                 menu_toggle_file: "View Uploaded Menu",
@@ -1865,7 +1975,11 @@
                 } else if (typeof inVal === 'object') {
                     out[key] = sanitizeAndMerge(out[key] || {}, inVal);
                 } else {
-                    out[key] = inVal;
+                    if (typeof inVal === 'string' && !inVal.trim() && out[key]) {
+                        // Preserve default value if incoming string is empty
+                    } else {
+                        out[key] = inVal;
+                    }
                 }
             }
             return out;
@@ -2804,10 +2918,199 @@
             return false;
         }
 
+        // ── SEO & META INFORMATION MANAGER WITH DYNAMIC PLACEHOLDERS & GOOGLE SERP PREVIEW ──
+        function buildSEOManager(seoObj, pageName, onUpdate) {
+            const card = document.createElement('div');
+            card.className = 'cms-section-card';
+            card.style.borderColor = 'rgba(217, 119, 6, 0.45)';
+            card.style.background = 'linear-gradient(180deg, rgba(217, 119, 6, 0.05) 0%, rgba(20, 24, 39, 0.8) 100%)';
+
+            const isRestaurant = (pageName === 'restaurant');
+            const defaultPlaceholderTitle = isRestaurant
+                ? '{name} - Catering Menu, Pricing & Reviews | Catering Menu'
+                : ((typeof DEFAULT_PAGE_CONTENTS !== 'undefined' && DEFAULT_PAGE_CONTENTS[pageName] && DEFAULT_PAGE_CONTENTS[pageName].seo && DEFAULT_PAGE_CONTENTS[pageName].seo.title) || 'Page Title | Catering Menu');
+            const defaultPlaceholderDesc = isRestaurant
+                ? 'Explore {name} catering menus, event packages, photos, and verified host reviews in {location} on Catering Menu.'
+                : ((typeof DEFAULT_PAGE_CONTENTS !== 'undefined' && DEFAULT_PAGE_CONTENTS[pageName] && DEFAULT_PAGE_CONTENTS[pageName].seo && DEFAULT_PAGE_CONTENTS[pageName].seo.description) || 'Page meta description for Google search engines...');
+
+            const currentTitle = (seoObj.title && seoObj.title.trim()) ? seoObj.title : defaultPlaceholderTitle;
+            const currentDesc = (seoObj.description && seoObj.description.trim()) ? seoObj.description : defaultPlaceholderDesc;
+            seoObj.title = currentTitle;
+            seoObj.description = currentDesc;
+
+            card.innerHTML = `
+            <div class="cms-sec-header" style="background:rgba(217, 119, 6, 0.12);border-bottom:1px solid rgba(217, 119, 6, 0.25);">
+                <h4 class="cms-sec-title">
+                    <i class="fas fa-search-dollar" style="color:var(--gold);"></i> SEO &amp; META INFORMATION
+                </h4>
+                <span class="cms-sec-badge" style="background:linear-gradient(135deg, #f59e0b, #d97706);color:#fff;">Google SERP &amp; Browser Meta</span>
+            </div>
+            <div class="cms-sec-body">
+                ${isRestaurant ? `
+                <div style="margin-bottom:18px;padding:14px 18px;background:rgba(245, 158, 11, 0.09);border:1px dashed rgba(245, 158, 11, 0.4);border-radius:10px;">
+                    <div style="font-size:0.84rem;font-weight:700;color:var(--gold);margin-bottom:6px;">
+                        <i class="fas fa-magic"></i> Dynamic Placeholders Supported for Caterer Subdomains:
+                    </div>
+                    <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:10px;line-height:1.5;">
+                        Click any token below to automatically insert it at your cursor in the Title or Description:
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;" class="seo-tag-chips">
+                        <button type="button" class="seo-chip" data-tag="{name}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{name} <span style="opacity:0.6;font-weight:400;">(Caterer Name)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{cuisine}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{cuisine} <span style="opacity:0.6;font-weight:400;">(Cuisine)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{location}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{location} <span style="opacity:0.6;font-weight:400;">(City/Location)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{rating}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{rating} <span style="opacity:0.6;font-weight:400;">(e.g. 5.0 / 5)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{reviews_count}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{reviews_count} <span style="opacity:0.6;font-weight:400;">(Reviews Count)</span></button>
+                        <button type="button" class="seo-chip" data-tag="{about}" style="background:#1e293b;border:1px solid rgba(245, 158, 11, 0.4);color:#fef3c7;padding:5px 12px;border-radius:6px;font-size:0.76rem;cursor:pointer;font-weight:600;"><i class="fas fa-plus-circle" style="color:var(--gold);margin-right:4px;"></i>{about} <span style="opacity:0.6;font-weight:400;">(Caterer Story Snippet)</span></button>
+                    </div>
+                </div>
+                ` : ''}
+
+                <!-- Meta Title -->
+                <div class="cms-field-block">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                        <div class="cms-field-label" style="margin-bottom:0;">
+                            <i class="fas fa-heading" style="color:var(--gold);"></i> Page Meta Title
+                            <span class="cms-field-hint">Shown in browser tabs and Google Search titles</span>
+                        </div>
+                        <span class="seo-title-count" style="font-size:0.75rem;color:var(--text-dim);">
+                            <span class="t-count" style="font-weight:700;">${currentTitle.length}</span> / 60 chars (Recommended: 50-60)
+                        </span>
+                    </div>
+                    <input type="text" class="input-text seo-title-input" value="${escapeHtml(currentTitle)}" placeholder="${escapeHtml(defaultPlaceholderTitle)}" style="width:100%;font-weight:600;">
+                </div>
+
+                <!-- Meta Description -->
+                <div class="cms-field-block">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                        <div class="cms-field-label" style="margin-bottom:0;">
+                            <i class="fas fa-align-left" style="color:var(--gold);"></i> Page Meta Description
+                            <span class="cms-field-hint">The snippet text Google displays under your page link</span>
+                        </div>
+                        <span class="seo-desc-count" style="font-size:0.75rem;color:var(--text-dim);">
+                            <span class="d-count" style="font-weight:700;">${currentDesc.length}</span> / 160 chars (Recommended: 140-160)
+                        </span>
+                    </div>
+                    <textarea class="input-text seo-desc-input" rows="3" placeholder="${escapeHtml(defaultPlaceholderDesc)}" style="width:100%;line-height:1.6;">${escapeHtml(currentDesc)}</textarea>
+                </div>
+
+                <!-- Live Google SERP Snippet Preview Box -->
+                <div style="margin-top:20px;padding:18px 22px;background:#ffffff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,0.06);">
+                    <div style="font-size:0.72rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+                        <i class="fab fa-google" style="color:#4285F4;"></i> Google Search Snippet Live Preview
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                        <div style="width:22px;height:22px;border-radius:50%;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-size:11px;color:#d97706;">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div style="font-size:0.8rem;color:#202124;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                            <span style="font-weight:600;">Catering Menu</span> 
+                            <span style="color:#5f6368;">› ${isRestaurant ? 'spice-route.catering-menu.com' : 'www.catering-menu.com › ' + (pageName === 'home' ? '' : pageName)}</span>
+                        </div>
+                    </div>
+                    <div class="serp-title-preview" style="font-size:1.2rem;color:#1a0dab;font-weight:400;line-height:1.3;margin-bottom:4px;cursor:pointer;font-family:arial,sans-serif;">
+                        ${escapeHtml(currentTitle || defaultPlaceholderTitle)}
+                    </div>
+                    <div class="serp-desc-preview" style="font-size:0.86rem;color:#4d5156;line-height:1.55;font-family:arial,sans-serif;">
+                        ${escapeHtml(currentDesc || defaultPlaceholderDesc)}
+                    </div>
+                </div>
+            </div>
+            `;
+
+            const titleInput = card.querySelector('.seo-title-input');
+            const descInput = card.querySelector('.seo-desc-input');
+            const tCount = card.querySelector('.t-count');
+            const dCount = card.querySelector('.d-count');
+            const serpTitle = card.querySelector('.serp-title-preview');
+            const serpDesc = card.querySelector('.serp-desc-preview');
+
+            let lastFocusedInput = titleInput;
+            titleInput.addEventListener('focus', () => { lastFocusedInput = titleInput; });
+            descInput.addEventListener('focus', () => { lastFocusedInput = descInput; });
+
+            function updatePreviews() {
+                const tVal = titleInput.value;
+                const dVal = descInput.value;
+                tCount.textContent = tVal.length;
+                dCount.textContent = dVal.length;
+
+                tCount.style.color = (tVal.length >= 45 && tVal.length <= 65) ? '#10b981' : (tVal.length > 65 ? '#ef4444' : '#f59e0b');
+                dCount.style.color = (dVal.length >= 130 && dVal.length <= 165) ? '#10b981' : (dVal.length > 165 ? '#ef4444' : '#f59e0b');
+
+                if (isRestaurant) {
+                    serpTitle.textContent = (tVal || defaultPlaceholderTitle)
+                        .replace(/\{(?:name|caterer_name)\}/gi, 'Spice Route')
+                        .replace(/\{cuisine\}/gi, 'Indian & Asian')
+                        .replace(/\{(?:location|city)\}/gi, 'New York')
+                        .replace(/\{rating\}/gi, '5.0')
+                        .replace(/\{(?:reviews_count|reviews)\}/gi, '12')
+                        .replace(/\{about\}/gi, 'Authentic North and South Indian wedding catering and live chaat counters...');
+
+                    serpDesc.textContent = (dVal || defaultPlaceholderDesc)
+                        .replace(/\{(?:name|caterer_name)\}/gi, 'Spice Route')
+                        .replace(/\{cuisine\}/gi, 'Indian & Asian')
+                        .replace(/\{(?:location|city)\}/gi, 'New York')
+                        .replace(/\{rating\}/gi, '5.0')
+                        .replace(/\{(?:reviews_count|reviews)\}/gi, '12')
+                        .replace(/\{about\}/gi, 'Authentic North and South Indian wedding catering and live chaat counters...');
+                } else {
+                    serpTitle.textContent = tVal || defaultPlaceholderTitle;
+                    serpDesc.textContent = dVal || defaultPlaceholderDesc;
+                }
+
+                seoObj.title = tVal;
+                seoObj.description = dVal;
+                onUpdate(seoObj);
+                syncRawJsonTextarea();
+            }
+
+            titleInput.addEventListener('input', updatePreviews);
+            descInput.addEventListener('input', updatePreviews);
+
+            const chips = card.querySelectorAll('.seo-chip');
+            chips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const tag = chip.getAttribute('data-tag');
+                    const targetInput = lastFocusedInput || titleInput;
+                    const start = targetInput.selectionStart || targetInput.value.length;
+                    const end = targetInput.selectionEnd || targetInput.value.length;
+                    const val = targetInput.value;
+                    targetInput.value = val.substring(0, start) + tag + val.substring(end);
+                    targetInput.selectionStart = targetInput.selectionEnd = start + tag.length;
+                    targetInput.focus();
+                    updatePreviews();
+                });
+            });
+
+            updatePreviews();
+            return card;
+        }
+
         // ── MAIN RENDERER WITH LIVE-WEBSITE SECTION ORDERING FOR ALL 10 PAGES ──
         function renderPageVisualEditor(data, pageName) {
             const container = document.getElementById('pageVisualEditorContainer');
             container.innerHTML = '';
+
+            // Ensure data.seo exists
+            const pageDefaults = (typeof DEFAULT_PAGE_CONTENTS !== 'undefined' && DEFAULT_PAGE_CONTENTS[pageName]) ? DEFAULT_PAGE_CONTENTS[pageName] : {};
+            const defSeo = pageDefaults.seo || {};
+
+            if (!data.seo || typeof data.seo !== 'object') {
+                data.seo = JSON.parse(JSON.stringify(defSeo));
+            } else {
+                if (!data.seo.title || !data.seo.title.trim()) {
+                    data.seo.title = defSeo.title || '';
+                }
+                if (!data.seo.description || !data.seo.description.trim()) {
+                    data.seo.description = defSeo.description || '';
+                }
+            }
+
+            // ALWAYS Render SEO Manager Card at the Top of Visual Editor
+            const seoCard = buildSEOManager(data.seo, pageName, (updatedSeo) => {
+                data.seo = updatedSeo;
+            });
+            container.appendChild(seoCard);
 
             // Section metadata & order matching live website
             const SECTION_META = {
@@ -3203,11 +3506,30 @@
             }
         }
 
+        function initTab1Chips() {
+            const chips = document.querySelectorAll('.tab1-seo-chip');
+            chips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const tag = chip.getAttribute('data-tag');
+                    const target = activeTab1Input || document.getElementById('seoTitleInput');
+                    if (!target) return;
+                    const start = target.selectionStart || target.value.length;
+                    const end = target.selectionEnd || target.value.length;
+                    const val = target.value;
+                    target.value = val.substring(0, start) + tag + val.substring(end);
+                    target.selectionStart = target.selectionEnd = start + tag.length;
+                    target.focus();
+                    updateGoogleSnippet();
+                });
+            });
+        }
+
         // Initialization
         document.addEventListener('DOMContentLoaded', () => {
             initGlobalSettings();
             loadPageSEO('home');
             loadIndividualPageContent('home');
+            initTab1Chips();
         });
     </script>
 </body>

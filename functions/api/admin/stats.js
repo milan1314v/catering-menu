@@ -25,6 +25,12 @@ export async function onRequestGet(context) {
 
     // 4. Contact submissions count
     const totalContacts = await env.DB.prepare('SELECT COUNT(*) as c FROM contact_submissions').first('c') || 0;
+    let unreadContacts = 0;
+    try {
+      unreadContacts = await env.DB.prepare("SELECT COUNT(*) as c FROM contact_submissions WHERE status = 'unread' OR status IS NULL").first('c') || 0;
+    } catch (e) {
+      unreadContacts = totalContacts;
+    }
 
     // 5. Recent restaurants
     const { results: recentRestaurants } = await env.DB.prepare(
@@ -50,7 +56,8 @@ export async function onRequestGet(context) {
         total_restaurants: totalRest,
         approved_restaurants: approvedRest,
         pending_restaurants: pendingRest,
-        total_contacts: totalContacts
+        total_contacts: totalContacts,
+        unread_contacts: unreadContacts
       },
       recent_restaurants: formattedRecent,
       recent_contacts: recentContacts || []

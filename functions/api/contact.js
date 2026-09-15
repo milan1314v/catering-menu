@@ -23,20 +23,34 @@ export async function onRequestPost(context) {
       body = Object.fromEntries(formData);
     }
 
-    const { name, email, subject, message } = body;
+    const { name, email, phone, subject, message } = body;
 
     if (!name || !email || !message) {
       return new Response(JSON.stringify({ error: 'Name, email, and message are required.' }), { status: 400, headers });
     }
 
-    await env.DB.prepare(
-      'INSERT INTO contact_submissions (name, email, subject, message) VALUES (?, ?, ?, ?)'
-    ).bind(
-      name.trim(),
-      email.trim(),
-      (subject || 'General Inquiry').trim(),
-      message.trim()
-    ).run();
+    try {
+      await env.DB.prepare(
+        'INSERT INTO contact_submissions (name, email, phone, subject, message, status) VALUES (?, ?, ?, ?, ?, ?)'
+      ).bind(
+        name.trim(),
+        email.trim(),
+        (phone || '').trim(),
+        (subject || 'General Inquiry').trim(),
+        message.trim(),
+        'unread'
+      ).run();
+    } catch (e) {
+      // Fallback if phone or status column not yet added in table
+      await env.DB.prepare(
+        'INSERT INTO contact_submissions (name, email, subject, message) VALUES (?, ?, ?, ?)'
+      ).bind(
+        name.trim(),
+        email.trim(),
+        (subject || 'General Inquiry').trim(),
+        message.trim()
+      ).run();
+    }
 
     return new Response(JSON.stringify({ success: true, message: 'Message submitted successfully!' }), { status: 200, headers });
   } catch (err) {

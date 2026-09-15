@@ -103,20 +103,39 @@ function compressImageFile(file, maxWidth = 1200, quality = 0.8) {
   });
 }
 
-// Auto-fetch pending caterer count for sidebar notification badge
-async function updateSidebarPendingCount() {
-  const badge = document.getElementById('sidebarPendingBadge');
-  if (!badge) return;
+// Auto-fetch pending caterer count and unread messages for sidebar notification badges
+async function updateSidebarNotificationBadges() {
+  const pendingBadge = document.getElementById('sidebarPendingBadge');
+  const messagesBadge = document.getElementById('sidebarMessagesBadge');
+
+  if (!pendingBadge && !messagesBadge) return;
+
   try {
     const res = await fetch('/api/admin/stats', { headers: authHeaders() });
     if (res.ok) {
       const data = await res.json();
-      const count = (data.stats && data.stats.pending_restaurants) || 0;
-      if (count > 0) {
-        badge.textContent = count;
-        badge.style.display = 'inline-block';
-      } else {
-        badge.style.display = 'none';
+      const s = data.stats || {};
+      
+      // 1. Pending caterers badge
+      if (pendingBadge) {
+        const pendingCount = s.pending_restaurants || 0;
+        if (pendingCount > 0) {
+          pendingBadge.textContent = pendingCount;
+          pendingBadge.style.display = 'inline-block';
+        } else {
+          pendingBadge.style.display = 'none';
+        }
+      }
+
+      // 2. Unread messages badge
+      if (messagesBadge) {
+        const unreadCount = s.unread_contacts || 0;
+        if (unreadCount > 0) {
+          messagesBadge.textContent = unreadCount;
+          messagesBadge.style.display = 'inline-block';
+        } else {
+          messagesBadge.style.display = 'none';
+        }
       }
     }
   } catch (e) {
@@ -124,8 +143,13 @@ async function updateSidebarPendingCount() {
   }
 }
 
+// Alias for backward compatibility
+function updateSidebarPendingCount() {
+  updateSidebarNotificationBadges();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   if (getAuthToken()) {
-    updateSidebarPendingCount();
+    updateSidebarNotificationBadges();
   }
 });

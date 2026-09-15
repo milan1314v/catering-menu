@@ -22,8 +22,10 @@ CREATE TABLE contact_submissions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL,
+    phone TEXT DEFAULT '',
     subject TEXT NOT NULL,
     message TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'unread',
     submitted_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -92,13 +92,19 @@
                                 <input type="email" id="contact_email" required placeholder="Your Email Address">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label id="subjectLabel">Subject</label>
-                            <input type="text" id="contact_subject" required placeholder="Subject">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label id="subjectLabel">Subject *</label>
+                                <input type="text" id="contact_subject" required placeholder="Event Inquiry, Booking, Question...">
+                            </div>
+                            <div class="form-group">
+                                <label id="phoneLabel">Phone Number <span style="font-size:0.78rem; color:var(--text-muted); font-weight:normal;">(Optional)</span></label>
+                                <input type="tel" id="contact_phone" placeholder="e.g. +1 (555) 000-0000">
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label id="messageLabel">Your Message</label>
-                            <textarea id="contact_message" required placeholder="Your Message"></textarea>
+                            <label id="messageLabel">Your Message *</label>
+                            <textarea id="contact_message" required placeholder="Tell us about your event, date, guest count, or questions..."></textarea>
                         </div>
                         <button type="submit" id="contactSubmitBtn" class="btn-primary">
                             Send Message <i class="fas fa-paper-plane"></i>
@@ -197,13 +203,14 @@
                 const name = document.getElementById('contact_name').value.trim();
                 const email = document.getElementById('contact_email').value.trim();
                 const subject = document.getElementById('contact_subject').value.trim();
+                const phone = document.getElementById('contact_phone') ? document.getElementById('contact_phone').value.trim() : '';
                 const message = document.getElementById('contact_message').value.trim();
 
                 try {
                     const res = await fetch('/api/contact', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ name, email, subject, message })
+                        body: JSON.stringify({ name, email, phone, subject, message })
                     });
                     const resData = await res.json();
                     if (resData.success) {

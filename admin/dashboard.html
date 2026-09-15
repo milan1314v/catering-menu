@@ -27,8 +27,9 @@
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                 <a href="approvals.html"><i class="fas fa-user-check"></i> Pending Approvals <span class="badge badge-warning" id="sidebarPendingBadge" style="margin-left:auto; display:none; font-size:0.75rem; padding:2px 7px;">0</span></a>
-                <a href="manage_content.html"><i class="fas fa-edit"></i> Manage Content</a>
+                <a href="manage_content.html"><i class="fas fa-edit"></i> Manage Content &amp; SEO</a>
                 <a href="manage_restaurants.html"><i class="fas fa-store"></i> Manage Caterers</a>
+                <a href="messages.html"><i class="fas fa-envelope"></i> Inquiries &amp; Messages <span class="badge badge-warning" id="sidebarMessagesBadge" style="margin-left:auto; display:none; font-size:0.75rem; padding:2px 7px;">0</span></a>
             </nav>
             <div class="sidebar-footer">
                 <a href="../index.html" target="_blank"><i class="fas fa-external-link-alt"></i> View Site</a>
@@ -105,6 +106,7 @@
             <div class="card glass-card" style="margin-top:24px;">
                 <div class="card-header">
                     <h3><i class="fas fa-envelope"></i> Recent Inquiries</h3>
+                    <a href="messages.html" class="btn-sm">View All Inquiries</a>
                 </div>
                 <div class="table-responsive">
                     <table class="data-table">
@@ -115,11 +117,12 @@
                                 <th>Email</th>
                                 <th>Subject</th>
                                 <th>Date</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="recentContactsBody">
                             <tr>
-                                <td colspan="5" style="text-align:center;color:var(--text-dim);">No inquiries yet</td>
+                                <td colspan="6" style="text-align:center;color:var(--text-dim);">No inquiries yet</td>
                             </tr>
                         </tbody>
                     </table>
@@ -171,10 +174,11 @@
                         <td>${escapeHtml(c.email || '')}</td>
                         <td>${escapeHtml(c.subject || '')}</td>
                         <td>${escapeHtml((c.submitted_at || '').substring(0, 10))}</td>
+                        <td><a href="messages.html" class="btn-sm btn-info"><i class="fas fa-eye"></i> View</a></td>
                     </tr>
                 `).join('');
                 } else {
-                    cbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim);">No inquiries yet</td></tr>';
+                    cbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-dim);">No inquiries yet</td></tr>';
                 }
             } catch (e) {
                 console.error('Error loading stats', e);

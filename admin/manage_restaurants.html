@@ -54,6 +54,51 @@
             font-weight: 500;
         }
 
+        .btn-hour-tag {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .btn-hour-tag:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .btn-hour-tag.active-closed {
+            background: rgba(239, 68, 68, 0.25) !important;
+            border-color: #ef4444 !important;
+            color: #f87171 !important;
+            font-weight: 700;
+        }
+
+        .btn-hour-tag.active-24h {
+            background: rgba(16, 185, 129, 0.25) !important;
+            border-color: #10b981 !important;
+            color: #34d399 !important;
+            font-weight: 700;
+        }
+
+        .time-row.is-closed input[type="time"] {
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        .time-row.is-24h input[type="time"] {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
         .menu-builder-container {
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -508,12 +553,31 @@
                             style="width:100%;"></textarea>
                     </div>
 
-                    <!-- Locations Panel -->
-                    <div class="form-group">
-                        <label class="form-label">Service Locations &amp; Branches (Separate multiple branches with |)</label>
-                        <input type="text" id="formLocations"
-                            placeholder="e.g. 742 Evergreen Ave, Downtown | 158 Oak Street, Midtown"
-                            style="width:100%;">
+                    <!-- Locations Panel with City & State -->
+                    <div class="form-panel-box" style="margin-bottom:20px;">
+                        <label class="form-label" style="font-size:0.92rem; color:var(--text); margin-bottom:12px;">
+                            <i class="fas fa-map-marked-alt" style="color:var(--gold); margin-right:6px;"></i>
+                            Caterer City, State &amp; Service Locations
+                        </label>
+                        <div class="form-row-grid" style="margin-bottom:14px;">
+                            <div class="form-group">
+                                <label class="form-label"><i class="fas fa-city" style="color:var(--gold);"></i> City *</label>
+                                <input type="text" id="formCity" placeholder="e.g. New York, Los Angeles, Chicago" style="width:100%;">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label"><i class="fas fa-map" style="color:var(--gold);"></i> State / Region *</label>
+                                <input type="text" id="formState" placeholder="e.g. NY, California, Illinois, Texas" style="width:100%;">
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label class="form-label"><i class="fas fa-map-marker-alt" style="color:var(--gold);"></i> Kitchen Addresses &amp; Service Areas (Separate multiple branches with |)</label>
+                            <input type="text" id="formLocations"
+                                placeholder="e.g. 225 Spice Market Road, Downtown | Serves Tri-State Metro Area"
+                                style="width:100%;">
+                            <small style="color:var(--text-dim); margin-top:4px; display:block;">
+                                Note: City &amp; State will be displayed on listings, search filters, and caterer profile.
+                            </small>
+                        </div>
                     </div>
 
                     <!-- ═══════════════════════════════════════════════
@@ -527,13 +591,13 @@
                                 <small style="color:var(--text-muted);">Visual interactive builder ya direct text mode me edit karein.</small>
                             </div>
                             <div style="display:flex; gap:10px;">
-                                <button type="button" class="btn-sm" onclick="toggleMenuMode()"
+                                <button type="button" id="toggleMenuModeBtn" class="btn-sm" onclick="toggleMenuMode()"
                                     style="background:var(--gold); color:#0a0a1a; font-weight:700; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">
-                                    <i class="fas fa-exchange-alt"></i> Switch Mode (Visual / Text)
+                                    <i class="fas fa-code"></i> Switch to Text Mode
                                 </button>
                                 <button type="button" id="insertTemplateBtn" class="btn-sm"
                                     onclick="insertMenuTemplate()"
-                                    style="background:transparent; border:1px solid var(--gold); color:var(--gold); padding:8px 16px; border-radius:6px; cursor:pointer; display:none; font-weight:600;">
+                                    style="background:transparent; border:1px solid var(--gold); color:var(--gold); padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:600;">
                                     <i class="fas fa-file-alt"></i> Insert Template
                                 </button>
                             </div>
@@ -556,12 +620,26 @@
                             <div>
                                 <h4 style="color:var(--gold); font-size:1.05rem; margin:0;"><i class="fas fa-clock"></i>
                                     Day-wise Operating / Booking Hours</h4>
-                                <small style="color:var(--text-muted);">(Leave blank for Closed / Unavailable)</small>
+                                <small style="color:var(--text-muted);">Configure timings, 24-hours open, or mark specific days as Closed.</small>
                             </div>
-                            <button type="button" onclick="applyMondayToAll()" class="btn-sm"
-                                style="background:var(--gold); color:#0a0a1a; font-weight:700; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">
-                                <i class="fas fa-copy"></i> Apply Monday to All
-                            </button>
+                            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                                <button type="button" onclick="applyMondayToAll()" class="btn-sm"
+                                    style="background:var(--gold); color:#0a0a1a; font-weight:700; border:none; padding:8px 14px; border-radius:6px; cursor:pointer;" title="Copy Monday hours to all remaining days">
+                                    <i class="fas fa-copy"></i> Copy Mon to All
+                                </button>
+                                <button type="button" onclick="setAllHoursStandard()" class="btn-sm"
+                                    style="background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.15); padding:8px 12px; border-radius:6px; cursor:pointer;" title="Set all days 9:00 AM - 9:00 PM">
+                                    <i class="fas fa-sun"></i> 9 AM - 9 PM
+                                </button>
+                                <button type="button" onclick="setAllHours24h()" class="btn-sm"
+                                    style="background:rgba(16,185,129,0.2); color:#34d399; border:1px solid #10b981; padding:8px 12px; border-radius:6px; cursor:pointer;" title="Set open 24 hours every day">
+                                    <i class="fas fa-check-double"></i> Open 24/7
+                                </button>
+                                <button type="button" onclick="setAllHoursClosed()" class="btn-sm"
+                                    style="background:rgba(244,67,54,0.15); color:#f87171; border:1px solid #ef4444; padding:8px 12px; border-radius:6px; cursor:pointer;" title="Mark all days as Closed">
+                                    <i class="fas fa-ban"></i> All Closed
+                                </button>
+                            </div>
                         </div>
 
                         <div id="openingHoursList">
@@ -634,8 +712,41 @@
         let currentEditingRestaurant = null;
         let menuMode = 'visual'; // 'visual' or 'text'
         let menuBuilderData = [];
+        let dayState = {}; // Tracks 'closed', '24h', or 'custom' for each day
 
         const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+        const DEFAULT_MENU_TEMPLATE = [
+            '==================================================',
+            '              CATERING EVENT MENU',
+            '==================================================',
+            '',
+            '--- APPETIZERS & CANAPÉS ---',
+            '',
+            'Crispy Vegetable Spring Rolls ............... $8',
+            'Truffle Mushroom Bruschetta ................. $10',
+            'Smoked Salmon & Dill Crostini ............... $12',
+            'Mini Chicken Tikka Skewers .................. $11',
+            '',
+            '--- MAIN COURSE & BUFFET ---',
+            '',
+            'Slow-Roasted Prime Rib ...................... $28',
+            'Grilled Atlantic Herb Salmon ................ $24',
+            'Tuscan Garlic Herb Chicken .................. $20',
+            'Wild Mushroom Truffle Risotto (V) ........... $18',
+            '',
+            '--- SIDES & SALADS ---',
+            '',
+            'Classic Caesar Salad ........................ $6',
+            'Roasted Seasonal Market Vegetables .......... $6',
+            'Garlic Herb Roasted Baby Potatoes ........... $5',
+            '',
+            '--- DESSERTS & SWEETS ---',
+            '',
+            'Mini French Pastry Assortment ............... $8',
+            'Classic Tiramisu Cups ....................... $7',
+            'Artisan Fruit & Cheese Platter .............. $9'
+        ].join('\n');
 
         // ═══════════════════════════════════════════════════════
         // 1. LOAD & RENDER RESTAURANTS LIST
@@ -674,10 +785,14 @@
                         : '<span class="badge badge-pending" style="background:rgba(255,152,0,0.2);color:#ff9800;border:1px solid #ff9800;padding:4px 10px;border-radius:12px;font-size:0.78rem;font-weight:700;">PENDING</span>');
 
                 const catererSlug = r.slug || generateSlug(r.name);
+                const locCityState = [r.city, r.state].filter(Boolean).join(', ');
                 return `
                     <tr>
                         <td><strong>#${r.id}</strong></td>
-                        <td><strong>${escapeHtml(r.name || 'Untitled')}</strong></td>
+                        <td>
+                            <strong>${escapeHtml(r.name || 'Untitled')}</strong>
+                            ${locCityState ? `<div style="font-size:0.78rem; color:var(--gold); margin-top:2px;"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(locCityState)}</div>` : ''}
+                        </td>
                         <td><a href="https://${catererSlug}.catering-menu.com" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:4px;"><code>${catererSlug}</code> <i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i></a></td>
                         <td>${escapeHtml(r.cuisine || '-')}</td>
                         <td>${statusBadge}</td>
@@ -716,7 +831,10 @@
             }
             const filtered = allRestaurants.filter(r =>
                 (r.name && r.name.toLowerCase().includes(term)) ||
-                (r.cuisine && r.cuisine.toLowerCase().includes(term))
+                (r.cuisine && r.cuisine.toLowerCase().includes(term)) ||
+                (r.city && r.city.toLowerCase().includes(term)) ||
+                (r.state && r.state.toLowerCase().includes(term)) ||
+                (r.locations && r.locations.toLowerCase().includes(term))
             );
             renderTable(filtered);
             document.getElementById('filteredCountText').textContent = `Showing ${filtered.length} of ${allRestaurants.length}`;
@@ -1002,11 +1120,25 @@
             currentMenuImages = [];
             renderGalleryManager();
             document.getElementById('formAbout').value = '';
+            
+            // City & State fields
+            document.getElementById('formCity').value = '';
+            document.getElementById('formState').value = '';
             document.getElementById('formLocations').value = '';
-            document.getElementById('formMenuText').value = '';
 
+            // Default standard menu template inserted & visual tab open
+            document.getElementById('formMenuText').value = DEFAULT_MENU_TEMPLATE;
+            menuMode = 'visual';
+            document.getElementById('formMenuText').style.display = 'none';
+            document.getElementById('visualMenuBuilderContainer').style.display = 'block';
+            const toggleBtn = document.getElementById('toggleMenuModeBtn');
+            if (toggleBtn) toggleBtn.innerHTML = '<i class="fas fa-code"></i> Switch to Text Mode';
+            initMenuBuilder(DEFAULT_MENU_TEMPLATE);
+
+            // Default opening hours: 9 AM - 9 PM
             renderOpeningHoursInputs({});
-            initMenuBuilder('');
+            setAllHoursStandard();
+
             showFormView();
         }
 
@@ -1069,10 +1201,22 @@
             renderGalleryManager();
 
             document.getElementById('formAbout').value = r.about_text || '';
+
+            // City & State fields with smart fallback
+            document.getElementById('formCity').value = r.city || '';
+            document.getElementById('formState').value = r.state || '';
             document.getElementById('formLocations').value = r.locations || '';
 
-            const menuStr = r.direct_menu_text || '';
+            // Menu: if empty, default to standard template
+            const menuStr = (r.direct_menu_text && r.direct_menu_text.trim()) ? r.direct_menu_text : DEFAULT_MENU_TEMPLATE;
             document.getElementById('formMenuText').value = menuStr;
+
+            // Keep visual tab open by default
+            menuMode = 'visual';
+            document.getElementById('formMenuText').style.display = 'none';
+            document.getElementById('visualMenuBuilderContainer').style.display = 'block';
+            const toggleBtn = document.getElementById('toggleMenuModeBtn');
+            if (toggleBtn) toggleBtn.innerHTML = '<i class="fas fa-code"></i> Switch to Text Mode';
 
             renderOpeningHoursInputs(r.opening_hours || {}, r.opening_days || '');
             initMenuBuilder(menuStr);
@@ -1094,15 +1238,22 @@
 
             const menuText = document.getElementById('formMenuText').value;
 
-            // Collect opening hours
+            // Collect opening hours based on dayState
             const opening_hours = {};
             DAYS.forEach(d => {
-                const open = document.getElementById(`oh_${d}_open`).value;
-                const close = document.getElementById(`oh_${d}_close`).value;
-                if (!open || !close) {
+                const state = dayState[d] || 'custom';
+                if (state === 'closed') {
                     opening_hours[d] = 'Closed';
+                } else if (state === '24h') {
+                    opening_hours[d] = 'Open 24 Hours';
                 } else {
-                    opening_hours[d] = `${formatTimeAmPm(open)} - ${formatTimeAmPm(close)}`;
+                    const open = document.getElementById(`oh_${d}_open`).value;
+                    const close = document.getElementById(`oh_${d}_close`).value;
+                    if (!open || !close) {
+                        opening_hours[d] = 'Closed';
+                    } else {
+                        opening_hours[d] = `${formatTimeAmPm(open)} - ${formatTimeAmPm(close)}`;
+                    }
                 }
             });
 
@@ -1114,6 +1265,10 @@
                 price_range = document.getElementById('formPriceCustom').value.trim() || 'Custom';
             }
 
+            const city = document.getElementById('formCity').value.trim();
+            const state = document.getElementById('formState').value.trim();
+            const locations = document.getElementById('formLocations').value.trim();
+
             const restData = {
                 name: name,
                 slug: slug,
@@ -1124,7 +1279,9 @@
                 banner_url: document.getElementById('formBanner').value.trim(),
                 menu_images: [...currentMenuImages],
                 about_text: document.getElementById('formAbout').value.trim(),
-                locations: document.getElementById('formLocations').value.trim(),
+                city: city,
+                state: state,
+                locations: locations,
                 direct_menu_text: menuText,
                 menu_file_path: '',
                 opening_hours: opening_hours,
@@ -1185,31 +1342,53 @@
         }
 
         // ═══════════════════════════════════════════════════════
-        // 3. DAY-WISE OPENING HOURS LOGIC
+        // 3. DAY-WISE OPENING HOURS CONTROLS
         // ═══════════════════════════════════════════════════════
         function renderOpeningHoursInputs(oh, legacyOpeningDays) {
             const container = document.getElementById('openingHoursList');
             container.innerHTML = '';
-
-            // Handle fallback if legacy text exists
-            let defaultTimes = {};
-            if (legacyOpeningDays && Object.keys(oh).length === 0) {
-                const parts = legacyOpeningDays.split(/[:\-\-]/);
-                // default to 11:00 to 22:00 if exists
-            }
+            dayState = {};
 
             DAYS.forEach(day => {
-                const row = document.createElement('div');
-                row.className = 'time-row';
+                const timeStr = (oh && oh[day]) ? String(oh[day]).trim() : '';
+                let state = 'custom';
+                let openVal = '';
+                let closeVal = '';
 
-                const timeStr = oh[day] || '';
-                const [openVal, closeVal] = parseTimeStr(timeStr);
+                if (timeStr.toLowerCase() === 'closed') {
+                    state = 'closed';
+                } else if (timeStr.toLowerCase().includes('24 hour') || timeStr.toLowerCase().includes('24/7') || timeStr === 'Open 24 Hours') {
+                    state = '24h';
+                } else if (timeStr) {
+                    const parsed = parseTimeStr(timeStr);
+                    openVal = parsed[0];
+                    closeVal = parsed[1];
+                    state = (openVal && closeVal) ? 'custom' : 'closed';
+                } else {
+                    // Default if unspecified
+                    state = 'closed';
+                }
+
+                dayState[day] = state;
+
+                const row = document.createElement('div');
+                row.className = `time-row ${state === 'closed' ? 'is-closed' : ''} ${state === '24h' ? 'is-24h' : ''}`;
+                row.id = `oh_row_${day}`;
 
                 row.innerHTML = `
-                    <label>${day}</label>
-                    <input type="time" id="oh_${day}_open" value="${openVal}" style="flex:1; cursor:pointer;">
+                    <label style="min-width:92px; text-transform:capitalize; font-weight:600;">${day}</label>
+                    <input type="time" id="oh_${day}_open" value="${openVal}" style="flex:1; cursor:pointer;" onchange="handleTimeInputChange('${day}')">
                     <span style="color:var(--text-muted); font-size:0.85rem;">to</span>
-                    <input type="time" id="oh_${day}_close" value="${closeVal}" style="flex:1; cursor:pointer;">
+                    <input type="time" id="oh_${day}_close" value="${closeVal}" style="flex:1; cursor:pointer;" onchange="handleTimeInputChange('${day}')">
+                    
+                    <div style="display:flex; gap:6px; margin-left:8px;">
+                        <button type="button" class="btn-hour-tag ${state === 'closed' ? 'active-closed' : ''}" id="oh_tag_closed_${day}" onclick="toggleDayClosed('${day}')" title="Mark this day as Closed">
+                            <i class="fas fa-ban"></i> Closed
+                        </button>
+                        <button type="button" class="btn-hour-tag ${state === '24h' ? 'active-24h' : ''}" id="oh_tag_24h_${day}" onclick="toggleDay24h('${day}')" title="Mark this day as Open 24 Hours">
+                            <i class="fas fa-clock"></i> 24 Hours
+                        </button>
+                    </div>
                 `;
                 container.appendChild(row);
             });
@@ -1245,13 +1424,97 @@
             return `${h}:${m} ${ampm}`;
         }
 
+        function updateDayRowUi(day) {
+            const state = dayState[day] || 'custom';
+            const row = document.getElementById(`oh_row_${day}`);
+            const tagClosed = document.getElementById(`oh_tag_closed_${day}`);
+            const tag24h = document.getElementById(`oh_tag_24h_${day}`);
+            if (!row) return;
+
+            row.classList.toggle('is-closed', state === 'closed');
+            row.classList.toggle('is-24h', state === '24h');
+
+            if (tagClosed) tagClosed.classList.toggle('active-closed', state === 'closed');
+            if (tag24h) tag24h.classList.toggle('active-24h', state === '24h');
+        }
+
+        function toggleDayClosed(day) {
+            if (dayState[day] === 'closed') {
+                // Toggle off -> switch to custom
+                dayState[day] = 'custom';
+                const openInput = document.getElementById(`oh_${day}_open`);
+                const closeInput = document.getElementById(`oh_${day}_close`);
+                if (!openInput.value) openInput.value = '09:00';
+                if (!closeInput.value) closeInput.value = '21:00';
+            } else {
+                // Set to closed
+                dayState[day] = 'closed';
+            }
+            updateDayRowUi(day);
+        }
+
+        function toggleDay24h(day) {
+            if (dayState[day] === '24h') {
+                // Toggle off -> switch to custom
+                dayState[day] = 'custom';
+                const openInput = document.getElementById(`oh_${day}_open`);
+                const closeInput = document.getElementById(`oh_${day}_close`);
+                if (!openInput.value) openInput.value = '09:00';
+                if (!closeInput.value) closeInput.value = '21:00';
+            } else {
+                // Set to 24h
+                dayState[day] = '24h';
+                document.getElementById(`oh_${day}_open`).value = '00:00';
+                document.getElementById(`oh_${day}_close`).value = '23:59';
+            }
+            updateDayRowUi(day);
+        }
+
+        function handleTimeInputChange(day) {
+            dayState[day] = 'custom';
+            updateDayRowUi(day);
+        }
+
         function applyMondayToAll() {
+            const monState = dayState['monday'] || 'custom';
             const monOpen = document.getElementById('oh_monday_open').value;
             const monClose = document.getElementById('oh_monday_close').value;
+
             DAYS.slice(1).forEach(d => {
+                dayState[d] = monState;
                 document.getElementById(`oh_${d}_open`).value = monOpen;
                 document.getElementById(`oh_${d}_close`).value = monClose;
+                updateDayRowUi(d);
             });
+            showSuccess('Monday operating hours copied to all days');
+        }
+
+        function setAllHoursStandard() {
+            DAYS.forEach(d => {
+                dayState[d] = 'custom';
+                document.getElementById(`oh_${d}_open`).value = '09:00';
+                document.getElementById(`oh_${d}_close`).value = '21:00';
+                updateDayRowUi(d);
+            });
+            showSuccess('Set all days to 9:00 AM – 9:00 PM');
+        }
+
+        function setAllHours24h() {
+            DAYS.forEach(d => {
+                dayState[d] = '24h';
+                document.getElementById(`oh_${d}_open`).value = '00:00';
+                document.getElementById(`oh_${d}_close`).value = '23:59';
+                updateDayRowUi(d);
+            });
+            showSuccess('Set all days to Open 24 Hours');
+        }
+
+        function setAllHoursClosed() {
+            DAYS.forEach(d => {
+                dayState[d] = 'closed';
+                updateDayRowUi(d);
+            });
+            showSuccess('Marked all days as Closed');
         }
 
         // ═══════════════════════════════════════════════════════
@@ -1260,7 +1523,7 @@
         function toggleMenuMode() {
             const textarea = document.getElementById('formMenuText');
             const builder = document.getElementById('visualMenuBuilderContainer');
-            const templateBtn = document.getElementById('insertTemplateBtn');
+            const toggleBtn = document.getElementById('toggleMenuModeBtn');
 
             if (menuMode === 'visual') {
                 // Switch to Text
@@ -1268,56 +1531,27 @@
                 menuMode = 'text';
                 textarea.style.display = 'block';
                 builder.style.display = 'none';
-                templateBtn.style.display = 'inline-block';
+                if (toggleBtn) {
+                    toggleBtn.innerHTML = '<i class="fas fa-th-list"></i> Switch to Visual Mode';
+                }
             } else {
                 // Switch to Visual
                 initMenuBuilder(textarea.value);
                 menuMode = 'visual';
                 textarea.style.display = 'none';
                 builder.style.display = 'block';
-                templateBtn.style.display = 'none';
+                if (toggleBtn) {
+                    toggleBtn.innerHTML = '<i class="fas fa-code"></i> Switch to Text Mode';
+                }
             }
         }
 
         function insertMenuTemplate() {
-            const template = [
-                '==================================================',
-                '              CATERING EVENT MENU',
-                '==================================================',
-                '',
-                '--- APPETIZERS & CANAPÉS ---',
-                '',
-                'Crispy Vegetable Spring Rolls ............... $8',
-                'Truffle Mushroom Bruschetta ................. $10',
-                'Smoked Salmon & Dill Crostini ............... $12',
-                'Mini Chicken Tikka Skewers .................. $11',
-                '',
-                '--- MAIN COURSE & BUFFET ---',
-                '',
-                'Slow-Roasted Prime Rib ...................... $28',
-                'Grilled Atlantic Herb Salmon ................ $24',
-                'Tuscan Garlic Herb Chicken .................. $20',
-                'Wild Mushroom Truffle Risotto (V) ........... $18',
-                '',
-                '--- SIDES & SALADS ---',
-                '',
-                'Classic Caesar Salad ........................ $6',
-                'Roasted Seasonal Market Vegetables .......... $6',
-                'Garlic Herb Roasted Baby Potatoes ........... $5',
-                '',
-                '--- DESSERTS & SWEETS ---',
-                '',
-                'Mini French Pastry Assortment ............... $8',
-                'Classic Tiramisu Cups ....................... $7',
-                'Artisan Fruit & Cheese Platter .............. $9'
-            ].join('\n');
-
             const textarea = document.getElementById('formMenuText');
-            if (!textarea.value.trim() || confirm('Overwrite current menu with standard template?')) {
-                textarea.value = template;
-                if (menuMode === 'visual') {
-                    initMenuBuilder(template);
-                }
+            if (!textarea.value.trim() || confirm('Insert standard catering menu template?')) {
+                textarea.value = DEFAULT_MENU_TEMPLATE;
+                initMenuBuilder(DEFAULT_MENU_TEMPLATE);
+                showSuccess('Standard catering menu template loaded');
             }
         }
 
@@ -1328,29 +1562,91 @@
             if (trimmed) {
                 const lines = trimmed.split('\n');
                 let currentCat = null;
+                let inHeaderBanner = false;
+
                 lines.forEach(line => {
                     const l = line.trim();
-                    if (!l || l.startsWith('===')) return;
-                    if (l.startsWith('---') && l.endsWith('---')) {
-                        currentCat = {
-                            title: l.replace(/---/g, '').trim(),
-                            items: []
-                        };
-                        menuBuilderData.push(currentCat);
-                    } else if (currentCat && l.includes('.')) {
+                    if (!l) return;
+
+                    // Skip top border lines
+                    if (/^={3,}$/.test(l) || /^═{3,}$/.test(l)) {
+                        inHeaderBanner = !inHeaderBanner;
+                        return;
+                    }
+
+                    // Skip lines inside header banner or document title
+                    if (inHeaderBanner || /^(catering\s+event\s+menu|catering\s+menu|event\s+menu)$/i.test(l)) {
+                        return;
+                    }
+
+                    // Category headers: --- CATEGORY --- or ── CATEGORY ──
+                    if (/^──\s*(.*?)\s*─*$/.test(l) || /^--\s*(.*?)\s*-*$/.test(l)) {
+                        const title = l.replace(/─|-/g, '').trim();
+                        if (title) {
+                            currentCat = { title: title, items: [] };
+                            menuBuilderData.push(currentCat);
+                        }
+                        return;
+                    }
+
+                    // Item parsing: with dots
+                    if (l.includes('.')) {
                         const parts = l.split(/\.{2,}/);
                         if (parts.length >= 2) {
+                            if (!currentCat) {
+                                currentCat = { title: 'General Menu', items: [] };
+                                menuBuilderData.push(currentCat);
+                            }
                             currentCat.items.push({
                                 name: parts[0].trim(),
                                 price: parts[parts.length - 1].trim()
                             });
+                            return;
                         }
+                    }
+
+                    // Item parsing: with dash / em-dash separator
+                    const dashMatch = l.match(/^(.*?)\s*[-–—]{1,2}\s*(\$?[0-9]+(?:\.[0-9]{2})?.*)$/);
+                    if (dashMatch) {
+                        if (!currentCat) {
+                            currentCat = { title: 'General Menu', items: [] };
+                            menuBuilderData.push(currentCat);
+                        }
+                        currentCat.items.push({
+                            name: dashMatch[1].trim(),
+                            price: dashMatch[2].trim()
+                        });
+                        return;
+                    }
+
+                    // Item parsing: name followed by price at the end
+                    const endPriceMatch = l.match(/^(.*?)\s+(\$?[0-9]+(?:\.[0-9]{2})?)$/);
+                    if (endPriceMatch) {
+                        if (!currentCat) {
+                            currentCat = { title: 'General Menu', items: [] };
+                            menuBuilderData.push(currentCat);
+                        }
+                        currentCat.items.push({
+                            name: endPriceMatch[1].trim(),
+                            price: endPriceMatch[2].trim()
+                        });
+                        return;
+                    }
+
+                    // Line without price: if all uppercase or short, treat as category; else item
+                    if (l.length < 40 && l === l.toUpperCase() && !l.includes('$')) {
+                        currentCat = { title: l, items: [] };
+                        menuBuilderData.push(currentCat);
+                    } else if (currentCat) {
+                        currentCat.items.push({ name: l, price: '' });
                     }
                 });
             }
 
+            // If empty, load default template items
             if (menuBuilderData.length === 0) {
-                menuBuilderData.push({ title: 'Starters', items: [{ name: '', price: '' }] });
+                initMenuBuilder(DEFAULT_MENU_TEMPLATE);
+                return;
             }
 
             renderMenuBuilder();

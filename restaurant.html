@@ -43,55 +43,130 @@
     </script>
 
     <style>
-        /* ── Menu Item Person Selector & Live Calculation ────── */
+        /* ── Custom Luxury Person Selector & Live Calculator ────── */
         .item-person-calc-wrap {
             display: inline-flex;
             align-items: center;
             gap: 6px;
             margin-left: 8px;
-            background: rgba(10, 10, 26, 0.7);
-            border: 1px solid rgba(200, 169, 126, 0.35);
-            border-radius: 6px;
-            padding: 2px 6px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(200, 169, 126, 0.4);
+            border-radius: 8px;
+            padding: 3px 8px;
             flex-shrink: 0;
             vertical-align: middle;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
         }
 
-        .item-person-select {
+        .custom-calc-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-calc-btn {
             background: transparent;
             border: none;
-            color: var(--gold);
-            font-size: 0.76rem;
-            font-weight: 600;
+            color: #fbbf24;
+            font-size: 0.78rem;
+            font-weight: 700;
             cursor: pointer;
             outline: none;
-            padding: 2px 2px;
+            padding: 2px 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
         }
 
-        .item-person-select option {
-            background: #0f172a;
-            color: #fff;
+        .custom-calc-btn:hover {
+            color: #fde68a;
+        }
+
+        .custom-calc-chevron {
+            font-size: 0.65rem;
+            transition: transform 0.2s ease;
+            color: rgba(200, 169, 126, 0.85);
+        }
+
+        .custom-calc-dropdown.open .custom-calc-chevron {
+            transform: rotate(180deg);
+        }
+
+        .custom-calc-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            min-width: 140px;
+            background: #0b0f19;
+            border: 1px solid rgba(200, 169, 126, 0.45);
+            border-radius: 10px;
+            padding: 6px;
+            z-index: 999;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(200, 169, 126, 0.15);
+            animation: fadeInCalc 0.15s ease-out;
+        }
+
+        .custom-calc-dropdown.open .custom-calc-menu {
+            display: block;
+        }
+
+        @keyframes fadeInCalc {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-calc-opt {
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.15s ease;
+        }
+
+        .custom-calc-opt:hover {
+            background: rgba(200, 169, 126, 0.18);
+            color: #ffffff;
+        }
+
+        .custom-calc-opt.active {
+            background: rgba(200, 169, 126, 0.25);
+            color: #fbbf24;
+            font-weight: 700;
+        }
+
+        .custom-calc-opt i {
+            font-size: 0.7rem;
+            color: var(--gold);
+            width: 14px;
+            text-align: center;
         }
 
         .item-total-badge {
             font-size: 0.82rem;
             font-weight: 800;
             color: #34d399;
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 4px;
-            padding: 1px 6px;
+            background: rgba(16, 185, 129, 0.16);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            border-radius: 5px;
+            padding: 2px 8px;
             white-space: nowrap;
         }
 
         .menu-person-global-bar {
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(200, 169, 126, 0.25);
-            border-radius: 8px;
-            padding: 5px 12px;
+            gap: 10px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(200, 169, 126, 0.35);
+            border-radius: 30px;
+            padding: 6px 16px;
         }
 
         .rest-badge-price {
@@ -119,9 +194,8 @@
     </nav>
 
     <!-- RESTAURANT HERO -->
-    <section class="rest-hero">
-        <img id="restBanner" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400"
-            alt="Catering Banner">
+    <section class="rest-hero" id="restHeroSection">
+        <img id="restBanner" src="" alt="Catering Banner" style="display:none;">
         <div class="rest-hero-overlay">
             <div class="container">
                 <div class="breadcrumb">
@@ -132,19 +206,15 @@
                     <strong id="breadcrumbName">Loading...</strong>
                 </div>
                 <h1 id="restName">Loading...</h1>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                    <div class="rest-badge" id="restBadge">
-                        <i class="fas fa-star"></i> 5.0 / 5 - 0 reviews
-                    </div>
-                    <div class="rest-badge rest-badge-price" id="restPriceBadge" style="display:none;">
-                        <i class="fas fa-wallet"></i> <span id="restPriceTierText">Moderate ($25 - $50 / guest)</span>
-                    </div>
+                <div id="heroActions" style="margin-top: 14px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a id="heroWebsiteBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none; text-decoration:none; padding:10px 22px; font-weight:700; border-radius:30px; box-shadow:0 4px 15px rgba(217,119,6,0.35); align-items:center; gap:8px;">
+                        <i class="fas fa-external-link-alt"></i> Order on Official Website
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- DETAIL -->
     <!-- DETAIL -->
     <div class="container">
         <div class="rest-detail-grid">
@@ -156,7 +226,7 @@
                             <i class="fas fa-camera-retro"></i>
                         </div>
                         <div>
-                            <h2 class="stylish-title" style="font-size:1.65rem;font-weight:800;color:var(--text);margin-bottom:4px;">
+                            <h2 class="stylish-title" id="menuImagesTitle" style="font-size:1.65rem;font-weight:800;color:var(--text);margin-bottom:4px;">
                                 Direct Menu &amp; Visual Showcase
                             </h2>
                             <p style="font-size:0.92rem;color:var(--text-muted);margin:0;">
@@ -187,19 +257,30 @@
                             <div class="menu-header-icon"><i class="fas fa-utensils"></i></div>
                             <h2 class="stylish-title" id="menuTitleHeading" style="margin:0;">Our Catering Menu</h2>
                         </div>
-                        <div class="menu-person-global-bar">
-                            <label style="font-size:0.84rem; color:var(--text-muted); font-weight:600; margin:0; cursor:pointer;" for="globalPersonSelect">
-                                <i class="fas fa-users" style="color:var(--gold);"></i> Calculate for:
-                            </label>
-                            <select id="globalPersonSelect" onchange="syncAllDishPersons(this.value)" class="item-person-select" style="background:#0b0b1e; border:1px solid rgba(200,169,126,0.5); border-radius:6px; padding:4px 10px; font-weight:700;">
-                                <option value="1" selected>1 Person</option>
-                                <option value="10">10 Persons</option>
-                                <option value="25">25 Persons</option>
-                                <option value="50">50 Persons</option>
-                                <option value="100">100 Persons</option>
-                                <option value="250">250 Persons</option>
-                                <option value="500">500 Persons</option>
-                            </select>
+                        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                            <a id="menuOrderWebsiteBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none; font-size:0.84rem; padding:6px 15px; border-radius:20px; text-decoration:none; align-items:center; gap:6px;">
+                                <i class="fas fa-external-link-alt"></i> Order Online
+                            </a>
+                            <div class="menu-person-global-bar">
+                                <span style="font-size:0.84rem; color:var(--text-muted); font-weight:600; display:inline-flex; align-items:center; gap:6px;">
+                                    <i class="fas fa-users" style="color:var(--gold);"></i> Calculate for:
+                                </span>
+                                <div class="custom-calc-dropdown" id="globalCalcDropdown">
+                                    <button type="button" class="custom-calc-btn" onclick="toggleCalcDropdown(this, event)">
+                                        <span class="custom-calc-label" id="globalPersonLabel">1 Person</span>
+                                        <i class="fas fa-chevron-down custom-calc-chevron"></i>
+                                    </button>
+                                    <div class="custom-calc-menu">
+                                        <div class="custom-calc-opt active" onclick="handleGlobalPersonSelect(1)"><i class="fas fa-user"></i> 1 Person</div>
+                                        <div class="custom-calc-opt" onclick="handleGlobalPersonSelect(10)"><i class="fas fa-users"></i> 10 Persons</div>
+                                        <div class="custom-calc-opt" onclick="handleGlobalPersonSelect(25)"><i class="fas fa-users"></i> 25 Persons</div>
+                                        <div class="custom-calc-opt" onclick="handleGlobalPersonSelect(50)"><i class="fas fa-users"></i> 50 Persons</div>
+                                        <div class="custom-calc-opt" onclick="handleGlobalPersonSelect(100)"><i class="fas fa-users"></i> 100 Persons</div>
+                                        <div class="custom-calc-opt" onclick="handleGlobalPersonSelect(250)"><i class="fas fa-users"></i> 250 Persons</div>
+                                        <div class="custom-calc-opt" onclick="handleGlobalPersonSelect(500)"><i class="fas fa-users"></i> 500 Persons</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -363,7 +444,8 @@
 
         function renderMenuImages(rest) {
             const container = document.getElementById('menuImagesGrid');
-            if (!container) return;
+            const section = document.getElementById('menuImagesSection');
+            if (!container || !section) return;
 
             let images = [];
             if (Array.isArray(rest.menu_images) && rest.menu_images.length > 0) {
@@ -372,58 +454,21 @@
                 images = rest.menu_images.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
             }
 
-            // High-resolution fallback curated gallery matched with cuisine
+            // If no showcase images uploaded, hide section entirely - NO dummy/fake photos!
             if (images.length === 0) {
-                const c = (rest.cuisine || '').toLowerCase();
-                const n = (rest.name || '').toLowerCase();
-                if (c.includes('french') || n.includes('dorée') || n.includes('maison')) {
-                    images = [
-                        { url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000', title: 'Plated Duck Confit & Foie Gras' },
-                        { url: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=1000', title: 'Passed Hors D\'oeuvres Canapés' },
-                        { url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1000', title: 'Artisanal Dessert Flambé Counter' },
-                        { url: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1000', title: 'Grand Banquet Table Styling' }
-                    ];
-                } else if (c.includes('japanese') || c.includes('sushi') || n.includes('sakura')) {
-                    images = [
-                        { url: 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=1000', title: 'Live Nigiri & Sushi Bar Platter' },
-                        { url: 'https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=1000', title: 'Wagyu Beef Teppanyaki Skewers' },
-                        { url: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=1000', title: 'Chef\'s Special Sashimi Arrangement' },
-                        { url: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=1000', title: 'Matcha Tiramisu Dessert Station' }
-                    ];
-                } else if (c.includes('bbq') || c.includes('grill') || n.includes('copper')) {
-                    images = [
-                        { url: 'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=1000', title: '14-Hour Smoked Prime Brisket' },
-                        { url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000', title: 'Live Carving BBQ Station' },
-                        { url: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=1000', title: 'Truffle Macaroni & Skillet Cornbread' },
-                        { url: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=1000', title: 'Flame-Grilled Chicken & Ribs' }
-                    ];
-                } else if (c.includes('italian') || c.includes('pizza') || n.includes('trattoria')) {
-                    images = [
-                        { url: 'https://images.unsplash.com/photo-1541529086526-db283c563270?w=1000', title: 'Antipasti Grazing Table & Burrata' },
-                        { url: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=1000', title: 'Wood-Fired Neapolitan Pizza Live' },
-                        { url: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281699?w=1000', title: 'Handmade Parmigiano Pasta Wheel' },
-                        { url: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=1000', title: 'Rustic Tiramisu & Pastry Display' }
-                    ];
-                } else if (c.includes('indian') || c.includes('asian') || n.includes('spice')) {
-                    images = [
-                        { url: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=1000', title: 'Awadhi Dum Biryani & Kebabs' },
-                        { url: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1000', title: 'Live Chatpati Chaat & Pani Puri' },
-                        { url: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=1000', title: 'Royal Butter Chicken & Naan' },
-                        { url: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=1000', title: 'Dessert Royale - Gulab Jamun & Kulfi' }
-                    ];
-                } else {
-                    images = [
-                        { url: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=1000', title: 'Gourmet Catering Buffet Spread' },
-                        { url: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000', title: 'Chef Passed Canapés & Starters' },
-                        { url: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1000', title: 'Banquet Main Course Delicacies' },
-                        { url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1000', title: 'Artisanal Dessert Presentation' }
-                    ];
-                }
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            const titleEl = document.getElementById('menuImagesTitle');
+            if (titleEl) {
+                titleEl.textContent = `${rest.name} Menu & Visual Showcase`;
             }
 
             container.innerHTML = images.map((item, idx) => {
                 const imgUrl = typeof item === 'string' ? item : item.url;
-                const title = typeof item === 'string' ? `Menu Showcase Dish #${idx + 1}` : item.title;
+                const title = typeof item === 'string' ? `${rest.name} Menu Card #${idx + 1}` : item.title;
                 return `
                     <div class="menu-image-card" onclick="openImageLightbox('${escapeHtml(imgUrl)}', '${escapeHtml(title)}')">
                         <img src="${escapeHtml(imgUrl)}" alt="${escapeHtml(title)}" loading="lazy">
@@ -526,16 +571,22 @@
                     let calcDropdownHtml = '';
                     if (numericPrice > 0) {
                         calcDropdownHtml = `
-                            <div class="item-person-calc-wrap">
-                                <select class="item-person-select" onchange="updateSingleDishPrice(this, ${numericPrice})">
-                                    <option value="1" selected>1 Person</option>
-                                    <option value="10">10 Persons</option>
-                                    <option value="25">25 Persons</option>
-                                    <option value="50">50 Persons</option>
-                                    <option value="100">100 Persons</option>
-                                    <option value="250">250 Persons</option>
-                                    <option value="500">500 Persons</option>
-                                </select>
+                            <div class="item-person-calc-wrap" data-base-price="${numericPrice}">
+                                <div class="custom-calc-dropdown">
+                                    <button type="button" class="custom-calc-btn" onclick="toggleCalcDropdown(this, event)">
+                                        <span class="custom-calc-label">1 Person</span>
+                                        <i class="fas fa-chevron-down custom-calc-chevron"></i>
+                                    </button>
+                                    <div class="custom-calc-menu">
+                                        <div class="custom-calc-opt active" onclick="selectDishPerson(this, 1, ${numericPrice})"><i class="fas fa-user"></i> 1 Person</div>
+                                        <div class="custom-calc-opt" onclick="selectDishPerson(this, 10, ${numericPrice})"><i class="fas fa-users"></i> 10 Persons</div>
+                                        <div class="custom-calc-opt" onclick="selectDishPerson(this, 25, ${numericPrice})"><i class="fas fa-users"></i> 25 Persons</div>
+                                        <div class="custom-calc-opt" onclick="selectDishPerson(this, 50, ${numericPrice})"><i class="fas fa-users"></i> 50 Persons</div>
+                                        <div class="custom-calc-opt" onclick="selectDishPerson(this, 100, ${numericPrice})"><i class="fas fa-users"></i> 100 Persons</div>
+                                        <div class="custom-calc-opt" onclick="selectDishPerson(this, 250, ${numericPrice})"><i class="fas fa-users"></i> 250 Persons</div>
+                                        <div class="custom-calc-opt" onclick="selectDishPerson(this, 500, ${numericPrice})"><i class="fas fa-users"></i> 500 Persons</div>
+                                    </div>
+                                </div>
                                 <span class="item-total-badge" title="Total price for selected persons">= $${numericPrice.toLocaleString()}</span>
                             </div>
                         `;
@@ -563,28 +614,86 @@
         }
 
         // ═══════════════════════════════════════════════════════
-        // DISH PERSON COUNT & LIVE TOTAL CALCULATION LOGIC
+        // CUSTOM LUXURY DISH PERSON COUNT & LIVE TOTAL CALCULATION LOGIC
         // ═══════════════════════════════════════════════════════
-        function updateSingleDishPrice(selectEl, basePrice) {
-            const persons = parseInt(selectEl.value, 10) || 1;
-            const badge = selectEl.parentElement.querySelector('.item-total-badge');
-            if (badge) {
-                const total = persons * basePrice;
-                badge.textContent = `= $${total.toLocaleString()}`;
+        function toggleCalcDropdown(btn, event) {
+            if (event) event.stopPropagation();
+            const parent = btn.closest('.custom-calc-dropdown');
+            if (!parent) return;
+            const isOpen = parent.classList.contains('open');
+            // Close all open dropdowns first
+            document.querySelectorAll('.custom-calc-dropdown.open').forEach(d => {
+                if (d !== parent) d.classList.remove('open');
+            });
+            if (isOpen) {
+                parent.classList.remove('open');
+            } else {
+                parent.classList.add('open');
             }
         }
 
-        function syncAllDishPersons(personCount) {
-            const selects = document.querySelectorAll('.item-person-select');
-            selects.forEach(sel => {
-                sel.value = personCount;
-                const row = sel.closest('.menu-item-row');
-                const basePrice = row ? parseFloat(row.getAttribute('data-base-price')) : 0;
-                if (basePrice > 0) {
-                    updateSingleDishPrice(sel, basePrice);
+        function selectDishPerson(optEl, persons, basePrice) {
+            const dropdown = optEl.closest('.custom-calc-dropdown');
+            if (!dropdown) return;
+            dropdown.querySelectorAll('.custom-calc-opt').forEach(o => o.classList.remove('active'));
+            optEl.classList.add('active');
+            const label = dropdown.querySelector('.custom-calc-label');
+            if (label) label.textContent = persons === 1 ? '1 Person' : `${persons} Persons`;
+            dropdown.classList.remove('open');
+
+            const wrap = dropdown.closest('.item-person-calc-wrap');
+            if (wrap) {
+                wrap.setAttribute('data-current-persons', persons);
+                const badge = wrap.querySelector('.item-total-badge');
+                if (badge) {
+                    const total = persons * basePrice;
+                    const formatted = total % 1 === 0 ? total.toLocaleString() : total.toFixed(2);
+                    badge.textContent = `= $${formatted}`;
+                }
+            }
+        }
+
+        function handleGlobalPersonSelect(persons) {
+            const globalLabel = document.getElementById('globalPersonLabel');
+            if (globalLabel) {
+                globalLabel.textContent = persons === 1 ? '1 Person' : `${persons} Persons`;
+            }
+            const globalDd = document.getElementById('globalCalcDropdown');
+            if (globalDd) {
+                globalDd.querySelectorAll('.custom-calc-opt').forEach(o => {
+                    const txt = o.textContent || '';
+                    if (txt.includes(`${persons} Person`)) o.classList.add('active');
+                    else o.classList.remove('active');
+                });
+                globalDd.classList.remove('open');
+            }
+
+            // Sync all dish rows with custom dropdown
+            document.querySelectorAll('.item-person-calc-wrap').forEach(wrap => {
+                const basePrice = parseFloat(wrap.getAttribute('data-base-price')) || 0;
+                const dd = wrap.querySelector('.custom-calc-dropdown');
+                if (dd) {
+                    const label = dd.querySelector('.custom-calc-label');
+                    if (label) label.textContent = persons === 1 ? '1 Person' : `${persons} Persons`;
+                    dd.querySelectorAll('.custom-calc-opt').forEach(o => {
+                        const txt = o.textContent || '';
+                        if (txt.includes(`${persons} Person`)) o.classList.add('active');
+                        else o.classList.remove('active');
+                    });
+                }
+                const badge = wrap.querySelector('.item-total-badge');
+                if (badge && basePrice > 0) {
+                    const total = persons * basePrice;
+                    const formatted = total % 1 === 0 ? total.toLocaleString() : total.toFixed(2);
+                    badge.textContent = `= $${formatted}`;
                 }
             });
         }
+
+        // Global click listener to close custom dropdowns
+        window.addEventListener('click', () => {
+            document.querySelectorAll('.custom-calc-dropdown.open').forEach(d => d.classList.remove('open'));
+        });
 
         function getEstimatedPerGuestRate(priceRange) {
             const p = String(priceRange || '2').trim();
@@ -601,15 +710,7 @@
         }
 
         function initGuestCalculator(rest) {
-            const pricing = getEstimatedPerGuestRate(rest.price_range);
-
-            // Update hero price badge
-            const priceBadge = document.getElementById('restPriceBadge');
-            const priceTierText = document.getElementById('restPriceTierText');
-            if (priceBadge && priceTierText) {
-                priceTierText.textContent = pricing.label;
-                priceBadge.style.display = 'inline-flex';
-            }
+            // Keep rate calculation helper available for pricing calculations
         }
 
         function renderReviews(reviews) {
@@ -749,37 +850,76 @@
 
             document.getElementById('breadcrumbName').textContent = rest.name;
             document.getElementById('restName').textContent = rest.name;
-            const welcomePrefix = (cms && cms.welcome_title) ? cms.welcome_title : 'About';
-            document.getElementById('welcomeTitle').textContent = `${welcomePrefix} ${rest.name} Catering`;
+            const welcomePrefix = (cms && cms.welcome_title) ? cms.welcome_title : 'Welcome to';
+            document.getElementById('welcomeTitle').textContent = `${welcomePrefix} ${rest.name}`;
             document.getElementById('locCardName').textContent = rest.name;
             document.getElementById('restAbout').textContent = rest.about_text || '';
-            if (rest.banner_url) document.getElementById('restBanner').src = rest.banner_url;
+
+            // Dynamic Section Titles featuring Caterer Name
+            const menuImagesTitleEl = document.getElementById('menuImagesTitle');
+            if (menuImagesTitleEl) menuImagesTitleEl.textContent = `${rest.name} Menu & Visual Showcase`;
+
+            const menuTitleEl = document.getElementById('menuTitleHeading');
+            if (menuTitleEl) menuTitleEl.textContent = `${rest.name} Menu`;
+
+            const locTitleEl = document.getElementById('locationTitleHeading');
+            if (locTitleEl) locTitleEl.textContent = `${rest.name} Locations & Service Areas`;
+
+            const sidebarInfoEl = document.getElementById('sidebarInfoTitle');
+            if (sidebarInfoEl) sidebarInfoEl.innerHTML = `<i class="fas fa-info-circle"></i> ${escapeHtml(rest.name)} Information`;
+
+            const reviewsTitleEl = document.getElementById('reviewsTitleHeading');
+            if (reviewsTitleEl) reviewsTitleEl.textContent = `${rest.name} Reviews & Ratings`;
+
+            const reviewFormEl = document.getElementById('reviewFormHeading');
+            if (reviewFormEl) reviewFormEl.textContent = `Leave a Review for ${rest.name}`;
+
+            // Official Website URL & Order Redirect
+            if (rest.website && rest.website.trim()) {
+                let webUrl = rest.website.trim();
+                if (!webUrl.startsWith('http://') && !webUrl.startsWith('https://')) {
+                    webUrl = 'https://' + webUrl;
+                }
+                const heroBtn = document.getElementById('heroWebsiteBtn');
+                if (heroBtn) {
+                    heroBtn.href = webUrl;
+                    heroBtn.style.display = 'inline-flex';
+                }
+                const menuBtn = document.getElementById('menuOrderWebsiteBtn');
+                if (menuBtn) {
+                    menuBtn.href = webUrl;
+                    menuBtn.style.display = 'inline-flex';
+                }
+            }
+
+            // Banner Image or Rich Dark-Gold Background Fallback (NO fake placeholder images)
+            const bannerEl = document.getElementById('restBanner');
+            const heroSection = document.getElementById('restHeroSection');
+            if (rest.banner_url && rest.banner_url.trim()) {
+                bannerEl.src = rest.banner_url.trim();
+                bannerEl.style.display = 'block';
+                bannerEl.onerror = () => {
+                    bannerEl.style.display = 'none';
+                    if (heroSection) heroSection.classList.add('no-banner');
+                };
+            } else {
+                bannerEl.style.display = 'none';
+                if (heroSection) heroSection.classList.add('no-banner');
+            }
 
             // Apply dynamic CMS labels
             if (cms) {
-                if (cms.menu_title && document.getElementById('menuTitleHeading')) {
-                    document.getElementById('menuTitleHeading').textContent = cms.menu_title;
-                }
                 if (cms.menu_toggle_text && document.getElementById('menuTextBtnText')) {
                     document.getElementById('menuTextBtnText').textContent = cms.menu_toggle_text;
                 }
                 if (cms.menu_toggle_file && document.getElementById('menuFileBtnText')) {
                     document.getElementById('menuFileBtnText').textContent = cms.menu_toggle_file;
                 }
-                if (cms.info_title && document.getElementById('sidebarInfoTitle')) {
-                    document.getElementById('sidebarInfoTitle').innerHTML = `<i class="fas fa-info-circle"></i> ${escapeHtml(cms.info_title)}`;
-                }
                 if (cms.hours_label && document.getElementById('sidebarHoursHeading')) {
                     document.getElementById('sidebarHoursHeading').textContent = cms.hours_label;
                 }
                 if (cms.location_label && document.getElementById('sidebarLocHeading')) {
                     document.getElementById('sidebarLocHeading').textContent = cms.location_label;
-                }
-                if (cms.reviews_title && document.getElementById('reviewsTitleHeading')) {
-                    document.getElementById('reviewsTitleHeading').textContent = cms.reviews_title;
-                }
-                if (cms.review_form_title && document.getElementById('reviewFormHeading')) {
-                    document.getElementById('reviewFormHeading').textContent = cms.review_form_title;
                 }
                 if (cms.review_form_name && document.getElementById('reviewNameLabel')) {
                     document.getElementById('reviewNameLabel').textContent = cms.review_form_name;
@@ -800,7 +940,8 @@
                 }
             }
 
-            document.getElementById('restBadge').innerHTML = `<i class="fas fa-star"></i> ${avg} / 5 - ${reviews.length} reviews`;
+            const rb = document.getElementById('restBadge');
+            if (rb) rb.innerHTML = `<i class="fas fa-star"></i> ${avg} / 5 - ${reviews.length} reviews`;
             document.getElementById('sidebarRatingScore').textContent = avg;
             document.getElementById('sidebarReviewCount').textContent = `Based on ${reviews.length} reviews`;
 

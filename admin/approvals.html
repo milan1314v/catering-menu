@@ -582,6 +582,11 @@
                         <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;">Kitchen &amp; Service Locations</label>
                         <input type="text" id="m_locations" placeholder="e.g. 742 Gourmet Ave, Downtown | Serves Metro Area" style="width:100%;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;">
                     </div>
+
+                    <div style="margin-top:12px;">
+                        <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:4px;"><i class="fas fa-globe" style="color:var(--gold);"></i> Official Website URL (Redirect for Orders)</label>
+                        <input type="url" id="m_website" placeholder="https://www.chipotle.com/catering" style="width:100%;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);border-radius:8px;color:#fff;">
+                    </div>
                 </div>
 
                 <!-- 2. Cover Banner Media with Upload & URL -->
@@ -922,6 +927,7 @@
             document.getElementById('m_state').value = r.state || '';
             document.getElementById('m_country').value = r.country || 'United States';
             document.getElementById('m_locations').value = r.locations || '';
+            document.getElementById('m_website').value = r.website || '';
             document.getElementById('m_about').value = r.about_text || '';
             document.getElementById('m_direct_menu').value = r.direct_menu_text || '';
 
@@ -1071,6 +1077,7 @@
                 state: document.getElementById('m_state').value.trim(),
                 country: document.getElementById('m_country').value.trim() || 'United States',
                 locations: document.getElementById('m_locations').value.trim(),
+                website: document.getElementById('m_website').value.trim(),
                 banner_url: document.getElementById('m_banner').value.trim(),
                 menu_images: [...currentModalGallery],
                 about_text: document.getElementById('m_about').value.trim(),

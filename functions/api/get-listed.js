@@ -25,6 +25,7 @@ export async function onRequestPost(context) {
 
     const {
       name,
+      website,
       cuisine,
       price_range,
       banner_url,
@@ -64,11 +65,12 @@ export async function onRequestPost(context) {
     const restaurantObj = {
       name: name.trim(),
       slug: slugify(name),
+      website: (website || '').trim(),
       cuisine: (cuisine || 'International').trim(),
       price_range: (price_range || '$$').trim(),
       lat: lat ? parseFloat(lat) : 40.7128,
       lng: lng ? parseFloat(lng) : -74.0060,
-      banner_url: (banner_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400').trim(),
+      banner_url: (banner_url || '').trim(),
       menu_images: finalGallery,
       about_text: about_text.trim(),
       direct_menu_text: (direct_menu_text || '').trim(),

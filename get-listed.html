@@ -171,6 +171,10 @@
                                 <input type="text" id="rest_locations" required
                                     placeholder="e.g. 742 Gourmet Ave, Downtown | Serves Metro Area &amp; Tri-State">
                             </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-globe"></i> Official Website URL <small style="color:#64748b;font-weight:normal;">(Optional - for online catering orders)</small></label>
+                                <input type="url" id="rest_website" placeholder="https://www.your-catering-business.com">
+                            </div>
                         </div>
                     </div>
 
@@ -200,7 +204,7 @@
                             </div>
                             <div style="display:flex;gap:10px;flex-wrap:wrap;">
                                 <input type="url" id="rest_banner"
-                                    value="https://images.unsplash.com/photo-1555244162-803834f70033?w=1400"
+                                    value=""
                                     placeholder="https://images.unsplash.com/photo-..." style="flex:1;min-width:260px;"
                                     oninput="updateBannerPreview(this.value)">
                                 <button type="button" class="btn-upload-file"
@@ -919,6 +923,7 @@
                 if (priceSelect && priceSelect.value === 'custom') {
                     price_range = document.getElementById('rest_price_custom').value.trim() || 'Custom';
                 }
+                const website = document.getElementById('rest_website') ? document.getElementById('rest_website').value.trim() : '';
                 const banner_url = document.getElementById('rest_banner').value.trim();
                 const about_text = document.getElementById('rest_about').value.trim();
                 const direct_menu_text = document.getElementById('get_listed_menu_text').value.trim();
@@ -946,6 +951,7 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             name,
+                            website,
                             cuisine,
                             price_range,
                             city,

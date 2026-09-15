@@ -446,24 +446,11 @@
                         </div>
                     </div>
 
-                    <!-- Pricing & Coordinates Row -->
+                    <!-- Website & Coordinates Row -->
                     <div class="form-row-grid">
                         <div class="form-group">
-                            <label class="form-label">Pricing Tier (1, 2, 3, 4 or Custom)</label>
-                            <div style="display:flex; gap:10px; align-items:center;">
-                                <div style="position:relative; flex:1;">
-                                    <select id="formPriceSelect" style="width:100%; appearance:none; -webkit-appearance:none; background:rgba(0,0,0,0.3); border:1px solid var(--border); padding:10px 34px 10px 14px; border-radius:6px; color:#fff; cursor:pointer;" onchange="handleAdminPriceSelectChange(this.value)">
-                                        <option value="1">1 - Budget Friendly (Under $25 / guest)</option>
-                                        <option value="2" selected>2 - Moderate ($25 – $50 / guest)</option>
-                                        <option value="3">3 - Upscale &amp; Premium ($50 – $100 / guest)</option>
-                                        <option value="4">4 - Luxury &amp; Bespoke ($100+ / guest)</option>
-                                        <option value="custom">Custom Pricing...</option>
-                                    </select>
-                                    <i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--gold); pointer-events:none; font-size:0.75rem;"></i>
-                                </div>
-                                <input type="text" id="formPriceCustom" placeholder="e.g. $45/plate" style="display:none; flex:1; padding:10px 14px; background:rgba(0,0,0,0.3); border:1px solid var(--gold); border-radius:6px; color:#fff;" oninput="document.getElementById('formPrice').value = this.value.trim() || 'Custom'">
-                            </div>
-                            <input type="hidden" id="formPrice" value="2">
+                            <label class="form-label"><i class="fas fa-globe" style="color:var(--gold);"></i> Official Website URL (Redirect for Orders)</label>
+                            <input type="url" id="formWebsite" placeholder="https://www.chipotle.com/catering" style="width:100%;">
                         </div>
                         <div class="form-group" style="display:flex; gap:12px;">
                             <div style="flex:1;">
@@ -476,6 +463,7 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" id="formPrice" value="2">
 
                     <!-- Banner Cover Image Panel -->
                     <div class="form-panel-box">
@@ -1118,6 +1106,7 @@
                 priceCust.style.display = 'none';
                 priceCust.value = '';
             }
+            document.getElementById('formWebsite').value = '';
             document.getElementById('formLat').value = '';
             document.getElementById('formLng').value = '';
             document.getElementById('formBanner').value = '';
@@ -1190,6 +1179,7 @@
                 if (customEl) { customEl.style.display = 'block'; customEl.value = pVal; }
             }
 
+            document.getElementById('formWebsite').value = r.website || '';
             document.getElementById('formLat').value = r.lat || '';
             document.getElementById('formLng').value = r.lng || '';
             document.getElementById('formBanner').value = r.banner_url || '';
@@ -1281,6 +1271,7 @@
             const restData = {
                 name: name,
                 slug: slug,
+                website: document.getElementById('formWebsite').value.trim(),
                 cuisine: document.getElementById('formCuisine').value.trim(),
                 price_range: price_range,
                 lat: parseFloat(document.getElementById('formLat').value) || 0,

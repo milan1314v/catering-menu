@@ -519,6 +519,38 @@
                 <input type="hidden" id="modalRestId">
                 <input type="hidden" id="modalRestSlug">
 
+                <!-- Caterer SEO Meta Settings (Top Panel) -->
+                <div class="modal-section-box" style="border: 1px solid rgba(217, 119, 6, 0.4); background: rgba(217, 119, 6, 0.05); margin-bottom: 18px;">
+                    <div class="modal-sec-title" style="justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                        <span><i class="fas fa-search" style="color:var(--gold);"></i> Caterer SEO Meta Settings (Custom Title &amp; Description)</span>
+                        <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal; text-transform:none;">
+                            <i class="fas fa-info-circle" style="color:var(--gold);"></i> Blank chhodne par default template auto-use hoga
+                        </span>
+                    </div>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px;">
+                        <div>
+                            <label style="font-size:0.8rem; color:var(--text-muted); display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                <span>Custom Meta Title</span>
+                                <span id="m_metaTitleCharCount" style="font-size:0.72rem; color:var(--text-dim); text-transform:none;">0 / 60 chars</span>
+                            </label>
+                            <input type="text" id="m_meta_title" placeholder="e.g. Chipotle Catering - Menus, Burrito Boxes & Pricing" style="width:100%; padding:10px 12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); border-radius:8px; color:#fff;" oninput="updateModalCharCount('m_metaTitleCharCount', this.value.length, 60)">
+                            <small style="display:block; color:var(--text-dim); font-size:0.72rem; margin-top:4px;">
+                                <strong>Default:</strong> <em>{name} - Catering Menu, Pricing &amp; Reviews | Catering Menu</em>
+                            </small>
+                        </div>
+                        <div>
+                            <label style="font-size:0.8rem; color:var(--text-muted); display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                                <span>Custom Meta Description</span>
+                                <span id="m_metaDescCharCount" style="font-size:0.72rem; color:var(--text-dim); text-transform:none;">0 / 160 chars</span>
+                            </label>
+                            <textarea id="m_meta_desc" rows="2" placeholder="e.g. Order fresh Chipotle Catering for your party or lunch. Explore burrito boxes, taco bars, and pricing." style="width:100%; min-height:42px; padding:10px 12px; background:rgba(0,0,0,0.3); border:1px solid var(--glass-border); border-radius:8px; color:#fff; resize:vertical;" oninput="updateModalCharCount('m_metaDescCharCount', this.value.length, 160)"></textarea>
+                            <small style="display:block; color:var(--text-dim); font-size:0.72rem; margin-top:4px;">
+                                <strong>Default:</strong> <em>Explore {name} catering menus, packages, and reviews in {location}.</em>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 1. Basic Info -->
                 <div class="modal-section-box">
                     <div class="modal-sec-title"><i class="fas fa-store"></i> 1. Caterer Business Details</div>
@@ -931,6 +963,14 @@
             document.getElementById('m_about').value = r.about_text || '';
             document.getElementById('m_direct_menu').value = r.direct_menu_text || '';
 
+            // Populate Custom SEO Meta Tags
+            const metaTitle = r.meta_title || '';
+            const metaDesc = r.meta_description || '';
+            document.getElementById('m_meta_title').value = metaTitle;
+            document.getElementById('m_meta_desc').value = metaDesc;
+            updateModalCharCount('m_metaTitleCharCount', metaTitle.length, 60);
+            updateModalCharCount('m_metaDescCharCount', metaDesc.length, 160);
+
             // Pricing dropdown
             const priceVal = String(r.price_range || '2');
             const select = document.getElementById('m_price_select');
@@ -972,6 +1012,18 @@
         function closeEditModal() {
             document.getElementById('editReviewModal').style.display = 'none';
             editingSubmission = null;
+        }
+
+        function updateModalCharCount(elId, count, max) {
+            const el = document.getElementById(elId);
+            if (el) {
+                el.textContent = `${count} / ${max} chars`;
+                if (count > max) {
+                    el.style.color = '#ef4444';
+                } else {
+                    el.style.color = 'var(--text-dim)';
+                }
+            }
         }
 
         function handleModalPriceChange(val) {
@@ -1082,6 +1134,8 @@
                 menu_images: [...currentModalGallery],
                 about_text: document.getElementById('m_about').value.trim(),
                 direct_menu_text: document.getElementById('m_direct_menu').value.trim(),
+                meta_title: document.getElementById('m_meta_title').value.trim(),
+                meta_description: document.getElementById('m_meta_desc').value.trim(),
             };
 
             const saveBtn = approveLive ? document.getElementById('modalSaveApproveBtn') : document.getElementById('modalSaveDraftBtn');

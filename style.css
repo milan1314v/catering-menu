@@ -2041,11 +2041,22 @@ ul {
     margin-bottom: 24px;
 }
 
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
 .form-group label {
     display: block;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: var(--text);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #0f172a;
     margin-bottom: 8px;
 }
 
@@ -2054,7 +2065,7 @@ ul {
 .form-group select {
     width: 100%;
     padding: 14px 18px;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #cbd5e1;
     border-radius: var(--radius-sm);
     font-size: 0.95rem;
     font-family: var(--font);
@@ -2378,19 +2389,22 @@ ul {
     border-bottom: 1px double rgba(0, 0, 0, 0.1);
 }
 .menu-section-header {
-    color: var(--gold);
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin: 28px 0 16px 0;
+    color: #0f172a;
+    background: #f8fafc;
+    border-left: 4px solid #d97706;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin: 34px 0 18px 0;
     text-transform: uppercase;
+    letter-spacing: 0.8px;
     display: flex;
     align-items: center;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 .menu-section-header::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    margin-left: 16px;
+    display: none;
 }
 .menu-item-row {
     display: flex;
@@ -2399,17 +2413,18 @@ ul {
     font-size: 1rem;
 }
 .menu-item-name {
-    font-weight: 600;
+    font-weight: 700;
     color: #0f172a;
+    font-size: 1.02rem;
 }
 .menu-item-dots {
     flex: 1;
-    border-bottom: 2px dotted #e2e8f0;
+    border-bottom: 2px dotted #cbd5e1;
     margin: 0 16px;
 }
 .menu-item-price {
-    font-weight: 700;
-    color: var(--gold-dark);
+    font-weight: 800;
+    color: #b45309;
     font-size: 1.05rem;
 }
 
@@ -2544,31 +2559,32 @@ ul {
 }
 
 .location-address {
-    font-size: 0.92rem;
-    color: #1e293b;
+    font-size: 0.95rem;
+    color: #0f172a;
     margin: 0 0 6px 0;
     line-height: 1.5;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .location-label {
     font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--gold);
+    font-weight: 800;
+    color: #92400e;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin: 0 0 4px 0;
 }
 
 .location-hours {
-    font-size: 0.9rem;
-    color: #475569;
+    font-size: 0.94rem;
+    color: #0f172a;
+    font-weight: 600;
     margin: 0;
 }
 
 .location-directions {
-    font-size: 0.82rem;
-    color: var(--gold);
+    font-size: 0.84rem;
+    color: #b45309;
     text-decoration: none;
     display: inline-flex;
     align-items: center;

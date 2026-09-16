@@ -120,14 +120,10 @@ function applySEOMetadata(cms) {
     document.head.appendChild(robotsMeta);
   }
 
-  if (cms.seo_global && cms.seo_global.indexing_enabled === true) {
-    if (seo.robots) {
-      robotsMeta.content = seo.robots;
-    } else {
-      robotsMeta.content = 'index, follow';
-    }
-  } else {
+  if (cms && cms.seo_global && cms.seo_global.indexing_enabled === false) {
     robotsMeta.content = 'noindex, nofollow';
+  } else {
+    robotsMeta.content = (seo && seo.robots) ? seo.robots : 'index, follow';
   }
 
   // 6. Dynamic Schema.org Structured Data

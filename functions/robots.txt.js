@@ -4,7 +4,7 @@
 export async function onRequestGet(context) {
   const { env } = context;
 
-  let isIndexingEnabled = false; // Default: Blocked until client approval
+  let isIndexingEnabled = true; // Default: Live indexing enabled (index, follow)
 
   if (env && env.DB) {
     try {
@@ -14,12 +14,12 @@ export async function onRequestGet(context) {
 
       if (row) {
         const data = JSON.parse(row.content_json);
-        if (data.seo_global && data.seo_global.indexing_enabled === true) {
-          isIndexingEnabled = true;
+        if (data.seo_global && data.seo_global.indexing_enabled === false) {
+          isIndexingEnabled = false;
         }
       }
     } catch (e) {
-      isIndexingEnabled = false;
+      isIndexingEnabled = true;
     }
   }
 
@@ -35,7 +35,9 @@ Sitemap: https://www.catering-menu.com/sitemap.xml
     : `User-agent: *
 Disallow: /
 
-# Search engines temporarily blocked via Admin Panel`;
+Sitemap: https://www.catering-menu.com/sitemap.xml
+
+# Search engines temporarily paused via Admin Panel`;
 
   return new Response(robotsContent, {
     status: 200,

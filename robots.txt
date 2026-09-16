@@ -1,6 +1,6 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 Sitemap: https://www.catering-menu.com/sitemap.xml
-
-# Search engines temporarily blocked pending client launch approval

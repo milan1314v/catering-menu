@@ -155,7 +155,7 @@ async function applyRobotsHeader(response, env, request) {
     return adminResponse;
   }
 
-  let isIndexingEnabled = false; // Default: Blocked until client approval
+  let isIndexingEnabled = true; // Default: Live indexing enabled (index, follow)
  
   if (env && env.DB) {
     try {
@@ -164,12 +164,12 @@ async function applyRobotsHeader(response, env, request) {
       ).first();
       if (row) {
         const data = JSON.parse(row.content_json);
-        if (data.seo_global && data.seo_global.indexing_enabled === true) {
-          isIndexingEnabled = true;
+        if (data.seo_global && data.seo_global.indexing_enabled === false) {
+          isIndexingEnabled = false;
         }
       }
     } catch (e) {
-      isIndexingEnabled = false;
+      isIndexingEnabled = true;
     }
   }
 

@@ -206,9 +206,12 @@
                     <strong id="breadcrumbName">Loading...</strong>
                 </div>
                 <h1 id="restName">Loading...</h1>
-                <div id="heroActions" style="margin-top: 14px; display: flex; gap: 12px; flex-wrap: wrap;">
-                    <a id="heroWebsiteBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:none; text-decoration:none; padding:10px 22px; font-weight:700; border-radius:30px; box-shadow:0 4px 15px rgba(217,119,6,0.35); align-items:center; gap:8px;">
-                        <i class="fas fa-external-link-alt"></i> Order on Official Website
+                <div id="heroActions" style="margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap;">
+                    <a href="#menuSection" class="btn-primary" style="text-decoration:none; padding:11px 24px; font-weight:700; border-radius:30px; box-shadow:0 4px 15px rgba(217,119,6,0.35); display:inline-flex; align-items:center; gap:8px;">
+                        <i class="fas fa-utensils"></i> View Catering Menu &amp; Pricing
+                    </a>
+                    <a href="#menuSection" onclick="scrollToCalculator(event)" class="btn-secondary" style="text-decoration:none; padding:11px 22px; font-weight:700; border-radius:30px; display:inline-flex; align-items:center; gap:8px; background:rgba(15,23,42,0.75); border:1px solid rgba(200,169,126,0.5); color:#fff;">
+                        <i class="fas fa-calculator" style="color:var(--gold);"></i> Calculate Event Cost
                     </a>
                 </div>
             </div>
@@ -251,7 +254,7 @@
                 </section>
 
                 <!-- MENU -->
-                <section class="menu-section">
+                <section class="menu-section" id="menuSection">
                     <div class="menu-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:20px;">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <div class="menu-header-icon"><i class="fas fa-utensils"></i></div>
@@ -304,6 +307,22 @@
                         <a href="#" id="menuFileDownloadLink" target="_blank" class="btn-primary"
                             style="margin-top:8px;">
                             <i class="fas fa-download"></i> Download Menu
+                        </a>
+                    </div>
+
+                    <!-- CATERING ORDER CALLOUT BANNER (AFTER REVIEWING FULL MENU) -->
+                    <div id="menuOrderCallout" class="menu-order-callout glass" style="display:none; margin-top:34px; padding:32px 28px; border-radius:18px; border:1px solid rgba(200,169,126,0.35); background:linear-gradient(135deg, rgba(15,23,42,0.92), rgba(30,41,59,0.9)); text-align:center; box-shadow:0 12px 35px rgba(0,0,0,0.35);">
+                        <div style="width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg, #d97706, #f59e0b); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:1.4rem; margin-bottom:14px; box-shadow:0 4px 15px rgba(217,119,6,0.4);">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3 id="orderCalloutHeading" style="font-size:1.45rem; font-weight:800; color:#fff; margin-bottom:10px;">
+                            Ready to Order Catering?
+                        </h3>
+                        <p style="color:var(--text-muted); font-size:0.96rem; max-width:580px; margin:0 auto 22px; line-height:1.65;">
+                            Review your guest count and selected dishes above, then proceed directly to their official ordering portal to place your event order.
+                        </p>
+                        <a id="menuOrderCalloutBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:inline-flex; align-items:center; gap:10px; padding:13px 32px; font-size:1rem; font-weight:700; border-radius:30px; box-shadow:0 6px 20px rgba(217,119,6,0.45); text-decoration:none;">
+                            <i class="fas fa-external-link-alt"></i> Proceed to Order on Official Website
                         </a>
                     </div>
                 </section>
@@ -399,6 +418,14 @@
                             Kitchen &amp; Service Locations
                         </h4>
                         <p id="sidebarLocationsText" style="line-height:1.6;color:var(--text-muted);font-size:0.95rem;"></p>
+                    </div>
+                    <div style="margin-top:24px; display:none;" id="sidebarWebsiteWrap">
+                        <h4 style="font-size:0.82rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;">
+                            Official Website
+                        </h4>
+                        <a id="sidebarWebsiteLink" href="#" target="_blank" rel="noopener noreferrer" style="color:#fff; font-weight:600; text-decoration:none; font-size:0.92rem; display:inline-flex; align-items:center; gap:8px; padding:9px 15px; border-radius:8px; background:rgba(217,119,6,0.12); border:1px solid rgba(200,169,126,0.3); transition:all 0.2s; width:100%; box-sizing:border-box;">
+                            <i class="fas fa-globe" style="color:var(--gold);"></i> <span id="sidebarWebsiteText">Visit Official Site</span> <i class="fas fa-arrow-up-right-from-square" style="font-size:0.75rem; color:var(--gold); margin-left:auto;"></i>
+                        </a>
                     </div>
                 </div>
                 <div class="sidebar-card glass">
@@ -695,6 +722,19 @@
             document.querySelectorAll('.custom-calc-dropdown.open').forEach(d => d.classList.remove('open'));
         });
 
+        function scrollToCalculator(e) {
+            if (e) e.preventDefault();
+            const target = document.getElementById('globalCalcDropdown') || document.getElementById('menuSection');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                target.style.transition = 'box-shadow 0.3s ease, transform 0.3s ease';
+                target.style.boxShadow = '0 0 25px rgba(217, 119, 6, 0.85)';
+                setTimeout(() => {
+                    target.style.boxShadow = '';
+                }, 1800);
+            }
+        }
+
         function getEstimatedPerGuestRate(priceRange) {
             const p = String(priceRange || '2').trim();
             if (p === '1' || p === '$') return { rate: 20, label: 'Budget ($15 – $25 / guest)' };
@@ -880,15 +920,26 @@
                 if (!webUrl.startsWith('http://') && !webUrl.startsWith('https://')) {
                     webUrl = 'https://' + webUrl;
                 }
-                const heroBtn = document.getElementById('heroWebsiteBtn');
-                if (heroBtn) {
-                    heroBtn.href = webUrl;
-                    heroBtn.style.display = 'inline-flex';
-                }
                 const menuBtn = document.getElementById('menuOrderWebsiteBtn');
                 if (menuBtn) {
                     menuBtn.href = webUrl;
                     menuBtn.style.display = 'inline-flex';
+                }
+                const orderCallout = document.getElementById('menuOrderCallout');
+                const orderCalloutBtn = document.getElementById('menuOrderCalloutBtn');
+                const orderCalloutHeading = document.getElementById('orderCalloutHeading');
+                if (orderCallout && orderCalloutBtn) {
+                    orderCallout.style.display = 'block';
+                    orderCalloutBtn.href = webUrl;
+                    if (orderCalloutHeading) {
+                        orderCalloutHeading.textContent = `Ready to Order Catering from ${rest.name}?`;
+                    }
+                }
+                const sidebarWebWrap = document.getElementById('sidebarWebsiteWrap');
+                const sidebarWebLink = document.getElementById('sidebarWebsiteLink');
+                if (sidebarWebWrap && sidebarWebLink) {
+                    sidebarWebWrap.style.display = 'block';
+                    sidebarWebLink.href = webUrl;
                 }
             }
 

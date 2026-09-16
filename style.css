@@ -3569,3 +3569,22 @@ ul {
     color: #ffffff;
     transform: scale(1.05);
 }
+
+/* Catering Order Callout Banner */
+.menu-order-callout {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.menu-order-callout:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+#sidebarWebsiteLink:hover {
+    background: rgba(217, 119, 6, 0.22) !important;
+    border-color: rgba(200, 169, 126, 0.6) !important;
+    transform: translateX(3px);
+}
+

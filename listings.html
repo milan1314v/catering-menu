@@ -28,7 +28,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
     <link rel="manifest" href="/assets/img/site.webmanifest">
-    <link rel="stylesheet" href="/style.css?v=2.8">
+    <link rel="stylesheet" href="/style.css?v=2.9">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Schema.org Structured Data -->
@@ -112,23 +112,67 @@
                     </div>
 
                     <div class="filter-body">
-                        <!-- CUISINE FILTER -->
+                        <!-- LUXURY CUISINE DROPDOWN -->
                         <div class="filter-section">
                             <div class="filter-title">
-                                <span id="cuisineFilterTitle"><i class="fas fa-utensils"></i> Cuisines</span>
+                                <span id="cuisineFilterTitle"><i class="fas fa-utensils"></i> Cuisine</span>
                             </div>
-                            <div class="filter-chips-grid" id="cuisineFilterContainer">
-                                <!-- Dynamic Cuisines -->
+                            <div class="luxury-select" id="cuisineSelect">
+                                <button type="button" class="luxury-select-btn" id="cuisineSelectBtn" aria-haspopup="listbox" aria-expanded="false">
+                                    <div class="luxury-select-btn-content">
+                                        <i class="fas fa-utensils select-btn-icon"></i>
+                                        <span class="select-btn-label" id="cuisineSelectLabel">All Cuisines</span>
+                                    </div>
+                                    <div class="luxury-select-btn-end">
+                                        <span class="select-btn-count" id="cuisineSelectCount" style="display:none;">0</span>
+                                        <i class="fas fa-chevron-down select-btn-chevron"></i>
+                                    </div>
+                                </button>
+                                <div class="luxury-select-menu" id="cuisineSelectMenu">
+                                    <div class="luxury-select-search-wrap">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" class="luxury-select-search" id="cuisineSelectSearch" placeholder="Search cuisines...">
+                                    </div>
+                                    <div class="luxury-select-quick-actions">
+                                        <button type="button" class="luxury-select-action-btn" id="cuisineSelectClearAll">Reset to All</button>
+                                        <span class="luxury-select-items-total" id="cuisineSelectTotalBadge">0 available</span>
+                                    </div>
+                                    <div class="luxury-select-options-list" id="cuisineSelectOptions" role="listbox">
+                                        <!-- Dynamic cuisines populated by JS -->
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- LOCATION / STATE FILTER -->
+                        <!-- LUXURY LOCATION / STATE DROPDOWN -->
                         <div class="filter-section">
                             <div class="filter-title">
                                 <span id="locationFilterTitle"><i class="fas fa-map-marker-alt"></i> Locations &amp; States</span>
                             </div>
-                            <div class="filter-chips-grid" id="locationFilterContainer">
-                                <!-- Dynamic Locations -->
+                            <div class="luxury-select" id="locationSelect">
+                                <button type="button" class="luxury-select-btn" id="locationSelectBtn" aria-haspopup="listbox" aria-expanded="false">
+                                    <div class="luxury-select-btn-content">
+                                        <i class="fas fa-map-marker-alt select-btn-icon"></i>
+                                        <span class="select-btn-label" id="locationSelectLabel">All Locations</span>
+                                    </div>
+                                    <div class="luxury-select-btn-end">
+                                        <span class="select-btn-count" id="locationSelectCount" style="display:none;">0</span>
+                                        <i class="fas fa-chevron-down select-btn-chevron"></i>
+                                    </div>
+                                </button>
+                                <div class="luxury-select-menu" id="locationSelectMenu">
+                                    <div class="luxury-select-search-wrap">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" class="luxury-select-search" id="locationSelectSearch" placeholder="Search cities or states...">
+                                    </div>
+                                    <div class="luxury-select-quick-actions">
+                                        <button type="button" class="luxury-select-action-btn" id="locationSelectClearAll">Reset to All</button>
+                                        <span class="luxury-select-items-total" id="locationSelectTotalBadge">0 available</span>
+                                    </div>
+                                    <div class="luxury-select-options-list" id="locationSelectOptions" role="listbox">
+                                        <!-- Dynamic locations populated by JS -->
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -321,28 +365,268 @@
                 }
             });
 
+            const selectedCuisines = new Set();
+            const selectedLocations = new Set();
+
             const sortedCuisines = Object.keys(cuisineCounts).sort();
-            const cuisineContainer = document.getElementById('cuisineFilterContainer');
-            if (cuisineContainer) {
-                cuisineContainer.innerHTML = sortedCuisines.map(c => `
-                    <label class="filter-chip">
-                        <input type="checkbox" name="cuisine" value="${escapeHtml(c)}">
-                        <span>${escapeHtml(c)}</span>
-                        <span class="filter-chip-count">(${cuisineCounts[c]})</span>
-                    </label>
+            const sortedLocations = Object.keys(locationCounts).sort();
+
+            function renderCuisineDropdown() {
+                const list = document.getElementById('cuisineSelectOptions');
+                const totalBadge = document.getElementById('cuisineSelectTotalBadge');
+                if (!list) return;
+                if (totalBadge) totalBadge.textContent = `${sortedCuisines.length} available`;
+
+                if (sortedCuisines.length === 0) {
+                    list.innerHTML = '<div class="luxury-select-empty">No cuisines found</div>';
+                    return;
+                }
+
+                list.innerHTML = sortedCuisines.map(c => `
+                    <div class="luxury-select-option ${selectedCuisines.has(c.toLowerCase()) ? 'selected' : ''}" data-value="${escapeHtml(c)}" role="option">
+                        <div class="luxury-option-left">
+                            <span class="luxury-option-checkbox"><i class="fas fa-check"></i></span>
+                            <span class="luxury-option-text">${escapeHtml(c)}</span>
+                        </div>
+                        <span class="luxury-option-count">${cuisineCounts[c]}</span>
+                    </div>
                 `).join('');
             }
 
-            const sortedLocations = Object.keys(locationCounts).sort();
-            const locationContainer = document.getElementById('locationFilterContainer');
-            if (locationContainer) {
-                locationContainer.innerHTML = sortedLocations.map(loc => `
-                    <label class="filter-chip">
-                        <input type="checkbox" name="location" value="${escapeHtml(loc)}">
-                        <span><i class="fas fa-map-marker-alt" style="font-size:0.75rem; color:var(--gold);"></i> ${escapeHtml(loc)}</span>
-                        <span class="filter-chip-count">(${locationCounts[loc]})</span>
-                    </label>
+            function renderLocationDropdown() {
+                const list = document.getElementById('locationSelectOptions');
+                const totalBadge = document.getElementById('locationSelectTotalBadge');
+                if (!list) return;
+                if (totalBadge) totalBadge.textContent = `${sortedLocations.length} available`;
+
+                if (sortedLocations.length === 0) {
+                    list.innerHTML = '<div class="luxury-select-empty">No locations found</div>';
+                    return;
+                }
+
+                list.innerHTML = sortedLocations.map(loc => `
+                    <div class="luxury-select-option ${selectedLocations.has(loc.toLowerCase()) ? 'selected' : ''}" data-value="${escapeHtml(loc)}" role="option">
+                        <div class="luxury-option-left">
+                            <span class="luxury-option-checkbox"><i class="fas fa-check"></i></span>
+                            <span class="luxury-option-text">${escapeHtml(loc)}</span>
+                        </div>
+                        <span class="luxury-option-count">${locationCounts[loc]}</span>
+                    </div>
                 `).join('');
+            }
+
+            function updateCuisineDropdownUI() {
+                const label = document.getElementById('cuisineSelectLabel');
+                const countBadge = document.getElementById('cuisineSelectCount');
+                
+                const options = document.querySelectorAll('#cuisineSelectOptions .luxury-select-option');
+                options.forEach(opt => {
+                    const val = (opt.dataset.value || '').toLowerCase();
+                    if (selectedCuisines.has(val)) {
+                        opt.classList.add('selected');
+                    } else {
+                        opt.classList.remove('selected');
+                    }
+                });
+
+                const count = selectedCuisines.size;
+                if (count === 0) {
+                    label.textContent = 'All Cuisines';
+                    countBadge.style.display = 'none';
+                } else {
+                    const arr = Array.from(selectedCuisines).map(c => {
+                        const match = sortedCuisines.find(sc => sc.toLowerCase() === c);
+                        return match || c;
+                    });
+                    if (arr.length === 1) {
+                        label.textContent = arr[0];
+                    } else if (arr.length === 2) {
+                        label.textContent = arr.join(', ');
+                    } else {
+                        label.textContent = `${arr[0]}, ${arr[1]} +${arr.length - 2}`;
+                    }
+                    countBadge.textContent = count;
+                    countBadge.style.display = 'inline-flex';
+                }
+            }
+
+            function updateLocationDropdownUI() {
+                const label = document.getElementById('locationSelectLabel');
+                const countBadge = document.getElementById('locationSelectCount');
+                
+                const options = document.querySelectorAll('#locationSelectOptions .luxury-select-option');
+                options.forEach(opt => {
+                    const val = (opt.dataset.value || '').toLowerCase();
+                    if (selectedLocations.has(val)) {
+                        opt.classList.add('selected');
+                    } else {
+                        opt.classList.remove('selected');
+                    }
+                });
+
+                const count = selectedLocations.size;
+                if (count === 0) {
+                    label.textContent = 'All Locations';
+                    countBadge.style.display = 'none';
+                } else {
+                    const arr = Array.from(selectedLocations).map(l => {
+                        const match = sortedLocations.find(sl => sl.toLowerCase() === l);
+                        return match || l;
+                    });
+                    if (arr.length === 1) {
+                        label.textContent = arr[0];
+                    } else if (arr.length === 2) {
+                        label.textContent = arr.join(', ');
+                    } else {
+                        label.textContent = `${arr[0]}, ${arr[1]} +${arr.length - 2}`;
+                    }
+                    countBadge.textContent = count;
+                    countBadge.style.display = 'inline-flex';
+                }
+            }
+
+            // Render both dropdown menus
+            renderCuisineDropdown();
+            renderLocationDropdown();
+
+            // Toggle Dropdowns Logic
+            const cuisineSelect = document.getElementById('cuisineSelect');
+            const cuisineSelectBtn = document.getElementById('cuisineSelectBtn');
+            const locationSelect = document.getElementById('locationSelect');
+            const locationSelectBtn = document.getElementById('locationSelectBtn');
+
+            function closeAllDropdowns() {
+                if (cuisineSelect) {
+                    cuisineSelect.classList.remove('active');
+                    cuisineSelectBtn?.setAttribute('aria-expanded', 'false');
+                }
+                if (locationSelect) {
+                    locationSelect.classList.remove('active');
+                    locationSelectBtn?.setAttribute('aria-expanded', 'false');
+                }
+            }
+
+            if (cuisineSelectBtn) {
+                cuisineSelectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = cuisineSelect.classList.contains('active');
+                    closeAllDropdowns();
+                    if (!isOpen) {
+                        cuisineSelect.classList.add('active');
+                        cuisineSelectBtn.setAttribute('aria-expanded', 'true');
+                        const search = document.getElementById('cuisineSelectSearch');
+                        if (search) setTimeout(() => search.focus(), 60);
+                    }
+                });
+            }
+
+            if (locationSelectBtn) {
+                locationSelectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = locationSelect.classList.contains('active');
+                    closeAllDropdowns();
+                    if (!isOpen) {
+                        locationSelect.classList.add('active');
+                        locationSelectBtn.setAttribute('aria-expanded', 'true');
+                        const search = document.getElementById('locationSelectSearch');
+                        if (search) setTimeout(() => search.focus(), 60);
+                    }
+                });
+            }
+
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.luxury-select')) {
+                    closeAllDropdowns();
+                }
+            });
+
+            // Prevent dropdown menu clicks from closing the dropdown
+            document.querySelectorAll('.luxury-select-menu').forEach(menu => {
+                menu.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            });
+
+            // Cuisine option click delegation
+            const cuisineOptionsList = document.getElementById('cuisineSelectOptions');
+            if (cuisineOptionsList) {
+                cuisineOptionsList.addEventListener('click', (e) => {
+                    const opt = e.target.closest('.luxury-select-option');
+                    if (!opt) return;
+                    const val = (opt.dataset.value || '').toLowerCase();
+                    if (selectedCuisines.has(val)) {
+                        selectedCuisines.delete(val);
+                    } else {
+                        selectedCuisines.add(val);
+                    }
+                    updateCuisineDropdownUI();
+                    applyFilters();
+                });
+            }
+
+            // Location option click delegation
+            const locationOptionsList = document.getElementById('locationSelectOptions');
+            if (locationOptionsList) {
+                locationOptionsList.addEventListener('click', (e) => {
+                    const opt = e.target.closest('.luxury-select-option');
+                    if (!opt) return;
+                    const val = (opt.dataset.value || '').toLowerCase();
+                    if (selectedLocations.has(val)) {
+                        selectedLocations.delete(val);
+                    } else {
+                        selectedLocations.add(val);
+                    }
+                    updateLocationDropdownUI();
+                    applyFilters();
+                });
+            }
+
+            // Reset actions inside dropdowns
+            const cuisineClearAll = document.getElementById('cuisineSelectClearAll');
+            if (cuisineClearAll) {
+                cuisineClearAll.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectedCuisines.clear();
+                    updateCuisineDropdownUI();
+                    applyFilters();
+                });
+            }
+
+            const locationClearAll = document.getElementById('locationSelectClearAll');
+            if (locationClearAll) {
+                locationClearAll.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectedLocations.clear();
+                    updateLocationDropdownUI();
+                    applyFilters();
+                });
+            }
+
+            // Search filter inside Cuisines dropdown
+            const cuisineSearch = document.getElementById('cuisineSelectSearch');
+            if (cuisineSearch) {
+                cuisineSearch.addEventListener('input', (e) => {
+                    const term = e.target.value.toLowerCase().trim();
+                    const options = document.querySelectorAll('#cuisineSelectOptions .luxury-select-option');
+                    options.forEach(opt => {
+                        const text = (opt.dataset.value || '').toLowerCase();
+                        opt.style.display = text.includes(term) ? '' : 'none';
+                    });
+                });
+            }
+
+            // Search filter inside Locations dropdown
+            const locationSearch = document.getElementById('locationSelectSearch');
+            if (locationSearch) {
+                locationSearch.addEventListener('input', (e) => {
+                    const term = e.target.value.toLowerCase().trim();
+                    const options = document.querySelectorAll('#locationSelectOptions .luxury-select-option');
+                    options.forEach(opt => {
+                        const text = (opt.dataset.value || '').toLowerCase();
+                        opt.style.display = text.includes(term) ? '' : 'none';
+                    });
+                });
             }
 
             // 4. Render Caterer Cards (No price shown, Subdomain URL structure)
@@ -416,7 +700,14 @@
                 queryParam = urlParams.get('q') || '';
             }
             if (queryParam) {
-                searchInput.value = queryParam;
+                const qLower = queryParam.toLowerCase().trim();
+                const matchedCuisine = sortedCuisines.find(c => c.toLowerCase() === qLower);
+                if (matchedCuisine) {
+                    selectedCuisines.add(matchedCuisine.toLowerCase());
+                    updateCuisineDropdownUI();
+                } else {
+                    searchInput.value = queryParam;
+                }
             }
 
             function updateCleanUrl(q, checkedCuisines) {
@@ -433,8 +724,8 @@
 
             function applyFilters() {
                 const q = searchInput.value.toLowerCase().trim();
-                const checkedCuisines = Array.from(document.querySelectorAll('input[name="cuisine"]:checked')).map(i => i.value.toLowerCase());
-                const checkedLocations = Array.from(document.querySelectorAll('input[name="location"]:checked')).map(i => i.value.toLowerCase());
+                const checkedCuisines = Array.from(selectedCuisines);
+                const checkedLocations = Array.from(selectedLocations);
                 const checkedRatings = Array.from(document.querySelectorAll('input[name="rating"]:checked')).map(i => parseFloat(i.value));
 
                 // Synchronize clean browser URL
@@ -493,10 +784,12 @@
                     tagsHtml += `<span class="active-tag">"${escapeHtml(q)}" <span class="active-tag-remove" data-type="q">×</span></span>`;
                 }
                 checkedCuisines.forEach(c => {
-                    tagsHtml += `<span class="active-tag">${escapeHtml(c)} <span class="active-tag-remove" data-type="cuisine" data-val="${escapeHtml(c)}">×</span></span>`;
+                    const orig = sortedCuisines.find(sc => sc.toLowerCase() === c) || c;
+                    tagsHtml += `<span class="active-tag">${escapeHtml(orig)} <span class="active-tag-remove" data-type="cuisine" data-val="${escapeHtml(c)}">×</span></span>`;
                 });
                 checkedLocations.forEach(loc => {
-                    tagsHtml += `<span class="active-tag">📍 ${escapeHtml(loc)} <span class="active-tag-remove" data-type="location" data-val="${escapeHtml(loc)}">×</span></span>`;
+                    const orig = sortedLocations.find(sl => sl.toLowerCase() === loc) || loc;
+                    tagsHtml += `<span class="active-tag">📍 ${escapeHtml(orig)} <span class="active-tag-remove" data-type="location" data-val="${escapeHtml(loc)}">×</span></span>`;
                 });
                 checkedRatings.forEach(r => {
                     tagsHtml += `<span class="active-tag">${r}★+ <span class="active-tag-remove" data-type="rating" data-val="${r}">×</span></span>`;
@@ -520,11 +813,11 @@
                 if (type === 'q') {
                     searchInput.value = '';
                 } else if (type === 'cuisine') {
-                    const el = Array.from(document.querySelectorAll('input[name="cuisine"]')).find(i => i.value.toLowerCase() === val);
-                    if (el) el.checked = false;
+                    selectedCuisines.delete(val);
+                    updateCuisineDropdownUI();
                 } else if (type === 'location') {
-                    const el = Array.from(document.querySelectorAll('input[name="location"]')).find(i => i.value.toLowerCase() === val);
-                    if (el) el.checked = false;
+                    selectedLocations.delete(val);
+                    updateLocationDropdownUI();
                 } else if (type === 'rating') {
                     const el = document.querySelector(`input[name="rating"][value="${val}"]`);
                     if (el) el.checked = false;
@@ -551,7 +844,11 @@
 
             clearBtn.addEventListener('click', () => {
                 searchInput.value = '';
-                document.querySelectorAll('.listings-filters input[type="checkbox"]').forEach(i => i.checked = false);
+                selectedCuisines.clear();
+                selectedLocations.clear();
+                updateCuisineDropdownUI();
+                updateLocationDropdownUI();
+                document.querySelectorAll('.listings-filters input[name="rating"]').forEach(i => i.checked = false);
                 applyFilters();
             });
 

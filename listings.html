@@ -122,32 +122,13 @@
                             </div>
                         </div>
 
-                        <!-- SERVICE / EVENT TYPE FILTER -->
+                        <!-- LOCATION / STATE FILTER -->
                         <div class="filter-section">
                             <div class="filter-title">
-                                <span id="serviceFilterTitle"><i class="fas fa-champagne-glasses"></i> Event &amp; Service</span>
+                                <span id="locationFilterTitle"><i class="fas fa-map-marker-alt"></i> Locations &amp; States</span>
                             </div>
-                            <div class="filter-chips-grid">
-                                <label class="filter-chip">
-                                    <input type="checkbox" name="service" value="wedding">
-                                    <span>💍 Wedding &amp; Reception</span>
-                                </label>
-                                <label class="filter-chip">
-                                    <input type="checkbox" name="service" value="corporate">
-                                    <span>💼 Corporate &amp; Gala</span>
-                                </label>
-                                <label class="filter-chip">
-                                    <input type="checkbox" name="service" value="party">
-                                    <span>🎂 Birthdays &amp; Parties</span>
-                                </label>
-                                <label class="filter-chip">
-                                    <input type="checkbox" name="service" value="buffet">
-                                    <span>🍽️ Grand Buffet</span>
-                                </label>
-                                <label class="filter-chip">
-                                    <input type="checkbox" name="service" value="live">
-                                    <span>🔥 Live Food Counters</span>
-                                </label>
+                            <div class="filter-chips-grid" id="locationFilterContainer">
+                                <!-- Dynamic Locations -->
                             </div>
                         </div>
 
@@ -314,23 +295,55 @@
                 console.warn('Could not load caterers', e);
             }
 
-            // 3. Extract unique cuisines with counts
+            // 3. Extract unique clean cuisines and locations with counts
             const cuisineCounts = {};
+            const locationCounts = {};
+
+            function getShortCuisine(raw) {
+                if (!raw) return '';
+                const firstPart = raw.split(',')[0].trim();
+                if (firstPart.length > 22 && firstPart.includes('&')) {
+                    return firstPart.split('&')[0].trim();
+                }
+                return firstPart;
+            }
+
             allCaterers.forEach(r => {
-                if (r.cuisine) {
-                    cuisineCounts[r.cuisine] = (cuisineCounts[r.cuisine] || 0) + 1;
+                const shortC = getShortCuisine(r.cuisine);
+                if (shortC) {
+                    cuisineCounts[shortC] = (cuisineCounts[shortC] || 0) + 1;
+                }
+                const state = (r.state || '').trim();
+                const city = (r.city || '').trim();
+                const locLabel = state || city;
+                if (locLabel) {
+                    locationCounts[locLabel] = (locationCounts[locLabel] || 0) + 1;
                 }
             });
-            const sortedCuisines = Object.keys(cuisineCounts).sort();
 
+            const sortedCuisines = Object.keys(cuisineCounts).sort();
             const cuisineContainer = document.getElementById('cuisineFilterContainer');
-            cuisineContainer.innerHTML = sortedCuisines.map(c => `
-                <label class="filter-chip">
-                    <input type="checkbox" name="cuisine" value="${escapeHtml(c)}">
-                    <span>${escapeHtml(c)}</span>
-                    <span class="filter-chip-count">(${cuisineCounts[c]})</span>
-                </label>
-            `).join('');
+            if (cuisineContainer) {
+                cuisineContainer.innerHTML = sortedCuisines.map(c => `
+                    <label class="filter-chip">
+                        <input type="checkbox" name="cuisine" value="${escapeHtml(c)}">
+                        <span>${escapeHtml(c)}</span>
+                        <span class="filter-chip-count">(${cuisineCounts[c]})</span>
+                    </label>
+                `).join('');
+            }
+
+            const sortedLocations = Object.keys(locationCounts).sort();
+            const locationContainer = document.getElementById('locationFilterContainer');
+            if (locationContainer) {
+                locationContainer.innerHTML = sortedLocations.map(loc => `
+                    <label class="filter-chip">
+                        <input type="checkbox" name="location" value="${escapeHtml(loc)}">
+                        <span><i class="fas fa-map-marker-alt" style="font-size:0.75rem; color:var(--gold);"></i> ${escapeHtml(loc)}</span>
+                        <span class="filter-chip-count">(${locationCounts[loc]})</span>
+                    </label>
+                `).join('');
+            }
 
             // 4. Render Caterer Cards (No price shown, Subdomain URL structure)
             grid.innerHTML = allCaterers.map(r => {
@@ -342,6 +355,7 @@
                 }
                 const firstLoc = [r.city, r.state].filter(Boolean).join(', ') || (r.locations || '').split('|')[0].trim();
                 const catererUrl = getCatererUrl(r);
+                const shortC = getShortCuisine(r.cuisine);
 
                 return `
                     <a href="${catererUrl}" class="rest-card glass"
@@ -355,6 +369,7 @@
                        data-state="${escapeHtml((r.state || '').toLowerCase())}"
                        data-country="${escapeHtml((r.country || '').toLowerCase())}"
                        data-cuisine-lower="${escapeHtml((r.cuisine || '').toLowerCase())}"
+                       data-short-cuisine="${escapeHtml(shortC.toLowerCase())}"
                        data-about="${escapeHtml((r.about_text || '').toLowerCase())}">
                         <div class="rest-card-img">
                             <img src="${escapeHtml(r.banner_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400')}" alt="${escapeHtml(r.name)}">
@@ -418,14 +433,14 @@
 
             function applyFilters() {
                 const q = searchInput.value.toLowerCase().trim();
-                const checkedCuisines = Array.from(document.querySelectorAll('input[name="cuisine"]:checked')).map(i => i.value);
-                const checkedServices = Array.from(document.querySelectorAll('input[name="service"]:checked')).map(i => i.value);
+                const checkedCuisines = Array.from(document.querySelectorAll('input[name="cuisine"]:checked')).map(i => i.value.toLowerCase());
+                const checkedLocations = Array.from(document.querySelectorAll('input[name="location"]:checked')).map(i => i.value.toLowerCase());
                 const checkedRatings = Array.from(document.querySelectorAll('input[name="rating"]:checked')).map(i => parseFloat(i.value));
 
                 // Synchronize clean browser URL
                 updateCleanUrl(q, checkedCuisines);
 
-                let totalActiveFilters = checkedCuisines.length + checkedServices.length + checkedRatings.length;
+                let totalActiveFilters = checkedCuisines.length + checkedLocations.length + checkedRatings.length;
                 if (q) totalActiveFilters++;
 
                 if (totalActiveFilters > 0) {
@@ -436,12 +451,13 @@
                 }
 
                 // Render Active Filter Tags
-                renderActiveTags({ q, checkedCuisines, checkedServices, checkedRatings });
+                renderActiveTags({ q, checkedCuisines, checkedLocations, checkedRatings });
 
                 let visible = 0;
                 cards.forEach(card => {
                     const name = card.dataset.name;
                     const cuisine = card.dataset.cuisineLower;
+                    const shortCuisine = card.dataset.shortCuisine || '';
                     const location = card.dataset.location;
                     const city = card.dataset.city || '';
                     const state = card.dataset.state || '';
@@ -453,7 +469,10 @@
                     if (q && !name.includes(q) && !cuisine.includes(q) && !location.includes(q) && !city.includes(q) && !state.includes(q) && !country.includes(q) && !about.includes(q)) {
                         show = false;
                     }
-                    if (checkedCuisines.length && !checkedCuisines.includes(card.dataset.cuisine)) {
+                    if (checkedCuisines.length && !checkedCuisines.some(c => cuisine.includes(c) || shortCuisine.includes(c))) {
+                        show = false;
+                    }
+                    if (checkedLocations.length && !checkedLocations.some(loc => location.includes(loc) || state.includes(loc) || city.includes(loc))) {
                         show = false;
                     }
                     if (checkedRatings.length && !checkedRatings.some(r => rating >= r)) {
@@ -468,7 +487,7 @@
                 emptyState.style.display = visible === 0 ? '' : 'none';
             }
 
-            function renderActiveTags({ q, checkedCuisines, checkedServices, checkedRatings }) {
+            function renderActiveTags({ q, checkedCuisines, checkedLocations, checkedRatings }) {
                 let tagsHtml = '';
                 if (q) {
                     tagsHtml += `<span class="active-tag">"${escapeHtml(q)}" <span class="active-tag-remove" data-type="q">×</span></span>`;
@@ -476,8 +495,8 @@
                 checkedCuisines.forEach(c => {
                     tagsHtml += `<span class="active-tag">${escapeHtml(c)} <span class="active-tag-remove" data-type="cuisine" data-val="${escapeHtml(c)}">×</span></span>`;
                 });
-                checkedServices.forEach(s => {
-                    tagsHtml += `<span class="active-tag">${escapeHtml(s)} <span class="active-tag-remove" data-type="service" data-val="${escapeHtml(s)}">×</span></span>`;
+                checkedLocations.forEach(loc => {
+                    tagsHtml += `<span class="active-tag">📍 ${escapeHtml(loc)} <span class="active-tag-remove" data-type="location" data-val="${escapeHtml(loc)}">×</span></span>`;
                 });
                 checkedRatings.forEach(r => {
                     tagsHtml += `<span class="active-tag">${r}★+ <span class="active-tag-remove" data-type="rating" data-val="${r}">×</span></span>`;
@@ -496,15 +515,15 @@
                 const removeBtn = e.target.closest('.active-tag-remove');
                 if (!removeBtn) return;
                 const type = removeBtn.dataset.type;
-                const val = removeBtn.dataset.val;
+                const val = (removeBtn.dataset.val || '').toLowerCase();
 
                 if (type === 'q') {
                     searchInput.value = '';
                 } else if (type === 'cuisine') {
-                    const el = document.querySelector(`input[name="cuisine"][value="${val}"]`);
+                    const el = Array.from(document.querySelectorAll('input[name="cuisine"]')).find(i => i.value.toLowerCase() === val);
                     if (el) el.checked = false;
-                } else if (type === 'service') {
-                    const el = document.querySelector(`input[name="service"][value="${val}"]`);
+                } else if (type === 'location') {
+                    const el = Array.from(document.querySelectorAll('input[name="location"]')).find(i => i.value.toLowerCase() === val);
                     if (el) el.checked = false;
                 } else if (type === 'rating') {
                     const el = document.querySelector(`input[name="rating"][value="${val}"]`);

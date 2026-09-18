@@ -2,7 +2,22 @@
 // Dynamically generates robots.txt from Cloudflare D1 settings
 
 export async function onRequestGet(context) {
-  const { env } = context;
+  const { request, env } = context;
+  const url = new URL(request.url);
+  const hostname = url.hostname.toLowerCase();
+
+  // Determine dynamic sitemap URL based on hostname
+  let sitemapUrl = 'https://www.catering-menu.com/sitemap.xml';
+  const parts = hostname.split('.');
+
+  // If requested on a caterer subdomain (e.g. panera-bread.catering-menu.com)
+  const isCateringDomain = hostname.endsWith('catering-menu.com');
+  const isSubdomain = (isCateringDomain && parts.length > 2 && parts[0] !== 'www' && parts[0] !== 'admin' && parts[0] !== 'api')
+    || (!isCateringDomain && parts.length > 2 && parts[0] !== 'www' && parts[0] !== 'admin' && parts[0] !== 'api');
+
+  if (isSubdomain) {
+    sitemapUrl = `https://${hostname}/sitemap.xml`;
+  }
 
   let isIndexingEnabled = true; // Default: Live indexing enabled (index, follow)
 
@@ -29,13 +44,13 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: https://www.catering-menu.com/sitemap.xml
+Sitemap: ${sitemapUrl}
 
 # Dynamic robots.txt managed via Catering Menu Systems`
     : `User-agent: *
 Disallow: /
 
-Sitemap: https://www.catering-menu.com/sitemap.xml
+Sitemap: ${sitemapUrl}
 
 # Search engines temporarily paused via Admin Panel`;
 

@@ -2,9 +2,43 @@
 // Dynamically generates sitemap.xml with Core Pages, Category Listings & Caterer Subdomains
 
 export async function onRequestGet(context) {
-  const { env } = context;
-  const baseUrl = 'https://www.catering-menu.com';
+  const { request, env } = context;
+  const url = new URL(request.url);
+  const hostname = url.hostname.toLowerCase();
   const currentDate = new Date().toISOString().split('T')[0];
+  const parts = hostname.split('.');
+
+  // If request is on a caterer subdomain (e.g. panera-bread.catering-menu.com)
+  const isCateringDomain = hostname.endsWith('catering-menu.com');
+  const isSubdomain = (isCateringDomain && parts.length > 2 && parts[0] !== 'www' && parts[0] !== 'admin' && parts[0] !== 'api')
+    || (!isCateringDomain && parts.length > 2 && parts[0] !== 'www' && parts[0] !== 'admin' && parts[0] !== 'api');
+
+  if (isSubdomain) {
+    // Return isolated sitemap containing strictly this caterer's page
+    const catererSitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <url>
+    <loc>https://${hostname}/</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>`;
+
+    return new Response(catererSitemapXml, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/xml; charset=utf-8',
+        'Cache-Control': 'public, max-age=3600, s-maxage=3600'
+      }
+    });
+  }
+
+  // Otherwise, generate main domain sitemap
+  const baseUrl = 'https://www.catering-menu.com';
 
   // 1. Core Static Pages
   const staticPages = [

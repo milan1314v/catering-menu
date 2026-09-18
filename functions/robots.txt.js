@@ -4,7 +4,8 @@
 export async function onRequestGet(context) {
   const { request, env } = context;
   const url = new URL(request.url);
-  const hostname = url.hostname.toLowerCase();
+  const rawHost = request.headers.get('x-forwarded-host') || request.headers.get('host') || url.hostname || '';
+  const hostname = rawHost.toLowerCase().split(':')[0].trim();
 
   // Determine dynamic sitemap URL based on hostname
   let sitemapUrl = 'https://www.catering-menu.com/sitemap.xml';

@@ -4,7 +4,8 @@
 export async function onRequest(context) {
   const { request, env, next } = context;
   const url = new URL(request.url);
-  const hostname = url.hostname.toLowerCase();
+  const rawHost = request.headers.get('x-forwarded-host') || request.headers.get('host') || url.hostname || '';
+  const hostname = rawHost.toLowerCase().split(':')[0].trim();
 
   // 0. Force canonical domain: redirect *.pages.dev and apex domain to www.catering-menu.com
   if (hostname.endsWith('.pages.dev')) {

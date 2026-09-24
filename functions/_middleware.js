@@ -93,6 +93,7 @@ export async function onRequest(context) {
       if (url.pathname === '/' || url.pathname === '/index.html' || url.pathname === '/index' || url.pathname === '') {
         // Verify if caterer subdomain exists in D1
         let catererExists = true;
+        let catererData = null;
         if (env && env.DB) {
           try {
             const row = await env.DB.prepare(
@@ -104,7 +105,11 @@ export async function onRequest(context) {
               try {
                 const d = JSON.parse(r.restaurant_json);
                 const s = d.slug || (d.name || '').toLowerCase().replace(/[^a-z0-9]/g, '-');
-                return s === subdomain;
+                if (s === subdomain) {
+                  catererData = d;
+                  return true;
+                }
+                return false;
               } catch (e) { return false; }
             });
           } catch (e) {
@@ -137,6 +142,69 @@ export async function onRequest(context) {
 
         // Fetch the restaurant.html page internally
         let response = await env.ASSETS.fetch(rewriteUrl);
+        
+        // Inject SEO Meta Tags via Cloudflare HTMLRewriter
+        if (catererData && response.headers.get('content-type')?.includes('text/html')) {
+          const defaultTitleTpl = '{name} - Catering Menu, Pricing & Reviews | Catering Menu';
+          const defaultDescTpl = 'Explore {name} catering menus, event packages, photos, and verified host reviews in {location} on Catering Menu.';
+          
+          let seoTitle = (catererData.meta_title && catererData.meta_title.trim()) || defaultTitleTpl;
+          let seoDesc = (catererData.meta_description && catererData.meta_description.trim()) || defaultDescTpl;
+          
+          seoTitle = seoTitle.replace(/{name}/g, catererData.name || 'Restaurant')
+                             .replace(/{location}/g, catererData.location || 'your area');
+          seoDesc = seoDesc.replace(/{name}/g, catererData.name || 'Restaurant')
+                           .replace(/{location}/g, catererData.location || 'your area');
+                           
+          response = new HTMLRewriter()
+            .on('title', {
+              element(element) {
+                element.setInnerContent(seoTitle);
+              }
+            })
+            .on('meta[name="description"]', {
+              element(element) {
+                element.setAttribute('content', seoDesc);
+              }
+            })
+            .on('meta[property="og:title"]', {
+              element(element) {
+                element.setAttribute('content', seoTitle);
+              }
+            })
+            .on('meta[property="og:description"]', {
+              element(element) {
+                element.setAttribute('content', seoDesc);
+              }
+            })
+            .on('meta[property="og:url"]', {
+              element(element) {
+                element.setAttribute('content', `https://${hostname}/`);
+              }
+            })
+            .on('meta[property="og:image"]', {
+              element(element) {
+                if (catererData.banner_url) element.setAttribute('content', catererData.banner_url);
+              }
+            })
+            .on('meta[name="twitter:title"]', {
+              element(element) {
+                element.setAttribute('content', seoTitle);
+              }
+            })
+            .on('meta[name="twitter:description"]', {
+              element(element) {
+                element.setAttribute('content', seoDesc);
+              }
+            })
+            .on('meta[name="twitter:image"]', {
+              element(element) {
+                if (catererData.banner_url) element.setAttribute('content', catererData.banner_url);
+              }
+            })
+            .transform(response);
+        }
+
         return applyRobotsHeader(response, env, request);
       }
     }

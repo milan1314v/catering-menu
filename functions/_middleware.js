@@ -268,7 +268,49 @@ export async function onRequest(context) {
     }
   }
 
-  return applyRobotsHeader(response, env, request);
+  // First apply the Robots headers to make it mutable
+  response = await applyRobotsHeader(response, env, request);
+
+  // 4. Inject Dynamic SEO Tags for Main Pages (Home, Listings, About, etc.)
+  if (response.status === 200 && response.headers.get('content-type')?.includes('text/html') && env && env.DB) {
+    let pageName = 'home';
+    const path = url.pathname.replace(/\/$/, '') || '/';
+    
+    if (path.startsWith('/listings')) pageName = 'listings';
+    else if (path === '/about') pageName = 'about';
+    else if (path === '/contact') pageName = 'contact';
+    else if (path === '/faqs') pageName = 'faqs';
+    else if (path === '/get-listed') pageName = 'get-listed';
+    else if (path === '/privacy') pageName = 'privacy';
+    else if (path === '/terms') pageName = 'terms';
+
+    try {
+      const row = await env.DB.prepare(
+        "SELECT content_json FROM site_pages WHERE page_name = ?"
+      ).bind(pageName).first();
+
+      if (row) {
+        const data = JSON.parse(row.content_json);
+        if (data.seo && data.seo.title) {
+          const seoTitle = data.seo.title;
+          const seoDesc = data.seo.description || '';
+          
+          response = new HTMLRewriter()
+            .on('title', { element(e) { e.setInnerContent(seoTitle); } })
+            .on('meta[name="description"]', { element(e) { e.setAttribute('content', seoDesc); } })
+            .on('meta[property="og:title"]', { element(e) { e.setAttribute('content', seoTitle); } })
+            .on('meta[property="og:description"]', { element(e) { e.setAttribute('content', seoDesc); } })
+            .on('meta[name="twitter:title"]', { element(e) { e.setAttribute('content', seoTitle); } })
+            .on('meta[name="twitter:description"]', { element(e) { e.setAttribute('content', seoDesc); } })
+            .transform(response);
+        }
+      }
+    } catch (e) {
+      // Fail silently and serve original page if DB errors
+    }
+  }
+
+  return response;
 }
 
 async function applyRobotsHeader(response, env, request) {

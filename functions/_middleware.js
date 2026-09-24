@@ -145,6 +145,9 @@ export async function onRequest(context) {
         
         // First apply the Robots headers, which wraps the response in a new mutable Response
         response = await applyRobotsHeader(response, env, request);
+        
+        response.headers.set('X-Debug-DB-Exists', (env && env.DB) ? 'yes' : 'no');
+        response.headers.set('X-Debug-Caterer-Data', catererData ? 'found' : 'null');
 
         // Inject SEO Meta Tags via Cloudflare HTMLRewriter on the final mutable response
         if (catererData) {
@@ -158,6 +161,8 @@ export async function onRequest(context) {
                              .replace(/{location}/g, catererData.location || 'your area');
           seoDesc = seoDesc.replace(/{name}/g, catererData.name || 'Restaurant')
                            .replace(/{location}/g, catererData.location || 'your area');
+                           
+          response.headers.set('X-Debug-Title', seoTitle);
                            
           response = new HTMLRewriter()
             .on('title', {

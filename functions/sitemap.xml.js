@@ -95,9 +95,9 @@ export async function onRequestGet(context) {
               changefreq: 'weekly'
             });
           }
-        } catch(e) {}
+        } catch (e) { }
       });
-    } catch(e) {
+    } catch (e) {
       console.error('Error fetching caterers for sitemap', e);
     }
   }

@@ -1456,7 +1456,7 @@ ul {
     border: 1px solid rgba(226, 232, 240, 0.95);
     box-shadow: 0 16px 36px rgba(0, 0, 0, 0.05);
     max-height: calc(100vh - var(--nav-height) - 40px);
-    overflow-y: auto;
+    overflow: visible;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
@@ -1641,6 +1641,320 @@ ul {
     font-size: 0.72rem;
     opacity: 0.8;
     margin-left: 2px;
+}
+
+/* ==========================================================================
+   Luxury Custom Filter Dropdown Components (Cuisine & Location)
+   ========================================================================== */
+.luxury-select {
+    position: relative;
+    width: 100%;
+    user-select: none;
+}
+
+.luxury-select-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 15px;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+    font-family: inherit;
+    text-align: left;
+}
+
+.luxury-select-btn:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.luxury-select.active .luxury-select-btn {
+    border-color: #d97706;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.12), 0 4px 12px rgba(217, 119, 6, 0.08);
+}
+
+.luxury-select-btn-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-right: 6px;
+    flex: 1;
+}
+
+.select-btn-icon {
+    color: #d97706;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.select-btn-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #1e293b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.luxury-select-btn-end {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.select-btn-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #ffffff;
+    border-radius: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.select-btn-chevron {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+}
+
+.luxury-select.active .select-btn-chevron {
+    transform: rotate(180deg);
+    color: #d97706;
+}
+
+/* Dropdown Menu Popover */
+.luxury-select-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    min-width: 260px;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 16px 36px -4px rgba(15, 23, 42, 0.16), 0 0 0 1px rgba(217, 119, 6, 0.08);
+    padding: 10px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.98);
+    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                visibility 0.2s;
+    pointer-events: none;
+}
+
+.luxury-select.active .luxury-select-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+/* Search input inside dropdown */
+.luxury-select-search-wrap {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+.luxury-select-search-wrap i {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 0.78rem;
+}
+
+.luxury-select-search {
+    width: 100%;
+    padding: 8px 12px 8px 32px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-family: inherit;
+    color: #1e293b;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.luxury-select-search:focus {
+    background: #ffffff;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.12);
+}
+
+.luxury-select-quick-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 6px 8px 6px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 6px;
+    font-size: 0.75rem;
+}
+
+.luxury-select-action-btn {
+    background: none;
+    border: none;
+    color: #d97706;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.75rem;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+    font-family: inherit;
+}
+
+.luxury-select-action-btn:hover {
+    color: #b45309;
+    text-decoration: underline;
+}
+
+.luxury-select-items-total {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Scrollable Options List */
+.luxury-select-options-list {
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.luxury-select-options-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.luxury-select-options-list::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 6px;
+}
+
+.luxury-select-options-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 6px;
+}
+
+.luxury-select-options-list::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Option Row */
+.luxury-select-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    margin-bottom: 2px;
+}
+
+.luxury-select-option:hover {
+    background: #f8fafc;
+}
+
+.luxury-select-option.selected {
+    background: #fffbeb;
+}
+
+.luxury-option-left {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    overflow: hidden;
+    flex: 1;
+    padding-right: 6px;
+}
+
+.luxury-option-checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid #cbd5e1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.18s ease;
+    background: #ffffff;
+}
+
+.luxury-option-checkbox i {
+    font-size: 0.65rem;
+    color: #ffffff;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.18s ease;
+}
+
+.luxury-select-option.selected .luxury-option-checkbox {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border-color: #d97706;
+}
+
+.luxury-select-option.selected .luxury-option-checkbox i {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.luxury-option-text {
+    font-size: 0.84rem;
+    color: #334155;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.luxury-select-option.selected .luxury-option-text {
+    color: #b45309;
+    font-weight: 700;
+}
+
+.luxury-option-count {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    background: #f1f5f9;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.luxury-select-option.selected .luxury-option-count {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.luxury-select-empty {
+    padding: 16px 8px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #94a3b8;
 }
 
 /* Luxury Rating Cards */

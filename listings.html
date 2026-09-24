@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow">
     <title>Explore Catering Services - Catering Menu</title>
-    <meta name="description" content="Browse and compare top-rated local catering services. Filter by cuisine, event type (weddings, corporate, parties), host ratings, and curated event food menus.">
+    <meta name="description"
+        content="Browse and compare top-rated local catering services. Filter by cuisine, event type (weddings, corporate, parties), host ratings, and curated event food menus.">
     <link rel="canonical" href="https://www.catering-menu.com/listings">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Catering Menu">
     <meta property="og:title" content="Explore Catering Services - Catering Menu">
-    <meta property="og:description" content="Browse and compare top-rated local catering services. Filter by cuisine, event type (weddings, corporate, parties), host ratings, and curated event food menus.">
+    <meta property="og:description"
+        content="Browse and compare top-rated local catering services. Filter by cuisine, event type (weddings, corporate, parties), host ratings, and curated event food menus.">
     <meta property="og:url" content="https://www.catering-menu.com/listings">
     <meta property="og:image" content="https://www.catering-menu.com/assets/img/catering-menu-logo.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Explore Catering Services - Catering Menu">
-    <meta name="twitter:description" content="Browse and compare top-rated local catering services. Filter by cuisine, event type (weddings, corporate, parties), host ratings, and curated event food menus.">
+    <meta name="twitter:description"
+        content="Browse and compare top-rated local catering services. Filter by cuisine, event type (weddings, corporate, parties), host ratings, and curated event food menus.">
     <meta name="twitter:image" content="https://www.catering-menu.com/assets/img/catering-menu-logo.png">
 
     <!-- Favicon & Touch Icons -->
@@ -161,6 +165,7 @@
                 opacity: 0;
                 transform: translateY(-8px) scale(0.98);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -390,6 +395,7 @@
     }
     </script>
 </head>
+
 <body>
 
     <!-- NAVIGATION -->
@@ -401,13 +407,15 @@
     <section class="page-hero listings-hero">
         <div class="container">
             <h1 id="pageTitle" class="hero-clean-title">Explore Catering Services</h1>
-            <p id="pageSubtitle" class="hero-clean-subtitle">Find and book premier caterers, banquet chefs, and custom menus for your event.</p>
+            <p id="pageSubtitle" class="hero-clean-subtitle">Find and book premier caterers, banquet chefs, and custom
+                menus for your event.</p>
 
             <!-- INTEGRATED SEARCH BAR -->
             <div class="hero-search-container">
                 <div class="hero-search-box">
                     <i class="fas fa-search hero-search-icon"></i>
-                    <input type="text" id="searchInput" placeholder="Search caterers, cuisines, or locations..." autocomplete="off">
+                    <input type="text" id="searchInput" placeholder="Search caterers, cuisines, or locations..."
+                        autocomplete="off">
                     <button type="button" class="hero-search-btn" id="heroSearchBtn">
                         <span>Search</span> <i class="fas fa-arrow-right"></i>
                     </button>
@@ -433,7 +441,8 @@
                             <button class="filter-clear" id="clearFilters">
                                 <i class="fas fa-rotate-left"></i> Reset
                             </button>
-                            <button class="filter-close" id="closeFilters" aria-label="Close filters"><i class="fas fa-times"></i></button>
+                            <button class="filter-close" id="closeFilters" aria-label="Close filters"><i
+                                    class="fas fa-times"></i></button>
                         </div>
                     </div>
 
@@ -444,24 +453,29 @@
                                 <span id="cuisineFilterTitle"><i class="fas fa-utensils"></i> Cuisine</span>
                             </div>
                             <div class="luxury-select" id="cuisineSelect">
-                                <button type="button" class="luxury-select-btn" id="cuisineSelectBtn" aria-haspopup="listbox" aria-expanded="false">
+                                <button type="button" class="luxury-select-btn" id="cuisineSelectBtn"
+                                    aria-haspopup="listbox" aria-expanded="false">
                                     <div class="luxury-select-btn-content">
                                         <i class="fas fa-utensils select-btn-icon"></i>
                                         <span class="select-btn-label" id="cuisineSelectLabel">All Cuisines</span>
                                     </div>
                                     <div class="luxury-select-btn-end">
-                                        <span class="select-btn-count" id="cuisineSelectCount" style="display:none;">0</span>
+                                        <span class="select-btn-count" id="cuisineSelectCount"
+                                            style="display:none;">0</span>
                                         <i class="fas fa-chevron-down select-btn-chevron"></i>
                                     </div>
                                 </button>
                                 <div class="luxury-select-menu" id="cuisineSelectMenu">
                                     <div class="luxury-select-search-wrap">
                                         <i class="fas fa-search"></i>
-                                        <input type="text" class="luxury-select-search" id="cuisineSelectSearch" placeholder="Search cuisines...">
+                                        <input type="text" class="luxury-select-search" id="cuisineSelectSearch"
+                                            placeholder="Search cuisines...">
                                     </div>
                                     <div class="luxury-select-quick-actions">
-                                        <button type="button" class="luxury-select-action-btn" id="cuisineSelectClearAll">Reset to All</button>
-                                        <span class="luxury-select-items-total" id="cuisineSelectTotalBadge">0 available</span>
+                                        <button type="button" class="luxury-select-action-btn"
+                                            id="cuisineSelectClearAll">Reset to All</button>
+                                        <span class="luxury-select-items-total" id="cuisineSelectTotalBadge">0
+                                            available</span>
                                     </div>
                                     <div class="luxury-select-options-list" id="cuisineSelectOptions" role="listbox">
                                         <!-- Dynamic cuisines populated by JS -->
@@ -473,27 +487,33 @@
                         <!-- LUXURY LOCATION / STATE DROPDOWN -->
                         <div class="filter-section">
                             <div class="filter-title">
-                                <span id="locationFilterTitle"><i class="fas fa-map-marker-alt"></i> Locations &amp; States</span>
+                                <span id="locationFilterTitle"><i class="fas fa-map-marker-alt"></i> Locations &amp;
+                                    States</span>
                             </div>
                             <div class="luxury-select" id="locationSelect">
-                                <button type="button" class="luxury-select-btn" id="locationSelectBtn" aria-haspopup="listbox" aria-expanded="false">
+                                <button type="button" class="luxury-select-btn" id="locationSelectBtn"
+                                    aria-haspopup="listbox" aria-expanded="false">
                                     <div class="luxury-select-btn-content">
                                         <i class="fas fa-map-marker-alt select-btn-icon"></i>
                                         <span class="select-btn-label" id="locationSelectLabel">All Locations</span>
                                     </div>
                                     <div class="luxury-select-btn-end">
-                                        <span class="select-btn-count" id="locationSelectCount" style="display:none;">0</span>
+                                        <span class="select-btn-count" id="locationSelectCount"
+                                            style="display:none;">0</span>
                                         <i class="fas fa-chevron-down select-btn-chevron"></i>
                                     </div>
                                 </button>
                                 <div class="luxury-select-menu" id="locationSelectMenu">
                                     <div class="luxury-select-search-wrap">
                                         <i class="fas fa-search"></i>
-                                        <input type="text" class="luxury-select-search" id="locationSelectSearch" placeholder="Search cities or states...">
+                                        <input type="text" class="luxury-select-search" id="locationSelectSearch"
+                                            placeholder="Search cities or states...">
                                     </div>
                                     <div class="luxury-select-quick-actions">
-                                        <button type="button" class="luxury-select-action-btn" id="locationSelectClearAll">Reset to All</button>
-                                        <span class="luxury-select-items-total" id="locationSelectTotalBadge">0 available</span>
+                                        <button type="button" class="luxury-select-action-btn"
+                                            id="locationSelectClearAll">Reset to All</button>
+                                        <span class="luxury-select-items-total" id="locationSelectTotalBadge">0
+                                            available</span>
                                     </div>
                                     <div class="luxury-select-options-list" id="locationSelectOptions" role="listbox">
                                         <!-- Dynamic locations populated by JS -->
@@ -550,10 +570,11 @@
 
                     <div class="listings-header">
                         <div>
-                            <span id="resultCount" style="font-weight:700;color:var(--text);font-size:1.05rem;">0</span> 
+                            <span id="resultCount" style="font-weight:700;color:var(--text);font-size:1.05rem;">0</span>
                             <span id="resultsText" style="font-weight:600;">catering services found</span>
                         </div>
-                        <button class="filter-toggle-btn" id="filterToggle"><i class="fas fa-filter"></i> Filters</button>
+                        <button class="filter-toggle-btn" id="filterToggle"><i class="fas fa-filter"></i>
+                            Filters</button>
                     </div>
 
                     <div class="restaurants-grid" id="listingsGrid">
@@ -744,7 +765,7 @@
             function updateCuisineDropdownUI() {
                 const label = document.getElementById('cuisineSelectLabel');
                 const countBadge = document.getElementById('cuisineSelectCount');
-                
+
                 const options = document.querySelectorAll('#cuisineSelectOptions .luxury-select-option');
                 options.forEach(opt => {
                     const val = (opt.dataset.value || '').toLowerCase();
@@ -779,7 +800,7 @@
             function updateLocationDropdownUI() {
                 const label = document.getElementById('locationSelectLabel');
                 const countBadge = document.getElementById('locationSelectCount');
-                
+
                 const options = document.querySelectorAll('#locationSelectOptions .luxury-select-option');
                 options.forEach(opt => {
                     const val = (opt.dataset.value || '').toLowerCase();
@@ -1213,4 +1234,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -144,7 +144,7 @@ export async function onRequest(context) {
         let response = await env.ASSETS.fetch(rewriteUrl);
         
         // Inject SEO Meta Tags via Cloudflare HTMLRewriter
-        if (catererData && response.headers.get('content-type')?.includes('text/html')) {
+        if (catererData) {
           const defaultTitleTpl = '{name} - Catering Menu, Pricing & Reviews | Catering Menu';
           const defaultDescTpl = 'Explore {name} catering menus, event packages, photos, and verified host reviews in {location} on Catering Menu.';
           

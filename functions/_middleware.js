@@ -143,7 +143,10 @@ export async function onRequest(context) {
         // Fetch the restaurant.html page internally
         let response = await env.ASSETS.fetch(rewriteUrl);
         
-        // Inject SEO Meta Tags via Cloudflare HTMLRewriter
+        // First apply the Robots headers, which wraps the response in a new mutable Response
+        response = await applyRobotsHeader(response, env, request);
+
+        // Inject SEO Meta Tags via Cloudflare HTMLRewriter on the final mutable response
         if (catererData) {
           const defaultTitleTpl = '{name} - Catering Menu, Pricing & Reviews | Catering Menu';
           const defaultDescTpl = 'Explore {name} catering menus, event packages, photos, and verified host reviews in {location} on Catering Menu.';
@@ -205,7 +208,7 @@ export async function onRequest(context) {
             .transform(response);
         }
 
-        return applyRobotsHeader(response, env, request);
+        return response;
       }
     }
   }

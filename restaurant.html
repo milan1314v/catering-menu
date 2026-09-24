@@ -980,13 +980,9 @@
             const defaultTitleTpl = '{name} - Catering Menu, Pricing & Reviews | Catering Menu';
             const defaultDescTpl = 'Explore {name} catering menus, event packages, photos, and verified host reviews in {location} on Catering Menu.';
 
-            // Prioritize caterer-specific custom meta title / description, otherwise fallback to CMS or default templates
-            const titleTemplate = (rest.meta_title && rest.meta_title.trim())
-                || (cms && cms.seo && cms.seo.title && cms.seo.title.trim())
-                || defaultTitleTpl;
-            const descTemplate = (rest.meta_description && rest.meta_description.trim())
-                || (cms && cms.seo && cms.seo.description && cms.seo.description.trim())
-                || defaultDescTpl;
+            // Prioritize caterer-specific custom meta title / description, otherwise fallback to default templates
+            const titleTemplate = (rest.meta_title && rest.meta_title.trim()) || defaultTitleTpl;
+            const descTemplate = (rest.meta_description && rest.meta_description.trim()) || defaultDescTpl;
 
             const seoPageTitle = resolvePlaceholders(titleTemplate, rest, avg, reviews.length);
             const seoPageDesc = resolvePlaceholders(descTemplate, rest, avg, reviews.length);

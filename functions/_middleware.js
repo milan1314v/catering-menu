@@ -91,30 +91,20 @@ export async function onRequest(context) {
 
       // If visiting root of subdomain (e.g. https://spice-route.catering-menu.com/)
       if (url.pathname === '/' || url.pathname === '/index.html' || url.pathname === '/index' || url.pathname === '') {
-        // Verify if caterer subdomain exists in D1
+        // Verify if caterer subdomain exists via Live API (instead of D1 to avoid sync issues)
         let catererExists = true;
         let catererData = null;
-        if (env && env.DB) {
-          try {
-            const row = await env.DB.prepare(
-              "SELECT id, restaurant_json FROM restaurants WHERE status = 'approved'"
-            ).all();
-
-            const list = (row && row.results) || [];
-            catererExists = list.some(r => {
-              try {
-                const d = JSON.parse(r.restaurant_json);
-                const s = d.slug || (d.name || '').toLowerCase().replace(/[^a-z0-9]/g, '-');
-                if (s === subdomain) {
-                  catererData = d;
-                  return true;
-                }
-                return false;
-              } catch (e) { return false; }
-            });
-          } catch (e) {
-            catererExists = true; // Fallback to serve restaurant.html if DB check fails
+        
+        try {
+          const apiRes = await fetch(`https://www.catering-menu.com/api/restaurant/${encodeURIComponent(subdomain)}`);
+          if (apiRes.ok) {
+            catererData = await apiRes.json();
+            catererExists = true;
+          } else {
+            catererExists = false;
           }
+        } catch (e) {
+          catererExists = true; // Fallback to serve restaurant.html if API check fails
         }
 
         if (!catererExists) {
